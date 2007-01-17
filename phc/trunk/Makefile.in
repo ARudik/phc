@@ -72,12 +72,12 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(bindir)" \
+am__installdirs = "$(DESTDIR)$(pkglibdir)" "$(DESTDIR)$(bindir)" \
 	"$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgdatadir)" \
 	"$(DESTDIR)$(strangelibdir)" "$(DESTDIR)$(strangephcdir)" \
 	"$(DESTDIR)$(strangeprocessastdir)"
-nobase_pkgdataLTLIBRARIES_INSTALL = $(install_sh) -c
-LTLIBRARIES = $(nobase_pkgdata_LTLIBRARIES)
+nobase_pkglibLTLIBRARIES_INSTALL = $(install_sh) -c
+LTLIBRARIES = $(nobase_pkglib_LTLIBRARIES)
 plugins_tests_canonical_unparser_la_LIBADD =
 am_plugins_tests_canonical_unparser_la_OBJECTS =  \
 	plugins_tests_canonical_unparser_la-canonical_unparser.lo
@@ -398,10 +398,11 @@ SUBDIRS = libltdl
 # Note the preprocessor supports -Wall, so we put that here, rather than a seperate CXX_FLAGS
 AM_CPPFLAGS = \
 	$(LTDLINCL) -I$(srcdir)/src -I$(srcdir)/3rdparty/getopt -I$(srcdir)/3rdparty/flex \
-	-DDATADIR=\"$(datadir)\" -Wall
+	-DDATADIR=\"$(datadir)\" -DPKGLIBDIR=\"$(pkglibdir)\" -Wall
 
 
-# By putting this here, we avoid warnings in generated_src, which we dont want to hear about. 
+# By using CXXFLAGS we avoid warnings in generated_src, which we dont want to
+# hear about. 
 src_phc_CXXFLAGS = -Wextra -Wno-unused-parameter
 
 # Special libtool flag for later plugin loading
@@ -515,7 +516,7 @@ strangelib_HEADERS = \
 
 # TODO prepend dist onto those we distribute
 # TODO pkgdata is supposed to be architecture neutral, which plugins are not. Hmmmmm
-nobase_pkgdata_LTLIBRARIES = plugins/tests/canonical_unparser.la \
+nobase_pkglib_LTLIBRARIES = plugins/tests/canonical_unparser.la \
 	plugins/tests/cloning.la plugins/tests/linear.la \
 	plugins/tests/line_numbers.la \
 	plugins/tests/pre_vs_post_count.la \
@@ -641,27 +642,27 @@ $(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-install-nobase_pkgdataLTLIBRARIES: $(nobase_pkgdata_LTLIBRARIES)
+install-nobase_pkglibLTLIBRARIES: $(nobase_pkglib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
-	test -z "$(pkgdatadir)" || $(mkdir_p) "$(DESTDIR)$(pkgdatadir)"
-	@list='$(nobase_pkgdata_LTLIBRARIES)'; for p in $$list; do \
+	test -z "$(pkglibdir)" || $(mkdir_p) "$(DESTDIR)$(pkglibdir)"
+	@list='$(nobase_pkglib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
 	    f=$$p; \
-	    echo " $(LIBTOOL) --mode=install $(nobase_pkgdataLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(pkgdatadir)/$$f'"; \
-	    $(LIBTOOL) --mode=install $(nobase_pkgdataLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(pkgdatadir)/$$f"; \
+	    echo " $(LIBTOOL) --mode=install $(nobase_pkglibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(pkglibdir)/$$f'"; \
+	    $(LIBTOOL) --mode=install $(nobase_pkglibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(pkglibdir)/$$f"; \
 	  else :; fi; \
 	done
 
-uninstall-nobase_pkgdataLTLIBRARIES:
+uninstall-nobase_pkglibLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
-	@set -x; list='$(nobase_pkgdata_LTLIBRARIES)'; for p in $$list; do \
-	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	@set -x; list='$(nobase_pkglib_LTLIBRARIES)'; for p in $$list; do \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(pkglibdir)/$$p'"; \
+	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(pkglibdir)/$$p"; \
 	done
 
-clean-nobase_pkgdataLTLIBRARIES:
-	-test -z "$(nobase_pkgdata_LTLIBRARIES)" || rm -f $(nobase_pkgdata_LTLIBRARIES)
-	@list='$(nobase_pkgdata_LTLIBRARIES)'; for p in $$list; do \
+clean-nobase_pkglibLTLIBRARIES:
+	-test -z "$(nobase_pkglib_LTLIBRARIES)" || rm -f $(nobase_pkglib_LTLIBRARIES)
+	@list='$(nobase_pkglib_LTLIBRARIES)'; for p in $$list; do \
 	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
 	  test "$$dir" != "$$p" || dir=.; \
 	  echo "rm -f \"$${dir}/so_locations\""; \
@@ -671,47 +672,47 @@ plugins/tests/$(am__dirstamp):
 	@$(mkdir_p) plugins/tests
 	@: > plugins/tests/$(am__dirstamp)
 plugins/tests/canonical_unparser.la: $(plugins_tests_canonical_unparser_la_OBJECTS) $(plugins_tests_canonical_unparser_la_DEPENDENCIES) plugins/tests/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tests_canonical_unparser_la_LDFLAGS) $(plugins_tests_canonical_unparser_la_OBJECTS) $(plugins_tests_canonical_unparser_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tests_canonical_unparser_la_LDFLAGS) $(plugins_tests_canonical_unparser_la_OBJECTS) $(plugins_tests_canonical_unparser_la_LIBADD) $(LIBS)
 plugins/tests/cloning.la: $(plugins_tests_cloning_la_OBJECTS) $(plugins_tests_cloning_la_DEPENDENCIES) plugins/tests/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tests_cloning_la_LDFLAGS) $(plugins_tests_cloning_la_OBJECTS) $(plugins_tests_cloning_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tests_cloning_la_LDFLAGS) $(plugins_tests_cloning_la_OBJECTS) $(plugins_tests_cloning_la_LIBADD) $(LIBS)
 plugins/tests/line_numbers.la: $(plugins_tests_line_numbers_la_OBJECTS) $(plugins_tests_line_numbers_la_DEPENDENCIES) plugins/tests/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tests_line_numbers_la_LDFLAGS) $(plugins_tests_line_numbers_la_OBJECTS) $(plugins_tests_line_numbers_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tests_line_numbers_la_LDFLAGS) $(plugins_tests_line_numbers_la_OBJECTS) $(plugins_tests_line_numbers_la_LIBADD) $(LIBS)
 plugins/tests/linear.la: $(plugins_tests_linear_la_OBJECTS) $(plugins_tests_linear_la_DEPENDENCIES) plugins/tests/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tests_linear_la_LDFLAGS) $(plugins_tests_linear_la_OBJECTS) $(plugins_tests_linear_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tests_linear_la_LDFLAGS) $(plugins_tests_linear_la_OBJECTS) $(plugins_tests_linear_la_LIBADD) $(LIBS)
 plugins/tests/pre_vs_post_count.la: $(plugins_tests_pre_vs_post_count_la_OBJECTS) $(plugins_tests_pre_vs_post_count_la_DEPENDENCIES) plugins/tests/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tests_pre_vs_post_count_la_LDFLAGS) $(plugins_tests_pre_vs_post_count_la_OBJECTS) $(plugins_tests_pre_vs_post_count_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tests_pre_vs_post_count_la_LDFLAGS) $(plugins_tests_pre_vs_post_count_la_OBJECTS) $(plugins_tests_pre_vs_post_count_la_LIBADD) $(LIBS)
 plugins/tests/source_vs_semantic_values.la: $(plugins_tests_source_vs_semantic_values_la_OBJECTS) $(plugins_tests_source_vs_semantic_values_la_DEPENDENCIES) plugins/tests/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tests_source_vs_semantic_values_la_LDFLAGS) $(plugins_tests_source_vs_semantic_values_la_OBJECTS) $(plugins_tests_source_vs_semantic_values_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tests_source_vs_semantic_values_la_LDFLAGS) $(plugins_tests_source_vs_semantic_values_la_OBJECTS) $(plugins_tests_source_vs_semantic_values_la_LIBADD) $(LIBS)
 plugins/tests/xml_roundtrip.la: $(plugins_tests_xml_roundtrip_la_OBJECTS) $(plugins_tests_xml_roundtrip_la_DEPENDENCIES) plugins/tests/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tests_xml_roundtrip_la_LDFLAGS) $(plugins_tests_xml_roundtrip_la_OBJECTS) $(plugins_tests_xml_roundtrip_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tests_xml_roundtrip_la_LDFLAGS) $(plugins_tests_xml_roundtrip_la_OBJECTS) $(plugins_tests_xml_roundtrip_la_LIBADD) $(LIBS)
 plugins/tools/$(am__dirstamp):
 	@$(mkdir_p) plugins/tools
 	@: > plugins/tools/$(am__dirstamp)
 plugins/tools/purity_test.la: $(plugins_tools_purity_test_la_OBJECTS) $(plugins_tools_purity_test_la_DEPENDENCIES) plugins/tools/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tools_purity_test_la_LDFLAGS) $(plugins_tools_purity_test_la_OBJECTS) $(plugins_tools_purity_test_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tools_purity_test_la_LDFLAGS) $(plugins_tools_purity_test_la_OBJECTS) $(plugins_tools_purity_test_la_LIBADD) $(LIBS)
 plugins/tutorials/$(am__dirstamp):
 	@$(mkdir_p) plugins/tutorials
 	@: > plugins/tutorials/$(am__dirstamp)
 plugins/tutorials/Comment_ifs.la: $(plugins_tutorials_Comment_ifs_la_OBJECTS) $(plugins_tutorials_Comment_ifs_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_Comment_ifs_la_LDFLAGS) $(plugins_tutorials_Comment_ifs_la_OBJECTS) $(plugins_tutorials_Comment_ifs_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_Comment_ifs_la_LDFLAGS) $(plugins_tutorials_Comment_ifs_la_OBJECTS) $(plugins_tutorials_Comment_ifs_la_LIBADD) $(LIBS)
 plugins/tutorials/Expand_includes.la: $(plugins_tutorials_Expand_includes_la_OBJECTS) $(plugins_tutorials_Expand_includes_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_Expand_includes_la_LDFLAGS) $(plugins_tutorials_Expand_includes_la_OBJECTS) $(plugins_tutorials_Expand_includes_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_Expand_includes_la_LDFLAGS) $(plugins_tutorials_Expand_includes_la_OBJECTS) $(plugins_tutorials_Expand_includes_la_LIBADD) $(LIBS)
 plugins/tutorials/InsertDB.la: $(plugins_tutorials_InsertDB_la_OBJECTS) $(plugins_tutorials_InsertDB_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_InsertDB_la_LDFLAGS) $(plugins_tutorials_InsertDB_la_OBJECTS) $(plugins_tutorials_InsertDB_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_InsertDB_la_LDFLAGS) $(plugins_tutorials_InsertDB_la_OBJECTS) $(plugins_tutorials_InsertDB_la_LIBADD) $(LIBS)
 plugins/tutorials/MySQL2DBX.la: $(plugins_tutorials_MySQL2DBX_la_OBJECTS) $(plugins_tutorials_MySQL2DBX_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_MySQL2DBX_la_LDFLAGS) $(plugins_tutorials_MySQL2DBX_la_OBJECTS) $(plugins_tutorials_MySQL2DBX_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_MySQL2DBX_la_LDFLAGS) $(plugins_tutorials_MySQL2DBX_la_OBJECTS) $(plugins_tutorials_MySQL2DBX_la_LIBADD) $(LIBS)
 plugins/tutorials/count_classes.la: $(plugins_tutorials_count_classes_la_OBJECTS) $(plugins_tutorials_count_classes_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_count_classes_la_LDFLAGS) $(plugins_tutorials_count_classes_la_OBJECTS) $(plugins_tutorials_count_classes_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_count_classes_la_LDFLAGS) $(plugins_tutorials_count_classes_la_OBJECTS) $(plugins_tutorials_count_classes_la_LIBADD) $(LIBS)
 plugins/tutorials/count_function_calls_difficult.la: $(plugins_tutorials_count_function_calls_difficult_la_OBJECTS) $(plugins_tutorials_count_function_calls_difficult_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_count_function_calls_difficult_la_LDFLAGS) $(plugins_tutorials_count_function_calls_difficult_la_OBJECTS) $(plugins_tutorials_count_function_calls_difficult_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_count_function_calls_difficult_la_LDFLAGS) $(plugins_tutorials_count_function_calls_difficult_la_OBJECTS) $(plugins_tutorials_count_function_calls_difficult_la_LIBADD) $(LIBS)
 plugins/tutorials/count_function_calls_easy.la: $(plugins_tutorials_count_function_calls_easy_la_OBJECTS) $(plugins_tutorials_count_function_calls_easy_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_count_function_calls_easy_la_LDFLAGS) $(plugins_tutorials_count_function_calls_easy_la_OBJECTS) $(plugins_tutorials_count_function_calls_easy_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_count_function_calls_easy_la_LDFLAGS) $(plugins_tutorials_count_function_calls_easy_la_OBJECTS) $(plugins_tutorials_count_function_calls_easy_la_LIBADD) $(LIBS)
 plugins/tutorials/count_statements.la: $(plugins_tutorials_count_statements_la_OBJECTS) $(plugins_tutorials_count_statements_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_count_statements_la_LDFLAGS) $(plugins_tutorials_count_statements_la_OBJECTS) $(plugins_tutorials_count_statements_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_count_statements_la_LDFLAGS) $(plugins_tutorials_count_statements_la_OBJECTS) $(plugins_tutorials_count_statements_la_LIBADD) $(LIBS)
 plugins/tutorials/helloworld.la: $(plugins_tutorials_helloworld_la_OBJECTS) $(plugins_tutorials_helloworld_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_helloworld_la_LDFLAGS) $(plugins_tutorials_helloworld_la_OBJECTS) $(plugins_tutorials_helloworld_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_helloworld_la_LDFLAGS) $(plugins_tutorials_helloworld_la_OBJECTS) $(plugins_tutorials_helloworld_la_LIBADD) $(LIBS)
 plugins/tutorials/show_traversal_order.la: $(plugins_tutorials_show_traversal_order_la_OBJECTS) $(plugins_tutorials_show_traversal_order_la_DEPENDENCIES) plugins/tutorials/$(am__dirstamp)
-	$(CXXLINK) -rpath $(pkgdatadir) $(plugins_tutorials_show_traversal_order_la_LDFLAGS) $(plugins_tutorials_show_traversal_order_la_OBJECTS) $(plugins_tutorials_show_traversal_order_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(pkglibdir) $(plugins_tutorials_show_traversal_order_la_LDFLAGS) $(plugins_tutorials_show_traversal_order_la_OBJECTS) $(plugins_tutorials_show_traversal_order_la_LIBADD) $(LIBS)
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(bindir)" || $(mkdir_p) "$(DESTDIR)$(bindir)"
@@ -1792,7 +1793,7 @@ all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(DATA) \
 		$(HEADERS) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(strangelibdir)" "$(DESTDIR)$(strangephcdir)" "$(DESTDIR)$(strangeprocessastdir)"; do \
+	for dir in "$(DESTDIR)$(pkglibdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(strangelibdir)" "$(DESTDIR)$(strangephcdir)" "$(DESTDIR)$(strangeprocessastdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -1828,7 +1829,7 @@ maintainer-clean-generic:
 clean: clean-recursive
 
 clean-am: clean-binPROGRAMS clean-generic clean-libtool \
-	clean-nobase_pkgdataLTLIBRARIES mostlyclean-am
+	clean-nobase_pkglibLTLIBRARIES mostlyclean-am
 
 distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
@@ -1847,11 +1848,11 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-nobase_pkgdataLTLIBRARIES install-pkgdataDATA \
-	install-strangelibHEADERS install-strangephcHEADERS \
-	install-strangeprocessastHEADERS
+install-data-am: install-pkgdataDATA install-strangelibHEADERS \
+	install-strangephcHEADERS install-strangeprocessastHEADERS
 
-install-exec-am: install-binPROGRAMS install-binSCRIPTS
+install-exec-am: install-binPROGRAMS install-binSCRIPTS \
+	install-nobase_pkglibLTLIBRARIES
 
 install-info: install-info-recursive
 
@@ -1880,7 +1881,7 @@ ps: ps-recursive
 ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
-	uninstall-info-am uninstall-nobase_pkgdataLTLIBRARIES \
+	uninstall-info-am uninstall-nobase_pkglibLTLIBRARIES \
 	uninstall-pkgdataDATA uninstall-strangelibHEADERS \
 	uninstall-strangephcHEADERS uninstall-strangeprocessastHEADERS
 
@@ -1888,7 +1889,7 @@ uninstall-info: uninstall-info-recursive
 
 .PHONY: $(RECURSIVE_TARGETS) CTAGS GTAGS all all-am am--refresh check \
 	check-am clean clean-binPROGRAMS clean-generic clean-libtool \
-	clean-nobase_pkgdataLTLIBRARIES clean-recursive ctags \
+	clean-nobase_pkglibLTLIBRARIES clean-recursive ctags \
 	ctags-recursive dist dist-all dist-bzip2 dist-gzip dist-shar \
 	dist-tarZ dist-zip distcheck distclean distclean-compile \
 	distclean-generic distclean-hdr distclean-libtool \
@@ -1897,7 +1898,7 @@ uninstall-info: uninstall-info-recursive
 	install install-am install-binPROGRAMS install-binSCRIPTS \
 	install-data install-data-am install-exec install-exec-am \
 	install-info install-info-am install-man \
-	install-nobase_pkgdataLTLIBRARIES install-pkgdataDATA \
+	install-nobase_pkglibLTLIBRARIES install-pkgdataDATA \
 	install-strangelibHEADERS install-strangephcHEADERS \
 	install-strangeprocessastHEADERS install-strip installcheck \
 	installcheck-am installdirs installdirs-am maintainer-clean \
@@ -1906,7 +1907,7 @@ uninstall-info: uninstall-info-recursive
 	mostlyclean-libtool mostlyclean-recursive pdf pdf-am ps ps-am \
 	tags tags-recursive uninstall uninstall-am \
 	uninstall-binPROGRAMS uninstall-binSCRIPTS uninstall-info-am \
-	uninstall-nobase_pkgdataLTLIBRARIES uninstall-pkgdataDATA \
+	uninstall-nobase_pkglibLTLIBRARIES uninstall-pkgdataDATA \
 	uninstall-strangelibHEADERS uninstall-strangephcHEADERS \
 	uninstall-strangeprocessastHEADERS
 

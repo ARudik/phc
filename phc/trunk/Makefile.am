@@ -13,11 +13,12 @@ SUBDIRS = libltdl
 # Note the preprocessor supports -Wall, so we put that here, rather than a seperate CXX_FLAGS
 AM_CPPFLAGS = \
 	$(LTDLINCL) -I$(srcdir)/src -I$(srcdir)/3rdparty/getopt -I$(srcdir)/3rdparty/flex \
-	-DDATADIR=\"$(datadir)\" -Wall
+	-DDATADIR=\"$(datadir)\" -DPKGLIBDIR=\"$(pkglibdir)\" -Wall
 
 bin_PROGRAMS = src/phc
 
-# By putting this here, we avoid warnings in generated_src, which we dont want to hear about. 
+# By using CXXFLAGS we avoid warnings in generated_src, which we dont want to
+# hear about. 
 src_phc_CXXFLAGS = -Wextra -Wno-unused-parameter
 
 # Special libtool flag for later plugin loading
@@ -134,96 +135,96 @@ strangelib_HEADERS =		\
 
 # TODO prepend dist onto those we distribute
 # TODO pkgdata is supposed to be architecture neutral, which plugins are not. Hmmmmm
-nobase_pkgdata_LTLIBRARIES = 
+nobase_pkglib_LTLIBRARIES = 
 PLUGIN_LDFLAGS = -module
 PLUGIN_CXXFLAGS = -Wextra -Wno-unused-parameter
 
-nobase_pkgdata_LTLIBRARIES += plugins/tests/canonical_unparser.la
+nobase_pkglib_LTLIBRARIES += plugins/tests/canonical_unparser.la
 plugins_tests_canonical_unparser_la_SOURCES = plugins/tests/canonical_unparser.cpp
 plugins_tests_canonical_unparser_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tests_canonical_unparser_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tests/cloning.la
+nobase_pkglib_LTLIBRARIES += plugins/tests/cloning.la
 plugins_tests_cloning_la_SOURCES = plugins/tests/cloning.cpp
 plugins_tests_cloning_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tests_cloning_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tests/linear.la
+nobase_pkglib_LTLIBRARIES += plugins/tests/linear.la
 plugins_tests_linear_la_SOURCES = plugins/tests/linear.cpp
 plugins_tests_linear_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tests_linear_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tests/line_numbers.la
+nobase_pkglib_LTLIBRARIES += plugins/tests/line_numbers.la
 plugins_tests_line_numbers_la_SOURCES = plugins/tests/line_numbers.cpp
 plugins_tests_line_numbers_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tests_line_numbers_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tests/pre_vs_post_count.la
+nobase_pkglib_LTLIBRARIES += plugins/tests/pre_vs_post_count.la
 plugins_tests_pre_vs_post_count_la_SOURCES = plugins/tests/pre_vs_post_count.cpp
 plugins_tests_pre_vs_post_count_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tests_pre_vs_post_count_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tests/source_vs_semantic_values.la
+nobase_pkglib_LTLIBRARIES += plugins/tests/source_vs_semantic_values.la
 plugins_tests_source_vs_semantic_values_la_SOURCES = plugins/tests/source_vs_semantic_values.cpp
 plugins_tests_source_vs_semantic_values_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tests_source_vs_semantic_values_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tests/xml_roundtrip.la
+nobase_pkglib_LTLIBRARIES += plugins/tests/xml_roundtrip.la
 plugins_tests_xml_roundtrip_la_SOURCES = plugins/tests/xml_roundtrip.cpp
 plugins_tests_xml_roundtrip_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tests_xml_roundtrip_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tools/purity_test.la
+nobase_pkglib_LTLIBRARIES += plugins/tools/purity_test.la
 plugins_tools_purity_test_la_SOURCES = plugins/tools/purity_test.cpp
 plugins_tools_purity_test_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tools_purity_test_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/Comment_ifs.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/Comment_ifs.la
 plugins_tutorials_Comment_ifs_la_SOURCES = plugins/tutorials/Comment_ifs.cpp
 plugins_tutorials_Comment_ifs_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_Comment_ifs_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/count_classes.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/count_classes.la
 plugins_tutorials_count_classes_la_SOURCES = plugins/tutorials/count_classes.cpp
 plugins_tutorials_count_classes_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_count_classes_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/count_function_calls_difficult.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/count_function_calls_difficult.la
 plugins_tutorials_count_function_calls_difficult_la_SOURCES = plugins/tutorials/count_function_calls_difficult.cpp
 plugins_tutorials_count_function_calls_difficult_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_count_function_calls_difficult_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/count_function_calls_easy.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/count_function_calls_easy.la
 plugins_tutorials_count_function_calls_easy_la_SOURCES = plugins/tutorials/count_function_calls_easy.cpp
 plugins_tutorials_count_function_calls_easy_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_count_function_calls_easy_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/count_statements.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/count_statements.la
 plugins_tutorials_count_statements_la_SOURCES = plugins/tutorials/count_statements.cpp
 plugins_tutorials_count_statements_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_count_statements_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/Expand_includes.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/Expand_includes.la
 plugins_tutorials_Expand_includes_la_SOURCES = plugins/tutorials/Expand_includes.cpp
 plugins_tutorials_Expand_includes_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_Expand_includes_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/helloworld.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/helloworld.la
 plugins_tutorials_helloworld_la_SOURCES = plugins/tutorials/helloworld.cpp
 plugins_tutorials_helloworld_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_helloworld_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/InsertDB.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/InsertDB.la
 plugins_tutorials_InsertDB_la_SOURCES = plugins/tutorials/InsertDB.cpp
 plugins_tutorials_InsertDB_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_InsertDB_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/MySQL2DBX.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/MySQL2DBX.la
 plugins_tutorials_MySQL2DBX_la_SOURCES = plugins/tutorials/MySQL2DBX.cpp
 plugins_tutorials_MySQL2DBX_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_MySQL2DBX_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
-nobase_pkgdata_LTLIBRARIES += plugins/tutorials/show_traversal_order.la
+nobase_pkglib_LTLIBRARIES += plugins/tutorials/show_traversal_order.la
 plugins_tutorials_show_traversal_order_la_SOURCES = plugins/tutorials/show_traversal_order.cpp
 plugins_tutorials_show_traversal_order_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tutorials_show_traversal_order_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}

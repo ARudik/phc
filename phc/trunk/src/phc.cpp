@@ -256,8 +256,7 @@ run_plugins(AST_php_script* php_script)
 
 			// Try DATADIR
 			// TODO insecure 
-			strcpy(in_datadir, DATADIR);
-			strcat(in_datadir, "/" PACKAGE "/");
+			strcpy(in_datadir, PKGLIBDIR);
 			strcat(in_datadir, args_info.run_arg[i]);
 			handle = lt_dlopenext (in_datadir);	
 		}
