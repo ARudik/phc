@@ -1,0 +1,38 @@
+#!/bin/sh
+# Shell script to compile phc plugins
+
+_FILENAME=$1
+if test ! $# -eq 1 
+then 
+	_FILENAME="myplugin.cpp"
+fi
+
+_INCLUDES="-I@includedir@"
+
+if test "-$CFLAGS" = "-"
+then CFLAGS="@CFLAGS@"
+fi
+if test "-$LDFLAGS" = "-"
+then LDFLAGS="@LDFLAGS@"
+fi
+
+_LIBTOOL="@pkgdatadir@/libtool";
+_OUTPUT="`basename _FILENAME .cpp`.la"
+_COMPILE="$_LIBTOOL --mode=compile g++ $_INCLUDES $CFLAGS -c $_FILENAME"
+_LINK="$_LIBTOOL --mode=link g++ -module $LDFLAGS $_FILENAME -o $_OUTPUT"
+
+if test ! $# -eq 1
+then
+	echo "usage: $0 $_FILENAME"
+	echo
+	echo "If you wish to use more complicated options for g++,"
+	echo "override the \$LDFLAGS or \$CFLAGS environmental variables,"
+	echo "or modify the following commands:"
+	echo
+	echo "  $_COMPILE"
+	echo "  $_LINK"
+	exit
+fi
+
+$_COMPILE
+$_LINK

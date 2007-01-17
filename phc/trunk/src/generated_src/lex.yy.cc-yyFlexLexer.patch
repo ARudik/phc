@@ -1,0 +1,10 @@
+--- generated/lex.yy.cc.orig	2006-01-25 20:33:53.000000000 +0000
++++ generated/lex.yy.cc	2006-01-25 20:35:20.000000000 +0000
+@@ -17,7 +17,6 @@
+     /* The c++ scanner is a mess. The FlexLexer.h header file relies on the
+      * following macro.
+      */
+-    #define yyFlexLexer yyFlexLexer
+ 
+ /* First, we deal with  platform-specific or compiler-specific issues. */
+ 

@@ -1,0 +1,17 @@
+The tests are held in scripts/, but tests should be run from ../src/.
+support_files/ are files used by the tests, for example for regression.
+subjects/ are the files used to test phc. Most are designed to test some
+feature or tickle some bug, others (especially in subjects/3rdparty/) are
+3rd-party applications we use to get some diversity. subjects/labels controls
+what tests are run on which subjects. logs/ contains logs of failed tests.
+
+To run tests from the src/ directory
+
+	$ make test
+or
+	$ make long-test
+or
+	$ php tests/scripts/driver.php
+
+The latter allows command line options, and limiting the tests with regular
+expressions. Run driver.php with the '-h' flag for details.

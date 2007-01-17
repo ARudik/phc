@@ -1,0 +1,19 @@
+<?php
+
+$valgrind = "@valgrind@";
+$graphviz_gc = "@graphviz_gc@";
+$dot = "@dot@";
+$php_exe = "@php@";
+$gcc = "@CC@";
+$diff = "@diff@";
+$php_path = "@php_install_path@";
+if ($php_path)
+{
+	$libphp = "$php_path/lib";
+}
+$bindir = "@bindir@";
+$pkgdatadir = "@pkgdatadir@";
+$phc_suffix = "@EXEEXT@";
+
+
+?>

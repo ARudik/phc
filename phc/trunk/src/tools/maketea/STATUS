@@ -1,0 +1,9 @@
+-- 6 April
+
+o Generate assertions to make sure that the transforms adhere to the tree spec
+  and that dynamic assertions succeed (i.e., the right types are returned)
+
+-- 23 February
+
+o We should generate #line directives in the generated C++ code so that
+  errors are reported in the .tea input file instead of in the C++ code
