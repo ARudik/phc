@@ -276,7 +276,7 @@ src/phc_compile_plugin: Makefile src/phc_compile_plugin.in
 	chmod 755 src/phc_compile_plugin
 
 test/framework/lib/autovars.php: Makefile test/framework/lib/autovars.php.in
-	sed -e 's,@valgrind\@,$(valgrind),g; s,@graphviz_gc\@,$(graphviz_gc),g;s,@dot\@,$(dot),g; s,@php\@,$(php),g; s,@CC\@,$(CC),g; s,@diff\@,$(diff),g;s,@php_install_path\@,$(php_install_path),g; s,@bindir\@,$(bindir),g; s,@pkgdatadir\@,$(pkgdatadir),g; s,@EXEEXT\@,$(EXEEXT),g;' test/framework/lib/autovars.php.in > test/framework/lib/autovars.php
+	sed -e 's,@valgrind\@,$(valgrind),g; s,@graphviz_gc\@,$(graphviz_gc),g;s,@dot\@,$(dot),g; s,@php\@,$(php),g; s,@CC\@,$(CC),g; s,@diff\@,$(diff),g;s,@php_install_path\@,$(php_install_path),g; s,@bindir\@,$(bindir),g; s,@pkglibdir\@,$(pkglibdir),g; s,@EXEEXT\@,$(EXEEXT),g;' test/framework/lib/autovars.php.in > test/framework/lib/autovars.php
 
 
 .PHONY: cleanall
@@ -299,6 +299,8 @@ cleanall:
 	rm -f src/generated/*
 
 ## Run the tests
+check-local: test
+installcheck-local: installtest
 
 test: all test/framework/lib/autovars.php
 	@if [ -n "@php@" ]; \
@@ -307,7 +309,14 @@ test: all test/framework/lib/autovars.php
 		else echo PHP support required for test; \
 	fi
 
-long-test: all test/framework/lib/autovars.php
+installtest: all test/framework/lib/autovars.php install
+	@if [ -n "@php@" ]; \
+		then echo @php@ -Cq test/framework/driver.php -i; \
+		@php@ -Cq test/framework/driver.php -i;  \
+		else echo PHP support required for test; \
+	fi
+
+long-test: check-local
 	@if [ -n "@php@" ]; \
 		then echo @php@ -Cq test/framework/driver.php -l; \
 		@php@ -Cq test/framework/driver.php -l; \

@@ -29,7 +29,7 @@ $php = get_php ();
 if ($opt_installed)
 {
 	$phc = "$bindir/phc";
-	$plugin_dir = "$pkgdatadir/plugins/tests";
+	$plugin_dir = "$pkglibdir/plugins/tests";
 }
 
 $tests = array ();

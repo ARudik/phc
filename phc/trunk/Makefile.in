@@ -1787,6 +1787,7 @@ distcleancheck: distclean
 	       $(distcleancheck_listfiles) ; \
 	       exit 1; } >&2
 check-am: all-am
+	$(MAKE) $(AM_MAKEFLAGS) check-local
 check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-recursive
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(DATA) \
@@ -1858,7 +1859,7 @@ install-info: install-info-recursive
 
 install-man:
 
-installcheck-am:
+installcheck-am: installcheck-local
 
 maintainer-clean: maintainer-clean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
@@ -1888,24 +1889,24 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 uninstall-info: uninstall-info-recursive
 
 .PHONY: $(RECURSIVE_TARGETS) CTAGS GTAGS all all-am am--refresh check \
-	check-am clean clean-binPROGRAMS clean-generic clean-libtool \
-	clean-nobase_pkglibLTLIBRARIES clean-recursive ctags \
-	ctags-recursive dist dist-all dist-bzip2 dist-gzip dist-shar \
-	dist-tarZ dist-zip distcheck distclean distclean-compile \
-	distclean-generic distclean-hdr distclean-libtool \
-	distclean-recursive distclean-tags distcleancheck distdir \
-	distuninstallcheck dvi dvi-am html html-am info info-am \
-	install install-am install-binPROGRAMS install-binSCRIPTS \
-	install-data install-data-am install-exec install-exec-am \
-	install-info install-info-am install-man \
+	check-am check-local clean clean-binPROGRAMS clean-generic \
+	clean-libtool clean-nobase_pkglibLTLIBRARIES clean-recursive \
+	ctags ctags-recursive dist dist-all dist-bzip2 dist-gzip \
+	dist-shar dist-tarZ dist-zip distcheck distclean \
+	distclean-compile distclean-generic distclean-hdr \
+	distclean-libtool distclean-recursive distclean-tags \
+	distcleancheck distdir distuninstallcheck dvi dvi-am html \
+	html-am info info-am install install-am install-binPROGRAMS \
+	install-binSCRIPTS install-data install-data-am install-exec \
+	install-exec-am install-info install-info-am install-man \
 	install-nobase_pkglibLTLIBRARIES install-pkgdataDATA \
 	install-strangelibHEADERS install-strangephcHEADERS \
 	install-strangeprocessastHEADERS install-strip installcheck \
-	installcheck-am installdirs installdirs-am maintainer-clean \
-	maintainer-clean-generic maintainer-clean-recursive \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool mostlyclean-recursive pdf pdf-am ps ps-am \
-	tags tags-recursive uninstall uninstall-am \
+	installcheck-am installcheck-local installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic \
+	maintainer-clean-recursive mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
 	uninstall-binPROGRAMS uninstall-binSCRIPTS uninstall-info-am \
 	uninstall-nobase_pkglibLTLIBRARIES uninstall-pkgdataDATA \
 	uninstall-strangelibHEADERS uninstall-strangephcHEADERS \
@@ -1957,7 +1958,7 @@ src/phc_compile_plugin: Makefile src/phc_compile_plugin.in
 	chmod 755 src/phc_compile_plugin
 
 test/framework/lib/autovars.php: Makefile test/framework/lib/autovars.php.in
-	sed -e 's,@valgrind\@,$(valgrind),g; s,@graphviz_gc\@,$(graphviz_gc),g;s,@dot\@,$(dot),g; s,@php\@,$(php),g; s,@CC\@,$(CC),g; s,@diff\@,$(diff),g;s,@php_install_path\@,$(php_install_path),g; s,@bindir\@,$(bindir),g; s,@pkgdatadir\@,$(pkgdatadir),g; s,@EXEEXT\@,$(EXEEXT),g;' test/framework/lib/autovars.php.in > test/framework/lib/autovars.php
+	sed -e 's,@valgrind\@,$(valgrind),g; s,@graphviz_gc\@,$(graphviz_gc),g;s,@dot\@,$(dot),g; s,@php\@,$(php),g; s,@CC\@,$(CC),g; s,@diff\@,$(diff),g;s,@php_install_path\@,$(php_install_path),g; s,@bindir\@,$(bindir),g; s,@pkglibdir\@,$(pkglibdir),g; s,@EXEEXT\@,$(EXEEXT),g;' test/framework/lib/autovars.php.in > test/framework/lib/autovars.php
 
 .PHONY: cleanall
 cleanall:
@@ -1978,6 +1979,9 @@ cleanall:
 	rm -fr .deps
 	rm -f src/generated/*
 
+check-local: test
+installcheck-local: installtest
+
 test: all test/framework/lib/autovars.php
 	@if [ -n "@php@" ]; \
 		then echo @php@ -Cq test/framework/driver.php; \
@@ -1985,7 +1989,14 @@ test: all test/framework/lib/autovars.php
 		else echo PHP support required for test; \
 	fi
 
-long-test: all test/framework/lib/autovars.php
+installtest: all test/framework/lib/autovars.php install
+	@if [ -n "@php@" ]; \
+		then echo @php@ -Cq test/framework/driver.php -i; \
+		@php@ -Cq test/framework/driver.php -i;  \
+		else echo PHP support required for test; \
+	fi
+
+long-test: check-local
 	@if [ -n "@php@" ]; \
 		then echo @php@ -Cq test/framework/driver.php -l; \
 		@php@ -Cq test/framework/driver.php -l; \

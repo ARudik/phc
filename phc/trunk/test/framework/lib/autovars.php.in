@@ -12,7 +12,7 @@ if ($php_path)
 	$libphp = "$php_path/lib";
 }
 $bindir = "@bindir@";
-$pkgdatadir = "@pkgdatadir@";
+$pkglibdir = "@pkglibdir@";
 $phc_suffix = "@EXEEXT@";
 
 
