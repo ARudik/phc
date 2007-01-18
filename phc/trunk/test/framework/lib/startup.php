@@ -1,6 +1,7 @@
 <?php
 
 require_once ("Console/Getopt.php");
+require_once ("Console/ProgressBar.php");
 
 $cg = new Console_Getopt();
 list ($opts, $arguments) = $cg->getOpt($cg->readPHPArgv(), "lvVshndpi", array ("long", "verbose", "valgrind", "support", "help", "number", "no-delete", "no-progress"));
@@ -17,7 +18,6 @@ $opt_numbered = isset($options{"n"});
 $opt_help = isset($options{"h"});
 $opt_no_delete = (isset($options{"d"})) or $opt_numbered;
 $opt_no_progress_bar = isset($options{"p"});
-$opt_no_progress_bar |= !@include_once("Console/ProgressBar.php");
 $opt_installed = isset($options{"i"});
 
 if ($opt_help)

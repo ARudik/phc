@@ -199,14 +199,13 @@ function is_32_bit()
 	return true;
 }
 
-$pear_text_diff = @include_once("Text/Diff.php");
-$pear_text_diff &= @include_once("Text/Diff/Renderer.php");
-$pear_text_diff &= @include_once("Text/Diff/Renderer/unified.php");
+require_once("Text/Diff.php");
+require_once("Text/Diff/Renderer.php");
+require_once("Text/Diff/Renderer/unified.php");
 function diff ($string1, $string2)
 {
 	global $pear_text_diff;
-	if ((strlen ($string1) > 300 and strlen ($string2) > 300) 
-		or (!$pear_text_diff))
+	if ((strlen ($string1) > 300 and strlen ($string2) > 300))
 	{
 		return "Diffs too long, skipping.\nString1:\n$string1\nString2:\n$string2";
 	}
