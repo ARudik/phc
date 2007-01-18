@@ -476,7 +476,20 @@ src_phc_SOURCES = \
 	src/process_ast/XML_unparser.cpp						\
 	src/process_ast/XML_unparser.h
 
-BUILT_SOURCES = test/framework/lib/autovars.php
+BUILT_SOURCES = \
+	src/generated/ast.cpp									\
+	src/generated/ast.h										\
+	src/generated/cmdline.c									\
+	src/generated/cmdline.h									\
+	src/generated/keywords.c								\
+	src/generated/lex.yy.cc									\
+	src/generated/php_parser.tab.cpp						\
+	src/generated/Tree_transform.cpp						\
+	src/generated/Tree_transform.h						\
+	src/generated/Tree_visitor.cpp						\
+	src/generated/Tree_visitor.h							\
+	test/framework/lib/autovars.php
+
 
 # - The magic to accomplish this is described cryptically in the last few
 #   paragraphs of section 7.3 of the automake manual.
