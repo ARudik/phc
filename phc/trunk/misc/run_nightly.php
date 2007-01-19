@@ -54,7 +54,8 @@ function run_command ($title, $command, $directory = false)
 	$output .= run_command ("Removing old version", "rm -Rf /tmp/phc_testing");
 	mkdir($root) or die ("Mkdir in /tmp/ failing is very unlikely. PANIC");
 
-	$output .= run_command ("Checking out source", "svn export -q /home/pbiggar/phc_work/phc/svn/trunk", $root);
+	$output .= run_command ("Checking out source", "svn export -q /home/pbiggar/phc_work/svn/phc/trunk", $root);
+	$output .= run_command ("Checking out website", "svn export -q /home/pbiggar/phc_work/svn/www", $root);
 	$output .= run_command ("Touch generated", "touch src/generated/*", "$root/trunk");
 	$output .= run_command ("Configure", "./configure --prefix=$root/installed", "$root/trunk");
 	$output .= run_command ("Make", "make", "$root/trunk");
@@ -76,7 +77,7 @@ function run_command ($title, $command, $directory = false)
 	run_command ("Generating docs", "doxygen misc/Doxyfile", "$root/trunk");
 	$doxy_header .= "Generated docs at http://godiva.cs.tcd.ie/~pbiggar/doxy\n";
 	$output .= $doxy_header;
-	if (file_exists ("$root/trunk/doxywarnings"))
+	if (file_exists ("$root/trunk/doxy_warnings"))
 	{
 		$doxy_warnings = join("\n", file("$root/trunk/doxy_warnings")); // read the warnings
 		$output .= $doxy_warnings;
@@ -104,7 +105,7 @@ function run_command ($title, $command, $directory = false)
 	$output = $summary . $output;
 
 	$output = strip_console_codes ($output);
-	#print $output;
+#	print $output;
 
 	// mail the output
 	mail("phc-internals@phpcompiler.org", "Nightly testing", $output);
