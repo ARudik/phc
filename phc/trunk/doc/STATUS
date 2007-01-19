@@ -1,12 +1,12 @@
 -- Aug 3
 
 * Put in a shoutout to Dan as a contributer
-o Include valgrind_suppressions in the test package
+* Include valgrind_suppressions in the test package
 
 -- Aug 2
 
-o add libtool into the mix; make plugins work on cygwin
-o Put smaller news items onto the homepage
+* add libtool into the mix; make plugins work on cygwin
+* Put smaller news items onto the homepage
 
 -- Aug 1
 
@@ -42,7 +42,8 @@ o Find the bug with Boehm's collector
 o We can make our analysis for global variables (to add them to %MAIN%) 
   slightly better by searching for _all_ references to %MAIN%::$.. 
   That would include any "global" statements.
-o Don't install plugins/tools/*
+x Don't install plugins/tools/* - changed our minds about this: purity_check is
+  going 'online' so it's needed for 'make test'
 
 -- July 10
 
@@ -61,10 +62,10 @@ o Don't install plugins/tools/*
 
 -- June 14
 
-o Make tests use --dump-ast-xml instead of --dump-php
-o Refactor regression tests to use common code
+* Make tests use --dump-ast-xml instead of --dump-php
+* Refactor regression tests to use common code
 * Make tests run on cygwin
-o Tests don't run properly with php-cgi. Make autoconf test for php-cli
+* Tests don't run properly with php-cgi. Make autoconf test for php-cli
   --- Cygwin problem? 
   Did it in the test script instead of autoconf
 * Read XML from stdin (look for magic symbols perhaps: <?xml vs <?php or
