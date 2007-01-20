@@ -43,7 +43,7 @@ function run_command ($title, $command, $directory = false)
 		die ("error running command: $command (return $ret_value)\nOutput: $result");
 	}
 
-	return "$header$result\n\ni";
+	return "$header$result\n\n";
 }
 
 
