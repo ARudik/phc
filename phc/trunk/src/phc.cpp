@@ -228,7 +228,7 @@ run_plugins(AST_php_script* php_script)
 	for(unsigned i = 0; i < args_info.run_given; i++)
 	{
 		// Try opening the specified plugin from its default location, 
-		// from the current working directory, and from DATADIR (in that order)
+		// from the current working directory, and from PKGLIBDIR (in that order)
 		lt_dlhandle handle = lt_dlopenext (args_info.run_arg[i]);
 
 		const char* default_err;
@@ -254,9 +254,10 @@ run_plugins(AST_php_script* php_script)
 		{
 			cwd_err = strdup (lt_dlerror ());
 
-			// Try DATADIR
+			// Try installed dir
 			// TODO insecure 
 			strcpy(in_datadir, PKGLIBDIR);
+			strcat(in_datadir, "/");
 			strcat(in_datadir, args_info.run_arg[i]);
 			handle = lt_dlopenext (in_datadir);	
 		}

@@ -73,8 +73,9 @@ am__vpath_adj = case $$p in \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(pkglibdir)" "$(DESTDIR)$(bindir)" \
-	"$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgdatadir)" \
-	"$(DESTDIR)$(strangelibdir)" "$(DESTDIR)$(strangephcdir)" \
+	"$(DESTDIR)$(bindir)" "$(DESTDIR)$(libexecdir)" \
+	"$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(strangelibdir)" \
+	"$(DESTDIR)$(strangephcdir)" \
 	"$(DESTDIR)$(strangeprocessastdir)"
 nobase_pkglibLTLIBRARIES_INSTALL = $(install_sh) -c
 LTLIBRARIES = $(nobase_pkglib_LTLIBRARIES)
@@ -188,7 +189,8 @@ am_src_phc_OBJECTS = getopt1.$(OBJEXT) getopt.$(OBJEXT) \
 src_phc_OBJECTS = $(am_src_phc_OBJECTS)
 am__DEPENDENCIES_1 =
 binSCRIPT_INSTALL = $(INSTALL_SCRIPT)
-SCRIPTS = $(bin_SCRIPTS)
+libexecSCRIPT_INSTALL = $(INSTALL_SCRIPT)
+SCRIPTS = $(bin_SCRIPTS) $(libexec_SCRIPTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I.
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -413,7 +415,8 @@ src_phc_LDFLAGS = -export-dynamic
 src_phc_LDADD = @gc_lib@ $(LIBLTDL)
 src_phc_DEPENDENCIES = $(LIBLTDL)
 bin_SCRIPTS = src/phc_compile_plugin
-pkgdata_DATA = phc-1.0.xsd libtool
+libexec_SCRIPTS = libtool
+pkgdata_DATA = phc-1.0.xsd
 src_phc_SOURCES = \
 	3rdparty/getopt/getopt1.c								\
 	3rdparty/getopt/getopt.c								\
@@ -544,7 +547,7 @@ nobase_pkglib_LTLIBRARIES = plugins/tests/canonical_unparser.la \
 	plugins/tutorials/helloworld.la plugins/tutorials/InsertDB.la \
 	plugins/tutorials/MySQL2DBX.la \
 	plugins/tutorials/show_traversal_order.la
-PLUGIN_LDFLAGS = -module
+PLUGIN_LDFLAGS = -module -avoid-version
 PLUGIN_CXXFLAGS = -Wextra -Wno-unused-parameter
 plugins_tests_canonical_unparser_la_SOURCES = plugins/tests/canonical_unparser.cpp
 plugins_tests_canonical_unparser_la_LDFLAGS = ${PLUGIN_LDFLAGS}
@@ -778,6 +781,25 @@ uninstall-binSCRIPTS:
 	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
 	  echo " rm -f '$(DESTDIR)$(bindir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(bindir)/$$f"; \
+	done
+install-libexecSCRIPTS: $(libexec_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(libexecdir)" || $(mkdir_p) "$(DESTDIR)$(libexecdir)"
+	@list='$(libexec_SCRIPTS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f $$d$$p; then \
+	    f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+	    echo " $(libexecSCRIPT_INSTALL) '$$d$$p' '$(DESTDIR)$(libexecdir)/$$f'"; \
+	    $(libexecSCRIPT_INSTALL) "$$d$$p" "$(DESTDIR)$(libexecdir)/$$f"; \
+	  else :; fi; \
+	done
+
+uninstall-libexecSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libexec_SCRIPTS)'; for p in $$list; do \
+	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+	  echo " rm -f '$(DESTDIR)$(libexecdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(libexecdir)/$$f"; \
 	done
 
 mostlyclean-compile:
@@ -1807,7 +1829,7 @@ all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(DATA) \
 		$(HEADERS) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(pkglibdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(strangelibdir)" "$(DESTDIR)$(strangephcdir)" "$(DESTDIR)$(strangeprocessastdir)"; do \
+	for dir in "$(DESTDIR)$(pkglibdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(strangelibdir)" "$(DESTDIR)$(strangephcdir)" "$(DESTDIR)$(strangeprocessastdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -1866,7 +1888,7 @@ install-data-am: install-pkgdataDATA install-strangelibHEADERS \
 	install-strangephcHEADERS install-strangeprocessastHEADERS
 
 install-exec-am: install-binPROGRAMS install-binSCRIPTS \
-	install-nobase_pkglibLTLIBRARIES
+	install-libexecSCRIPTS install-nobase_pkglibLTLIBRARIES
 
 install-info: install-info-recursive
 
@@ -1895,9 +1917,10 @@ ps: ps-recursive
 ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
-	uninstall-info-am uninstall-nobase_pkglibLTLIBRARIES \
-	uninstall-pkgdataDATA uninstall-strangelibHEADERS \
-	uninstall-strangephcHEADERS uninstall-strangeprocessastHEADERS
+	uninstall-info-am uninstall-libexecSCRIPTS \
+	uninstall-nobase_pkglibLTLIBRARIES uninstall-pkgdataDATA \
+	uninstall-strangelibHEADERS uninstall-strangephcHEADERS \
+	uninstall-strangeprocessastHEADERS
 
 uninstall-info: uninstall-info-recursive
 
@@ -1911,7 +1934,8 @@ uninstall-info: uninstall-info-recursive
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-binPROGRAMS \
 	install-binSCRIPTS install-data install-data-am install-exec \
-	install-exec-am install-info install-info-am install-man \
+	install-exec-am install-info install-info-am \
+	install-libexecSCRIPTS install-man \
 	install-nobase_pkglibLTLIBRARIES install-pkgdataDATA \
 	install-strangelibHEADERS install-strangephcHEADERS \
 	install-strangeprocessastHEADERS install-strip installcheck \
@@ -1921,9 +1945,9 @@ uninstall-info: uninstall-info-recursive
 	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
 	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
 	uninstall-binPROGRAMS uninstall-binSCRIPTS uninstall-info-am \
-	uninstall-nobase_pkglibLTLIBRARIES uninstall-pkgdataDATA \
-	uninstall-strangelibHEADERS uninstall-strangephcHEADERS \
-	uninstall-strangeprocessastHEADERS
+	uninstall-libexecSCRIPTS uninstall-nobase_pkglibLTLIBRARIES \
+	uninstall-pkgdataDATA uninstall-strangelibHEADERS \
+	uninstall-strangephcHEADERS uninstall-strangeprocessastHEADERS
 
 
 # - In order to have separate build directories (aka VPATH), we would prepend
@@ -1967,11 +1991,11 @@ src/generated/php_parser.tab.cpp src/generated/php_parser.tab.hpp: src/generated
 
 # - Without the second \@, autoconf with replace the @CFLAGS\@ etca
 src/phc_compile_plugin: Makefile src/phc_compile_plugin.in
-	sed -e 's,@includedir\@,$(includedir),g; s,@CFLAGS\@,$(CFLAGS),g;s,@LDFLAGS\@,$(LDFLAGS),g; s,@pkgdatadir\@,$(pkgdatadir),g' src/phc_compile_plugin.in > src/phc_compile_plugin
+	sed -e 's,@includedir\@,$(includedir),g; s,@CFLAGS\@,$(CFLAGS),g;s,@LDFLAGS\@,$(LDFLAGS),g; s,@libexecdir\@,$(libexecdir),g; s,@pkglibdir\@,$(pkglibdir),g' src/phc_compile_plugin.in > src/phc_compile_plugin
 	chmod 755 src/phc_compile_plugin
 
 test/framework/lib/autovars.php: Makefile test/framework/lib/autovars.php.in
-	sed -e 's,@valgrind\@,$(valgrind),g; s,@graphviz_gc\@,$(graphviz_gc),g;s,@dot\@,$(dot),g; s,@php\@,$(php),g; s,@CC\@,$(CC),g; s,@diff\@,$(diff),g;s,@php_install_path\@,$(php_install_path),g; s,@bindir\@,$(bindir),g; s,@pkglibdir\@,$(pkglibdir),g; s,@EXEEXT\@,$(EXEEXT),g;' test/framework/lib/autovars.php.in > test/framework/lib/autovars.php
+	sed -e 's,@valgrind\@,$(valgrind),g; s,@graphviz_gc\@,$(graphviz_gc),g;s,@dot\@,$(dot),g; s,@php\@,$(php),g; s,@CC\@,$(CC),g; s,@diff\@,$(diff),g;s,@php_install_path\@,$(php_install_path),g; s,@bindir\@,$(bindir),g; s,@EXEEXT\@,$(EXEEXT),g;' test/framework/lib/autovars.php.in > test/framework/lib/autovars.php
 
 .PHONY: cleanall
 cleanall:

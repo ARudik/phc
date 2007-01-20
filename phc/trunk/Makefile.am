@@ -31,7 +31,8 @@ src_phc_LDADD = @gc_lib@ $(LIBLTDL)
 src_phc_DEPENDENCIES = $(LIBLTDL)
 
 bin_SCRIPTS = src/phc_compile_plugin
-pkgdata_DATA = phc-1.0.xsd libtool
+libexec_SCRIPTS = libtool
+pkgdata_DATA = phc-1.0.xsd
 
 src_phc_SOURCES =												\
 	3rdparty/getopt/getopt1.c								\
@@ -148,7 +149,7 @@ strangelib_HEADERS =		\
 # TODO prepend dist onto those we distribute
 # TODO pkgdata is supposed to be architecture neutral, which plugins are not. Hmmmmm
 nobase_pkglib_LTLIBRARIES = 
-PLUGIN_LDFLAGS = -module
+PLUGIN_LDFLAGS = -module -avoid-version
 PLUGIN_CXXFLAGS = -Wextra -Wno-unused-parameter
 
 nobase_pkglib_LTLIBRARIES += plugins/tests/canonical_unparser.la
@@ -284,11 +285,11 @@ src/generated/php_parser.tab.cpp src/generated/php_parser.tab.hpp: src/generated
 
 # - Without the second \@, autoconf with replace the @CFLAGS\@ etca
 src/phc_compile_plugin: Makefile src/phc_compile_plugin.in
-	sed -e 's,@includedir\@,$(includedir),g; s,@CFLAGS\@,$(CFLAGS),g;s,@LDFLAGS\@,$(LDFLAGS),g; s,@pkgdatadir\@,$(pkgdatadir),g' src/phc_compile_plugin.in > src/phc_compile_plugin
+	sed -e 's,@includedir\@,$(includedir),g; s,@CFLAGS\@,$(CFLAGS),g;s,@LDFLAGS\@,$(LDFLAGS),g; s,@libexecdir\@,$(libexecdir),g; s,@pkglibdir\@,$(pkglibdir),g' src/phc_compile_plugin.in > src/phc_compile_plugin
 	chmod 755 src/phc_compile_plugin
 
 test/framework/lib/autovars.php: Makefile test/framework/lib/autovars.php.in
-	sed -e 's,@valgrind\@,$(valgrind),g; s,@graphviz_gc\@,$(graphviz_gc),g;s,@dot\@,$(dot),g; s,@php\@,$(php),g; s,@CC\@,$(CC),g; s,@diff\@,$(diff),g;s,@php_install_path\@,$(php_install_path),g; s,@bindir\@,$(bindir),g; s,@pkglibdir\@,$(pkglibdir),g; s,@EXEEXT\@,$(EXEEXT),g;' test/framework/lib/autovars.php.in > test/framework/lib/autovars.php
+	sed -e 's,@valgrind\@,$(valgrind),g; s,@graphviz_gc\@,$(graphviz_gc),g;s,@dot\@,$(dot),g; s,@php\@,$(php),g; s,@CC\@,$(CC),g; s,@diff\@,$(diff),g;s,@php_install_path\@,$(php_install_path),g; s,@bindir\@,$(bindir),g; s,@EXEEXT\@,$(EXEEXT),g;' test/framework/lib/autovars.php.in > test/framework/lib/autovars.php
 
 
 .PHONY: cleanall
