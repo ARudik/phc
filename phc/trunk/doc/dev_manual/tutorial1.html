@@ -47,13 +47,13 @@
 			solution to the problem. You can run these plugins by running </p>
 
 <pre>
-phc --run plugins/tutorials/count_function_calls_difficult.so hello.php
+phc --run plugins/tutorials/count_function_calls_difficult.la hello.php
 </pre>
 			
 			or
 
 <pre>
-phc --run plugins/tutorials/count_function_calls_easy.so hello.php
+phc --run plugins/tutorials/count_function_calls_easy.la hello.php
 </pre>
 
 			<h2>The Grammar (Revisited)</h2>
@@ -256,7 +256,7 @@ eval_expr ::= expr ;
 			<h2>Counting All Statements</h2> 
 
 			<p> (The plugin explained in this section is available as
-			<tt>plugins/tutorials/count_statements.so</tt> in the <span
+			<tt>plugins/tutorials/count_statements.la</tt> in the <span
 			class="phc">phc</span> distribution.)  </p>
 
 			<p> Suppose we wanted to count all statements, rather than just
@@ -311,7 +311,7 @@ node ::= ... | node | ... ;
 			listed above. So, implementing a more specific visitor
 			(<code>pre_foo</code>) does not inhibit the more general method
 			(<code>pre_bar</code>) from being invoked. You can run the
-			<tt>plugins/tutorials/show_traversal_order.so</tt> from the
+			<tt>plugins/tutorials/show_traversal_order.la</tt> from the
 			<span class="phc">phc</span> distribution to see this in action.
 			</p>
 

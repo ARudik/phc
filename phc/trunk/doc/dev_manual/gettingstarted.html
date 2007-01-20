@@ -55,16 +55,16 @@
 			signature. To compile the plugin, run </p>
 
 <pre>
-~/myplugins$ phc_compile_plugin helloworld.cpp -o helloworld.so
+~/myplugins$ phc_compile_plugin helloworld.cpp
 </pre>
 
 			<p> (<code>phc_compile_plugin</code> is a small shellscript that makes
-			the task of compiling plugins easier; all it does is call
-			<code>g++</code> with a couple of options; if you're curious, you can
-			open it in any text editor.) Finally, run the plugin using </p>
+			the task of compiling plugins easier; it calls <code>g++</code>
+			in a platform independent way; if you're curious, you can open it in
+			any text editor.) Finally, run the plugin using </p>
 
 <pre>
-~/myplugins$ phc --run helloworld.so sometest.php
+~/myplugins$ phc --run helloworld.la sometest.php
 </pre>
 
 			<p> (You need to pass in an input script to <code>phc</code> even
@@ -261,13 +261,13 @@ php_script ::= interface_def* class_def+ ;
 		</p>
 
 <pre>
-~/myplugins$ phc_compile_plugin -o count_classes.so count_classes.cpp
+~/myplugins$ phc_compile_plugin count_classes.cpp
 </pre>
 
 		<p> And run: </p>
 
 <pre>
-./phc --run count_classes.so hello.php
+./phc --run count_classes.la hello.php
 </pre>
 
 		<h2>Actually...</h2>

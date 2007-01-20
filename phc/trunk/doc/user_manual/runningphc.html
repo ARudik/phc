@@ -8,7 +8,7 @@
 	<body>
 		<table width="796" align="center" cellspacing="0" cellpadding="2" style="border: #8a7640 solid 1px;">
 		<tr>
-			<td height="149" style="background: url(../img/header.png);">&nbsp;</td>
+			<td height="149" style="background: url(../../img/header.png);">&nbsp;</td>
 		</tr>
 		<tr>
 			<td style="color: white; background-color: #8a7640;">
@@ -33,13 +33,20 @@
 			<p> You should see something like </p>
 
 <pre>
-phc 0.1.6
+phc VERSION
 
 Usage: phc [OPTIONS]... [FILES]...
 
   -h, --help                   Print help and exit
       --full-help              Print help, including hidden options, and exit
   -V, --version                Print version and exit
+  -c, --compile                Compile  (default=off)
+  -C, --c-option=STRING        Pass option to the C compile (e.g., -C-g; can be 
+                                 specified multiple times)
+      --extension=NAME         Generate a PHP extension called NAME instead of 
+                                 a standalone application
+      --run=STRING             Run the specified plugin (may be specified 
+                                 multiple times)
       --dump-php               Dump PHP code back immediately after parsing to 
                                  standard output (pretty printing)  
                                  (default=off)
@@ -47,11 +54,14 @@ Usage: phc [OPTIONS]... [FILES]...
                                  (default=off)
       --dump-ast-xml           Dump the AST from the source in XML format  
                                  (default=off)
+      --read-ast-xml           Assume the input is a phc AST in XML format  
+                                 (default=off)
       --compile-time-includes  When possible, replace include() statements with 
                                  the parsed contents of the specified file  
                                  (default=off)
       --tab=STRING             String to use for tabs while unparsing  
                                  (default=`     ')
+  -v, --verbose                Verbose output  (default=off)
 </pre>
 
 			<p> (the exact output will depend on the version of <span
@@ -84,11 +94,11 @@ Usage: phc [OPTIONS]... [FILES]...
 		
 			<p> <span class="phc">phc</span> represents PHP scripts
 			internally as trees (this is further explained in <a
-			href="tutorial1.html">Tutorial 1</a>). If you have a DOT viewer
-			installed on your system (for example, <a
-			href="http://www.graphviz.org">graphviz</a>), you can view this
-			tree graphically. First, ask <span class="phc">phc</span> to output
-			the tree in DOT format: </p>
+			href="../dev_manual/tutorial1.html">Tutorial 1</a>). If you have a DOT
+			viewer installed on your system (for example, <a
+			href="http://www.graphviz.org">graphviz</a>), you can view this tree
+			graphically. First, ask <span class="phc">phc</span> to output the
+			tree in DOT format: </p>
 
 <pre>
 ./phc --dump-ast-dot helloworld.php &gt; helloworld.dot
@@ -134,15 +144,15 @@ dotty helloworld.dot
 
 			<p> <span class="phc">phc</span> now has initial support for
 			compile-time processing of PHP's <code>include</code> built-in.
-			Enabling this feature inserts the included statements in the AST in the
-			place of the <code>include</code> statement. Included functions become
-			part of the
-			%MAIN% class, and included classes become part of the script.  In the
-			event that <span class="phc">phc</span> is not able to process the
-			<code>include</code> statement (for example, if it would require
-			using the <code>remote</code> feature of <code>include</code>), a
-			warning is issued, and the <code>include</code> statement is left in
-			place. To enable this support, run </p>
+			Enabling this feature inserts the included statements in the AST in
+			the place of the <code>include</code> statement. Included functions
+			become part of the %MAIN% class, and included classes become part of
+			the script.  In the event that <span class="phc">phc</span> is not
+			able to process the <code>include</code> statement (for example, if it
+			would require using the <code>remote</code> feature of
+			<code>include</code>), a warning is issued, and the
+			<code>include</code> statement is left in place. To enable this
+			support, run </p>
 
 <pre>
 ./phc --compile-time-includes script_with_includes.php
