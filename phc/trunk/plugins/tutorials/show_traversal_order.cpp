@@ -1,5 +1,5 @@
-#include <phc/Tree_visitor.h>
-#include <phc/lib/demangle.h>
+#include "generated/Tree_visitor.h"
+#include "lib/demangle.h"
 
 class Show_traversal_order : public Tree_visitor
 {

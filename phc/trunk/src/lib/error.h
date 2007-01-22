@@ -9,7 +9,7 @@
 #define PHC_ERROR
 
 #include <stdarg.h>
-#include <phc/lib/String.h>
+#include "lib/String.h"
 
 // Messages for these errors are defined in error.cpp
 

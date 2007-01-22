@@ -14,7 +14,7 @@
 #ifndef PHC_VISIT_EVERYTHING
 #define PHC_VISIT_EVERYTHING
 
-#include <phc/Tree_visitor.h>
+#include "generated/Tree_visitor.h"
 
 class Visit_everything : public virtual Tree_visitor
 {

@@ -10,11 +10,11 @@
 #include <iostream>
 #include <fstream>
 #include "Process_includes.h"
-#include <phc/Tree_visitor.h>
-#include <phc/ast.h>
-#include <phc/lib/error.h>
-#include <phc/parse.h>
-#include <phc/process_ast/PHP_unparser.h>
+#include "generated/Tree_visitor.h"
+#include "generated/ast.h"
+#include "lib/error.h"
+#include "parsing/parse.h"
+#include "process_ast/PHP_unparser.h"
 #include "generated/cmdline.h"
 
 extern struct gengetopt_args_info args_info;

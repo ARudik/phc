@@ -780,7 +780,7 @@ goto find_rule; \
 #line 14 "src/generated_src/php_scanner.lex"
 	#include <assert.h>
 	#include <string.h>
-	#include <phc/lib/Integer.h>
+	#include "lib/Integer.h"
 	#include "generated/php_parser.tab.hpp"
 	#include "generated/cmdline.h"
 	#include "parsing/PHP_context.h"
@@ -2228,7 +2228,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			yyg->yy_n_chars, num_to_read );
+			yyg->yy_n_chars, (size_t) num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = yyg->yy_n_chars;
 		}

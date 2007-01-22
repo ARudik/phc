@@ -1,6 +1,6 @@
 #include <iostream>
-#include <phc/Tree_transform.h>
-#include <phc/parse.h>
+#include "generated/Tree_transform.h"
+#include "parsing/parse.h"
 
 class Expand_includes : public Tree_transform
 {

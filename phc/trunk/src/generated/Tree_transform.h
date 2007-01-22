@@ -9,13 +9,13 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
-#include <phc/lib/error.h>
-#include <phc/lib/Object.h>
-#include <phc/lib/List.h>
-#include <phc/lib/String.h>
-#include <phc/lib/Boolean.h>
-#include <phc/lib/Integer.h>
-#include <phc/lib/AttrMap.h>
+#include "lib/error.h"
+#include "lib/Object.h"
+#include "lib/List.h"
+#include "lib/String.h"
+#include "lib/Boolean.h"
+#include "lib/Integer.h"
+#include "lib/AttrMap.h"
 
 class Tree_transform
 {

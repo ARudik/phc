@@ -9,7 +9,7 @@
 #ifndef PHC_VARIABLE_TARGETS
 #define PHC_VARIABLE_TARGETS
 
-#include <phc/Tree_visitor.h>
+#include "generated/Tree_visitor.h"
 #include <set>
 
 class Variable_targets : public Tree_visitor

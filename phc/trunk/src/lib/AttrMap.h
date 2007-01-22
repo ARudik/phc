@@ -11,10 +11,10 @@
 using namespace std;
 
 #include <map>
-#include <phc/lib/Object.h>
-#include <phc/lib/Boolean.h>
-#include <phc/lib/Integer.h>
-#include <phc/lib/String.h>
+#include "lib/Object.h"
+#include "lib/Boolean.h"
+#include "lib/Integer.h"
+#include "lib/String.h"
 
 class AttrMap : public map<string, Object*>, virtual public Object
 {

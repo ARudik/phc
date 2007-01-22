@@ -6,7 +6,7 @@
  */
 
 #include <iostream>
-#include <phc/lib/demangle.h>
+#include "lib/demangle.h"
 #include "DOT_unparser.h"
 #include "generated/cmdline.h"
 

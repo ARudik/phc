@@ -6,10 +6,10 @@
 #ifndef PHC_XML_PARSER_H
 #define PHC_XML_PARSER_H
 
-#include <phc/config.h>
+#include "config.h"
 
 #ifdef HAVE_XERCES
-#include <phc/ast.h>
+#include "generated/ast.h"
 AST_php_script* parse_ast_xml_file(String* filename);
 AST_php_script* parse_ast_xml_buffer(String* buffer);
 AST_php_script* parse_ast_xml_stdin();

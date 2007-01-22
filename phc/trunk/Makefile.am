@@ -112,39 +112,40 @@ BUILT_SOURCES = \
 
 # - The magic to accomplish this is described cryptically in the last few
 #   paragraphs of section 7.3 of the automake manual.
-# - I think it best that these use the symlinks, rather than their targets,
-#   since that helps ensure the installed tree is the same as the source tree.
 # - We use the 'stange' prefix because the macro expansion is unpredictable,
 #   and using 'phc' or 'lib' or 'processast' might end up with strange results.
+# - Stuff in lib/ is installed in /usr/include/phc/lib, stuff in process_ast/
+#   is installed in /usr/include/phc/process_ast, and some random stuff is
+#   installed in /usr/include/phc (ast.h, parse.h, Tree_transform.h and 
+#   Tree_visitor.h)
 strangephcdir = $(pkgincludedir)
-strangephc_HEADERS =		\
-	phc/ast.h				\
-	phc/config.h			\
-	phc/parse.h				\
-	phc/Tree_transform.h	\
-	phc/Tree_visitor.h
+strangephc_HEADERS =						\
+	src/generated/ast.h					\
+	config.h									\
+	src/parsing/parse.h					\
+	src/generated/Tree_transform.h	\
+	src/generated/Tree_visitor.h
 
 strangeprocessastdir = $(pkgincludedir)/process_ast
 strangeprocessast_HEADERS =					\
-	phc/process_ast/DOT_unparser.h			\
-	phc/process_ast/PHP_unparser.h			\
-	phc/process_ast/Process_includes.h		\
-	phc/process_ast/Remove_concat_null.h	\
-	phc/process_ast/Visit_everything.h		\
-	phc/process_ast/XML_unparser.h
+	src/process_ast/DOT_unparser.h			\
+	src/process_ast/PHP_unparser.h			\
+	src/process_ast/Process_includes.h		\
+	src/process_ast/Remove_concat_null.h	\
+	src/process_ast/Visit_everything.h		\
+	src/process_ast/XML_unparser.h
 
 strangelibdir = $(pkgincludedir)/lib
 strangelib_HEADERS =		\
-	phc/lib/AttrMap.h		\
-	phc/lib/base64.h		\
-	phc/lib/Boolean.h		\
-	phc/lib/demangle.h	\
-	phc/lib/error.h		\
-	phc/lib/Integer.h		\
-	phc/lib/List.h			\
-	phc/lib/Object.h		\
-	phc/lib/String.h
-
+	src/lib/AttrMap.h		\
+	src/lib/base64.h		\
+	src/lib/Boolean.h		\
+	src/lib/demangle.h	\
+	src/lib/error.h		\
+	src/lib/Integer.h		\
+	src/lib/List.h			\
+	src/lib/Object.h		\
+	src/lib/String.h
 
 # TODO prepend dist onto those we distribute
 # TODO pkgdata is supposed to be architecture neutral, which plugins are not. Hmmmmm

@@ -5,8 +5,8 @@
 
 #include <iostream>
 #include "XML_unparser.h"
-#include <phc/lib/base64.h>
-#include <phc/lib/demangle.h>
+#include "lib/base64.h"
+#include "lib/demangle.h"
 #include "generated/cmdline.h"
 
 using namespace std;

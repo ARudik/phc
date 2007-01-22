@@ -6,7 +6,7 @@
  */
 
 #include "Collect_all_pointers.h"
-#include <phc/process_ast/PHP_unparser.h>
+#include "process_ast/PHP_unparser.h"
 
 extern "C" void process_ast(AST_php_script* orig_script)
 {

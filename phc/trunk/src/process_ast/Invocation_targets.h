@@ -8,7 +8,7 @@
 #ifndef PHC_INVOCATION_TARGETS
 #define PHC_INVOCATION_TARGETS
 
-#include <phc/Tree_visitor.h>
+#include "generated/Tree_visitor.h"
 
 class Collect_method_names : public Tree_visitor
 {

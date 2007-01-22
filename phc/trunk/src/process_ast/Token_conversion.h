@@ -9,7 +9,7 @@
 #ifndef PHC_TOKEN_CONVERSION
 #define PHC_TOKEN_CONVERSION
 
-#include <phc/Tree_transform.h>
+#include "generated/Tree_transform.h"
 
 class Token_conversion : public Tree_transform
 {

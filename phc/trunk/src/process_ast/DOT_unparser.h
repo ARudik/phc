@@ -8,7 +8,7 @@
 #ifndef PHC_DOT_UNPARSER
 #define PHC_DOT_UNPARSER
 
-#include <phc/process_ast/Visit_everything.h>
+#include "process_ast/Visit_everything.h"
 #include <stack>
 #include <map>
 

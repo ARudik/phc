@@ -11,7 +11,7 @@
 // Hack in the C++ language to distinguish between pre and post ops
 #define POST_INCREMENT int 
 
-#include <phc/lib/Object.h>
+#include "lib/Object.h"
 
 class Integer : virtual public Object
 {

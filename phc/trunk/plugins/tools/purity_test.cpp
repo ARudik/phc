@@ -1,7 +1,7 @@
-#include <phc/Tree_visitor.h>
-#include <phc/process_ast/XML_unparser.h>
-#include <phc/process_ast/PHP_unparser.h>
-#include <phc/lib/List.h>
+#include "generated/Tree_visitor.h"
+#include "process_ast/XML_unparser.h"
+#include "process_ast/PHP_unparser.h"
+#include "lib/List.h"
 
 
 // searhc for scripts that are "pure"; ie have no side effects

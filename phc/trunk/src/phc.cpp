@@ -17,11 +17,11 @@
 #include "process_ast/process_ast.h"
 #include "codegen/Generate_C.h"
 #include "codegen/Prep.h"
-#include <phc/process_ast/PHP_unparser.h>
-#include <phc/process_ast/XML_unparser.h>
-#include <phc/process_ast/DOT_unparser.h>
-#include <phc/ast.h>
-#include <phc/parse.h>
+#include "process_ast/PHP_unparser.h"
+#include "process_ast/XML_unparser.h"
+#include "process_ast/DOT_unparser.h"
+#include "generated/ast.h"
+#include "parsing/parse.h"
 
 using namespace std;
 

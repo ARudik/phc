@@ -10,7 +10,7 @@
 #ifndef PHC_REMOVE_PARSER_TEMPORARIES
 #define PHC_REMOVE_PARSER_TEMPORARIES
 
-#include <phc/Tree_visitor.h>
+#include "generated/Tree_visitor.h"
 
 class Remove_parser_temporaries : public Tree_visitor
 {

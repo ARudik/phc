@@ -9,8 +9,8 @@
  */
 
 #include "Generate_C.h"
-#include "phc/process_ast/XML_unparser.h"
-#include "phc/lib/List.h"
+#include "process_ast/XML_unparser.h"
+#include "lib/List.h"
 
 /*
  * Variabes set by the code generator

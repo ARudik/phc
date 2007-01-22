@@ -1,4 +1,4 @@
-#include <phc/Tree_visitor.h>
+#include "generated/Tree_visitor.h"
 
 class Count_function_calls : public Tree_visitor
 {

@@ -8,9 +8,9 @@
 #ifndef PHC_PHP_CONTEXT
 #define PHC_PHP_CONTEXT
 
-#include <phc/ast.h>
-#include <phc/lib/String.h>
-#include <phc/lib/List.h>
+#include "generated/ast.h"
+#include "lib/String.h"
+#include "lib/List.h"
 
 class PHP_context
 {

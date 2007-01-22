@@ -6,7 +6,7 @@
 #ifndef PHC_XML_UNPARSER
 #define PHC_XML_UNPARSER
 
-#include <phc/process_ast/Visit_everything.h>
+#include "process_ast/Visit_everything.h"
 
 class XML_unparser : public Visit_everything 
 {

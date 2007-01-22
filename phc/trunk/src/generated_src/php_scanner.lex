@@ -13,7 +13,7 @@
 %{
 	#include <assert.h>
 	#include <string.h>
-	#include <phc/lib/Integer.h>
+	#include "lib/Integer.h"
 	#include "generated/php_parser.tab.hpp"
 	#include "generated/cmdline.h"
 	#include "parsing/PHP_context.h"

@@ -4,7 +4,7 @@
  * Base64 encoder/decoder. See RFC2045.
  */
 
-#include <phc/lib/String.h>
+#include "lib/String.h"
 #include <iostream>
 #include <sstream>
 

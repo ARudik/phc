@@ -10,7 +10,7 @@
 
 #include <algorithm>
 #include <set>
-#include <phc/Tree_visitor.h>
+#include "generated/Tree_visitor.h"
 
 class Collect_all_pointers : virtual public Tree_visitor 
 {

@@ -8,11 +8,11 @@
 %{
 	#include <assert.h>
 	#include <typeinfo>
-	#include <phc/ast.h>
+	#include "generated/ast.h"
 	#include "generated/cmdline.h"
-	#include <phc/lib/Integer.h>
-	#include <phc/lib/String.h>
-	#include <phc/lib/error.h>
+	#include "lib/Integer.h"
+	#include "lib/String.h"
+	#include "lib/error.h"
 
 	#define YYERROR_VERBOSE
 	#define YYPARSE_PARAM context

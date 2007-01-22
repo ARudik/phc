@@ -1,4 +1,4 @@
-#include <phc/ast.h>
+#include "generated/ast.h"
 #include <iostream>
 
 using namespace std;

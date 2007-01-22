@@ -6,7 +6,7 @@
  * done on an unmodified tree.
  */
 
-#include <phc/Tree_visitor.h>
+#include "generated/Tree_visitor.h"
 
 class Test_pre_vs_post_count : public Tree_visitor
 {

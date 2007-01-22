@@ -8,7 +8,7 @@
 #ifndef PHC_OBJECT
 #define PHC_OBJECT
 
-#include <phc/config.h>
+#include "config.h"
 #include <assert.h>
 
 #ifndef NULL

@@ -9,7 +9,7 @@
 #include <limits.h>
 #include <errno.h>
 #include "Token_conversion.h"
-#include <phc/lib/error.h>
+#include "lib/error.h"
 
 /*
  * When we parse, values such as ints, strings, floats, bools etc, used to be

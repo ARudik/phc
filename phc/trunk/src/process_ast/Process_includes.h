@@ -8,7 +8,7 @@
 #ifndef PHC_PROCESS_INCLUDES
 #define PHC_PROCESS_INCLUDES
 
-#include <phc/Tree_transform.h>
+#include "generated/Tree_transform.h"
 
 class Process_includes : public Tree_transform
 {

@@ -1,4 +1,4 @@
-#include <phc/Tree_visitor.h>
+#include "generated/Tree_visitor.h"
 
 class MySQL2DBX : public Tree_visitor
 {

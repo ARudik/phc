@@ -6,9 +6,9 @@
  */
 
 #include <iostream>
-#include <phc/ast.h>
-#include <phc/config.h>
-#include <phc/process_ast/XML_unparser.h>
+#include "generated/ast.h"
+#include "config.h"
+#include "process_ast/XML_unparser.h"
 #include <parsing/XML_parser.h> 
 
 using namespace std;

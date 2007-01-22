@@ -8,7 +8,7 @@
 #ifndef PHC_DEMANGLE
 #define PHC_DEMANGLE
 
-#include <phc/lib/Object.h>
+#include "lib/Object.h"
 const char* demangle(Object* obj);
 
 #endif // PHC_DEMANGLE

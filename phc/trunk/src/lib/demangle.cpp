@@ -7,7 +7,7 @@
 
 #include <typeinfo>
 #include <cxxabi.h>
-#include <phc/lib/demangle.h>
+#include "lib/demangle.h"
 
 const char* demangle(Object* obj)
 {

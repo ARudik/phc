@@ -5,8 +5,8 @@
  * Compare the semantic value of tokens against their source representation
  */
 
-#include <phc/Tree_visitor.h>
-#include <phc/process_ast/PHP_unparser.h>
+#include "generated/Tree_visitor.h"
+#include "process_ast/PHP_unparser.h"
 
 class Print_line_numbers : public Tree_visitor
 {

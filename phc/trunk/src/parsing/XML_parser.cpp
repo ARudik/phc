@@ -16,9 +16,9 @@
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/framework/StdInInputSource.hpp>
 #include <stack>
-#include <phc/lib/base64.h>
-#include <phc/lib/error.h>
-#include <phc/lib/AttrMap.h>
+#include "lib/base64.h"
+#include "lib/error.h"
+#include "lib/AttrMap.h"
 
 #include "generated/cmdline.h"
 extern struct gengetopt_args_info args_info;

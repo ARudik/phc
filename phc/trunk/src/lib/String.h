@@ -9,7 +9,7 @@
 #define PHC_STRING
 
 #include <string>
-#include <phc/lib/Object.h>
+#include "lib/Object.h"
 
 using namespace std;
 

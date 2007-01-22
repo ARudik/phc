@@ -8,7 +8,7 @@
 #ifndef PHC_PREP_H
 #define PHC_PREP_H
 
-#include <phc/Tree_transform.h>
+#include "generated/Tree_transform.h"
 
 class Prep : public Tree_transform
 {
