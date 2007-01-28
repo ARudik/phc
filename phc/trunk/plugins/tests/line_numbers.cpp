@@ -2,7 +2,7 @@
  * phc -- the open source PHP compiler
  * See license/README.license for licensing information
  *
- * Compare the semantic value of tokens against their source representation
+ * Printout all the tokens with their line numbers.
  */
 
 #include "generated/Tree_visitor.h"
@@ -142,15 +142,66 @@ public:
 		cout << *in->value << ":" << in->get_line_number() << delimiter;
 	}
 
-	// this here is a special case, since the PHP-unparser does funkyness, and
-	// it's difficult to undo it using the test script. Solution, use the
-	// PHP_unparser
-	void pre_literal(AST_literal* in)
+	void pre_string(Token_string* in)
 	{
-		in->visit(new PHP_unparser());
+		string::iterator i;
+		/* We cant use the PHP_unparser here, since that adds "'"s in
+		 * interpolated strings. All the code is taken from PHP_unparser, and
+		 * could be refactored at a later date. */
+		String *s = in->get_source_rep(); // deals with the __FILE__ problem.
+		for(i = s->begin(); i != s->end(); i++)
+		{
+			switch(*i)
+			{
+				case '\n':
+					cout << "\\n";
+					break;
+				case '\r':
+					cout << "\\r";
+					break;
+				case '\t':
+					cout << "\\t";
+					break;
+				case '\\':
+				case '$':
+				case '"':
+					cout << "\\" << *i;
+					break;
+				default:
+					if(*i < 32 || *i == 127)
+					{
+						cout << "\\x" << setw(2) <<
+							setfill('0') << hex << uppercase << (unsigned long int)(unsigned char)*i;
+						cout << resetiosflags(cout.flags());
+					}
+					else
+						cout << *i;
+					break;
+			}
+		}
 		cout << ":" << in->get_line_number() << delimiter;
-		read = false;
 	}
+
+	void pre_int (Token_int* in)
+	{
+		cout << *in->get_source_rep() << ":" << in->get_line_number() << delimiter;
+	}
+
+	void pre_real (Token_real* in)
+	{
+		cout << *in->get_source_rep() << ":" << in->get_line_number() << delimiter;
+	}
+
+	void pre_bool (Token_bool* in)
+	{
+		cout << *in->get_source_rep() << ":" << in->get_line_number() << delimiter;
+	}
+
+	void pre_null (Token_null* in)
+	{
+		cout << *in->get_source_rep() << ":" << in->get_line_number() << delimiter;
+	}
+
 
 
 };

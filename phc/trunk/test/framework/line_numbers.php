@@ -13,17 +13,11 @@ class LineNumbersTest extends Test
 		return get_non_erroneous_scripts( );
 	}
 
-	function get_name ()
-	{
-		return "Confirm line numbers";
-	}
-
 	function run_test ($subject)
 	{
 		global $phc;
 
 		//print "testing script $subject\n";
-		$script_name = adjusted_name($subject);
 		$command = "$phc --run plugins/tests/line_numbers.la $subject 2>&1";
 		list ($output, $return_value) = complete_exec($command);
 
@@ -52,7 +46,7 @@ class LineNumbersTest extends Test
 			{
 				if ($line == "") continue; # skip blank lines
 
-					$match = preg_match("/^(.*):(\d+)$/ms", $line, $matches);
+				$match = preg_match("/^(.*):(\d+)$/ms", $line, $matches);
 				$token = $matches[1];
 				$line_number = $matches[2];
 				//print "trying to match '$line'\n";
@@ -68,7 +62,16 @@ class LineNumbersTest extends Test
 				}
 
 				// get the line from the file
-				$actual_line = $contents[$line_number-1]; # arrays index from 0, but phc uses 1
+				if (count($contents) <= $line_number-1)
+				{
+					$file_size = count ($contents);
+					$error = "Expected (line $line_number): '$token'\nOnly $file_size lines\n";
+					$test_output .= $error;
+					$ok = false;
+				}
+				else
+				{
+					$actual_line = $contents[$line_number-1]; # arrays index from 0, but phc uses 1
 
 					if (@strpos($actual_line, $token) !== False)
 					{
@@ -81,10 +84,11 @@ class LineNumbersTest extends Test
 						$test_output .= $error;
 						$ok = false;
 					}
+				}
 			}
 
-			if ($ok) $this->mark_success ();
-			else $this->mark_failure ($script_name, $command, 0, $test_output);
+			if ($ok) $this->mark_success ($subject);
+			else $this->mark_failure ($subject, $command, 0, $test_output);
 		}
 	}
 }
