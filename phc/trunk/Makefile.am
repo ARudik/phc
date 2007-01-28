@@ -148,7 +148,6 @@ strangelib_HEADERS =		\
 	src/lib/String.h
 
 # TODO prepend dist onto those we distribute
-# TODO pkgdata is supposed to be architecture neutral, which plugins are not. Hmmmmm
 nobase_pkglib_LTLIBRARIES = 
 PLUGIN_LDFLAGS = -module -avoid-version
 PLUGIN_CXXFLAGS = -Wextra -Wno-unused-parameter
@@ -284,7 +283,7 @@ src/generated/lex.yy.cc: src/generated_src/php_scanner.lex
 src/generated/php_parser.tab.cpp src/generated/php_parser.tab.hpp: src/generated_src/php_parser.ypp
 	@bison@ -o src/generated/php_parser.tab.cpp -d src/generated_src/php_parser.ypp
 
-# - Without the second \@, autoconf with replace the @CFLAGS\@ etca
+# - Without the second \@, autoconf with replace the @CFLAGS\@ etc
 src/phc_compile_plugin: Makefile src/phc_compile_plugin.in
 	sed -e 's,@includedir\@,$(includedir),g; s,@CFLAGS\@,$(CFLAGS),g;s,@LDFLAGS\@,$(LDFLAGS),g; s,@libexecdir\@,$(libexecdir),g; s,@pkglibdir\@,$(pkglibdir),g' src/phc_compile_plugin.in > src/phc_compile_plugin
 	chmod 755 src/phc_compile_plugin
@@ -293,24 +292,35 @@ test/framework/lib/autovars.php: Makefile test/framework/lib/autovars.php.in
 	sed -e 's,@valgrind\@,$(valgrind),g; s,@graphviz_gc\@,$(graphviz_gc),g;s,@dot\@,$(dot),g; s,@php\@,$(php),g; s,@CC\@,$(CC),g; s,@diff\@,$(diff),g;s,@php_install_path\@,$(php_install_path),g; s,@bindir\@,$(bindir),g; s,@EXEEXT\@,$(EXEEXT),g;' test/framework/lib/autovars.php.in > test/framework/lib/autovars.php
 
 
-.PHONY: cleanall
-cleanall:
-	rm -f aclocal.m4
-	rm -fr autom4te.cache
-	rm -f config.h
-	rm -f config.h.in~
-	rm -f config.log
-	rm -f config.status
-	rm -f configure
-	rm -f depcomp
-	rm -f install-sh
-	rm -f Makefile
-	rm -f Makefile.in
-	rm -f missing
-	rm -f README.TreeTransform
-	rm -f stamp-h1
-	rm -fr .deps
-	rm -f src/generated/*
+## Clean files
+
+# Files can be specified by the variables. Directories must be removed using rules.
+# These comments are copied from automake manual, section 13.
+# Files built using generated_src are in maintainer-clean.
+
+# - If make built it, and it is commonly something that one would want to
+#   rebuild (for instance, a .o file), then mostlyclean should delete it.
+MOSTLYCLEANFILES =
+
+# - Otherwise, if make built it, then clean should delete it.
+CLEANFILES =  src/phc_compile_plugin test/framework/lib/autovars.php
+# Just delete the contents - the directory is in svn
+clean-local:
+	rm -rf test/logs/* 
+
+# - If configure built it, then distclean should delete it.
+DISTCLEANFILES =
+distclean-local:
+	rm -rf autom4te.cache
+
+# - If the maintainer built it (for instance, a .info file), then
+#   maintainer-clean should delete it. However maintainer-clean should not
+#   delete anything that needs to exist in order to run ./configure && make. 
+MAINTAINERCLEANFILES = Makefile.in src/generated/README.TreeTransform
+# Just delete the contents - the directory is in svn
+maintainerclean-local:
+	rm -rf src/generated/*
+
 
 ## Run the tests
 check-local: test
@@ -323,14 +333,14 @@ test: all test/framework/lib/autovars.php
 		else echo PHP support required for test; \
 	fi
 
-installtest: all test/framework/lib/autovars.php install
+installtest: install test/framework/lib/autovars.php
 	@if [ -n "@php@" ]; \
 		then echo @php@ -Cq test/framework/driver.php -i; \
 		@php@ -Cq test/framework/driver.php -i;  \
 		else echo PHP support required for test; \
 	fi
 
-long-test: check-local
+long-test: all test/framework/lib/autovars.php
 	@if [ -n "@php@" ]; \
 		then echo @php@ -Cq test/framework/driver.php -l; \
 		@php@ -Cq test/framework/driver.php -l; \
