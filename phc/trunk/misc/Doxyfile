@@ -84,7 +84,6 @@ WARN_LOGFILE           = /tmp/phc_testing/trunk/doxy_warnings
 #---------------------------------------------------------------------------
 INPUT                  = /tmp/phc_testing/trunk/src/ \
                          /tmp/phc_testing/trunk/plugins/ \
-                         /tmp/phc_testing/trunk/phc/ \
                          /tmp/phc_testing/trunk/test/framework/
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -129,10 +128,9 @@ FILE_PATTERNS          = *.c \
                          *.PY
 RECURSIVE              = YES
 EXCLUDE                = /tmp/phc_testing/trunk/src/3rdparty/ \
-                         /tmp/phc_testing/trunk/src/build/ \
-                         /tmp/phc_testing/trunk/www/ \
-                         /tmp/phc_testing/trunk/test/subjects/ \
-                         /tmp/phc_testing/trunk/test/support_files/
+                         /tmp/phc_testing/trunk/doc/ \
+                         /tmp/phc_testing/trunk/test/support_files/ \
+                         /tmp/phc_testing/trunk/misc/
 EXCLUDE_SYMLINKS       = YES
 EXCLUDE_PATTERNS       = 
 EXAMPLE_PATH           = 
