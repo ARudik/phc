@@ -24,7 +24,7 @@ abstract class SupportFileTest extends Test
 		{
 			if (!$this->check_test_prerequisites ($subject))
 			{
-				$this->mark_skipped ($subject);
+				$this->mark_skipped ($subject, "Test prerequisites failed");
 			}
 			else
 			{

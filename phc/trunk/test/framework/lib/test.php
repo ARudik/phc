@@ -90,17 +90,20 @@ abstract class Test
 
 		if (!$this->check_prerequisites ())
 		{
-			$this->mark_skipped ("All");
+			$this->mark_skipped ("All", "Test prerequisties failed");
 			$this->finish_test ();
 			return false;
 		}
 
 		foreach ($files as $subject)
 		{
-			if (!$this->check_test_prerequisites ($subject)
-				or $this->check_exception ($subject))
+			if (!$this->check_test_prerequisites ($subject))
 			{
-				$this->mark_skipped ($subject);
+				$this->mark_skipped ($subject, "Individual prerequsite failed");
+			}
+			elseif ($this->check_exception ($subject))
+			{
+				$this->mark_skipped ($subject, "Test excepted");
 			}
 			else
 			{
@@ -205,7 +208,7 @@ abstract class Test
 		$this->update_count ();
 	}
 
-	function mark_skipped ($subject)
+	function mark_skipped ($subject, $reason)
 	{
 		if ($subject == "All")
 		{
@@ -217,7 +220,7 @@ abstract class Test
 			$this->skipped++;
 			$this->total++;
 		}
-		global_marked_skipped ($this->get_name(), $subject);
+		note_in_skipped_file ($this->get_name(), $subject, $reason);
 		$this->update_count ();
 	}
 

@@ -133,22 +133,24 @@ function phc_error_handler ($errno, $errstr, $errfile, $errline, $errcontext)
 }
 set_error_handler ("phc_error_handler");
 
-$global_skipped = array();
-function global_marked_skipped ($test_name, $subject)
+function open_skipped_file ()
 {
-	global $global_skipped;
-	array_push ($global_skipped, "$test_name - $subject");
+	global $skipped_file;
+	$skipped_file = fopen ("test/logs/skipped", "w") or die ("Cannot open skipped file\n");
 }
 
-function list_skipped ()
+function note_in_skipped_file ($test_name, $subject, $reason)
 {
-	global $global_skipped;
-	$skipped_list = "";
-	foreach ($global_skipped as $line)
-	{
-		$skipped_list .= "Skipped $line\n";
-	}
-	file_put_contents ("test/logs/skipped", $skipped_list);
+	global $skipped_file;
+	fprintf ($skipped_file, "$test_name: Skipped $subject - $reason\n");
+	// we frequently stop the test midway, but we want up to the minute results
+	fflush ($skipped_file);
+}
+
+function close_skipped_file ()
+{
+	global $skipped_file;
+	fclose ($skipped_file);
 }
 
 function phc_assert ($boolean, $message)

@@ -45,7 +45,8 @@ class PluginTest extends Test
 		}
 		elseif ($output == "Skipped\n")
 		{
-			$this->mark_skipped ($subject);
+			$name = $this->plugin_name;
+			$this->mark_skipped ($subject, "Plugin $name returns skipped");
 		}
 		else
 		{

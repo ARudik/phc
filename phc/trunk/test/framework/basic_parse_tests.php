@@ -79,7 +79,7 @@ class BasicParseTest extends SupportFileTest
 
 		if ($return_value == 0)
 		{
-			$this->mark_skipped ($subject);
+			$this->mark_skipped ($subject, "No generated results to be stored");
 		}
 		else
 		{

@@ -32,7 +32,7 @@ abstract class RegressionTest extends SupportFileTest
 		}
 		else
 		{
-			$this->mark_skipped ($subject);
+			$this->mark_skipped ($subject, "No regression support file at $regression_file");
 		}
 
 	}
@@ -41,7 +41,7 @@ abstract class RegressionTest extends SupportFileTest
 	{
 		if (!$this->check_prerequisites ())
 		{
-			$this->mark_skipped ("All");
+			$this->mark_skipped ("All", "Prerequisites failed");
 			return false;
 		}
 
@@ -52,7 +52,7 @@ abstract class RegressionTest extends SupportFileTest
 		{
 			if (!$this->check_test_prerequisites ($subject))
 			{
-				$this->mark_skipped ($subject);
+				$this->mark_skipped ($subject, "Test prerequsites failed");
 			}
 			else
 			{

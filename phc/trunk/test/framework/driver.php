@@ -58,6 +58,8 @@ if (!$opt_no_delete)
 	`rm -Rf $log_directory/*`;
 }
 
+open_skipped_file ();
+
 foreach ($tests as $test)
 {
 	$test_name = $test->get_name ();
@@ -91,6 +93,7 @@ foreach ($tests as $test)
 	}
 	else $test->run ();
 }
-list_skipped ();
+
+close_skipped_file ();
 
 ?>
