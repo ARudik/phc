@@ -1571,6 +1571,7 @@ global_var:
 	| '$' '{' expr '}'
 		{ 
 			CAST_AST(expr, $3, AST_expr);
+			expr->attrs->set("phc.unparser.needs_curlies", new Boolean(true));
 			$$ = NEW(AST_reflection, (expr));
 		}
 	; 
@@ -3020,6 +3021,7 @@ compound_variable:
 	| '$' '{' expr '}'
 		{ 
 			CAST_AST(expr, $3, AST_expr);
+			expr->attrs->set("phc.unparser.needs_curlies", new Boolean(true));
 			$$ = NEW(AST_reflection, (expr)); 
 		}
 	;
@@ -3099,6 +3101,7 @@ variable_name:
 	| '{' expr '}'
 		{ 
 			CAST_AST(expr, $2, AST_expr);
+			expr->attrs->set("phc.unparser.needs_curlies", new Boolean(true));
 			$$ = NEW(AST_reflection, (expr)); 
 		}
 	;

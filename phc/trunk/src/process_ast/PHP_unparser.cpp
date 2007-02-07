@@ -593,15 +593,7 @@ void PHP_unparser::children_variable(AST_variable* in)
 	if(reflection)
 	{
 		name = dynamic_cast<AST_variable*>(reflection->expr);
-
-		if(name != NULL && name->array_indices->empty() && !name->string_index)
-			in->variable_name->visit(this);
-		else
-		{
-			echo("{");
-			in->variable_name->visit(this);
-			echo("}");
-		}
+		in->variable_name->visit(this);
 	}
 	else
 	{
@@ -706,19 +698,7 @@ void PHP_unparser::children_method_invocation(AST_method_invocation* in)
 	}
 	else
 	{
-		if(after_arrow && !method_name)
-		{
-			// This is overly conservative but it works. If a function name is
-			// not a simple ident, we stick in curly braces around the name 
-			// (but only after an arrow ->)
-			echo("{");
-			in->method_name->visit(this);
-			echo("}");
-		}
-		else
-		{
-			in->method_name->visit(this);
-		}
+		in->method_name->visit(this);
 
 		echo("(");
 		in->actual_parameters->visit(this);
@@ -1060,13 +1040,17 @@ void PHP_unparser::children_null(Token_null* in)
 // Generic classes
 void PHP_unparser::pre_expr(AST_expr* in)
 {
-	if(in->attrs->get_boolean("phc.unparser.needs_brackets")->value())
+	if(in->attrs->is_true("phc.unparser.needs_brackets"))
 		echo("(");
+	if(in->attrs->is_true("phc.unparser.needs_curlies"))
+		echo("{");
 }
 
 void PHP_unparser::post_expr(AST_expr* in)
 {
-	if(in->attrs->get_boolean("phc.unparser.needs_brackets")->value())
+	if(in->attrs->is_true("phc.unparser.needs_curlies"))
+		echo("}");
+	if(in->attrs->is_true("phc.unparser.needs_brackets"))
 		echo(")");
 }
 
