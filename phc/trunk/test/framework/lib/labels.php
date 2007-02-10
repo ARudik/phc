@@ -2,6 +2,7 @@
 
 $subject_dir =		"test/subjects/";
 $label_file =		"test/subjects/labels";
+$third_party_label_file =		"test/subjects/3rdparty/labels";
 
 $default_labels		=	array("non-erroneous", "long",  "non-interpretable", "size-neutral", "non-includable");
 $non_default_labels =	array("erroneous", "short", "interpretable", "size-dependent", "includable");
@@ -15,38 +16,35 @@ $opposite_label = array(
 
 $exceptions = array();
 
-$label_struct = create_label_struct ($subject_dir, $label_file);
+$label_struct = create_label_struct ($subject_dir, $label_file, $third_party_label_file);
+
 if (!$opt_long)
 {
 	$label_struct = strip_long_files($label_struct);
 }
 
-
-
-
-function strip_long_files($label_struct)
+function strip_long_files ($label_struct)
 {
 	global $labels;
 	$long_files = $label_struct{"long"};
 	foreach($labels as $label)
 	{
 		// remove the long files from 
-		$label_struct{$label} = array_diff($label_struct{$label}, $long_files);
+		$label_struct{$label} = array_values (array_diff($label_struct{$label}, $long_files));
 	}
 	return $label_struct;
 }
 
-function create_label_struct ($directory, $label_filename)
+function create_label_struct ($directory, $label_filename, $third_party_filename)
 {
 	global $default_labels;
 	global $non_default_labels;
 	global $opposite_label;
 	global $labels;
-	global $subject_dir;
 	global $exceptions;
 
 	// get all the php scripts in the file
-	$files = get_all_scripts_in_dir($subject_dir);
+	$files = get_all_scripts_in_dir ($directory);
 
 	// labelled files is a table indexed by filename, containing tables indexed
 	// by default labels, which are set to 1 or 0 for default and non-default
@@ -61,48 +59,25 @@ function create_label_struct ($directory, $label_filename)
 
 	// parse the file
 	$lines = file($label_filename);
+	$third_party_lines = file ($third_party_filename);
 
+	$old_labelled_files = $labelled_files;
 	foreach($lines as $line)
 	{
 		$line = preg_replace("/#.*$/", "", $line); // remove comments
 		$line = trim($line); // remove superfluous whitespace
 		if ($line == "") continue; // skip blank lines
-
-		// split into file and labels
-		$split = preg_split("/\s+/", $line);
-
-		$pattern = array_shift ($split);
-		$matches = preg_grep ("!$pattern!", $files);
-		phc_assert(count($matches), "pattern !$pattern! matches no files");
-
-		// add to data structure
-		foreach($split as $label)
-		{
-			foreach ($matches as $filename)
-			{
-				if (in_array($label, $default_labels))
-				{
-					$labelled_files{$filename}{$label} = 1;
-				}
-				else if (in_array($label, $non_default_labels))
-				{
-					$labelled_files{$filename}{$opposite_label{$label}} = 0;
-				}
-				else if (preg_match ("/no-(.*)/", $label, $matches))
-				{
-					if (isset($exceptions{$matches[1]}))
-						array_push($exceptions{$matches[1]}, $filename);
-					else
-						$exceptions{$matches[1]} = array($filename);
-				}
-				else
-				{
-					$label_names = join(", ", $labels);
-					phc_unreachable ("Label file error: $label not a valid label (must be in $label_names)");
-				}
-			}
-		}
+		process_label_file_line ($line, $files, &$labelled_files);
 	}
+
+	foreach($third_party_lines as $line)
+	{
+		$line = preg_replace("/#.*$/", "", $line); // remove comments
+		$line = trim($line); // remove superfluous whitespace
+		if ($line == "") continue; // skip blank lines
+		process_label_file_line ("3rdparty/".$line, $files, &$labelled_files);
+	}
+	
 
 	# go over the labelled_files, and make an table indexed by label
 	# init the label struct
@@ -131,6 +106,51 @@ function create_label_struct ($directory, $label_filename)
 	}
 	
 	return $label_struct;
+}
+
+function process_label_file_line ($line, $files, $labelled_files)
+{
+	global $default_labels;
+	global $non_default_labels;
+	global $opposite_label;
+	global $labels;
+	global $exceptions;
+
+	// split into file and labels
+	$split = preg_split("/\s+/", $line);
+
+	$pattern = array_shift ($split);
+	$pattern = "^test/subjects/$pattern";
+	$matches = preg_grep ("!$pattern!", $files);
+	phc_assert(count($matches), "pattern !$pattern! matches no files");
+
+	// add to data structure
+	foreach($split as $label)
+	{
+		foreach ($matches as $filename)
+		{
+			if (in_array($label, $default_labels))
+			{
+				$labelled_files{$filename}{$label} = 1;
+			}
+			else if (in_array($label, $non_default_labels))
+			{
+				$labelled_files{$filename}{$opposite_label{$label}} = 0;
+			}
+			else if (preg_match ("/no-(.*)/", $label, $matches))
+			{
+				if (isset($exceptions{$matches[1]}))
+					array_push($exceptions{$matches[1]}, $filename);
+				else
+					$exceptions{$matches[1]} = array($filename);
+			}
+			else
+			{
+				$label_names = join(", ", $labels);
+				phc_unreachable ("Label file error: $label not a valid label (must be in $label_names)");
+			}
+		}
+	}
 }
 
 function get_scripts_labelled($label)
