@@ -22,7 +22,7 @@ class InterpretCanonicalUnparsed extends TwoCommandTest
 
 	function check_prerequisites ()
 	{
-		return check_for_plugin ("canonical_unparser");
+		return check_for_plugin ("tests/canonical_unparser");
 	}
 
 	function get_command_line1 ($subject)

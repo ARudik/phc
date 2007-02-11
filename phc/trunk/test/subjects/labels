@@ -33,38 +33,10 @@ general/nestedfndefs.php			erroneous non-interpretable
 general/prepostop_error1.php		erroneous non-interpretable
 general/prepostop_error2.php		erroneous non-interpretable
 
-general/binops.php						long no-CompiledVsInterpreted
+general/binops.php						long no-CompiledVsInterpreted # infinite loops in generated code
 general/include_complex.php			includable
 general/included_recursive1.php		includable
 general/included_recursive2.php		includable
 
-general/arrays.php										non-interpretable
-general/assignments.php									non-interpretable
-general/attributes.php									non-interpretable
-general/class_modifiers.php							non-interpretable
-general/clone.php											non-interpretable
-general/comments.php										non-interpretable
-general/continue.php										non-interpretable
-general/for.php											non-interpretable
-general/functioncalls.php								non-interpretable
-general/functions.php									non-interpretable
-general/functiontarget.php								non-interpretable
-general/include_and_co.php								non-interpretable
-general/included_classes_and_functions.php		non-interpretable
-general/included_classes_with_return_values.php	non-interpretable
-general/included_recursive3.php						non-interpretable
-general/included_use_vars_in_classes.php			non-interpretable
-general/included_use_vars_in_function.php			non-interpretable
-general/included_var_overwrite.php					non-interpretable
-general/included_with__FILE__.php					non-interpretable
-general/include_massive.php							non-interpretable
-general/instanceof.php									non-interpretable
-general/instring.php										non-interpretable
-general/interfaces.php									non-interpretable
-general/invocation.php									non-interpretable
-general/new.php											non-interpretable
-general/static.php										non-interpretable
-general/vars.php											non-interpretable
-
-# Tests that cause trouble when compiled
-general/binops.php										no-CompiledVsInterpreted
+general/for.php						non-interpretable # infinite loops
+general/instring.php					non-interpretable # php's parser doesnt like this

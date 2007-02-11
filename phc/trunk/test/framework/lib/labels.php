@@ -51,17 +51,17 @@ function create_label_struct ($directory, $label_filename, $third_party_filename
 	// respectively
 	foreach ($default_labels as $default)
 	{
-		foreach($files as $filename)
-		{
-			$labelled_files{$filename}{$default} = 1;
-		}
+		foreach($files as $filename) { $labelled_files{$filename}{$default} = 1; }
+	}
+	foreach($files as $filename) 
+	{ 
+		$labelled_files{$filename}{"non-interpretable"} = "check"; 
 	}
 
 	// parse the file
 	$lines = file($label_filename);
 	$third_party_lines = file ($third_party_filename);
 
-	$old_labelled_files = $labelled_files;
 	foreach($lines as $line)
 	{
 		$line = preg_replace("/#.*$/", "", $line); // remove comments
@@ -77,17 +77,32 @@ function create_label_struct ($directory, $label_filename, $third_party_filename
 		if ($line == "") continue; // skip blank lines
 		process_label_file_line ("3rdparty/".$line, $files, &$labelled_files);
 	}
-	
 
-	# go over the labelled_files, and make an table indexed by label
 	# init the label struct
 	foreach ($labels as $label)
 	{
 		$label_struct{$label} = array();
 	}
+	# go over the labelled_files, and make an table indexed by label
 	foreach ($files as $filename)
 	{
 		phc_assert(isset($labelled_files{$filename}), "file not found");
+
+		// check the interpretable
+		if ($labelled_files{$filename}{"non-interpretable"} === "check")
+		{
+			phc_assert (check_for_plugin ("tools/purity_test"), "purity not available");
+			global $phc, $plugin_dir;
+			if (`$phc --run $plugin_dir/tools/purity_test.la $filename 2>&1` == "")
+			{
+				$labelled_files{$filename}{"non-interpretable"} = 0;
+			}
+			else
+			{
+				$labelled_files{$filename}{"non-interpretable"} = 1;
+			}
+		}
+
 		foreach ($default_labels as $label)
 		{
 			if ($labelled_files{$filename}{$label})
@@ -100,6 +115,8 @@ function create_label_struct ($directory, $label_filename, $third_party_filename
 			}
 		}
 	}
+
+	// sort and generally fix up the arrays
 	foreach ($labels as $label)
 	{
 		sort($label_struct{$label});
@@ -143,6 +160,11 @@ function process_label_file_line ($line, $files, $labelled_files)
 					array_push($exceptions{$matches[1]}, $filename);
 				else
 					$exceptions{$matches[1]} = array($filename);
+			}
+			else if ($label == "check-interpretable")
+			{
+				print "Marking $filename as check\n";
+				$labelled_files{$filename}{"interpretable"} = "check";
 			}
 			else
 			{

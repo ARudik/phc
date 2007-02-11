@@ -25,3 +25,10 @@
 # bugs/bug0009.php						size-dependent
 # general/foreach_error2.php			erroneous non-interpretable
 # general/binops.php						no-CompiledVsInterpreted
+
+## Long by default
+.*		long
+
+## Remove this to enable a test to check if files are safely interpretable
+.* non-interpretable
+

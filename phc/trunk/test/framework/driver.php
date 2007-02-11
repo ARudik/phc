@@ -13,11 +13,10 @@ if (substr (phpversion (), 0, 1) < 5)
 
 $support_dir =		"test/support_files";
 $log_directory =	"test/logs";
-$plugin_dir = "plugins/tests";
+$plugin_dir = "plugins";
 
 require_once ("lib/startup.php");
 require_once ("lib/header.php");
-require_once ("lib/labels.php");
 require_once ("lib/test.php");
 require_once ("lib/plugin_test.php");
 require_once ("lib/two_command_test.php");
@@ -30,7 +29,7 @@ $php = get_php ();
 if ($opt_installed)
 {
 	$phc = "$bindir/phc";
-	$plugin_dir = "$pkglibdir/plugins/tests";
+	$plugin_dir = "$pkglibdir/plugins";
 }
 
 $tests = array ();
@@ -58,6 +57,7 @@ if (!$opt_no_delete)
 	`rm -Rf $log_directory/*`;
 }
 
+require_once ("lib/labels.php");
 open_skipped_file ();
 
 foreach ($tests as $test)

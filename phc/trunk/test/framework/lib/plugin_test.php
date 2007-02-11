@@ -19,7 +19,7 @@ class PluginTest extends Test
 
 	function check_prerequisites ()
 	{
-		return check_for_plugin ($this->plugin_name);
+		return check_for_plugin ("tests/". $this->plugin_name);
 	}
 
 	function get_name ()
@@ -31,7 +31,7 @@ class PluginTest extends Test
 	{
 		global $phc, $plugin_dir;
 		$plugin = $this->plugin_name;
-		return "$phc --run $plugin_dir/$plugin.la $subject 2>&1";
+		return "$phc --run $plugin_dir/tests/$plugin.la $subject 2>&1";
 	}
 
 	function run_test ($subject)
