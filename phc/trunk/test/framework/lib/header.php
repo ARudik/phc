@@ -285,7 +285,9 @@ function check_for_plugin ($plugin_name)
 
 function check_for_program ($program_name)
 {
-	return ! ($program_name === "");
+	/* the gcc variable doesnt have a path */
+	return ($program_name !== "" 
+			&& (file_exists ($program_name) or $program_name == "gcc"));
 }
 
 

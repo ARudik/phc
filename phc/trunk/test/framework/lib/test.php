@@ -58,6 +58,12 @@ abstract class Test
 		return $string;
 	}
 
+	function check_global_prerequisites ()
+	{
+		global $php_exe;
+		return check_for_program ($php_exe);
+	}
+
 	function check_prerequisites ()
 	{
 		return true;
@@ -88,7 +94,8 @@ abstract class Test
 		$files = $this->get_test_subjects ();
 		$this->ready_progress_bar (count ($files));
 
-		if (!$this->check_prerequisites ())
+
+		if (!$this->check_prerequisites () || !$this->check_global_prerequisites ())
 		{
 			$this->mark_skipped ("All", "Test prerequisties failed");
 			$this->finish_test ();
@@ -393,7 +400,7 @@ abstract class Test
 		if ($skipped_count == $this->total and $this->check_prerequisites() == false)
 		{
 			return sprintf("%-30s %-21s    ", $test, "")
-				. red_string().  "Failure (Prerequisites) "
+				. red_string().  "Failure ( Prerequisites) "
 				. reset_string();
 		}
 

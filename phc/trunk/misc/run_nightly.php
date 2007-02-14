@@ -29,6 +29,7 @@ function get_header ($title, $command)
 
 function run_command ($title, $command, $directory = false)
 {
+	global $output;
 	$header = get_header ($title, $command);
 	$command = "$command 2>&1"; // hardcode to be safe
 	if ($directory)
@@ -40,7 +41,7 @@ function run_command ($title, $command, $directory = false)
 	$result = strip_console_codes ($result);
 	if ($ret_value)
 	{
-		die ("error running command: $command (return $ret_value)\nOutput: $result");
+		$output = "Error running command: $command (return $ret_value)\n\nOutput:\n$result\n\nPrevious output:\n$output";
 	}
 
 	return "$header$result\n\n";
@@ -54,8 +55,8 @@ function run_command ($title, $command, $directory = false)
 	$output .= run_command ("Removing old version", "rm -Rf /tmp/phc_testing");
 	mkdir($root) or die ("Mkdir in /tmp/ failing is very unlikely. PANIC");
 
-	$output .= run_command ("Checking out source", "svn export -q /home/pbiggar/phc_work/svn/phc/trunk", $root);
-	$output .= run_command ("Checking out website", "svn export -q /home/pbiggar/phc_work/svn/www", $root);
+	$output .= run_command ("Checking out source", "svn export -q http://phc.googlecode.com/svn/phc/trunk", $root);
+	$output .= run_command ("Checking out website", "svn export -q http://phc.googlecode.com/svn/www", $root);
 	$output .= run_command ("Touch generated", "touch src/generated/*", "$root/trunk");
 	$output .= run_command ("Configure", "./configure --prefix=$root/installed", "$root/trunk");
 	$output .= run_command ("Make", "make", "$root/trunk");
@@ -105,10 +106,8 @@ function run_command ($title, $command, $directory = false)
 	$output = $summary . $output;
 
 	$output = strip_console_codes ($output);
-#	print $output;
 
 	// mail the output
 	mail("phc-internals@phpcompiler.org", "Nightly testing", $output);
-
 
 ?>

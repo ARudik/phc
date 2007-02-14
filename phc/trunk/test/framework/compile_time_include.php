@@ -15,11 +15,6 @@ class CompileTimeInclude extends TwoCommandTest
 		return get_includable_scripts ();
 	}
 
-	function check_prerequisites ()
-	{
-		return check_for_program ("grep");
-	}
-
 	function get_command_line1 ($subject)
 	{
 		global $phc, $php;

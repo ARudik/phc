@@ -17,13 +17,15 @@ $plugin_dir = "plugins";
 
 require_once ("lib/startup.php");
 require_once ("lib/header.php");
+
+$phc = get_phc ();
+$php = get_php ();
+
 require_once ("lib/test.php");
 require_once ("lib/plugin_test.php");
 require_once ("lib/two_command_test.php");
 require_once ("lib/regression.php");
 
-$phc = get_phc ();
-$php = get_php ();
 
 
 if ($opt_installed)

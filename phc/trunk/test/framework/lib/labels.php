@@ -139,7 +139,11 @@ function process_label_file_line ($line, $files, $labelled_files)
 	$pattern = array_shift ($split);
 	$pattern = "^test/subjects/$pattern";
 	$matches = preg_grep ("!$pattern!", $files);
-	phc_assert(count($matches), "pattern !$pattern! matches no files");
+	/* allow that pattern, as 3rdparty directory may be empty */
+	if ($pattern !== "^test/subjects/3rdparty/.*")
+	{
+		phc_assert(count($matches), "pattern !$pattern! matches no files");
+	}
 
 	// add to data structure
 	foreach($split as $label)
