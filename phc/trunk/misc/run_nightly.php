@@ -42,6 +42,10 @@ function run_command ($title, $command, $directory = false)
 	if ($ret_value)
 	{
 		$output = "Error running command: $command (return $ret_value)\n\nOutput:\n$result\n\nPrevious output:\n$output";
+
+		// mail the output
+		mail("phc-internals@phpcompiler.org", "Nightly testing", $output);
+		exit();
 	}
 
 	return "$header$result\n\n";
