@@ -15,6 +15,22 @@
 
 (define %use-id-as-filename% #t)
 (define %html-ext% ".html")
+(define (chunk-element-list)
+  (list (normalize "preface")
+    (normalize "chapter")
+    (normalize "appendix")
+    (normalize "article")
+    (normalize "glossary")
+    (normalize "bibliography")
+    (normalize "index")
+    (normalize "colophon")
+    (normalize "setindex")
+    (normalize "reference")
+    (normalize "refentry")
+    (normalize "part")
+    (normalize "book") ;; just in case nothing else matches...
+    (normalize "set")  ;; sets are definitely chunks...
+    ))
 
 (element application
 	(make element gi:"tt" (process-children))

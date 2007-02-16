@@ -16,21 +16,21 @@
 <!ENTITY maketeatheory SYSTEM "maketeatheory.sgml">
 <!ENTITY phc "<Application>phc</Application>">
 ]>
-<set>
+<set id="manual">
 <title>&phc Documentation</title>
-<book>
-	<title>&phc User's Manual</title>
+<book id="usermanual">
+	<title>The &phc User's Manual</title>
 	&install
 	&runningphc
 </book>
-<book>
-	<title>&phc Developer's Manual</title>
-	<part>
+<book id="devmanual">
+	<title>The &phc Developer's Manual</title>
+	<part id="treetutorials">
 		<title>Tree Traversal API Tutorials</title>
 		&gettingstarted
 		&treetutorial1
 	</part>
-	<part>
+	<part id="reference">
 		<title>Reference</title>
 		&grammar
 		&representingphp
