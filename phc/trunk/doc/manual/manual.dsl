@@ -1,5 +1,5 @@
 <!DOCTYPE style-sheet PUBLIC "-//James Clark//DTD DSSSL Style Sheet//EN" [
-<!ENTITY print-ss PUBLIC "-//Norman Walsh//DOCUMENT DocBook HTML Stylesheet//EN" CDATA DSSSL>
+<!ENTITY print-ss PUBLIC "-//Norman Walsh//DOCUMENT DocBook Print Stylesheet//EN" CDATA DSSSL>
 <!ENTITY html-ss PUBLIC "-//Norman Walsh//DOCUMENT DocBook HTML Stylesheet//EN" CDATA DSSSL>
 ]>
 
@@ -7,6 +7,20 @@
 
 <style-specification id="print" use="print-stylesheet">
 <style-specification-body>
+
+(element application
+	(make sequence
+		font-family-name: %mono-font-family%
+		(process-children)
+	)
+)
+(element token
+	(make sequence
+		font-weight: 'bold
+		(process-children)
+	)
+)
+
 </style-specification-body>
 </style-specification>
 
@@ -33,11 +47,17 @@
     ))
 
 (element application
-	(make element gi:"tt" (process-children))
+	(make element 
+		gi:"tt" 
+		(process-children)
+	)
 )
 
 (element token
-	(make element gi:"b" (process-children))
+	(make element 
+		gi:"b" 
+		(process-children)
+	)
 )
 
 </style-specification-body>

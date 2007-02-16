@@ -4,7 +4,12 @@
 
 	To get HTML output, process this file with	
 	
-		jade -t sgml -d manual.dsl#html manual.sgml 
+		jade -t sgml -d manual.dsl#html manual.sgml
+	
+	To get Latex output, process with
+
+		jade -t tex -d manual.dsl#print manual.sgml
+		jadetex manual.tex
 -->
 <!DOCTYPE set PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
 <!ENTITY install SYSTEM "install.sgml">
