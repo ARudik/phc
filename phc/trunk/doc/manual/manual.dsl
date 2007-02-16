@@ -14,9 +14,14 @@
 <style-specification-body>
 
 (define %use-id-as-filename% #t)
+(define %html-ext% ".html")
 
-(element Application
+(element application
 	(make element gi:"tt" (process-children))
+)
+
+(element token
+	(make element gi:"b" (process-children))
 )
 
 </style-specification-body>

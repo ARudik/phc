@@ -11,6 +11,9 @@
 <!ENTITY runningphc SYSTEM "runningphc.sgml">
 <!ENTITY gettingstarted SYSTEM "gettingstarted.sgml">
 <!ENTITY treetutorial1 SYSTEM "treetutorial1.sgml">
+<!ENTITY grammar SYSTEM "grammar.sgml">
+<!ENTITY representingphp SYSTEM "representingphp.sgml">
+<!ENTITY maketeatheory SYSTEM "maketeatheory.sgml">
 <!ENTITY phc "<Application>phc</Application>">
 ]>
 <set>
@@ -26,6 +29,12 @@
 		<title>Tree Traversal API Tutorials</title>
 		&gettingstarted
 		&treetutorial1
+	</part>
+	<part>
+		<title>Reference</title>
+		&grammar
+		&representingphp
+		&maketeatheory
 	</part>
 </book>
 </set>
