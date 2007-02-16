@@ -1,0 +1,31 @@
+<!--
+	Top-level structure of the phc manuals
+	TODO: mention license
+
+	To get HTML output, process this file with	
+	
+		jade -t sgml -d manual.dsl#html manual.sgml 
+-->
+<!DOCTYPE set PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
+<!ENTITY install SYSTEM "install.sgml">
+<!ENTITY runningphc SYSTEM "runningphc.sgml">
+<!ENTITY gettingstarted SYSTEM "gettingstarted.sgml">
+<!ENTITY treetutorial1 SYSTEM "treetutorial1.sgml">
+<!ENTITY phc "<Application>phc</Application>">
+]>
+<set>
+<title>&phc Documentation</title>
+<book>
+	<title>&phc User's Manual</title>
+	&install
+	&runningphc
+</book>
+<book>
+	<title>&phc Developer's Manual</title>
+	<part>
+		<title>Tree Traversal API Tutorials</title>
+		&gettingstarted
+		&treetutorial1
+	</part>
+</book>
+</set>

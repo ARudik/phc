@@ -1,0 +1,11 @@
+<chapter id="gettingstarted">
+<title>Getting Started</title>
+
+<para>
+For this introductory tutorial, we assume that you have successfully downloaded
+and installed &phc, and that you know how to run it (<xref linkend="install">
+and <xref linkend="runningphc">). This tutorial gets you started with using
+&phc to develop your own tools for PHP by writing plugins.
+</para>
+
+</chapter>
