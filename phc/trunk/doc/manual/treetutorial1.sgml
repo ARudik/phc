@@ -59,7 +59,10 @@ linkend="simplifiedtree">
 real tree; not all nodes are shown. The full tree is</para> 
 <mediaobject> 
 <imageobject> 
-<imagedata fileref="img/tutorial1-full.png" scale="30"> 
+<imagedata fileref="img/tutorial1-full.eps" scale="30" format="EPS"> 
+</imageobject> 
+<imageobject> 
+<imagedata fileref="img/tutorial1-full.jpg" scale="30"> 
 </imageobject> 
 </mediaobject> 
 </footnote>. </para>
@@ -68,7 +71,10 @@ real tree; not all nodes are shown. The full tree is</para>
 <title>Simplified tree for the running example</title>
 <mediaobject>
 <imageobject>
-<imagedata fileref="img/tutorial1-simplified.png" scale="50">
+<imagedata fileref="img/tutorial1-simplified.eps" scale="50" format="EPS">
+</imageobject>
+<imageobject>
+<imagedata fileref="img/tutorial1-simplified.jpg">
 </imageobject>
 </mediaobject>
 </figure>
