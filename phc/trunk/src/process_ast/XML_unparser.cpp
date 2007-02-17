@@ -133,6 +133,12 @@ void XML_unparser::pre_node(AST_node* in)
 				bool needs_brackets = dynamic_cast<Boolean*>((*i).second)->value();
 				os << "<attr key=\"phc.unparser.needs_brackets\">" << (needs_brackets ? "true" : "false") << "</attr>" << endl;
 			}
+			else if((*i).first == "phc.unparser.needs_curlies")
+			{
+				print_indent();
+				bool needs_curlies = dynamic_cast<Boolean*>((*i).second)->value();
+				os << "<attr key=\"phc.unparser.needs_curlies\">" << (needs_curlies ? "true" : "false") << "</attr>" << endl;
+			}
 			else if((*i).first == "phc.unparser.is_global_stmt")
 			{
 				print_indent();

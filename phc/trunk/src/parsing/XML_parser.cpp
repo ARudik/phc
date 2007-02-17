@@ -186,6 +186,13 @@ public:
 					else
 						attrs_stack.top()->set("phc.unparser.needs_brackets", new Boolean(false));
 				}
+				else if(key == "phc.unparser.needs_curlies")
+				{
+					if(buffer == "true")
+						attrs_stack.top()->set("phc.unparser.needs_curlies", new Boolean(true));
+					else
+						attrs_stack.top()->set("phc.unparser.needs_curlies", new Boolean(false));
+				}
 				else if(key == "phc.unparser.is_elseif")
 				{
 					if(buffer == "true")
