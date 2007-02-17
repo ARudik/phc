@@ -1,4 +1,317 @@
 <chapter id="treetutorial1">
+
 <title>Traversing the Tree</title>
-<para>Blah blah blah</para>
+
+<para> In <xref linkend="gettingstarted">, we explained that &phc represents
+PHP scripts internally as an abstract syntax tree, and that the structure of
+this tree is determined by the <xref linkend="grammar" endterm="grammar">. We
+then showed how to make use of this tree to count the number of classes.  In
+this tutorial, we will consider an equally simple task: we want to count the
+number of function calls in a script. So, for the following PHP script, </para>
+		
+<programlisting>
+&lt;?<token>php</token>
+   <token>echo</token> "Hello ";
+   <token>echo</token> "world!";
+?&gt;
+</programlisting>
+
+<para> we should report two function calls. </para>
+
+<para> Note that all the plugins that we will develop in these tutorials are
+included in the &phc distribution. For example, in this tutorial we will be
+developing two plugins: a difficult solution to the problem and an easy
+solution to the problem. You can run these plugins by running </para>
+
+<screen>
+phc --run plugins/tutorials/count_function_calls_difficult.la hello.php
+</screen>
+			
+<para> or </para>
+
+<screen>
+phc --run plugins/tutorials/count_function_calls_easy.la hello.php
+</screen>
+
+<section>
+
+<title>The Grammar (Revisited)</title>
+
+<para> How do we go about counting the number of function calls in a script?
+Remember that, as far as &phc is concerned, a PHP script consists of a number
+of classes (and interface definitions). Each of these classes may have one or
+more methods, and each method can have one or more statements in them.
+Simplified, the grammar would state this as: </para>
+
+<programlisting>
+php_script ::= class_def+ ;
+class_def ::= CLASS_NAME member* ; 
+member ::= method | attribute ;
+method ::= signature statement* ;
+signature ::= METHOD_NAME formal_parameter* ; 
+</programlisting>
+
+<para>where the vertical bar (<literal>|</literal>) means &ldquo;or&rdquo;.
+Thus, our running example is represented by the tree in <xref
+linkend="simplifiedtree"> 
+<footnote> 
+<para>The tree shown in <xref linkend="simplifiedtree"> is simplified from the
+real tree; not all nodes are shown. The full tree is</para> 
+<mediaobject> 
+<imageobject> 
+<imagedata fileref="tutorial1-full.png" scale="30"> 
+</imageobject> 
+</mediaobject> 
+</footnote>. </para>
+
+<figure id="simplifiedtree">
+<title>Simplified tree for the running example</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="tutorial1-simplified.png" scale="50">
+</imageobject>
+</mediaobject>
+</figure>
+
+
+</section>
+
+<section>
+
+<title>Statements and Expressions</title>
+
+<para> The two nodes that we are interested in are the &ldquo;method
+invocation&rdquo; nodes. The <literal>eval expr</literal> nodes just above them
+probably need some explanation. There are many different types of statements in
+PHP: <literal>if</literal>-statements, <literal>while</literal>-statements,
+<literal>for</literal>-loops, etc. You can find the full list in the <xref
+linkend="grammar" endterm="grammar">. If you do look at the grammar, you will
+notice in particular that a function call is not actually a statement! Instead,
+a function call is an <emphasis>expression</emphasis>. </para> 
+
+<para> The difference between statements and expressions is that a statement
+<emphasis>does</emphasis> something (for example, a <literal>for</literal>-loop
+repeats a bunch of other statements), but an expression has a
+<emphasis>value</emphasis>. For example, &ldquo;5&rdquo; is an expression (with
+value 5), &ldquo;1+1&rdquo; is an expression (with value 2), etc. A function
+call is also considered an expression. The value of a function call is the
+value that the function returns. </para>
+
+<para> Now, the node <literal>eval expr</literal> makes a statement from an
+expression. So, if you want to use an expression where &phc; expects a
+statement, you have to use the grammar rule </para>
+
+<programlisting>
+statement ::= ... | eval_expr ;
+eval_expr ::= expr ;
+</programlisting>
+
+</section>
+
+<section>
+
+<title>The Difficult Solution</title>
+
+<para> The following plugin counts the number of function calls in a tree. If
+you do not understand the code, do not worry! We will look at a much easier
+solution in a second. If you understand the comments, that is enough.  </para>
+			
+<programlisting>
+#include &lt;phc/ast.h&gt;
+
+<token>extern</token> "C" <token>void</token> process_ast(AST_php_script* php_script)
+{
+   AST_class_def_list::const_iterator ci;
+   AST_member_list::const_iterator mi;
+   AST_statement_list::const_iterator si;
+   
+   AST_method* method;
+   AST_eval_expr* eval_expr;
+   AST_method_invocation* invoc;
+   
+   <token>int</token> num_function_calls = 0;
+   
+   <emphasis>// Inspect all classes</emphasis>
+   <token>for</token>(
+      ci = php_script-&gt;class_defs-&gt;begin(); 
+      ci != php_script-&gt;class_defs-&gt;end(); 
+      ci++)
+   {
+      <emphasis>// Inspect all members in the class</emphasis>
+      <token>for</token>(
+         mi = (*ci)-&gt;members-&gt;begin(); 
+         mi != (*ci)-&gt;members-&gt;end(); 
+         mi++)
+      {
+         <emphasis>// Check whether this member is a method or an attribute</emphasis>
+         method = <token>dynamic_cast</token>&lt;AST_method*&gt;(*mi);
+         <token>if</token>(method == <token>NULL</token>) <token>continue</token>;
+         
+         <emphasis>// Check all statements in the method</emphasis>
+         <token>for</token>(
+            si = method-&gt;statements-&gt;begin(); 
+            si != method-&gt;statements-&gt;end(); 
+            si++)
+         {
+            <emphasis>// Check if the statement is of type "eval_expr"</emphasis>
+            eval_expr = <token>dynamic_cast</token>&lt;AST_eval_expr*&gt;(*si);
+            <token>if</token>(eval_expr == <token>NULL</token>) <token>continue</token>;
+   
+            <emphasis>// Finally, check <token>if</token> the expression is a function call</emphasis>
+            invoc = <token>dynamic_cast</token>&lt;AST_method_invocation*&gt;(eval_expr-&gt;expr);
+            <token>if</token>(invoc == <token>NULL</token>) <token>continue</token>;
+   
+            <emphasis>// Yeah! We found a function call</emphasis>
+            num_function_calls++;
+         }
+      }
+   }
+   
+   printf("%d function calls found\n", num_function_calls);
+}
+</programlisting>
+
+<para> Why is this code so complicated? First of all, it has to search through
+the entire tree, looking for function calls. Because function calls are fairly
+deep down in the tree, we need a lot of code simply to find them. The second
+complication is the fact that, for example, a class consists of
+&ldquo;members&ldquo;. A member is either an attribute or a method, but we are
+interested only in methods.  Similarly, a method consists of
+&ldquo;statements&ldquo;. A statement can be one of many things; but we are
+only interested in <literal>eval_expr</literal> statements. Thus, we have to
+test nodes for their type (using <literal>dynamic_cast</literal>). </para>
+
+</section>
+
+<section>
+
+<title>The Easy Solution</title>
+
+<para> Fortunately, &phc will do all this for you automatically! There is a
+standard &ldquo;do-nothing&rdquo; tree traversal predefined in &phc in the form
+of a class called <literal>Tree_visitor</literal> (defined in
+<filename>&lt;phc/Tree_visitor.h&gt;</filename>). <literal>Tree_visitor</literal> contains
+methods for each type of node in the tree. &phc will automatically traverse the
+abstract syntax tree for you, and call the appropriate method at each node.
+</para>
+
+<para> In fact, there are <emphasis>two</emphasis> methods defined for each
+type of node. The first method, called <literal>pre_something</literal>, gets
+called on a node <emphasis>before</emphasis> &phc visits the children of the
+node. The second method, called <literal>post_something</literal>, gets called
+on a node <emphasis>after</emphasis> &phc has visited the children of the node.
+For example, <literal>pre_method</literal> gets called on an
+<literal>AST_method</literal>, before visiting the statements in the method.
+After all statements have been visited, <literal>post_method</literal> gets
+called. Thus, the very first method that gets called is
+<literal>pre_php_script</literal> (because that is the top-level node in the
+tree), and the very last method that gets called is
+<literal>post_php_script</literal>. </para>
+
+<para> So, here is an alternative and much easier solution for our problem.
+</para>
+
+<programlisting>
+#include &lt;phc/Tree_visitor.h&gt;
+
+<token>class</token> Count_function_calls : <token>public</token> Tree_visitor
+{
+<token>private</token>:
+   <token>int</token> num_function_calls;
+
+<token>public</token>:
+   <emphasis>// Set num_function_calls to zero before we begin</emphasis>
+   <token>void</token> pre_php_script(AST_php_script* in)
+   {
+      num_function_calls = 0;
+   }
+
+   <emphasis>// Print the number of function calls when we are done</emphasis>
+   <token>void</token> post_php_script(AST_php_script* in)
+   {
+      printf("%d function calls found\n", num_function_calls);
+   }
+   
+   <emphasis>// Count the number of function calls</emphasis>
+   <token>void</token> post_method_invocation(AST_method_invocation* in)
+   {
+      num_function_calls++;
+   }
+};
+
+<token>extern</token> "C" <token>void</token> process_ast(AST_php_script* php_script)
+{
+   Count_function_calls cfc;
+   php_script-&gt;visit(&amp;cfc);
+}
+</programlisting>
+
+<para> The real work in this transform is now done by the visitor; the only
+task left that <literal>process_ast</literal> still has to do is instantiate
+the visitor and run it over the tree. </para>
+
+</section>
+
+<section>
+
+<title>Counting All Statements</title> 
+
+<para> (The plugin explained in this section is available as
+<filename>plugins/tutorials/count_statements.la</filename> in the &phc distribution.)
+</para>
+
+<para> Suppose we wanted to count all statements, rather than just function
+calls. We could define methods for <literal>eval_expr</literal>,
+<literal>for</literal>, <literal>while</literal>, <literal>if</literal>, etc.,
+but there is an easier way. If you check the <xref linkend="grammar"
+endterm="grammar">, you will find the following rules: </para>
+
+<programlisting>
+statement ::= if | ... ;
+commented_node ::= ... | statement | ... ;
+node ::= ... | node | ... ;
+</programlisting>
+			
+<para> You could read this as &ldquo;an if-statement <emphasis>is-a</emphasis>
+statement, a statement <emphasis>is-a</emphasis> commented node (a node that
+may have comments associated with it), and a commented node
+<emphasis>is-a</emphasis> node. This <emphasis>is-a</emphasis> relation is
+reflection using inheritance (class <literal>AST_if</literal> inherits from
+<literal>AST_statement</literal>), but the tree visitor API also has
+corresponding &ldquo;generic&rdquo; methods.  For example, the following
+suffices to count all statements: </para>
+			
+<programlisting>
+<token>void</token> pre_statement(AST_statement* in)
+{
+   num_statements++;
+}
+</programlisting>
+	
+<para> We need to be precise about the order in which &phc calls all these
+methods. Suppose we have a node <literal>Foo</literal> (say, an if-statement),
+which <emphasis>is-a</emphasis> <literal>Bar</literal> (say, statement), which
+itself <emphasis>is-a</emphasis> <literal>Baz</literal> (say, commented node).
+Then &phc calls the visitor methods in the following order: </para>
+
+<orderedlist>
+<listitem><para><literal>pre_baz</literal></para></listitem>
+<listitem><para><literal>pre_bar</literal></para></listitem>
+<listitem><para><literal>pre_foo</literal></para></listitem>
+<listitem><para><literal>children_foo</literal> (visit the children of <literal>foo</literal>)</para></listitem>
+<listitem><para><literal>post_foo</literal></para></listitem>
+<listitem><para><literal>post_bar</literal></para></listitem>
+<listitem><para><literal>post_baz</literal></para></listitem>
+</orderedlist>
+
+<para> Just to emphasise, if all of the visitor methods listed above are
+implemented, they will <emphasis>all</emphasis> be invoked, in the order listed
+above. So, implementing a more specific visitor (<literal>pre_foo</literal>)
+does not inhibit the more general method (<literal>pre_bar</literal>) from
+being invoked. You can run the
+<filename>plugins/tutorials/show_traversal_order.la</filename> from the &phc distribution
+to see this in action.  </para>
+
+</section>
+
 </chapter>
