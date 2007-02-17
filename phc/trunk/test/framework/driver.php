@@ -51,7 +51,7 @@ require_once ("regression_dump_includes.php");
 require_once ("regression_dump_php.php");
 require_once ("reparse_unparsed.php");
 require_once ("source_vs_semantic_values.php"); // dont use plugin_test here
-array_push($tests, new PluginTest ("xml_roundtrip"));
+require_once ("xml_roundtrip.php"); // dont use plugin_test here
 
 if (!$opt_no_delete)
 {

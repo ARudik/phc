@@ -61,4 +61,5 @@ AC_DEFUN([AC_CHECK_LIB_XERCES], [
 	AS_IF(
 		[test AS_VAR_GET(use_libXerces) = yes],
 		[LIBS="-lxerces-c $LIBS"])
+	AC_SUBST([use_libXerces])
 ])
