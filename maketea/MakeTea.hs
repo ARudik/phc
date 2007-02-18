@@ -38,8 +38,8 @@ import FactoryMethod
 	create skeleton classes; the skeleton classes define their superclasses
 	and the definitions for the variables, but do not contain any methods.
 
-	"list_classes" generates specialised list classes for all lists in the
-	grammar
+	"list_classes" generates specialised list classes for all non-terminals in
+	the grammar
 
 	"superclass" finds the class that all other classes in the AST hierarchy
 	inherit from; this is used for the return type of, and the argument to, the

@@ -31,7 +31,9 @@ find_lists (Disjunction _ _:tail) = find_lists tail
 find_lists (Conjunction _ body:tail) = concatMap f body ++ find_lists tail
 	where
 		f :: Term -> [Symbol]
-		f (_, sym, mult) = if is_vector mult then [sym] else [] 
+		f (_, sym@(Terminal _ _), _) = [sym]
+		f (_, sym@(NonTerminal _), _) = [sym]
+		f _ = []
 
 {-
 	Make a list class foo_list for a symbol foo
@@ -40,7 +42,10 @@ symbol_to_list_class :: InheritanceRel -> Symbol -> CppClass
 symbol_to_list_class ih sym = CppClass Concrete name extends [] methods 
 	where
 		name = (symbol_to_classname sym ++ "_list")
-		extends = ["List<" ++ (symbol_to_classname sym) ++ "*>"] ++ direct_superclasses ih name 
+		extends = 
+			if null (direct_superclasses ih name)
+			then ["List<" ++ (symbol_to_classname sym) ++ "*>","AST_node"] 
+			else ["List<" ++ (symbol_to_classname sym) ++ "*>"] ++ direct_superclasses ih name 
 		methods =
 			[
 				visit,

@@ -113,7 +113,6 @@ list_types gmr = concat (map (list_type gmr) unique_list_types)
 		unique_terms = nubBy lt_equal all_terms
 		unique_list_types = [x | x@(_, _, mult) <- unique_terms, is_vector mult]
 		lt_equal (_, s1, m1) (_, s2, m2) = (s1 == s2) && ( (m1 == m2) || ((m1 == Vector) && (m2 == OptVector)) || ((m1 == OptVector) && (m2 == Vector)) )
-		lt_equal _ _ = False
 
 list_type :: Grammar -> Term -> String
 list_type gmr (label , sym, mult) = 

@@ -260,7 +260,7 @@ src/generated/Tree_transform.cpp \
 src/generated/Tree_transform.h \
 src/generated/Tree_visitor.cpp \
 src/generated/Tree_visitor.h: src/generated_src/phc.tea
-	src/tools/maketea/maketea src/generated_src/phc.tea
+	@maketea@ src/generated_src/phc.tea
 	mv ast.cpp src/generated/
 	mv ast.h src/generated/
 	mv Tree_transform.cpp src/generated/

@@ -41,6 +41,7 @@ AC_PATH_PROG([diff], [diff])
 AC_PATH_PROG([valgrind], [valgrind])
 AC_PATH_PROG([dot], [dot])
 AC_PATH_PROG([graphviz_gc], [gc])
+AC_PATH_PROG([maketea], [maketea])
  
 AC_ARG_WITH([php], 
 	AS_HELP_STRING([--with-php=PATH], [PHP installation path (defaults to /usr/local)]), 

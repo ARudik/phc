@@ -1095,6 +1095,78 @@ AST_member_list* Tree_transform::post_member_list(AST_member_list* in)
 	return in;
 }
 
+AST_class_mod_list* Tree_transform::pre_class_mod_list(AST_class_mod_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_class_mod_list(AST_class_mod_list* in)
+{
+	AST_class_mod_list* new_v = new AST_class_mod_list;
+	List<AST_class_mod*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_class_mod_list* Tree_transform::post_class_mod_list(AST_class_mod_list* in)
+{
+	return in;
+}
+
+Token_class_name_list* Tree_transform::pre_class_name_list(Token_class_name_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_class_name_list(Token_class_name_list* in)
+{
+	Token_class_name_list* new_v = new Token_class_name_list;
+	List<Token_class_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+Token_class_name_list* Tree_transform::post_class_name_list(Token_class_name_list* in)
+{
+	return in;
+}
+
+AST_signature_list* Tree_transform::pre_signature_list(AST_signature_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_signature_list(AST_signature_list* in)
+{
+	AST_signature_list* new_v = new AST_signature_list;
+	List<AST_signature*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_signature_list* Tree_transform::post_signature_list(AST_signature_list* in)
+{
+	return in;
+}
+
 AST_statement_list* Tree_transform::pre_statement_list(AST_statement_list* in)
 {
 	return in;
@@ -1122,6 +1194,54 @@ AST_statement_list* Tree_transform::post_statement_list(AST_statement_list* in)
 	return in;
 }
 
+AST_method_mod_list* Tree_transform::pre_method_mod_list(AST_method_mod_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_method_mod_list(AST_method_mod_list* in)
+{
+	AST_method_mod_list* new_v = new AST_method_mod_list;
+	List<AST_method_mod*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_method_mod_list* Tree_transform::post_method_mod_list(AST_method_mod_list* in)
+{
+	return in;
+}
+
+Token_method_name_list* Tree_transform::pre_method_name_list(Token_method_name_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_method_name_list(Token_method_name_list* in)
+{
+	Token_method_name_list* new_v = new Token_method_name_list;
+	List<Token_method_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+Token_method_name_list* Tree_transform::post_method_name_list(Token_method_name_list* in)
+{
+	return in;
+}
+
 AST_formal_parameter_list* Tree_transform::pre_formal_parameter_list(AST_formal_parameter_list* in)
 {
 	return in;
@@ -1145,6 +1265,126 @@ void Tree_transform::children_formal_parameter_list(AST_formal_parameter_list* i
 }
 
 AST_formal_parameter_list* Tree_transform::post_formal_parameter_list(AST_formal_parameter_list* in)
+{
+	return in;
+}
+
+AST_type_list* Tree_transform::pre_type_list(AST_type_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_type_list(AST_type_list* in)
+{
+	AST_type_list* new_v = new AST_type_list;
+	List<AST_type*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_type_list* Tree_transform::post_type_list(AST_type_list* in)
+{
+	return in;
+}
+
+Token_variable_name_list* Tree_transform::pre_variable_name_list(Token_variable_name_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_variable_name_list(Token_variable_name_list* in)
+{
+	Token_variable_name_list* new_v = new Token_variable_name_list;
+	List<Token_variable_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+Token_variable_name_list* Tree_transform::post_variable_name_list(Token_variable_name_list* in)
+{
+	return in;
+}
+
+AST_expr_list* Tree_transform::pre_expr_list(AST_expr_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_expr_list(AST_expr_list* in)
+{
+	AST_expr_list* new_v = new AST_expr_list;
+	List<AST_expr*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_expr_list* Tree_transform::post_expr_list(AST_expr_list* in)
+{
+	return in;
+}
+
+AST_attr_mod_list* Tree_transform::pre_attr_mod_list(AST_attr_mod_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_attr_mod_list(AST_attr_mod_list* in)
+{
+	AST_attr_mod_list* new_v = new AST_attr_mod_list;
+	List<AST_attr_mod*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_attr_mod_list* Tree_transform::post_attr_mod_list(AST_attr_mod_list* in)
+{
+	return in;
+}
+
+AST_variable_list* Tree_transform::pre_variable_list(AST_variable_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_variable_list(AST_variable_list* in)
+{
+	AST_variable_list* new_v = new AST_variable_list;
+	List<AST_variable*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_variable_list* Tree_transform::post_variable_list(AST_variable_list* in)
 {
 	return in;
 }
@@ -1203,6 +1443,30 @@ AST_directive_list* Tree_transform::post_directive_list(AST_directive_list* in)
 	return in;
 }
 
+Token_directive_name_list* Tree_transform::pre_directive_name_list(Token_directive_name_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_directive_name_list(Token_directive_name_list* in)
+{
+	Token_directive_name_list* new_v = new Token_directive_name_list;
+	List<Token_directive_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+Token_directive_name_list* Tree_transform::post_directive_name_list(Token_directive_name_list* in)
+{
+	return in;
+}
+
 AST_catch_list* Tree_transform::pre_catch_list(AST_catch_list* in)
 {
 	return in;
@@ -1226,6 +1490,30 @@ void Tree_transform::children_catch_list(AST_catch_list* in)
 }
 
 AST_catch_list* Tree_transform::post_catch_list(AST_catch_list* in)
+{
+	return in;
+}
+
+AST_list_elements_list* Tree_transform::pre_list_elements_list(AST_list_elements_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_list_elements_list(AST_list_elements_list* in)
+{
+	AST_list_elements_list* new_v = new AST_list_elements_list;
+	List<AST_list_elements*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_list_elements_list* Tree_transform::post_list_elements_list(AST_list_elements_list* in)
 {
 	return in;
 }
@@ -1254,15 +1542,15 @@ AST_list_element_list* Tree_transform::post_list_element_list(AST_list_element_l
 	return in;
 }
 
-AST_expr_list* Tree_transform::pre_expr_list(AST_expr_list* in)
+Token_cast_list* Tree_transform::pre_cast_list(Token_cast_list* in)
 {
 	return in;
 }
 
-void Tree_transform::children_expr_list(AST_expr_list* in)
+void Tree_transform::children_cast_list(Token_cast_list* in)
 {
-	AST_expr_list* new_v = new AST_expr_list;
-	List<AST_expr*>::const_iterator i;
+	Token_cast_list* new_v = new Token_cast_list;
+	List<Token_cast*>::const_iterator i;
 	for(i = in->begin(); i != in->end(); i++)
 		if(*i)
 			new_v->push_back((*i)->transform(this));
@@ -1273,7 +1561,127 @@ void Tree_transform::children_expr_list(AST_expr_list* in)
 	in->push_back_all(new_v);
 }
 
-AST_expr_list* Tree_transform::post_expr_list(AST_expr_list* in)
+Token_cast_list* Tree_transform::post_cast_list(Token_cast_list* in)
+{
+	return in;
+}
+
+Token_op_list* Tree_transform::pre_op_list(Token_op_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_op_list(Token_op_list* in)
+{
+	Token_op_list* new_v = new Token_op_list;
+	List<Token_op*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+Token_op_list* Tree_transform::post_op_list(Token_op_list* in)
+{
+	return in;
+}
+
+Token_constant_name_list* Tree_transform::pre_constant_name_list(Token_constant_name_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_constant_name_list(Token_constant_name_list* in)
+{
+	Token_constant_name_list* new_v = new Token_constant_name_list;
+	List<Token_constant_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+Token_constant_name_list* Tree_transform::post_constant_name_list(Token_constant_name_list* in)
+{
+	return in;
+}
+
+AST_class_name_list* Tree_transform::pre_class_name_list(AST_class_name_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_class_name_list(AST_class_name_list* in)
+{
+	AST_class_name_list* new_v = new AST_class_name_list;
+	List<AST_class_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_class_name_list* Tree_transform::post_class_name_list(AST_class_name_list* in)
+{
+	return in;
+}
+
+AST_target_list* Tree_transform::pre_target_list(AST_target_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_target_list(AST_target_list* in)
+{
+	AST_target_list* new_v = new AST_target_list;
+	List<AST_target*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_target_list* Tree_transform::post_target_list(AST_target_list* in)
+{
+	return in;
+}
+
+AST_variable_name_list* Tree_transform::pre_variable_name_list(AST_variable_name_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_variable_name_list(AST_variable_name_list* in)
+{
+	AST_variable_name_list* new_v = new AST_variable_name_list;
+	List<AST_variable_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_variable_name_list* Tree_transform::post_variable_name_list(AST_variable_name_list* in)
 {
 	return in;
 }
@@ -1301,6 +1709,30 @@ void Tree_transform::children_array_elem_list(AST_array_elem_list* in)
 }
 
 AST_array_elem_list* Tree_transform::post_array_elem_list(AST_array_elem_list* in)
+{
+	return in;
+}
+
+AST_method_name_list* Tree_transform::pre_method_name_list(AST_method_name_list* in)
+{
+	return in;
+}
+
+void Tree_transform::children_method_name_list(AST_method_name_list* in)
+{
+	AST_method_name_list* new_v = new AST_method_name_list;
+	List<AST_method_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i)
+			new_v->push_back((*i)->transform(this));
+		else
+			new_v->push_back(NULL);
+	
+	in->clear();
+	in->push_back_all(new_v);
+}
+
+AST_method_name_list* Tree_transform::post_method_name_list(AST_method_name_list* in)
 {
 	return in;
 }

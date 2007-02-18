@@ -1022,6 +1022,51 @@ void Tree_visitor::post_member_list(AST_member_list* in)
 {
 }
 
+void Tree_visitor::pre_class_mod_list(AST_class_mod_list* in)
+{
+}
+
+void Tree_visitor::children_class_mod_list(AST_class_mod_list* in)
+{
+	List<AST_class_mod*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_class_mod_list(AST_class_mod_list* in)
+{
+}
+
+void Tree_visitor::pre_class_name_list(Token_class_name_list* in)
+{
+}
+
+void Tree_visitor::children_class_name_list(Token_class_name_list* in)
+{
+	List<Token_class_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_class_name_list(Token_class_name_list* in)
+{
+}
+
+void Tree_visitor::pre_signature_list(AST_signature_list* in)
+{
+}
+
+void Tree_visitor::children_signature_list(AST_signature_list* in)
+{
+	List<AST_signature*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_signature_list(AST_signature_list* in)
+{
+}
+
 void Tree_visitor::pre_statement_list(AST_statement_list* in)
 {
 }
@@ -1037,6 +1082,36 @@ void Tree_visitor::post_statement_list(AST_statement_list* in)
 {
 }
 
+void Tree_visitor::pre_method_mod_list(AST_method_mod_list* in)
+{
+}
+
+void Tree_visitor::children_method_mod_list(AST_method_mod_list* in)
+{
+	List<AST_method_mod*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_method_mod_list(AST_method_mod_list* in)
+{
+}
+
+void Tree_visitor::pre_method_name_list(Token_method_name_list* in)
+{
+}
+
+void Tree_visitor::children_method_name_list(Token_method_name_list* in)
+{
+	List<Token_method_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_method_name_list(Token_method_name_list* in)
+{
+}
+
 void Tree_visitor::pre_formal_parameter_list(AST_formal_parameter_list* in)
 {
 }
@@ -1049,6 +1124,81 @@ void Tree_visitor::children_formal_parameter_list(AST_formal_parameter_list* in)
 }
 
 void Tree_visitor::post_formal_parameter_list(AST_formal_parameter_list* in)
+{
+}
+
+void Tree_visitor::pre_type_list(AST_type_list* in)
+{
+}
+
+void Tree_visitor::children_type_list(AST_type_list* in)
+{
+	List<AST_type*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_type_list(AST_type_list* in)
+{
+}
+
+void Tree_visitor::pre_variable_name_list(Token_variable_name_list* in)
+{
+}
+
+void Tree_visitor::children_variable_name_list(Token_variable_name_list* in)
+{
+	List<Token_variable_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_variable_name_list(Token_variable_name_list* in)
+{
+}
+
+void Tree_visitor::pre_expr_list(AST_expr_list* in)
+{
+}
+
+void Tree_visitor::children_expr_list(AST_expr_list* in)
+{
+	List<AST_expr*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_expr_list(AST_expr_list* in)
+{
+}
+
+void Tree_visitor::pre_attr_mod_list(AST_attr_mod_list* in)
+{
+}
+
+void Tree_visitor::children_attr_mod_list(AST_attr_mod_list* in)
+{
+	List<AST_attr_mod*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_attr_mod_list(AST_attr_mod_list* in)
+{
+}
+
+void Tree_visitor::pre_variable_list(AST_variable_list* in)
+{
+}
+
+void Tree_visitor::children_variable_list(AST_variable_list* in)
+{
+	List<AST_variable*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_variable_list(AST_variable_list* in)
 {
 }
 
@@ -1082,6 +1232,21 @@ void Tree_visitor::post_directive_list(AST_directive_list* in)
 {
 }
 
+void Tree_visitor::pre_directive_name_list(Token_directive_name_list* in)
+{
+}
+
+void Tree_visitor::children_directive_name_list(Token_directive_name_list* in)
+{
+	List<Token_directive_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_directive_name_list(Token_directive_name_list* in)
+{
+}
+
 void Tree_visitor::pre_catch_list(AST_catch_list* in)
 {
 }
@@ -1094,6 +1259,21 @@ void Tree_visitor::children_catch_list(AST_catch_list* in)
 }
 
 void Tree_visitor::post_catch_list(AST_catch_list* in)
+{
+}
+
+void Tree_visitor::pre_list_elements_list(AST_list_elements_list* in)
+{
+}
+
+void Tree_visitor::children_list_elements_list(AST_list_elements_list* in)
+{
+	List<AST_list_elements*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_list_elements_list(AST_list_elements_list* in)
 {
 }
 
@@ -1112,18 +1292,93 @@ void Tree_visitor::post_list_element_list(AST_list_element_list* in)
 {
 }
 
-void Tree_visitor::pre_expr_list(AST_expr_list* in)
+void Tree_visitor::pre_cast_list(Token_cast_list* in)
 {
 }
 
-void Tree_visitor::children_expr_list(AST_expr_list* in)
+void Tree_visitor::children_cast_list(Token_cast_list* in)
 {
-	List<AST_expr*>::const_iterator i;
+	List<Token_cast*>::const_iterator i;
 	for(i = in->begin(); i != in->end(); i++)
 		if(*i) (*i)->visit(this);
 }
 
-void Tree_visitor::post_expr_list(AST_expr_list* in)
+void Tree_visitor::post_cast_list(Token_cast_list* in)
+{
+}
+
+void Tree_visitor::pre_op_list(Token_op_list* in)
+{
+}
+
+void Tree_visitor::children_op_list(Token_op_list* in)
+{
+	List<Token_op*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_op_list(Token_op_list* in)
+{
+}
+
+void Tree_visitor::pre_constant_name_list(Token_constant_name_list* in)
+{
+}
+
+void Tree_visitor::children_constant_name_list(Token_constant_name_list* in)
+{
+	List<Token_constant_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_constant_name_list(Token_constant_name_list* in)
+{
+}
+
+void Tree_visitor::pre_class_name_list(AST_class_name_list* in)
+{
+}
+
+void Tree_visitor::children_class_name_list(AST_class_name_list* in)
+{
+	List<AST_class_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_class_name_list(AST_class_name_list* in)
+{
+}
+
+void Tree_visitor::pre_target_list(AST_target_list* in)
+{
+}
+
+void Tree_visitor::children_target_list(AST_target_list* in)
+{
+	List<AST_target*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_target_list(AST_target_list* in)
+{
+}
+
+void Tree_visitor::pre_variable_name_list(AST_variable_name_list* in)
+{
+}
+
+void Tree_visitor::children_variable_name_list(AST_variable_name_list* in)
+{
+	List<AST_variable_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_variable_name_list(AST_variable_name_list* in)
 {
 }
 
@@ -1139,6 +1394,21 @@ void Tree_visitor::children_array_elem_list(AST_array_elem_list* in)
 }
 
 void Tree_visitor::post_array_elem_list(AST_array_elem_list* in)
+{
+}
+
+void Tree_visitor::pre_method_name_list(AST_method_name_list* in)
+{
+}
+
+void Tree_visitor::children_method_name_list(AST_method_name_list* in)
+{
+	List<AST_method_name*>::const_iterator i;
+	for(i = in->begin(); i != in->end(); i++)
+		if(*i) (*i)->visit(this);
+}
+
+void Tree_visitor::post_method_name_list(AST_method_name_list* in)
 {
 }
 
