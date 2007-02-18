@@ -1,6 +1,8 @@
 <chapter id="treetutorial3">
-
 <title>Restructuring the Tree</title>
+
+<section>
+<title></title>
 
 <para>Now that we have seen in <xref linkend="treetutorial1"> how we can
 traverse the tree, and in <xref linkend="treetutorial2"> how we can modify
@@ -59,6 +61,7 @@ $a = "foo " . $b . "";
 <code>Remove_concat_null</code> transform cleans this up. In this tutorial we
 will explain how this transform can be written. </para>
 
+</section>
 <section>
 
 <title> Introducing the <code>Tree_transform</code> API </title>

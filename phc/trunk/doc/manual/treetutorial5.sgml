@@ -2,6 +2,9 @@
 
 <title>Modifying the Traversal Order</title>
 
+<section>
+<title></title>
+
 <para> As explained in the previous tutorials (in particular, <xref
 linkend="treetutorial1" endterm="treetutorial1">), when a
 <code>Tree_visitor</code> traverses a tree, it first calls <code>pre_xxx</code>
@@ -57,6 +60,7 @@ to <code>true</code> in between visiting the children of the
 <emphasis>false</emphasis> branch. To be able to do this, we need to modify
 <code>children_if</code>, as explained in the next section. </para>
 
+</section>
 <section>
 
 <title> The Solution </title>

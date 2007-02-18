@@ -1,6 +1,9 @@
 <chapter id="treetutorial6">
 <title>Returning Lists</title>
 
+<section>
+<title></title>
+
 <para> In this tutorial we will develop step-by-step a transform that expands
 <code>include</code> statements. For example, if <filename>b.php</filename> is
 </para>
@@ -37,6 +40,7 @@ is <filename>process_ast/Process_includes.cpp</filename>. The transform we will
 develop here is available as
 <filename>plugins/tutorials/Expand_includes.la</filename>. </para>
 
+</section>
 <section>
 
 <title> Deleting Nodes </title>

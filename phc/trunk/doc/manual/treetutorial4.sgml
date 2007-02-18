@@ -2,6 +2,9 @@
 
 <title>Using State</title>
 
+<section>
+<title></title>
+
 <para> This tutorial explains an advanced feature of pattern matching, and
 shows an important technique in writing tree transforms: the use of state.
 Suppose we are continuing the refactoring tool that we began in <xref
@@ -49,6 +52,7 @@ Here is a simple example: </para>
 ?&gt;
 </programlisting>
 
+</section>
 <section>
 
 <title>The Implementation</title>

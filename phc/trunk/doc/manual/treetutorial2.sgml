@@ -2,6 +2,10 @@
 
 <title>Modifying Tree Nodes</title>
 
+<section>
+
+<title></title>
+
 <para> Now that we have seen in <xref linkend="treetutorial1"> how to inspect
 the tree, in this tutorial we will look at modifying the tree. The task we set
 ourselves is: replace all calls to <code>mysql_connect</code> by calls to
@@ -19,6 +23,7 @@ run &phc as follows: </para>
 phc --run plugins/tutorials/MySQL2DBX.la --dump-php test.php
 </programlisting>
 
+</section>
 <section>
 
 <title>First Attempt</title>

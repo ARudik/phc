@@ -2,6 +2,10 @@
 
 <title>Traversing the Tree</title>
 
+<section>
+
+<title></title>
+
 <para> In <xref linkend="gettingstarted">, we explained that &phc represents
 PHP scripts internally as an abstract syntax tree, and that the structure of
 this tree is determined by the <xref linkend="grammar" endterm="grammar">. We
@@ -32,6 +36,8 @@ phc --run plugins/tutorials/count_function_calls_difficult.la hello.php
 <screen>
 phc --run plugins/tutorials/count_function_calls_easy.la hello.php
 </screen>
+
+</section>
 
 <section>
 
