@@ -20,6 +20,7 @@ require_once ("lib/header.php");
 
 $phc = get_phc ();
 $php = get_php ();
+$phc_compile_plugin = get_phc_compile_plugin ();
 
 require_once ("lib/test.php");
 require_once ("lib/plugin_test.php");
@@ -32,6 +33,7 @@ if ($opt_installed)
 {
 	$phc = "$bindir/phc";
 	$plugin_dir = "$pkglibdir/plugins";
+	$phc_compile_plugin = "$bindir/phc_compile_plugin";
 }
 
 $tests = array ();
@@ -52,6 +54,7 @@ require_once ("regression_dump_php.php");
 require_once ("reparse_unparsed.php");
 require_once ("source_vs_semantic_values.php"); // dont use plugin_test here
 require_once ("xml_roundtrip.php"); // dont use plugin_test here
+require_once ("compile_plugin_test.php");
 
 if (!$opt_no_delete)
 {

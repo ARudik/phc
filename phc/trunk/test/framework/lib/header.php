@@ -25,6 +25,20 @@ function get_phc ()
 
 }
 
+function get_phc_compile_plugin ()
+{
+	// first check that this isnt being run from the wrong directory (the right directory contains ./phc - if you get this far you have the tests)
+	$phc_compile_plugin = "src/phc_compile_plugin";
+	if (!file_exists($phc_compile_plugin) and is_file($phc_compile_plugin) and is_executable($phc_compile_plugin))
+	{
+		$cwd = getcwd ();
+		die ("Error: The current directory, $cwd, does not contain the phc executable '$phc'\n");
+	}
+
+	return $phc_compile_plugin;
+
+}
+
 function get_php ()
 {
 	global $php_exe;

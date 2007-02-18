@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * phc -- the open source PHP compiler
+ * See license/README.is_license for licensing information
+ * Base class for tests
+ */
 abstract class Test
 {
 	function __construct ()
