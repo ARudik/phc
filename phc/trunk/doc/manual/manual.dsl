@@ -14,9 +14,25 @@
 		(process-children)
 	)
 )
-(element token
+
+(element reserved 
 	(make sequence
 		font-weight: 'bold
+		(process-children)
+	)
+)
+
+(element code
+	(make sequence
+		font-family-name: %mono-font-family%
+		(process-children)
+	)
+)
+
+(element boxed
+	(make sequence
+		;; This doesn't appear to work
+		box-type: 'border
 		(process-children)
 	)
 )
@@ -53,9 +69,24 @@
 	)
 )
 
-(element token
+(element reserved 
 	(make element 
 		gi:"b" 
+		(process-children)
+	)
+)
+
+(element code
+	(make element
+		gi:"tt"
+		(process-children)
+	)
+)
+
+(element boxed 
+	(make element
+		gi:"span"
+		attributes: '(("style" "border: solid 1px black; padding: 1px;"))
 		(process-children)
 	)
 )
