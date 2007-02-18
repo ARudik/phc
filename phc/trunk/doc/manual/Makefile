@@ -13,7 +13,7 @@ manual.dvi: manual.tex
 manual.ps: manual.dvi
 	dvips -o manual.ps manual.dvi
 
-manual.pdf: manual.pdf
+manual.pdf: manual.tex
 	pdfjadetex manual.tex
 
 clean:
