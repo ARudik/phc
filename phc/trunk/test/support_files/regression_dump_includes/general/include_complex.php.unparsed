@@ -198,13 +198,13 @@
    // X::foo
    $x->foo();
    // X::foo
-   $x->{$f}();
+   $x->$f();
    // X::foo
    $x->{'f' . 'oo'}();
    // foo
    $x->a[0]();
    // X::foo
-   $x->{$a[0]}();
+   $x->$a[0]();
    var_dump($f);
    var_dump($a);
    var_dump($x);

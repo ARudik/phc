@@ -21,6 +21,7 @@
 
 bugs/.*									short interpretable
 codegen/.*								short interpretable
+dynamic/.*								short interpretable
 horrible/.*								short interpretable
 general/.*								short interpretable
 
