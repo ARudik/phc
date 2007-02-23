@@ -14,7 +14,8 @@ using namespace std;
 #include "lib/Object.h"
 #include "lib/Boolean.h"
 #include "lib/Integer.h"
-#include "lib/String.h"
+
+class String;
 
 class AttrMap : public map<string, Object*>, virtual public Object
 {

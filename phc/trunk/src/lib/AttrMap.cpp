@@ -6,6 +6,7 @@
  */
 
 #include "AttrMap.h"
+#include "String.h"
 
 AttrMap::AttrMap() : map<string, Object*>() 
 {

@@ -10,6 +10,7 @@
 
 #include <string>
 #include "lib/Object.h"
+#include "lib/AttrMap.h"
 
 using namespace std;
 
@@ -19,14 +20,20 @@ extern Wildcard* WILDCARD;
 class String : public string, virtual public Object
 {
 public:
-	String() {}
-	String(const string& s) : string(s) {}
-	String(const char* s) : string(s) {}
-	String(const char* s, size_t n) : string(s, n) {}
+	AttrMap* attrs;
+
+public:
+	String() : attrs(NULL) {}
+	String(const string& s) : string(s), attrs(NULL) {}
+	String(const char* s) : string(s), attrs(NULL) {}
+	String(const char* s, size_t n) : string(s, n), attrs(NULL) {}
 	String* deep_clone(Object* partial_result = NULL)
 	{
+		String* clone;
 		assert(!partial_result);
-		return new String(*this);
+		clone = new String(*this);
+		if(attrs)
+			clone->attrs = attrs->deep_clone();
 	}	
 	virtual bool try_match(Object* pattern)
 	{
