@@ -81,112 +81,98 @@ nobase_pkglibLTLIBRARIES_INSTALL = $(install_sh) -c
 LTLIBRARIES = $(nobase_pkglib_LTLIBRARIES)
 plugins_tests_canonical_unparser_la_LIBADD =
 am_plugins_tests_canonical_unparser_la_OBJECTS =  \
-	plugins_tests_canonical_unparser_la-canonical_unparser.lo
+	canonical_unparser.lo
 plugins_tests_canonical_unparser_la_OBJECTS =  \
 	$(am_plugins_tests_canonical_unparser_la_OBJECTS)
 am__dirstamp = $(am__leading_dot)dirstamp
 plugins_tests_cloning_la_LIBADD =
-am_plugins_tests_cloning_la_OBJECTS =  \
-	plugins_tests_cloning_la-cloning.lo
+am_plugins_tests_cloning_la_OBJECTS = cloning.lo
 plugins_tests_cloning_la_OBJECTS =  \
 	$(am_plugins_tests_cloning_la_OBJECTS)
 plugins_tests_line_numbers_la_LIBADD =
-am_plugins_tests_line_numbers_la_OBJECTS =  \
-	plugins_tests_line_numbers_la-line_numbers.lo
+am_plugins_tests_line_numbers_la_OBJECTS = line_numbers.lo
 plugins_tests_line_numbers_la_OBJECTS =  \
 	$(am_plugins_tests_line_numbers_la_OBJECTS)
 plugins_tests_linear_la_LIBADD =
-am_plugins_tests_linear_la_OBJECTS =  \
-	plugins_tests_linear_la-linear.lo
+am_plugins_tests_linear_la_OBJECTS = linear.lo
 plugins_tests_linear_la_OBJECTS =  \
 	$(am_plugins_tests_linear_la_OBJECTS)
 plugins_tests_pre_vs_post_count_la_LIBADD =
-am_plugins_tests_pre_vs_post_count_la_OBJECTS =  \
-	plugins_tests_pre_vs_post_count_la-pre_vs_post_count.lo
+am_plugins_tests_pre_vs_post_count_la_OBJECTS = pre_vs_post_count.lo
 plugins_tests_pre_vs_post_count_la_OBJECTS =  \
 	$(am_plugins_tests_pre_vs_post_count_la_OBJECTS)
 plugins_tests_source_vs_semantic_values_la_LIBADD =
-am_plugins_tests_source_vs_semantic_values_la_OBJECTS = plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.lo
+am_plugins_tests_source_vs_semantic_values_la_OBJECTS =  \
+	source_vs_semantic_values.lo
 plugins_tests_source_vs_semantic_values_la_OBJECTS =  \
 	$(am_plugins_tests_source_vs_semantic_values_la_OBJECTS)
 plugins_tests_xml_roundtrip_la_LIBADD =
-am_plugins_tests_xml_roundtrip_la_OBJECTS =  \
-	plugins_tests_xml_roundtrip_la-xml_roundtrip.lo
+am_plugins_tests_xml_roundtrip_la_OBJECTS = xml_roundtrip.lo
 plugins_tests_xml_roundtrip_la_OBJECTS =  \
 	$(am_plugins_tests_xml_roundtrip_la_OBJECTS)
 plugins_tools_purity_test_la_LIBADD =
-am_plugins_tools_purity_test_la_OBJECTS =  \
-	plugins_tools_purity_test_la-purity_test.lo
+am_plugins_tools_purity_test_la_OBJECTS = purity_test.lo
 plugins_tools_purity_test_la_OBJECTS =  \
 	$(am_plugins_tools_purity_test_la_OBJECTS)
 plugins_tutorials_Comment_ifs_la_LIBADD =
-am_plugins_tutorials_Comment_ifs_la_OBJECTS =  \
-	plugins_tutorials_Comment_ifs_la-Comment_ifs.lo
+am_plugins_tutorials_Comment_ifs_la_OBJECTS = Comment_ifs.lo
 plugins_tutorials_Comment_ifs_la_OBJECTS =  \
 	$(am_plugins_tutorials_Comment_ifs_la_OBJECTS)
 plugins_tutorials_Expand_includes_la_LIBADD =
-am_plugins_tutorials_Expand_includes_la_OBJECTS =  \
-	plugins_tutorials_Expand_includes_la-Expand_includes.lo
+am_plugins_tutorials_Expand_includes_la_OBJECTS = Expand_includes.lo
 plugins_tutorials_Expand_includes_la_OBJECTS =  \
 	$(am_plugins_tutorials_Expand_includes_la_OBJECTS)
 plugins_tutorials_InsertDB_la_LIBADD =
-am_plugins_tutorials_InsertDB_la_OBJECTS =  \
-	plugins_tutorials_InsertDB_la-InsertDB.lo
+am_plugins_tutorials_InsertDB_la_OBJECTS = InsertDB.lo
 plugins_tutorials_InsertDB_la_OBJECTS =  \
 	$(am_plugins_tutorials_InsertDB_la_OBJECTS)
 plugins_tutorials_MySQL2DBX_la_LIBADD =
-am_plugins_tutorials_MySQL2DBX_la_OBJECTS =  \
-	plugins_tutorials_MySQL2DBX_la-MySQL2DBX.lo
+am_plugins_tutorials_MySQL2DBX_la_OBJECTS = MySQL2DBX.lo
 plugins_tutorials_MySQL2DBX_la_OBJECTS =  \
 	$(am_plugins_tutorials_MySQL2DBX_la_OBJECTS)
 plugins_tutorials_count_classes_la_LIBADD =
-am_plugins_tutorials_count_classes_la_OBJECTS =  \
-	plugins_tutorials_count_classes_la-count_classes.lo
+am_plugins_tutorials_count_classes_la_OBJECTS = count_classes.lo
 plugins_tutorials_count_classes_la_OBJECTS =  \
 	$(am_plugins_tutorials_count_classes_la_OBJECTS)
 plugins_tutorials_count_function_calls_difficult_la_LIBADD =
-am_plugins_tutorials_count_function_calls_difficult_la_OBJECTS = plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.lo
+am_plugins_tutorials_count_function_calls_difficult_la_OBJECTS =  \
+	count_function_calls_difficult.lo
 plugins_tutorials_count_function_calls_difficult_la_OBJECTS = $(am_plugins_tutorials_count_function_calls_difficult_la_OBJECTS)
 plugins_tutorials_count_function_calls_easy_la_LIBADD =
-am_plugins_tutorials_count_function_calls_easy_la_OBJECTS = plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.lo
+am_plugins_tutorials_count_function_calls_easy_la_OBJECTS =  \
+	count_function_calls_easy.lo
 plugins_tutorials_count_function_calls_easy_la_OBJECTS =  \
 	$(am_plugins_tutorials_count_function_calls_easy_la_OBJECTS)
 plugins_tutorials_count_statements_la_LIBADD =
 am_plugins_tutorials_count_statements_la_OBJECTS =  \
-	plugins_tutorials_count_statements_la-count_statements.lo
+	count_statements.lo
 plugins_tutorials_count_statements_la_OBJECTS =  \
 	$(am_plugins_tutorials_count_statements_la_OBJECTS)
 plugins_tutorials_helloworld_la_LIBADD =
-am_plugins_tutorials_helloworld_la_OBJECTS =  \
-	plugins_tutorials_helloworld_la-helloworld.lo
+am_plugins_tutorials_helloworld_la_OBJECTS = helloworld.lo
 plugins_tutorials_helloworld_la_OBJECTS =  \
 	$(am_plugins_tutorials_helloworld_la_OBJECTS)
 plugins_tutorials_show_traversal_order_la_LIBADD =
-am_plugins_tutorials_show_traversal_order_la_OBJECTS = plugins_tutorials_show_traversal_order_la-show_traversal_order.lo
+am_plugins_tutorials_show_traversal_order_la_OBJECTS =  \
+	show_traversal_order.lo
 plugins_tutorials_show_traversal_order_la_OBJECTS =  \
 	$(am_plugins_tutorials_show_traversal_order_la_OBJECTS)
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_src_phc_OBJECTS = getopt1.$(OBJEXT) getopt.$(OBJEXT) \
-	src_phc-Generate_C.$(OBJEXT) src_phc-Prep.$(OBJEXT) \
-	src_phc-ast.$(OBJEXT) cmdline.$(OBJEXT) keywords.$(OBJEXT) \
-	src_phc-lex.yy.$(OBJEXT) src_phc-php_parser.tab.$(OBJEXT) \
-	src_phc-Tree_transform.$(OBJEXT) \
-	src_phc-Tree_visitor.$(OBJEXT) src_phc-AttrMap.$(OBJEXT) \
-	src_phc-base64.$(OBJEXT) src_phc-demangle.$(OBJEXT) \
-	src_phc-error.$(OBJEXT) src_phc-String.$(OBJEXT) \
-	src_phc-parse.$(OBJEXT) src_phc-PHP_context.$(OBJEXT) \
-	src_phc-XML_parser.$(OBJEXT) src_phc-phc.$(OBJEXT) \
-	src_phc-DOT_unparser.$(OBJEXT) \
-	src_phc-Invocation_targets.$(OBJEXT) \
-	src_phc-PHP_unparser.$(OBJEXT) src_phc-process_ast.$(OBJEXT) \
-	src_phc-Process_includes.$(OBJEXT) \
-	src_phc-Remove_concat_null.$(OBJEXT) \
-	src_phc-Remove_parser_temporaries.$(OBJEXT) \
-	src_phc-Token_conversion.$(OBJEXT) \
-	src_phc-Variable_targets.$(OBJEXT) \
-	src_phc-Visit_everything.$(OBJEXT) \
-	src_phc-XML_unparser.$(OBJEXT)
+	Generate_C.$(OBJEXT) Prep.$(OBJEXT) ast.$(OBJEXT) \
+	cmdline.$(OBJEXT) keywords.$(OBJEXT) lex.yy.$(OBJEXT) \
+	php_parser.tab.$(OBJEXT) Tree_transform.$(OBJEXT) \
+	Tree_visitor.$(OBJEXT) AttrMap.$(OBJEXT) base64.$(OBJEXT) \
+	demangle.$(OBJEXT) error.$(OBJEXT) String.$(OBJEXT) \
+	parse.$(OBJEXT) PHP_context.$(OBJEXT) XML_parser.$(OBJEXT) \
+	phc.$(OBJEXT) DOT_unparser.$(OBJEXT) \
+	Invocation_targets.$(OBJEXT) PHP_unparser.$(OBJEXT) \
+	process_ast.$(OBJEXT) Process_includes.$(OBJEXT) \
+	Remove_concat_null.$(OBJEXT) \
+	Remove_parser_temporaries.$(OBJEXT) Token_conversion.$(OBJEXT) \
+	Variable_targets.$(OBJEXT) Visit_everything.$(OBJEXT) \
+	XML_unparser.$(OBJEXT)
 src_phc_OBJECTS = $(am_src_phc_OBJECTS)
 am__DEPENDENCIES_1 =
 binSCRIPT_INSTALL = $(INSTALL_SCRIPT)
@@ -408,7 +394,7 @@ AM_CPPFLAGS = \
 
 # By using CXXFLAGS we avoid warnings in generated_src, which we dont want to
 # hear about. 
-src_phc_CXXFLAGS = -Wextra -Wno-unused-parameter
+AM_CXXFLAGS = -Wextra -Wno-unused-parameter
 
 # Special libtool flag for later plugin loading
 src_phc_LDFLAGS = -export-dynamic
@@ -535,8 +521,6 @@ strangelib_HEADERS = \
 	src/lib/Object.h		\
 	src/lib/String.h
 
-
-# TODO prepend dist onto those we distribute
 nobase_pkglib_LTLIBRARIES = plugins/tests/canonical_unparser.la \
 	plugins/tests/cloning.la plugins/tests/linear.la \
 	plugins/tests/line_numbers.la \
@@ -553,61 +537,42 @@ nobase_pkglib_LTLIBRARIES = plugins/tests/canonical_unparser.la \
 	plugins/tutorials/MySQL2DBX.la \
 	plugins/tutorials/show_traversal_order.la
 PLUGIN_LDFLAGS = -module -avoid-version
-PLUGIN_CXXFLAGS = -Wextra -Wno-unused-parameter
 plugins_tests_canonical_unparser_la_SOURCES = plugins/tests/canonical_unparser.cpp
-plugins_tests_canonical_unparser_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tests_canonical_unparser_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
+plugins_tests_canonical_unparser_la_LDFLAGS = -module -avoid-version 
 plugins_tests_cloning_la_SOURCES = plugins/tests/cloning.cpp
 plugins_tests_cloning_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tests_cloning_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tests_linear_la_SOURCES = plugins/tests/linear.cpp
 plugins_tests_linear_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tests_linear_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tests_line_numbers_la_SOURCES = plugins/tests/line_numbers.cpp
 plugins_tests_line_numbers_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tests_line_numbers_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tests_pre_vs_post_count_la_SOURCES = plugins/tests/pre_vs_post_count.cpp
 plugins_tests_pre_vs_post_count_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tests_pre_vs_post_count_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tests_source_vs_semantic_values_la_SOURCES = plugins/tests/source_vs_semantic_values.cpp
 plugins_tests_source_vs_semantic_values_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tests_source_vs_semantic_values_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tests_xml_roundtrip_la_SOURCES = plugins/tests/xml_roundtrip.cpp
 plugins_tests_xml_roundtrip_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tests_xml_roundtrip_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tools_purity_test_la_SOURCES = plugins/tools/purity_test.cpp
 plugins_tools_purity_test_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tools_purity_test_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_Comment_ifs_la_SOURCES = plugins/tutorials/Comment_ifs.cpp
 plugins_tutorials_Comment_ifs_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_Comment_ifs_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_count_classes_la_SOURCES = plugins/tutorials/count_classes.cpp
 plugins_tutorials_count_classes_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_count_classes_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_count_function_calls_difficult_la_SOURCES = plugins/tutorials/count_function_calls_difficult.cpp
 plugins_tutorials_count_function_calls_difficult_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_count_function_calls_difficult_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_count_function_calls_easy_la_SOURCES = plugins/tutorials/count_function_calls_easy.cpp
 plugins_tutorials_count_function_calls_easy_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_count_function_calls_easy_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_count_statements_la_SOURCES = plugins/tutorials/count_statements.cpp
 plugins_tutorials_count_statements_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_count_statements_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_Expand_includes_la_SOURCES = plugins/tutorials/Expand_includes.cpp
 plugins_tutorials_Expand_includes_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_Expand_includes_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_helloworld_la_SOURCES = plugins/tutorials/helloworld.cpp
 plugins_tutorials_helloworld_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_helloworld_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_InsertDB_la_SOURCES = plugins/tutorials/InsertDB.cpp
 plugins_tutorials_InsertDB_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_InsertDB_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_MySQL2DBX_la_SOURCES = plugins/tutorials/MySQL2DBX.cpp
 plugins_tutorials_MySQL2DBX_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_MySQL2DBX_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 plugins_tutorials_show_traversal_order_la_SOURCES = plugins/tutorials/show_traversal_order.cpp
 plugins_tutorials_show_traversal_order_la_LDFLAGS = ${PLUGIN_LDFLAGS}
-plugins_tutorials_show_traversal_order_la_CXXFLAGS = ${PLUGIN_CXXFLAGS}
 
 # Files can be specified by the variables. Directories must be removed using rules.
 # These comments are copied from automake manual, section 13.
@@ -832,55 +797,55 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AttrMap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Comment_ifs.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOT_unparser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Expand_includes.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Generate_C.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InsertDB.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Invocation_targets.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MySQL2DBX.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PHP_context.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PHP_unparser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Prep.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Process_includes.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Remove_concat_null.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Remove_parser_temporaries.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/String.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Token_conversion.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tree_transform.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tree_visitor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Variable_targets.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Visit_everything.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XML_parser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XML_unparser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ast.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/base64.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/canonical_unparser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cloning.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmdline.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/count_classes.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/count_function_calls_difficult.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/count_function_calls_easy.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/count_statements.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/demangle.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getopt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getopt1.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/helloworld.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/keywords.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tests_canonical_unparser_la-canonical_unparser.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tests_cloning_la-cloning.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tests_line_numbers_la-line_numbers.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tests_linear_la-linear.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tests_pre_vs_post_count_la-pre_vs_post_count.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tests_xml_roundtrip_la-xml_roundtrip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tools_purity_test_la-purity_test.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_Comment_ifs_la-Comment_ifs.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_Expand_includes_la-Expand_includes.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_InsertDB_la-InsertDB.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_MySQL2DBX_la-MySQL2DBX.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_count_classes_la-count_classes.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_count_statements_la-count_statements.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_helloworld_la-helloworld.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugins_tutorials_show_traversal_order_la-show_traversal_order.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-AttrMap.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-DOT_unparser.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Generate_C.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Invocation_targets.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-PHP_context.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-PHP_unparser.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Prep.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Process_includes.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Remove_concat_null.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Remove_parser_temporaries.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-String.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Token_conversion.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Tree_transform.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Tree_visitor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Variable_targets.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-Visit_everything.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-XML_parser.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-XML_unparser.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-ast.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-base64.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-demangle.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-error.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-lex.yy.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-parse.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-phc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-php_parser.tab.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/src_phc-process_ast.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lex.yy.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/line_numbers.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/linear.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parse.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/php_parser.tab.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pre_vs_post_count.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/process_ast.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/purity_test.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/show_traversal_order.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/source_vs_semantic_values.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xml_roundtrip.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -980,509 +945,509 @@ keywords.obj: src/generated/keywords.c
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
-plugins_tests_canonical_unparser_la-canonical_unparser.lo: plugins/tests/canonical_unparser.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_canonical_unparser_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tests_canonical_unparser_la-canonical_unparser.lo -MD -MP -MF "$(DEPDIR)/plugins_tests_canonical_unparser_la-canonical_unparser.Tpo" -c -o plugins_tests_canonical_unparser_la-canonical_unparser.lo `test -f 'plugins/tests/canonical_unparser.cpp' || echo '$(srcdir)/'`plugins/tests/canonical_unparser.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tests_canonical_unparser_la-canonical_unparser.Tpo" "$(DEPDIR)/plugins_tests_canonical_unparser_la-canonical_unparser.Plo"; else rm -f "$(DEPDIR)/plugins_tests_canonical_unparser_la-canonical_unparser.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/canonical_unparser.cpp' object='plugins_tests_canonical_unparser_la-canonical_unparser.lo' libtool=yes @AMDEPBACKSLASH@
+canonical_unparser.lo: plugins/tests/canonical_unparser.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT canonical_unparser.lo -MD -MP -MF "$(DEPDIR)/canonical_unparser.Tpo" -c -o canonical_unparser.lo `test -f 'plugins/tests/canonical_unparser.cpp' || echo '$(srcdir)/'`plugins/tests/canonical_unparser.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/canonical_unparser.Tpo" "$(DEPDIR)/canonical_unparser.Plo"; else rm -f "$(DEPDIR)/canonical_unparser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/canonical_unparser.cpp' object='canonical_unparser.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_canonical_unparser_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tests_canonical_unparser_la-canonical_unparser.lo `test -f 'plugins/tests/canonical_unparser.cpp' || echo '$(srcdir)/'`plugins/tests/canonical_unparser.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o canonical_unparser.lo `test -f 'plugins/tests/canonical_unparser.cpp' || echo '$(srcdir)/'`plugins/tests/canonical_unparser.cpp
 
-plugins_tests_cloning_la-cloning.lo: plugins/tests/cloning.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_cloning_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tests_cloning_la-cloning.lo -MD -MP -MF "$(DEPDIR)/plugins_tests_cloning_la-cloning.Tpo" -c -o plugins_tests_cloning_la-cloning.lo `test -f 'plugins/tests/cloning.cpp' || echo '$(srcdir)/'`plugins/tests/cloning.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tests_cloning_la-cloning.Tpo" "$(DEPDIR)/plugins_tests_cloning_la-cloning.Plo"; else rm -f "$(DEPDIR)/plugins_tests_cloning_la-cloning.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/cloning.cpp' object='plugins_tests_cloning_la-cloning.lo' libtool=yes @AMDEPBACKSLASH@
+cloning.lo: plugins/tests/cloning.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT cloning.lo -MD -MP -MF "$(DEPDIR)/cloning.Tpo" -c -o cloning.lo `test -f 'plugins/tests/cloning.cpp' || echo '$(srcdir)/'`plugins/tests/cloning.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/cloning.Tpo" "$(DEPDIR)/cloning.Plo"; else rm -f "$(DEPDIR)/cloning.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/cloning.cpp' object='cloning.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_cloning_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tests_cloning_la-cloning.lo `test -f 'plugins/tests/cloning.cpp' || echo '$(srcdir)/'`plugins/tests/cloning.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o cloning.lo `test -f 'plugins/tests/cloning.cpp' || echo '$(srcdir)/'`plugins/tests/cloning.cpp
 
-plugins_tests_line_numbers_la-line_numbers.lo: plugins/tests/line_numbers.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_line_numbers_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tests_line_numbers_la-line_numbers.lo -MD -MP -MF "$(DEPDIR)/plugins_tests_line_numbers_la-line_numbers.Tpo" -c -o plugins_tests_line_numbers_la-line_numbers.lo `test -f 'plugins/tests/line_numbers.cpp' || echo '$(srcdir)/'`plugins/tests/line_numbers.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tests_line_numbers_la-line_numbers.Tpo" "$(DEPDIR)/plugins_tests_line_numbers_la-line_numbers.Plo"; else rm -f "$(DEPDIR)/plugins_tests_line_numbers_la-line_numbers.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/line_numbers.cpp' object='plugins_tests_line_numbers_la-line_numbers.lo' libtool=yes @AMDEPBACKSLASH@
+line_numbers.lo: plugins/tests/line_numbers.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT line_numbers.lo -MD -MP -MF "$(DEPDIR)/line_numbers.Tpo" -c -o line_numbers.lo `test -f 'plugins/tests/line_numbers.cpp' || echo '$(srcdir)/'`plugins/tests/line_numbers.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/line_numbers.Tpo" "$(DEPDIR)/line_numbers.Plo"; else rm -f "$(DEPDIR)/line_numbers.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/line_numbers.cpp' object='line_numbers.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_line_numbers_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tests_line_numbers_la-line_numbers.lo `test -f 'plugins/tests/line_numbers.cpp' || echo '$(srcdir)/'`plugins/tests/line_numbers.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o line_numbers.lo `test -f 'plugins/tests/line_numbers.cpp' || echo '$(srcdir)/'`plugins/tests/line_numbers.cpp
 
-plugins_tests_linear_la-linear.lo: plugins/tests/linear.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_linear_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tests_linear_la-linear.lo -MD -MP -MF "$(DEPDIR)/plugins_tests_linear_la-linear.Tpo" -c -o plugins_tests_linear_la-linear.lo `test -f 'plugins/tests/linear.cpp' || echo '$(srcdir)/'`plugins/tests/linear.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tests_linear_la-linear.Tpo" "$(DEPDIR)/plugins_tests_linear_la-linear.Plo"; else rm -f "$(DEPDIR)/plugins_tests_linear_la-linear.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/linear.cpp' object='plugins_tests_linear_la-linear.lo' libtool=yes @AMDEPBACKSLASH@
+linear.lo: plugins/tests/linear.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT linear.lo -MD -MP -MF "$(DEPDIR)/linear.Tpo" -c -o linear.lo `test -f 'plugins/tests/linear.cpp' || echo '$(srcdir)/'`plugins/tests/linear.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/linear.Tpo" "$(DEPDIR)/linear.Plo"; else rm -f "$(DEPDIR)/linear.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/linear.cpp' object='linear.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_linear_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tests_linear_la-linear.lo `test -f 'plugins/tests/linear.cpp' || echo '$(srcdir)/'`plugins/tests/linear.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o linear.lo `test -f 'plugins/tests/linear.cpp' || echo '$(srcdir)/'`plugins/tests/linear.cpp
 
-plugins_tests_pre_vs_post_count_la-pre_vs_post_count.lo: plugins/tests/pre_vs_post_count.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_pre_vs_post_count_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tests_pre_vs_post_count_la-pre_vs_post_count.lo -MD -MP -MF "$(DEPDIR)/plugins_tests_pre_vs_post_count_la-pre_vs_post_count.Tpo" -c -o plugins_tests_pre_vs_post_count_la-pre_vs_post_count.lo `test -f 'plugins/tests/pre_vs_post_count.cpp' || echo '$(srcdir)/'`plugins/tests/pre_vs_post_count.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tests_pre_vs_post_count_la-pre_vs_post_count.Tpo" "$(DEPDIR)/plugins_tests_pre_vs_post_count_la-pre_vs_post_count.Plo"; else rm -f "$(DEPDIR)/plugins_tests_pre_vs_post_count_la-pre_vs_post_count.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/pre_vs_post_count.cpp' object='plugins_tests_pre_vs_post_count_la-pre_vs_post_count.lo' libtool=yes @AMDEPBACKSLASH@
+pre_vs_post_count.lo: plugins/tests/pre_vs_post_count.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pre_vs_post_count.lo -MD -MP -MF "$(DEPDIR)/pre_vs_post_count.Tpo" -c -o pre_vs_post_count.lo `test -f 'plugins/tests/pre_vs_post_count.cpp' || echo '$(srcdir)/'`plugins/tests/pre_vs_post_count.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/pre_vs_post_count.Tpo" "$(DEPDIR)/pre_vs_post_count.Plo"; else rm -f "$(DEPDIR)/pre_vs_post_count.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/pre_vs_post_count.cpp' object='pre_vs_post_count.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_pre_vs_post_count_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tests_pre_vs_post_count_la-pre_vs_post_count.lo `test -f 'plugins/tests/pre_vs_post_count.cpp' || echo '$(srcdir)/'`plugins/tests/pre_vs_post_count.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pre_vs_post_count.lo `test -f 'plugins/tests/pre_vs_post_count.cpp' || echo '$(srcdir)/'`plugins/tests/pre_vs_post_count.cpp
 
-plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.lo: plugins/tests/source_vs_semantic_values.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_source_vs_semantic_values_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.lo -MD -MP -MF "$(DEPDIR)/plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.Tpo" -c -o plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.lo `test -f 'plugins/tests/source_vs_semantic_values.cpp' || echo '$(srcdir)/'`plugins/tests/source_vs_semantic_values.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.Tpo" "$(DEPDIR)/plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.Plo"; else rm -f "$(DEPDIR)/plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/source_vs_semantic_values.cpp' object='plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.lo' libtool=yes @AMDEPBACKSLASH@
+source_vs_semantic_values.lo: plugins/tests/source_vs_semantic_values.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT source_vs_semantic_values.lo -MD -MP -MF "$(DEPDIR)/source_vs_semantic_values.Tpo" -c -o source_vs_semantic_values.lo `test -f 'plugins/tests/source_vs_semantic_values.cpp' || echo '$(srcdir)/'`plugins/tests/source_vs_semantic_values.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/source_vs_semantic_values.Tpo" "$(DEPDIR)/source_vs_semantic_values.Plo"; else rm -f "$(DEPDIR)/source_vs_semantic_values.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/source_vs_semantic_values.cpp' object='source_vs_semantic_values.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_source_vs_semantic_values_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tests_source_vs_semantic_values_la-source_vs_semantic_values.lo `test -f 'plugins/tests/source_vs_semantic_values.cpp' || echo '$(srcdir)/'`plugins/tests/source_vs_semantic_values.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o source_vs_semantic_values.lo `test -f 'plugins/tests/source_vs_semantic_values.cpp' || echo '$(srcdir)/'`plugins/tests/source_vs_semantic_values.cpp
 
-plugins_tests_xml_roundtrip_la-xml_roundtrip.lo: plugins/tests/xml_roundtrip.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_xml_roundtrip_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tests_xml_roundtrip_la-xml_roundtrip.lo -MD -MP -MF "$(DEPDIR)/plugins_tests_xml_roundtrip_la-xml_roundtrip.Tpo" -c -o plugins_tests_xml_roundtrip_la-xml_roundtrip.lo `test -f 'plugins/tests/xml_roundtrip.cpp' || echo '$(srcdir)/'`plugins/tests/xml_roundtrip.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tests_xml_roundtrip_la-xml_roundtrip.Tpo" "$(DEPDIR)/plugins_tests_xml_roundtrip_la-xml_roundtrip.Plo"; else rm -f "$(DEPDIR)/plugins_tests_xml_roundtrip_la-xml_roundtrip.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/xml_roundtrip.cpp' object='plugins_tests_xml_roundtrip_la-xml_roundtrip.lo' libtool=yes @AMDEPBACKSLASH@
+xml_roundtrip.lo: plugins/tests/xml_roundtrip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT xml_roundtrip.lo -MD -MP -MF "$(DEPDIR)/xml_roundtrip.Tpo" -c -o xml_roundtrip.lo `test -f 'plugins/tests/xml_roundtrip.cpp' || echo '$(srcdir)/'`plugins/tests/xml_roundtrip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_roundtrip.Tpo" "$(DEPDIR)/xml_roundtrip.Plo"; else rm -f "$(DEPDIR)/xml_roundtrip.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tests/xml_roundtrip.cpp' object='xml_roundtrip.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tests_xml_roundtrip_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tests_xml_roundtrip_la-xml_roundtrip.lo `test -f 'plugins/tests/xml_roundtrip.cpp' || echo '$(srcdir)/'`plugins/tests/xml_roundtrip.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o xml_roundtrip.lo `test -f 'plugins/tests/xml_roundtrip.cpp' || echo '$(srcdir)/'`plugins/tests/xml_roundtrip.cpp
 
-plugins_tools_purity_test_la-purity_test.lo: plugins/tools/purity_test.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tools_purity_test_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tools_purity_test_la-purity_test.lo -MD -MP -MF "$(DEPDIR)/plugins_tools_purity_test_la-purity_test.Tpo" -c -o plugins_tools_purity_test_la-purity_test.lo `test -f 'plugins/tools/purity_test.cpp' || echo '$(srcdir)/'`plugins/tools/purity_test.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tools_purity_test_la-purity_test.Tpo" "$(DEPDIR)/plugins_tools_purity_test_la-purity_test.Plo"; else rm -f "$(DEPDIR)/plugins_tools_purity_test_la-purity_test.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tools/purity_test.cpp' object='plugins_tools_purity_test_la-purity_test.lo' libtool=yes @AMDEPBACKSLASH@
+purity_test.lo: plugins/tools/purity_test.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT purity_test.lo -MD -MP -MF "$(DEPDIR)/purity_test.Tpo" -c -o purity_test.lo `test -f 'plugins/tools/purity_test.cpp' || echo '$(srcdir)/'`plugins/tools/purity_test.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/purity_test.Tpo" "$(DEPDIR)/purity_test.Plo"; else rm -f "$(DEPDIR)/purity_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tools/purity_test.cpp' object='purity_test.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tools_purity_test_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tools_purity_test_la-purity_test.lo `test -f 'plugins/tools/purity_test.cpp' || echo '$(srcdir)/'`plugins/tools/purity_test.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o purity_test.lo `test -f 'plugins/tools/purity_test.cpp' || echo '$(srcdir)/'`plugins/tools/purity_test.cpp
 
-plugins_tutorials_Comment_ifs_la-Comment_ifs.lo: plugins/tutorials/Comment_ifs.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_Comment_ifs_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_Comment_ifs_la-Comment_ifs.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_Comment_ifs_la-Comment_ifs.Tpo" -c -o plugins_tutorials_Comment_ifs_la-Comment_ifs.lo `test -f 'plugins/tutorials/Comment_ifs.cpp' || echo '$(srcdir)/'`plugins/tutorials/Comment_ifs.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_Comment_ifs_la-Comment_ifs.Tpo" "$(DEPDIR)/plugins_tutorials_Comment_ifs_la-Comment_ifs.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_Comment_ifs_la-Comment_ifs.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/Comment_ifs.cpp' object='plugins_tutorials_Comment_ifs_la-Comment_ifs.lo' libtool=yes @AMDEPBACKSLASH@
+Comment_ifs.lo: plugins/tutorials/Comment_ifs.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Comment_ifs.lo -MD -MP -MF "$(DEPDIR)/Comment_ifs.Tpo" -c -o Comment_ifs.lo `test -f 'plugins/tutorials/Comment_ifs.cpp' || echo '$(srcdir)/'`plugins/tutorials/Comment_ifs.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Comment_ifs.Tpo" "$(DEPDIR)/Comment_ifs.Plo"; else rm -f "$(DEPDIR)/Comment_ifs.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/Comment_ifs.cpp' object='Comment_ifs.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_Comment_ifs_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_Comment_ifs_la-Comment_ifs.lo `test -f 'plugins/tutorials/Comment_ifs.cpp' || echo '$(srcdir)/'`plugins/tutorials/Comment_ifs.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Comment_ifs.lo `test -f 'plugins/tutorials/Comment_ifs.cpp' || echo '$(srcdir)/'`plugins/tutorials/Comment_ifs.cpp
 
-plugins_tutorials_Expand_includes_la-Expand_includes.lo: plugins/tutorials/Expand_includes.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_Expand_includes_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_Expand_includes_la-Expand_includes.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_Expand_includes_la-Expand_includes.Tpo" -c -o plugins_tutorials_Expand_includes_la-Expand_includes.lo `test -f 'plugins/tutorials/Expand_includes.cpp' || echo '$(srcdir)/'`plugins/tutorials/Expand_includes.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_Expand_includes_la-Expand_includes.Tpo" "$(DEPDIR)/plugins_tutorials_Expand_includes_la-Expand_includes.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_Expand_includes_la-Expand_includes.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/Expand_includes.cpp' object='plugins_tutorials_Expand_includes_la-Expand_includes.lo' libtool=yes @AMDEPBACKSLASH@
+Expand_includes.lo: plugins/tutorials/Expand_includes.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Expand_includes.lo -MD -MP -MF "$(DEPDIR)/Expand_includes.Tpo" -c -o Expand_includes.lo `test -f 'plugins/tutorials/Expand_includes.cpp' || echo '$(srcdir)/'`plugins/tutorials/Expand_includes.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Expand_includes.Tpo" "$(DEPDIR)/Expand_includes.Plo"; else rm -f "$(DEPDIR)/Expand_includes.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/Expand_includes.cpp' object='Expand_includes.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_Expand_includes_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_Expand_includes_la-Expand_includes.lo `test -f 'plugins/tutorials/Expand_includes.cpp' || echo '$(srcdir)/'`plugins/tutorials/Expand_includes.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Expand_includes.lo `test -f 'plugins/tutorials/Expand_includes.cpp' || echo '$(srcdir)/'`plugins/tutorials/Expand_includes.cpp
 
-plugins_tutorials_InsertDB_la-InsertDB.lo: plugins/tutorials/InsertDB.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_InsertDB_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_InsertDB_la-InsertDB.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_InsertDB_la-InsertDB.Tpo" -c -o plugins_tutorials_InsertDB_la-InsertDB.lo `test -f 'plugins/tutorials/InsertDB.cpp' || echo '$(srcdir)/'`plugins/tutorials/InsertDB.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_InsertDB_la-InsertDB.Tpo" "$(DEPDIR)/plugins_tutorials_InsertDB_la-InsertDB.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_InsertDB_la-InsertDB.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/InsertDB.cpp' object='plugins_tutorials_InsertDB_la-InsertDB.lo' libtool=yes @AMDEPBACKSLASH@
+InsertDB.lo: plugins/tutorials/InsertDB.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT InsertDB.lo -MD -MP -MF "$(DEPDIR)/InsertDB.Tpo" -c -o InsertDB.lo `test -f 'plugins/tutorials/InsertDB.cpp' || echo '$(srcdir)/'`plugins/tutorials/InsertDB.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/InsertDB.Tpo" "$(DEPDIR)/InsertDB.Plo"; else rm -f "$(DEPDIR)/InsertDB.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/InsertDB.cpp' object='InsertDB.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_InsertDB_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_InsertDB_la-InsertDB.lo `test -f 'plugins/tutorials/InsertDB.cpp' || echo '$(srcdir)/'`plugins/tutorials/InsertDB.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o InsertDB.lo `test -f 'plugins/tutorials/InsertDB.cpp' || echo '$(srcdir)/'`plugins/tutorials/InsertDB.cpp
 
-plugins_tutorials_MySQL2DBX_la-MySQL2DBX.lo: plugins/tutorials/MySQL2DBX.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_MySQL2DBX_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_MySQL2DBX_la-MySQL2DBX.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_MySQL2DBX_la-MySQL2DBX.Tpo" -c -o plugins_tutorials_MySQL2DBX_la-MySQL2DBX.lo `test -f 'plugins/tutorials/MySQL2DBX.cpp' || echo '$(srcdir)/'`plugins/tutorials/MySQL2DBX.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_MySQL2DBX_la-MySQL2DBX.Tpo" "$(DEPDIR)/plugins_tutorials_MySQL2DBX_la-MySQL2DBX.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_MySQL2DBX_la-MySQL2DBX.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/MySQL2DBX.cpp' object='plugins_tutorials_MySQL2DBX_la-MySQL2DBX.lo' libtool=yes @AMDEPBACKSLASH@
+MySQL2DBX.lo: plugins/tutorials/MySQL2DBX.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MySQL2DBX.lo -MD -MP -MF "$(DEPDIR)/MySQL2DBX.Tpo" -c -o MySQL2DBX.lo `test -f 'plugins/tutorials/MySQL2DBX.cpp' || echo '$(srcdir)/'`plugins/tutorials/MySQL2DBX.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/MySQL2DBX.Tpo" "$(DEPDIR)/MySQL2DBX.Plo"; else rm -f "$(DEPDIR)/MySQL2DBX.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/MySQL2DBX.cpp' object='MySQL2DBX.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_MySQL2DBX_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_MySQL2DBX_la-MySQL2DBX.lo `test -f 'plugins/tutorials/MySQL2DBX.cpp' || echo '$(srcdir)/'`plugins/tutorials/MySQL2DBX.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MySQL2DBX.lo `test -f 'plugins/tutorials/MySQL2DBX.cpp' || echo '$(srcdir)/'`plugins/tutorials/MySQL2DBX.cpp
 
-plugins_tutorials_count_classes_la-count_classes.lo: plugins/tutorials/count_classes.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_count_classes_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_count_classes_la-count_classes.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_count_classes_la-count_classes.Tpo" -c -o plugins_tutorials_count_classes_la-count_classes.lo `test -f 'plugins/tutorials/count_classes.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_classes.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_count_classes_la-count_classes.Tpo" "$(DEPDIR)/plugins_tutorials_count_classes_la-count_classes.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_count_classes_la-count_classes.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/count_classes.cpp' object='plugins_tutorials_count_classes_la-count_classes.lo' libtool=yes @AMDEPBACKSLASH@
+count_classes.lo: plugins/tutorials/count_classes.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT count_classes.lo -MD -MP -MF "$(DEPDIR)/count_classes.Tpo" -c -o count_classes.lo `test -f 'plugins/tutorials/count_classes.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_classes.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/count_classes.Tpo" "$(DEPDIR)/count_classes.Plo"; else rm -f "$(DEPDIR)/count_classes.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/count_classes.cpp' object='count_classes.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_count_classes_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_count_classes_la-count_classes.lo `test -f 'plugins/tutorials/count_classes.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_classes.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o count_classes.lo `test -f 'plugins/tutorials/count_classes.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_classes.cpp
 
-plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.lo: plugins/tutorials/count_function_calls_difficult.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_count_function_calls_difficult_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.Tpo" -c -o plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.lo `test -f 'plugins/tutorials/count_function_calls_difficult.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_function_calls_difficult.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.Tpo" "$(DEPDIR)/plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/count_function_calls_difficult.cpp' object='plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.lo' libtool=yes @AMDEPBACKSLASH@
+count_function_calls_difficult.lo: plugins/tutorials/count_function_calls_difficult.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT count_function_calls_difficult.lo -MD -MP -MF "$(DEPDIR)/count_function_calls_difficult.Tpo" -c -o count_function_calls_difficult.lo `test -f 'plugins/tutorials/count_function_calls_difficult.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_function_calls_difficult.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/count_function_calls_difficult.Tpo" "$(DEPDIR)/count_function_calls_difficult.Plo"; else rm -f "$(DEPDIR)/count_function_calls_difficult.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/count_function_calls_difficult.cpp' object='count_function_calls_difficult.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_count_function_calls_difficult_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_count_function_calls_difficult_la-count_function_calls_difficult.lo `test -f 'plugins/tutorials/count_function_calls_difficult.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_function_calls_difficult.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o count_function_calls_difficult.lo `test -f 'plugins/tutorials/count_function_calls_difficult.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_function_calls_difficult.cpp
 
-plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.lo: plugins/tutorials/count_function_calls_easy.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_count_function_calls_easy_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.Tpo" -c -o plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.lo `test -f 'plugins/tutorials/count_function_calls_easy.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_function_calls_easy.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.Tpo" "$(DEPDIR)/plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/count_function_calls_easy.cpp' object='plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.lo' libtool=yes @AMDEPBACKSLASH@
+count_function_calls_easy.lo: plugins/tutorials/count_function_calls_easy.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT count_function_calls_easy.lo -MD -MP -MF "$(DEPDIR)/count_function_calls_easy.Tpo" -c -o count_function_calls_easy.lo `test -f 'plugins/tutorials/count_function_calls_easy.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_function_calls_easy.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/count_function_calls_easy.Tpo" "$(DEPDIR)/count_function_calls_easy.Plo"; else rm -f "$(DEPDIR)/count_function_calls_easy.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/count_function_calls_easy.cpp' object='count_function_calls_easy.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_count_function_calls_easy_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_count_function_calls_easy_la-count_function_calls_easy.lo `test -f 'plugins/tutorials/count_function_calls_easy.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_function_calls_easy.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o count_function_calls_easy.lo `test -f 'plugins/tutorials/count_function_calls_easy.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_function_calls_easy.cpp
 
-plugins_tutorials_count_statements_la-count_statements.lo: plugins/tutorials/count_statements.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_count_statements_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_count_statements_la-count_statements.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_count_statements_la-count_statements.Tpo" -c -o plugins_tutorials_count_statements_la-count_statements.lo `test -f 'plugins/tutorials/count_statements.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_statements.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_count_statements_la-count_statements.Tpo" "$(DEPDIR)/plugins_tutorials_count_statements_la-count_statements.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_count_statements_la-count_statements.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/count_statements.cpp' object='plugins_tutorials_count_statements_la-count_statements.lo' libtool=yes @AMDEPBACKSLASH@
+count_statements.lo: plugins/tutorials/count_statements.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT count_statements.lo -MD -MP -MF "$(DEPDIR)/count_statements.Tpo" -c -o count_statements.lo `test -f 'plugins/tutorials/count_statements.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_statements.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/count_statements.Tpo" "$(DEPDIR)/count_statements.Plo"; else rm -f "$(DEPDIR)/count_statements.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/count_statements.cpp' object='count_statements.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_count_statements_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_count_statements_la-count_statements.lo `test -f 'plugins/tutorials/count_statements.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_statements.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o count_statements.lo `test -f 'plugins/tutorials/count_statements.cpp' || echo '$(srcdir)/'`plugins/tutorials/count_statements.cpp
 
-plugins_tutorials_helloworld_la-helloworld.lo: plugins/tutorials/helloworld.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_helloworld_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_helloworld_la-helloworld.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_helloworld_la-helloworld.Tpo" -c -o plugins_tutorials_helloworld_la-helloworld.lo `test -f 'plugins/tutorials/helloworld.cpp' || echo '$(srcdir)/'`plugins/tutorials/helloworld.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_helloworld_la-helloworld.Tpo" "$(DEPDIR)/plugins_tutorials_helloworld_la-helloworld.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_helloworld_la-helloworld.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/helloworld.cpp' object='plugins_tutorials_helloworld_la-helloworld.lo' libtool=yes @AMDEPBACKSLASH@
+helloworld.lo: plugins/tutorials/helloworld.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT helloworld.lo -MD -MP -MF "$(DEPDIR)/helloworld.Tpo" -c -o helloworld.lo `test -f 'plugins/tutorials/helloworld.cpp' || echo '$(srcdir)/'`plugins/tutorials/helloworld.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/helloworld.Tpo" "$(DEPDIR)/helloworld.Plo"; else rm -f "$(DEPDIR)/helloworld.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/helloworld.cpp' object='helloworld.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_helloworld_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_helloworld_la-helloworld.lo `test -f 'plugins/tutorials/helloworld.cpp' || echo '$(srcdir)/'`plugins/tutorials/helloworld.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o helloworld.lo `test -f 'plugins/tutorials/helloworld.cpp' || echo '$(srcdir)/'`plugins/tutorials/helloworld.cpp
 
-plugins_tutorials_show_traversal_order_la-show_traversal_order.lo: plugins/tutorials/show_traversal_order.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_show_traversal_order_la_CXXFLAGS) $(CXXFLAGS) -MT plugins_tutorials_show_traversal_order_la-show_traversal_order.lo -MD -MP -MF "$(DEPDIR)/plugins_tutorials_show_traversal_order_la-show_traversal_order.Tpo" -c -o plugins_tutorials_show_traversal_order_la-show_traversal_order.lo `test -f 'plugins/tutorials/show_traversal_order.cpp' || echo '$(srcdir)/'`plugins/tutorials/show_traversal_order.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/plugins_tutorials_show_traversal_order_la-show_traversal_order.Tpo" "$(DEPDIR)/plugins_tutorials_show_traversal_order_la-show_traversal_order.Plo"; else rm -f "$(DEPDIR)/plugins_tutorials_show_traversal_order_la-show_traversal_order.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/show_traversal_order.cpp' object='plugins_tutorials_show_traversal_order_la-show_traversal_order.lo' libtool=yes @AMDEPBACKSLASH@
+show_traversal_order.lo: plugins/tutorials/show_traversal_order.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT show_traversal_order.lo -MD -MP -MF "$(DEPDIR)/show_traversal_order.Tpo" -c -o show_traversal_order.lo `test -f 'plugins/tutorials/show_traversal_order.cpp' || echo '$(srcdir)/'`plugins/tutorials/show_traversal_order.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/show_traversal_order.Tpo" "$(DEPDIR)/show_traversal_order.Plo"; else rm -f "$(DEPDIR)/show_traversal_order.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plugins/tutorials/show_traversal_order.cpp' object='show_traversal_order.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(plugins_tutorials_show_traversal_order_la_CXXFLAGS) $(CXXFLAGS) -c -o plugins_tutorials_show_traversal_order_la-show_traversal_order.lo `test -f 'plugins/tutorials/show_traversal_order.cpp' || echo '$(srcdir)/'`plugins/tutorials/show_traversal_order.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o show_traversal_order.lo `test -f 'plugins/tutorials/show_traversal_order.cpp' || echo '$(srcdir)/'`plugins/tutorials/show_traversal_order.cpp
 
-src_phc-Generate_C.o: src/codegen/Generate_C.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Generate_C.o -MD -MP -MF "$(DEPDIR)/src_phc-Generate_C.Tpo" -c -o src_phc-Generate_C.o `test -f 'src/codegen/Generate_C.cpp' || echo '$(srcdir)/'`src/codegen/Generate_C.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Generate_C.Tpo" "$(DEPDIR)/src_phc-Generate_C.Po"; else rm -f "$(DEPDIR)/src_phc-Generate_C.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/codegen/Generate_C.cpp' object='src_phc-Generate_C.o' libtool=no @AMDEPBACKSLASH@
+Generate_C.o: src/codegen/Generate_C.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Generate_C.o -MD -MP -MF "$(DEPDIR)/Generate_C.Tpo" -c -o Generate_C.o `test -f 'src/codegen/Generate_C.cpp' || echo '$(srcdir)/'`src/codegen/Generate_C.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Generate_C.Tpo" "$(DEPDIR)/Generate_C.Po"; else rm -f "$(DEPDIR)/Generate_C.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/codegen/Generate_C.cpp' object='Generate_C.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Generate_C.o `test -f 'src/codegen/Generate_C.cpp' || echo '$(srcdir)/'`src/codegen/Generate_C.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Generate_C.o `test -f 'src/codegen/Generate_C.cpp' || echo '$(srcdir)/'`src/codegen/Generate_C.cpp
 
-src_phc-Generate_C.obj: src/codegen/Generate_C.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Generate_C.obj -MD -MP -MF "$(DEPDIR)/src_phc-Generate_C.Tpo" -c -o src_phc-Generate_C.obj `if test -f 'src/codegen/Generate_C.cpp'; then $(CYGPATH_W) 'src/codegen/Generate_C.cpp'; else $(CYGPATH_W) '$(srcdir)/src/codegen/Generate_C.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Generate_C.Tpo" "$(DEPDIR)/src_phc-Generate_C.Po"; else rm -f "$(DEPDIR)/src_phc-Generate_C.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/codegen/Generate_C.cpp' object='src_phc-Generate_C.obj' libtool=no @AMDEPBACKSLASH@
+Generate_C.obj: src/codegen/Generate_C.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Generate_C.obj -MD -MP -MF "$(DEPDIR)/Generate_C.Tpo" -c -o Generate_C.obj `if test -f 'src/codegen/Generate_C.cpp'; then $(CYGPATH_W) 'src/codegen/Generate_C.cpp'; else $(CYGPATH_W) '$(srcdir)/src/codegen/Generate_C.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Generate_C.Tpo" "$(DEPDIR)/Generate_C.Po"; else rm -f "$(DEPDIR)/Generate_C.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/codegen/Generate_C.cpp' object='Generate_C.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Generate_C.obj `if test -f 'src/codegen/Generate_C.cpp'; then $(CYGPATH_W) 'src/codegen/Generate_C.cpp'; else $(CYGPATH_W) '$(srcdir)/src/codegen/Generate_C.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Generate_C.obj `if test -f 'src/codegen/Generate_C.cpp'; then $(CYGPATH_W) 'src/codegen/Generate_C.cpp'; else $(CYGPATH_W) '$(srcdir)/src/codegen/Generate_C.cpp'; fi`
 
-src_phc-Prep.o: src/codegen/Prep.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Prep.o -MD -MP -MF "$(DEPDIR)/src_phc-Prep.Tpo" -c -o src_phc-Prep.o `test -f 'src/codegen/Prep.cpp' || echo '$(srcdir)/'`src/codegen/Prep.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Prep.Tpo" "$(DEPDIR)/src_phc-Prep.Po"; else rm -f "$(DEPDIR)/src_phc-Prep.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/codegen/Prep.cpp' object='src_phc-Prep.o' libtool=no @AMDEPBACKSLASH@
+Prep.o: src/codegen/Prep.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Prep.o -MD -MP -MF "$(DEPDIR)/Prep.Tpo" -c -o Prep.o `test -f 'src/codegen/Prep.cpp' || echo '$(srcdir)/'`src/codegen/Prep.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Prep.Tpo" "$(DEPDIR)/Prep.Po"; else rm -f "$(DEPDIR)/Prep.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/codegen/Prep.cpp' object='Prep.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Prep.o `test -f 'src/codegen/Prep.cpp' || echo '$(srcdir)/'`src/codegen/Prep.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Prep.o `test -f 'src/codegen/Prep.cpp' || echo '$(srcdir)/'`src/codegen/Prep.cpp
 
-src_phc-Prep.obj: src/codegen/Prep.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Prep.obj -MD -MP -MF "$(DEPDIR)/src_phc-Prep.Tpo" -c -o src_phc-Prep.obj `if test -f 'src/codegen/Prep.cpp'; then $(CYGPATH_W) 'src/codegen/Prep.cpp'; else $(CYGPATH_W) '$(srcdir)/src/codegen/Prep.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Prep.Tpo" "$(DEPDIR)/src_phc-Prep.Po"; else rm -f "$(DEPDIR)/src_phc-Prep.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/codegen/Prep.cpp' object='src_phc-Prep.obj' libtool=no @AMDEPBACKSLASH@
+Prep.obj: src/codegen/Prep.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Prep.obj -MD -MP -MF "$(DEPDIR)/Prep.Tpo" -c -o Prep.obj `if test -f 'src/codegen/Prep.cpp'; then $(CYGPATH_W) 'src/codegen/Prep.cpp'; else $(CYGPATH_W) '$(srcdir)/src/codegen/Prep.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Prep.Tpo" "$(DEPDIR)/Prep.Po"; else rm -f "$(DEPDIR)/Prep.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/codegen/Prep.cpp' object='Prep.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Prep.obj `if test -f 'src/codegen/Prep.cpp'; then $(CYGPATH_W) 'src/codegen/Prep.cpp'; else $(CYGPATH_W) '$(srcdir)/src/codegen/Prep.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Prep.obj `if test -f 'src/codegen/Prep.cpp'; then $(CYGPATH_W) 'src/codegen/Prep.cpp'; else $(CYGPATH_W) '$(srcdir)/src/codegen/Prep.cpp'; fi`
 
-src_phc-ast.o: src/generated/ast.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-ast.o -MD -MP -MF "$(DEPDIR)/src_phc-ast.Tpo" -c -o src_phc-ast.o `test -f 'src/generated/ast.cpp' || echo '$(srcdir)/'`src/generated/ast.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-ast.Tpo" "$(DEPDIR)/src_phc-ast.Po"; else rm -f "$(DEPDIR)/src_phc-ast.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/ast.cpp' object='src_phc-ast.o' libtool=no @AMDEPBACKSLASH@
+ast.o: src/generated/ast.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ast.o -MD -MP -MF "$(DEPDIR)/ast.Tpo" -c -o ast.o `test -f 'src/generated/ast.cpp' || echo '$(srcdir)/'`src/generated/ast.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/ast.Tpo" "$(DEPDIR)/ast.Po"; else rm -f "$(DEPDIR)/ast.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/ast.cpp' object='ast.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-ast.o `test -f 'src/generated/ast.cpp' || echo '$(srcdir)/'`src/generated/ast.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ast.o `test -f 'src/generated/ast.cpp' || echo '$(srcdir)/'`src/generated/ast.cpp
 
-src_phc-ast.obj: src/generated/ast.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-ast.obj -MD -MP -MF "$(DEPDIR)/src_phc-ast.Tpo" -c -o src_phc-ast.obj `if test -f 'src/generated/ast.cpp'; then $(CYGPATH_W) 'src/generated/ast.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/ast.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-ast.Tpo" "$(DEPDIR)/src_phc-ast.Po"; else rm -f "$(DEPDIR)/src_phc-ast.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/ast.cpp' object='src_phc-ast.obj' libtool=no @AMDEPBACKSLASH@
+ast.obj: src/generated/ast.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ast.obj -MD -MP -MF "$(DEPDIR)/ast.Tpo" -c -o ast.obj `if test -f 'src/generated/ast.cpp'; then $(CYGPATH_W) 'src/generated/ast.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/ast.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/ast.Tpo" "$(DEPDIR)/ast.Po"; else rm -f "$(DEPDIR)/ast.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/ast.cpp' object='ast.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-ast.obj `if test -f 'src/generated/ast.cpp'; then $(CYGPATH_W) 'src/generated/ast.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/ast.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ast.obj `if test -f 'src/generated/ast.cpp'; then $(CYGPATH_W) 'src/generated/ast.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/ast.cpp'; fi`
 
-src_phc-lex.yy.o: src/generated/lex.yy.cc
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-lex.yy.o -MD -MP -MF "$(DEPDIR)/src_phc-lex.yy.Tpo" -c -o src_phc-lex.yy.o `test -f 'src/generated/lex.yy.cc' || echo '$(srcdir)/'`src/generated/lex.yy.cc; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-lex.yy.Tpo" "$(DEPDIR)/src_phc-lex.yy.Po"; else rm -f "$(DEPDIR)/src_phc-lex.yy.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/lex.yy.cc' object='src_phc-lex.yy.o' libtool=no @AMDEPBACKSLASH@
+lex.yy.o: src/generated/lex.yy.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT lex.yy.o -MD -MP -MF "$(DEPDIR)/lex.yy.Tpo" -c -o lex.yy.o `test -f 'src/generated/lex.yy.cc' || echo '$(srcdir)/'`src/generated/lex.yy.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lex.yy.Tpo" "$(DEPDIR)/lex.yy.Po"; else rm -f "$(DEPDIR)/lex.yy.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/lex.yy.cc' object='lex.yy.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-lex.yy.o `test -f 'src/generated/lex.yy.cc' || echo '$(srcdir)/'`src/generated/lex.yy.cc
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o lex.yy.o `test -f 'src/generated/lex.yy.cc' || echo '$(srcdir)/'`src/generated/lex.yy.cc
 
-src_phc-lex.yy.obj: src/generated/lex.yy.cc
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-lex.yy.obj -MD -MP -MF "$(DEPDIR)/src_phc-lex.yy.Tpo" -c -o src_phc-lex.yy.obj `if test -f 'src/generated/lex.yy.cc'; then $(CYGPATH_W) 'src/generated/lex.yy.cc'; else $(CYGPATH_W) '$(srcdir)/src/generated/lex.yy.cc'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-lex.yy.Tpo" "$(DEPDIR)/src_phc-lex.yy.Po"; else rm -f "$(DEPDIR)/src_phc-lex.yy.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/lex.yy.cc' object='src_phc-lex.yy.obj' libtool=no @AMDEPBACKSLASH@
+lex.yy.obj: src/generated/lex.yy.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT lex.yy.obj -MD -MP -MF "$(DEPDIR)/lex.yy.Tpo" -c -o lex.yy.obj `if test -f 'src/generated/lex.yy.cc'; then $(CYGPATH_W) 'src/generated/lex.yy.cc'; else $(CYGPATH_W) '$(srcdir)/src/generated/lex.yy.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lex.yy.Tpo" "$(DEPDIR)/lex.yy.Po"; else rm -f "$(DEPDIR)/lex.yy.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/lex.yy.cc' object='lex.yy.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-lex.yy.obj `if test -f 'src/generated/lex.yy.cc'; then $(CYGPATH_W) 'src/generated/lex.yy.cc'; else $(CYGPATH_W) '$(srcdir)/src/generated/lex.yy.cc'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o lex.yy.obj `if test -f 'src/generated/lex.yy.cc'; then $(CYGPATH_W) 'src/generated/lex.yy.cc'; else $(CYGPATH_W) '$(srcdir)/src/generated/lex.yy.cc'; fi`
 
-src_phc-php_parser.tab.o: src/generated/php_parser.tab.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-php_parser.tab.o -MD -MP -MF "$(DEPDIR)/src_phc-php_parser.tab.Tpo" -c -o src_phc-php_parser.tab.o `test -f 'src/generated/php_parser.tab.cpp' || echo '$(srcdir)/'`src/generated/php_parser.tab.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-php_parser.tab.Tpo" "$(DEPDIR)/src_phc-php_parser.tab.Po"; else rm -f "$(DEPDIR)/src_phc-php_parser.tab.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/php_parser.tab.cpp' object='src_phc-php_parser.tab.o' libtool=no @AMDEPBACKSLASH@
+php_parser.tab.o: src/generated/php_parser.tab.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT php_parser.tab.o -MD -MP -MF "$(DEPDIR)/php_parser.tab.Tpo" -c -o php_parser.tab.o `test -f 'src/generated/php_parser.tab.cpp' || echo '$(srcdir)/'`src/generated/php_parser.tab.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/php_parser.tab.Tpo" "$(DEPDIR)/php_parser.tab.Po"; else rm -f "$(DEPDIR)/php_parser.tab.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/php_parser.tab.cpp' object='php_parser.tab.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-php_parser.tab.o `test -f 'src/generated/php_parser.tab.cpp' || echo '$(srcdir)/'`src/generated/php_parser.tab.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o php_parser.tab.o `test -f 'src/generated/php_parser.tab.cpp' || echo '$(srcdir)/'`src/generated/php_parser.tab.cpp
 
-src_phc-php_parser.tab.obj: src/generated/php_parser.tab.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-php_parser.tab.obj -MD -MP -MF "$(DEPDIR)/src_phc-php_parser.tab.Tpo" -c -o src_phc-php_parser.tab.obj `if test -f 'src/generated/php_parser.tab.cpp'; then $(CYGPATH_W) 'src/generated/php_parser.tab.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/php_parser.tab.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-php_parser.tab.Tpo" "$(DEPDIR)/src_phc-php_parser.tab.Po"; else rm -f "$(DEPDIR)/src_phc-php_parser.tab.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/php_parser.tab.cpp' object='src_phc-php_parser.tab.obj' libtool=no @AMDEPBACKSLASH@
+php_parser.tab.obj: src/generated/php_parser.tab.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT php_parser.tab.obj -MD -MP -MF "$(DEPDIR)/php_parser.tab.Tpo" -c -o php_parser.tab.obj `if test -f 'src/generated/php_parser.tab.cpp'; then $(CYGPATH_W) 'src/generated/php_parser.tab.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/php_parser.tab.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/php_parser.tab.Tpo" "$(DEPDIR)/php_parser.tab.Po"; else rm -f "$(DEPDIR)/php_parser.tab.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/php_parser.tab.cpp' object='php_parser.tab.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-php_parser.tab.obj `if test -f 'src/generated/php_parser.tab.cpp'; then $(CYGPATH_W) 'src/generated/php_parser.tab.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/php_parser.tab.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o php_parser.tab.obj `if test -f 'src/generated/php_parser.tab.cpp'; then $(CYGPATH_W) 'src/generated/php_parser.tab.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/php_parser.tab.cpp'; fi`
 
-src_phc-Tree_transform.o: src/generated/Tree_transform.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Tree_transform.o -MD -MP -MF "$(DEPDIR)/src_phc-Tree_transform.Tpo" -c -o src_phc-Tree_transform.o `test -f 'src/generated/Tree_transform.cpp' || echo '$(srcdir)/'`src/generated/Tree_transform.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Tree_transform.Tpo" "$(DEPDIR)/src_phc-Tree_transform.Po"; else rm -f "$(DEPDIR)/src_phc-Tree_transform.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/Tree_transform.cpp' object='src_phc-Tree_transform.o' libtool=no @AMDEPBACKSLASH@
+Tree_transform.o: src/generated/Tree_transform.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Tree_transform.o -MD -MP -MF "$(DEPDIR)/Tree_transform.Tpo" -c -o Tree_transform.o `test -f 'src/generated/Tree_transform.cpp' || echo '$(srcdir)/'`src/generated/Tree_transform.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Tree_transform.Tpo" "$(DEPDIR)/Tree_transform.Po"; else rm -f "$(DEPDIR)/Tree_transform.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/Tree_transform.cpp' object='Tree_transform.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Tree_transform.o `test -f 'src/generated/Tree_transform.cpp' || echo '$(srcdir)/'`src/generated/Tree_transform.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Tree_transform.o `test -f 'src/generated/Tree_transform.cpp' || echo '$(srcdir)/'`src/generated/Tree_transform.cpp
 
-src_phc-Tree_transform.obj: src/generated/Tree_transform.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Tree_transform.obj -MD -MP -MF "$(DEPDIR)/src_phc-Tree_transform.Tpo" -c -o src_phc-Tree_transform.obj `if test -f 'src/generated/Tree_transform.cpp'; then $(CYGPATH_W) 'src/generated/Tree_transform.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/Tree_transform.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Tree_transform.Tpo" "$(DEPDIR)/src_phc-Tree_transform.Po"; else rm -f "$(DEPDIR)/src_phc-Tree_transform.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/Tree_transform.cpp' object='src_phc-Tree_transform.obj' libtool=no @AMDEPBACKSLASH@
+Tree_transform.obj: src/generated/Tree_transform.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Tree_transform.obj -MD -MP -MF "$(DEPDIR)/Tree_transform.Tpo" -c -o Tree_transform.obj `if test -f 'src/generated/Tree_transform.cpp'; then $(CYGPATH_W) 'src/generated/Tree_transform.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/Tree_transform.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Tree_transform.Tpo" "$(DEPDIR)/Tree_transform.Po"; else rm -f "$(DEPDIR)/Tree_transform.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/Tree_transform.cpp' object='Tree_transform.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Tree_transform.obj `if test -f 'src/generated/Tree_transform.cpp'; then $(CYGPATH_W) 'src/generated/Tree_transform.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/Tree_transform.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Tree_transform.obj `if test -f 'src/generated/Tree_transform.cpp'; then $(CYGPATH_W) 'src/generated/Tree_transform.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/Tree_transform.cpp'; fi`
 
-src_phc-Tree_visitor.o: src/generated/Tree_visitor.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Tree_visitor.o -MD -MP -MF "$(DEPDIR)/src_phc-Tree_visitor.Tpo" -c -o src_phc-Tree_visitor.o `test -f 'src/generated/Tree_visitor.cpp' || echo '$(srcdir)/'`src/generated/Tree_visitor.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Tree_visitor.Tpo" "$(DEPDIR)/src_phc-Tree_visitor.Po"; else rm -f "$(DEPDIR)/src_phc-Tree_visitor.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/Tree_visitor.cpp' object='src_phc-Tree_visitor.o' libtool=no @AMDEPBACKSLASH@
+Tree_visitor.o: src/generated/Tree_visitor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Tree_visitor.o -MD -MP -MF "$(DEPDIR)/Tree_visitor.Tpo" -c -o Tree_visitor.o `test -f 'src/generated/Tree_visitor.cpp' || echo '$(srcdir)/'`src/generated/Tree_visitor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Tree_visitor.Tpo" "$(DEPDIR)/Tree_visitor.Po"; else rm -f "$(DEPDIR)/Tree_visitor.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/Tree_visitor.cpp' object='Tree_visitor.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Tree_visitor.o `test -f 'src/generated/Tree_visitor.cpp' || echo '$(srcdir)/'`src/generated/Tree_visitor.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Tree_visitor.o `test -f 'src/generated/Tree_visitor.cpp' || echo '$(srcdir)/'`src/generated/Tree_visitor.cpp
 
-src_phc-Tree_visitor.obj: src/generated/Tree_visitor.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Tree_visitor.obj -MD -MP -MF "$(DEPDIR)/src_phc-Tree_visitor.Tpo" -c -o src_phc-Tree_visitor.obj `if test -f 'src/generated/Tree_visitor.cpp'; then $(CYGPATH_W) 'src/generated/Tree_visitor.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/Tree_visitor.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Tree_visitor.Tpo" "$(DEPDIR)/src_phc-Tree_visitor.Po"; else rm -f "$(DEPDIR)/src_phc-Tree_visitor.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/Tree_visitor.cpp' object='src_phc-Tree_visitor.obj' libtool=no @AMDEPBACKSLASH@
+Tree_visitor.obj: src/generated/Tree_visitor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Tree_visitor.obj -MD -MP -MF "$(DEPDIR)/Tree_visitor.Tpo" -c -o Tree_visitor.obj `if test -f 'src/generated/Tree_visitor.cpp'; then $(CYGPATH_W) 'src/generated/Tree_visitor.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/Tree_visitor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Tree_visitor.Tpo" "$(DEPDIR)/Tree_visitor.Po"; else rm -f "$(DEPDIR)/Tree_visitor.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generated/Tree_visitor.cpp' object='Tree_visitor.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Tree_visitor.obj `if test -f 'src/generated/Tree_visitor.cpp'; then $(CYGPATH_W) 'src/generated/Tree_visitor.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/Tree_visitor.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Tree_visitor.obj `if test -f 'src/generated/Tree_visitor.cpp'; then $(CYGPATH_W) 'src/generated/Tree_visitor.cpp'; else $(CYGPATH_W) '$(srcdir)/src/generated/Tree_visitor.cpp'; fi`
 
-src_phc-AttrMap.o: src/lib/AttrMap.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-AttrMap.o -MD -MP -MF "$(DEPDIR)/src_phc-AttrMap.Tpo" -c -o src_phc-AttrMap.o `test -f 'src/lib/AttrMap.cpp' || echo '$(srcdir)/'`src/lib/AttrMap.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-AttrMap.Tpo" "$(DEPDIR)/src_phc-AttrMap.Po"; else rm -f "$(DEPDIR)/src_phc-AttrMap.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/AttrMap.cpp' object='src_phc-AttrMap.o' libtool=no @AMDEPBACKSLASH@
+AttrMap.o: src/lib/AttrMap.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AttrMap.o -MD -MP -MF "$(DEPDIR)/AttrMap.Tpo" -c -o AttrMap.o `test -f 'src/lib/AttrMap.cpp' || echo '$(srcdir)/'`src/lib/AttrMap.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/AttrMap.Tpo" "$(DEPDIR)/AttrMap.Po"; else rm -f "$(DEPDIR)/AttrMap.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/AttrMap.cpp' object='AttrMap.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-AttrMap.o `test -f 'src/lib/AttrMap.cpp' || echo '$(srcdir)/'`src/lib/AttrMap.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AttrMap.o `test -f 'src/lib/AttrMap.cpp' || echo '$(srcdir)/'`src/lib/AttrMap.cpp
 
-src_phc-AttrMap.obj: src/lib/AttrMap.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-AttrMap.obj -MD -MP -MF "$(DEPDIR)/src_phc-AttrMap.Tpo" -c -o src_phc-AttrMap.obj `if test -f 'src/lib/AttrMap.cpp'; then $(CYGPATH_W) 'src/lib/AttrMap.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/AttrMap.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-AttrMap.Tpo" "$(DEPDIR)/src_phc-AttrMap.Po"; else rm -f "$(DEPDIR)/src_phc-AttrMap.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/AttrMap.cpp' object='src_phc-AttrMap.obj' libtool=no @AMDEPBACKSLASH@
+AttrMap.obj: src/lib/AttrMap.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AttrMap.obj -MD -MP -MF "$(DEPDIR)/AttrMap.Tpo" -c -o AttrMap.obj `if test -f 'src/lib/AttrMap.cpp'; then $(CYGPATH_W) 'src/lib/AttrMap.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/AttrMap.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/AttrMap.Tpo" "$(DEPDIR)/AttrMap.Po"; else rm -f "$(DEPDIR)/AttrMap.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/AttrMap.cpp' object='AttrMap.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-AttrMap.obj `if test -f 'src/lib/AttrMap.cpp'; then $(CYGPATH_W) 'src/lib/AttrMap.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/AttrMap.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AttrMap.obj `if test -f 'src/lib/AttrMap.cpp'; then $(CYGPATH_W) 'src/lib/AttrMap.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/AttrMap.cpp'; fi`
 
-src_phc-base64.o: src/lib/base64.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-base64.o -MD -MP -MF "$(DEPDIR)/src_phc-base64.Tpo" -c -o src_phc-base64.o `test -f 'src/lib/base64.cpp' || echo '$(srcdir)/'`src/lib/base64.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-base64.Tpo" "$(DEPDIR)/src_phc-base64.Po"; else rm -f "$(DEPDIR)/src_phc-base64.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/base64.cpp' object='src_phc-base64.o' libtool=no @AMDEPBACKSLASH@
+base64.o: src/lib/base64.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT base64.o -MD -MP -MF "$(DEPDIR)/base64.Tpo" -c -o base64.o `test -f 'src/lib/base64.cpp' || echo '$(srcdir)/'`src/lib/base64.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/base64.Tpo" "$(DEPDIR)/base64.Po"; else rm -f "$(DEPDIR)/base64.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/base64.cpp' object='base64.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-base64.o `test -f 'src/lib/base64.cpp' || echo '$(srcdir)/'`src/lib/base64.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o base64.o `test -f 'src/lib/base64.cpp' || echo '$(srcdir)/'`src/lib/base64.cpp
 
-src_phc-base64.obj: src/lib/base64.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-base64.obj -MD -MP -MF "$(DEPDIR)/src_phc-base64.Tpo" -c -o src_phc-base64.obj `if test -f 'src/lib/base64.cpp'; then $(CYGPATH_W) 'src/lib/base64.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/base64.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-base64.Tpo" "$(DEPDIR)/src_phc-base64.Po"; else rm -f "$(DEPDIR)/src_phc-base64.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/base64.cpp' object='src_phc-base64.obj' libtool=no @AMDEPBACKSLASH@
+base64.obj: src/lib/base64.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT base64.obj -MD -MP -MF "$(DEPDIR)/base64.Tpo" -c -o base64.obj `if test -f 'src/lib/base64.cpp'; then $(CYGPATH_W) 'src/lib/base64.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/base64.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/base64.Tpo" "$(DEPDIR)/base64.Po"; else rm -f "$(DEPDIR)/base64.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/base64.cpp' object='base64.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-base64.obj `if test -f 'src/lib/base64.cpp'; then $(CYGPATH_W) 'src/lib/base64.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/base64.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o base64.obj `if test -f 'src/lib/base64.cpp'; then $(CYGPATH_W) 'src/lib/base64.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/base64.cpp'; fi`
 
-src_phc-demangle.o: src/lib/demangle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-demangle.o -MD -MP -MF "$(DEPDIR)/src_phc-demangle.Tpo" -c -o src_phc-demangle.o `test -f 'src/lib/demangle.cpp' || echo '$(srcdir)/'`src/lib/demangle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-demangle.Tpo" "$(DEPDIR)/src_phc-demangle.Po"; else rm -f "$(DEPDIR)/src_phc-demangle.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/demangle.cpp' object='src_phc-demangle.o' libtool=no @AMDEPBACKSLASH@
+demangle.o: src/lib/demangle.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT demangle.o -MD -MP -MF "$(DEPDIR)/demangle.Tpo" -c -o demangle.o `test -f 'src/lib/demangle.cpp' || echo '$(srcdir)/'`src/lib/demangle.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/demangle.Tpo" "$(DEPDIR)/demangle.Po"; else rm -f "$(DEPDIR)/demangle.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/demangle.cpp' object='demangle.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-demangle.o `test -f 'src/lib/demangle.cpp' || echo '$(srcdir)/'`src/lib/demangle.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o demangle.o `test -f 'src/lib/demangle.cpp' || echo '$(srcdir)/'`src/lib/demangle.cpp
 
-src_phc-demangle.obj: src/lib/demangle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-demangle.obj -MD -MP -MF "$(DEPDIR)/src_phc-demangle.Tpo" -c -o src_phc-demangle.obj `if test -f 'src/lib/demangle.cpp'; then $(CYGPATH_W) 'src/lib/demangle.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/demangle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-demangle.Tpo" "$(DEPDIR)/src_phc-demangle.Po"; else rm -f "$(DEPDIR)/src_phc-demangle.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/demangle.cpp' object='src_phc-demangle.obj' libtool=no @AMDEPBACKSLASH@
+demangle.obj: src/lib/demangle.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT demangle.obj -MD -MP -MF "$(DEPDIR)/demangle.Tpo" -c -o demangle.obj `if test -f 'src/lib/demangle.cpp'; then $(CYGPATH_W) 'src/lib/demangle.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/demangle.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/demangle.Tpo" "$(DEPDIR)/demangle.Po"; else rm -f "$(DEPDIR)/demangle.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/demangle.cpp' object='demangle.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-demangle.obj `if test -f 'src/lib/demangle.cpp'; then $(CYGPATH_W) 'src/lib/demangle.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/demangle.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o demangle.obj `if test -f 'src/lib/demangle.cpp'; then $(CYGPATH_W) 'src/lib/demangle.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/demangle.cpp'; fi`
 
-src_phc-error.o: src/lib/error.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-error.o -MD -MP -MF "$(DEPDIR)/src_phc-error.Tpo" -c -o src_phc-error.o `test -f 'src/lib/error.cpp' || echo '$(srcdir)/'`src/lib/error.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-error.Tpo" "$(DEPDIR)/src_phc-error.Po"; else rm -f "$(DEPDIR)/src_phc-error.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/error.cpp' object='src_phc-error.o' libtool=no @AMDEPBACKSLASH@
+error.o: src/lib/error.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT error.o -MD -MP -MF "$(DEPDIR)/error.Tpo" -c -o error.o `test -f 'src/lib/error.cpp' || echo '$(srcdir)/'`src/lib/error.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/error.Tpo" "$(DEPDIR)/error.Po"; else rm -f "$(DEPDIR)/error.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/error.cpp' object='error.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-error.o `test -f 'src/lib/error.cpp' || echo '$(srcdir)/'`src/lib/error.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o error.o `test -f 'src/lib/error.cpp' || echo '$(srcdir)/'`src/lib/error.cpp
 
-src_phc-error.obj: src/lib/error.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-error.obj -MD -MP -MF "$(DEPDIR)/src_phc-error.Tpo" -c -o src_phc-error.obj `if test -f 'src/lib/error.cpp'; then $(CYGPATH_W) 'src/lib/error.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/error.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-error.Tpo" "$(DEPDIR)/src_phc-error.Po"; else rm -f "$(DEPDIR)/src_phc-error.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/error.cpp' object='src_phc-error.obj' libtool=no @AMDEPBACKSLASH@
+error.obj: src/lib/error.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT error.obj -MD -MP -MF "$(DEPDIR)/error.Tpo" -c -o error.obj `if test -f 'src/lib/error.cpp'; then $(CYGPATH_W) 'src/lib/error.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/error.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/error.Tpo" "$(DEPDIR)/error.Po"; else rm -f "$(DEPDIR)/error.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/error.cpp' object='error.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-error.obj `if test -f 'src/lib/error.cpp'; then $(CYGPATH_W) 'src/lib/error.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/error.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o error.obj `if test -f 'src/lib/error.cpp'; then $(CYGPATH_W) 'src/lib/error.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/error.cpp'; fi`
 
-src_phc-String.o: src/lib/String.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-String.o -MD -MP -MF "$(DEPDIR)/src_phc-String.Tpo" -c -o src_phc-String.o `test -f 'src/lib/String.cpp' || echo '$(srcdir)/'`src/lib/String.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-String.Tpo" "$(DEPDIR)/src_phc-String.Po"; else rm -f "$(DEPDIR)/src_phc-String.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/String.cpp' object='src_phc-String.o' libtool=no @AMDEPBACKSLASH@
+String.o: src/lib/String.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT String.o -MD -MP -MF "$(DEPDIR)/String.Tpo" -c -o String.o `test -f 'src/lib/String.cpp' || echo '$(srcdir)/'`src/lib/String.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/String.Tpo" "$(DEPDIR)/String.Po"; else rm -f "$(DEPDIR)/String.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/String.cpp' object='String.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-String.o `test -f 'src/lib/String.cpp' || echo '$(srcdir)/'`src/lib/String.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o String.o `test -f 'src/lib/String.cpp' || echo '$(srcdir)/'`src/lib/String.cpp
 
-src_phc-String.obj: src/lib/String.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-String.obj -MD -MP -MF "$(DEPDIR)/src_phc-String.Tpo" -c -o src_phc-String.obj `if test -f 'src/lib/String.cpp'; then $(CYGPATH_W) 'src/lib/String.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/String.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-String.Tpo" "$(DEPDIR)/src_phc-String.Po"; else rm -f "$(DEPDIR)/src_phc-String.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/String.cpp' object='src_phc-String.obj' libtool=no @AMDEPBACKSLASH@
+String.obj: src/lib/String.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT String.obj -MD -MP -MF "$(DEPDIR)/String.Tpo" -c -o String.obj `if test -f 'src/lib/String.cpp'; then $(CYGPATH_W) 'src/lib/String.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/String.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/String.Tpo" "$(DEPDIR)/String.Po"; else rm -f "$(DEPDIR)/String.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/String.cpp' object='String.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-String.obj `if test -f 'src/lib/String.cpp'; then $(CYGPATH_W) 'src/lib/String.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/String.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o String.obj `if test -f 'src/lib/String.cpp'; then $(CYGPATH_W) 'src/lib/String.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/String.cpp'; fi`
 
-src_phc-parse.o: src/parsing/parse.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-parse.o -MD -MP -MF "$(DEPDIR)/src_phc-parse.Tpo" -c -o src_phc-parse.o `test -f 'src/parsing/parse.cpp' || echo '$(srcdir)/'`src/parsing/parse.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-parse.Tpo" "$(DEPDIR)/src_phc-parse.Po"; else rm -f "$(DEPDIR)/src_phc-parse.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/parse.cpp' object='src_phc-parse.o' libtool=no @AMDEPBACKSLASH@
+parse.o: src/parsing/parse.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT parse.o -MD -MP -MF "$(DEPDIR)/parse.Tpo" -c -o parse.o `test -f 'src/parsing/parse.cpp' || echo '$(srcdir)/'`src/parsing/parse.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/parse.Tpo" "$(DEPDIR)/parse.Po"; else rm -f "$(DEPDIR)/parse.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/parse.cpp' object='parse.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-parse.o `test -f 'src/parsing/parse.cpp' || echo '$(srcdir)/'`src/parsing/parse.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o parse.o `test -f 'src/parsing/parse.cpp' || echo '$(srcdir)/'`src/parsing/parse.cpp
 
-src_phc-parse.obj: src/parsing/parse.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-parse.obj -MD -MP -MF "$(DEPDIR)/src_phc-parse.Tpo" -c -o src_phc-parse.obj `if test -f 'src/parsing/parse.cpp'; then $(CYGPATH_W) 'src/parsing/parse.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/parse.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-parse.Tpo" "$(DEPDIR)/src_phc-parse.Po"; else rm -f "$(DEPDIR)/src_phc-parse.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/parse.cpp' object='src_phc-parse.obj' libtool=no @AMDEPBACKSLASH@
+parse.obj: src/parsing/parse.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT parse.obj -MD -MP -MF "$(DEPDIR)/parse.Tpo" -c -o parse.obj `if test -f 'src/parsing/parse.cpp'; then $(CYGPATH_W) 'src/parsing/parse.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/parse.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/parse.Tpo" "$(DEPDIR)/parse.Po"; else rm -f "$(DEPDIR)/parse.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/parse.cpp' object='parse.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-parse.obj `if test -f 'src/parsing/parse.cpp'; then $(CYGPATH_W) 'src/parsing/parse.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/parse.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o parse.obj `if test -f 'src/parsing/parse.cpp'; then $(CYGPATH_W) 'src/parsing/parse.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/parse.cpp'; fi`
 
-src_phc-PHP_context.o: src/parsing/PHP_context.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-PHP_context.o -MD -MP -MF "$(DEPDIR)/src_phc-PHP_context.Tpo" -c -o src_phc-PHP_context.o `test -f 'src/parsing/PHP_context.cpp' || echo '$(srcdir)/'`src/parsing/PHP_context.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-PHP_context.Tpo" "$(DEPDIR)/src_phc-PHP_context.Po"; else rm -f "$(DEPDIR)/src_phc-PHP_context.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/PHP_context.cpp' object='src_phc-PHP_context.o' libtool=no @AMDEPBACKSLASH@
+PHP_context.o: src/parsing/PHP_context.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PHP_context.o -MD -MP -MF "$(DEPDIR)/PHP_context.Tpo" -c -o PHP_context.o `test -f 'src/parsing/PHP_context.cpp' || echo '$(srcdir)/'`src/parsing/PHP_context.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/PHP_context.Tpo" "$(DEPDIR)/PHP_context.Po"; else rm -f "$(DEPDIR)/PHP_context.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/PHP_context.cpp' object='PHP_context.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-PHP_context.o `test -f 'src/parsing/PHP_context.cpp' || echo '$(srcdir)/'`src/parsing/PHP_context.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PHP_context.o `test -f 'src/parsing/PHP_context.cpp' || echo '$(srcdir)/'`src/parsing/PHP_context.cpp
 
-src_phc-PHP_context.obj: src/parsing/PHP_context.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-PHP_context.obj -MD -MP -MF "$(DEPDIR)/src_phc-PHP_context.Tpo" -c -o src_phc-PHP_context.obj `if test -f 'src/parsing/PHP_context.cpp'; then $(CYGPATH_W) 'src/parsing/PHP_context.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/PHP_context.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-PHP_context.Tpo" "$(DEPDIR)/src_phc-PHP_context.Po"; else rm -f "$(DEPDIR)/src_phc-PHP_context.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/PHP_context.cpp' object='src_phc-PHP_context.obj' libtool=no @AMDEPBACKSLASH@
+PHP_context.obj: src/parsing/PHP_context.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PHP_context.obj -MD -MP -MF "$(DEPDIR)/PHP_context.Tpo" -c -o PHP_context.obj `if test -f 'src/parsing/PHP_context.cpp'; then $(CYGPATH_W) 'src/parsing/PHP_context.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/PHP_context.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/PHP_context.Tpo" "$(DEPDIR)/PHP_context.Po"; else rm -f "$(DEPDIR)/PHP_context.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/PHP_context.cpp' object='PHP_context.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-PHP_context.obj `if test -f 'src/parsing/PHP_context.cpp'; then $(CYGPATH_W) 'src/parsing/PHP_context.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/PHP_context.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PHP_context.obj `if test -f 'src/parsing/PHP_context.cpp'; then $(CYGPATH_W) 'src/parsing/PHP_context.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/PHP_context.cpp'; fi`
 
-src_phc-XML_parser.o: src/parsing/XML_parser.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-XML_parser.o -MD -MP -MF "$(DEPDIR)/src_phc-XML_parser.Tpo" -c -o src_phc-XML_parser.o `test -f 'src/parsing/XML_parser.cpp' || echo '$(srcdir)/'`src/parsing/XML_parser.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-XML_parser.Tpo" "$(DEPDIR)/src_phc-XML_parser.Po"; else rm -f "$(DEPDIR)/src_phc-XML_parser.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/XML_parser.cpp' object='src_phc-XML_parser.o' libtool=no @AMDEPBACKSLASH@
+XML_parser.o: src/parsing/XML_parser.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XML_parser.o -MD -MP -MF "$(DEPDIR)/XML_parser.Tpo" -c -o XML_parser.o `test -f 'src/parsing/XML_parser.cpp' || echo '$(srcdir)/'`src/parsing/XML_parser.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/XML_parser.Tpo" "$(DEPDIR)/XML_parser.Po"; else rm -f "$(DEPDIR)/XML_parser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/XML_parser.cpp' object='XML_parser.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-XML_parser.o `test -f 'src/parsing/XML_parser.cpp' || echo '$(srcdir)/'`src/parsing/XML_parser.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XML_parser.o `test -f 'src/parsing/XML_parser.cpp' || echo '$(srcdir)/'`src/parsing/XML_parser.cpp
 
-src_phc-XML_parser.obj: src/parsing/XML_parser.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-XML_parser.obj -MD -MP -MF "$(DEPDIR)/src_phc-XML_parser.Tpo" -c -o src_phc-XML_parser.obj `if test -f 'src/parsing/XML_parser.cpp'; then $(CYGPATH_W) 'src/parsing/XML_parser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/XML_parser.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-XML_parser.Tpo" "$(DEPDIR)/src_phc-XML_parser.Po"; else rm -f "$(DEPDIR)/src_phc-XML_parser.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/XML_parser.cpp' object='src_phc-XML_parser.obj' libtool=no @AMDEPBACKSLASH@
+XML_parser.obj: src/parsing/XML_parser.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XML_parser.obj -MD -MP -MF "$(DEPDIR)/XML_parser.Tpo" -c -o XML_parser.obj `if test -f 'src/parsing/XML_parser.cpp'; then $(CYGPATH_W) 'src/parsing/XML_parser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/XML_parser.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/XML_parser.Tpo" "$(DEPDIR)/XML_parser.Po"; else rm -f "$(DEPDIR)/XML_parser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/parsing/XML_parser.cpp' object='XML_parser.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-XML_parser.obj `if test -f 'src/parsing/XML_parser.cpp'; then $(CYGPATH_W) 'src/parsing/XML_parser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/XML_parser.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XML_parser.obj `if test -f 'src/parsing/XML_parser.cpp'; then $(CYGPATH_W) 'src/parsing/XML_parser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/parsing/XML_parser.cpp'; fi`
 
-src_phc-phc.o: src/phc.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-phc.o -MD -MP -MF "$(DEPDIR)/src_phc-phc.Tpo" -c -o src_phc-phc.o `test -f 'src/phc.cpp' || echo '$(srcdir)/'`src/phc.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-phc.Tpo" "$(DEPDIR)/src_phc-phc.Po"; else rm -f "$(DEPDIR)/src_phc-phc.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/phc.cpp' object='src_phc-phc.o' libtool=no @AMDEPBACKSLASH@
+phc.o: src/phc.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT phc.o -MD -MP -MF "$(DEPDIR)/phc.Tpo" -c -o phc.o `test -f 'src/phc.cpp' || echo '$(srcdir)/'`src/phc.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/phc.Tpo" "$(DEPDIR)/phc.Po"; else rm -f "$(DEPDIR)/phc.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/phc.cpp' object='phc.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-phc.o `test -f 'src/phc.cpp' || echo '$(srcdir)/'`src/phc.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o phc.o `test -f 'src/phc.cpp' || echo '$(srcdir)/'`src/phc.cpp
 
-src_phc-phc.obj: src/phc.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-phc.obj -MD -MP -MF "$(DEPDIR)/src_phc-phc.Tpo" -c -o src_phc-phc.obj `if test -f 'src/phc.cpp'; then $(CYGPATH_W) 'src/phc.cpp'; else $(CYGPATH_W) '$(srcdir)/src/phc.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-phc.Tpo" "$(DEPDIR)/src_phc-phc.Po"; else rm -f "$(DEPDIR)/src_phc-phc.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/phc.cpp' object='src_phc-phc.obj' libtool=no @AMDEPBACKSLASH@
+phc.obj: src/phc.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT phc.obj -MD -MP -MF "$(DEPDIR)/phc.Tpo" -c -o phc.obj `if test -f 'src/phc.cpp'; then $(CYGPATH_W) 'src/phc.cpp'; else $(CYGPATH_W) '$(srcdir)/src/phc.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/phc.Tpo" "$(DEPDIR)/phc.Po"; else rm -f "$(DEPDIR)/phc.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/phc.cpp' object='phc.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-phc.obj `if test -f 'src/phc.cpp'; then $(CYGPATH_W) 'src/phc.cpp'; else $(CYGPATH_W) '$(srcdir)/src/phc.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o phc.obj `if test -f 'src/phc.cpp'; then $(CYGPATH_W) 'src/phc.cpp'; else $(CYGPATH_W) '$(srcdir)/src/phc.cpp'; fi`
 
-src_phc-DOT_unparser.o: src/process_ast/DOT_unparser.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-DOT_unparser.o -MD -MP -MF "$(DEPDIR)/src_phc-DOT_unparser.Tpo" -c -o src_phc-DOT_unparser.o `test -f 'src/process_ast/DOT_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/DOT_unparser.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-DOT_unparser.Tpo" "$(DEPDIR)/src_phc-DOT_unparser.Po"; else rm -f "$(DEPDIR)/src_phc-DOT_unparser.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/DOT_unparser.cpp' object='src_phc-DOT_unparser.o' libtool=no @AMDEPBACKSLASH@
+DOT_unparser.o: src/process_ast/DOT_unparser.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOT_unparser.o -MD -MP -MF "$(DEPDIR)/DOT_unparser.Tpo" -c -o DOT_unparser.o `test -f 'src/process_ast/DOT_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/DOT_unparser.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/DOT_unparser.Tpo" "$(DEPDIR)/DOT_unparser.Po"; else rm -f "$(DEPDIR)/DOT_unparser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/DOT_unparser.cpp' object='DOT_unparser.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-DOT_unparser.o `test -f 'src/process_ast/DOT_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/DOT_unparser.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOT_unparser.o `test -f 'src/process_ast/DOT_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/DOT_unparser.cpp
 
-src_phc-DOT_unparser.obj: src/process_ast/DOT_unparser.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-DOT_unparser.obj -MD -MP -MF "$(DEPDIR)/src_phc-DOT_unparser.Tpo" -c -o src_phc-DOT_unparser.obj `if test -f 'src/process_ast/DOT_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/DOT_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/DOT_unparser.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-DOT_unparser.Tpo" "$(DEPDIR)/src_phc-DOT_unparser.Po"; else rm -f "$(DEPDIR)/src_phc-DOT_unparser.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/DOT_unparser.cpp' object='src_phc-DOT_unparser.obj' libtool=no @AMDEPBACKSLASH@
+DOT_unparser.obj: src/process_ast/DOT_unparser.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOT_unparser.obj -MD -MP -MF "$(DEPDIR)/DOT_unparser.Tpo" -c -o DOT_unparser.obj `if test -f 'src/process_ast/DOT_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/DOT_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/DOT_unparser.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/DOT_unparser.Tpo" "$(DEPDIR)/DOT_unparser.Po"; else rm -f "$(DEPDIR)/DOT_unparser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/DOT_unparser.cpp' object='DOT_unparser.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-DOT_unparser.obj `if test -f 'src/process_ast/DOT_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/DOT_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/DOT_unparser.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOT_unparser.obj `if test -f 'src/process_ast/DOT_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/DOT_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/DOT_unparser.cpp'; fi`
 
-src_phc-Invocation_targets.o: src/process_ast/Invocation_targets.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Invocation_targets.o -MD -MP -MF "$(DEPDIR)/src_phc-Invocation_targets.Tpo" -c -o src_phc-Invocation_targets.o `test -f 'src/process_ast/Invocation_targets.cpp' || echo '$(srcdir)/'`src/process_ast/Invocation_targets.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Invocation_targets.Tpo" "$(DEPDIR)/src_phc-Invocation_targets.Po"; else rm -f "$(DEPDIR)/src_phc-Invocation_targets.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Invocation_targets.cpp' object='src_phc-Invocation_targets.o' libtool=no @AMDEPBACKSLASH@
+Invocation_targets.o: src/process_ast/Invocation_targets.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Invocation_targets.o -MD -MP -MF "$(DEPDIR)/Invocation_targets.Tpo" -c -o Invocation_targets.o `test -f 'src/process_ast/Invocation_targets.cpp' || echo '$(srcdir)/'`src/process_ast/Invocation_targets.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Invocation_targets.Tpo" "$(DEPDIR)/Invocation_targets.Po"; else rm -f "$(DEPDIR)/Invocation_targets.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Invocation_targets.cpp' object='Invocation_targets.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Invocation_targets.o `test -f 'src/process_ast/Invocation_targets.cpp' || echo '$(srcdir)/'`src/process_ast/Invocation_targets.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Invocation_targets.o `test -f 'src/process_ast/Invocation_targets.cpp' || echo '$(srcdir)/'`src/process_ast/Invocation_targets.cpp
 
-src_phc-Invocation_targets.obj: src/process_ast/Invocation_targets.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Invocation_targets.obj -MD -MP -MF "$(DEPDIR)/src_phc-Invocation_targets.Tpo" -c -o src_phc-Invocation_targets.obj `if test -f 'src/process_ast/Invocation_targets.cpp'; then $(CYGPATH_W) 'src/process_ast/Invocation_targets.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Invocation_targets.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Invocation_targets.Tpo" "$(DEPDIR)/src_phc-Invocation_targets.Po"; else rm -f "$(DEPDIR)/src_phc-Invocation_targets.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Invocation_targets.cpp' object='src_phc-Invocation_targets.obj' libtool=no @AMDEPBACKSLASH@
+Invocation_targets.obj: src/process_ast/Invocation_targets.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Invocation_targets.obj -MD -MP -MF "$(DEPDIR)/Invocation_targets.Tpo" -c -o Invocation_targets.obj `if test -f 'src/process_ast/Invocation_targets.cpp'; then $(CYGPATH_W) 'src/process_ast/Invocation_targets.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Invocation_targets.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Invocation_targets.Tpo" "$(DEPDIR)/Invocation_targets.Po"; else rm -f "$(DEPDIR)/Invocation_targets.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Invocation_targets.cpp' object='Invocation_targets.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Invocation_targets.obj `if test -f 'src/process_ast/Invocation_targets.cpp'; then $(CYGPATH_W) 'src/process_ast/Invocation_targets.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Invocation_targets.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Invocation_targets.obj `if test -f 'src/process_ast/Invocation_targets.cpp'; then $(CYGPATH_W) 'src/process_ast/Invocation_targets.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Invocation_targets.cpp'; fi`
 
-src_phc-PHP_unparser.o: src/process_ast/PHP_unparser.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-PHP_unparser.o -MD -MP -MF "$(DEPDIR)/src_phc-PHP_unparser.Tpo" -c -o src_phc-PHP_unparser.o `test -f 'src/process_ast/PHP_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/PHP_unparser.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-PHP_unparser.Tpo" "$(DEPDIR)/src_phc-PHP_unparser.Po"; else rm -f "$(DEPDIR)/src_phc-PHP_unparser.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/PHP_unparser.cpp' object='src_phc-PHP_unparser.o' libtool=no @AMDEPBACKSLASH@
+PHP_unparser.o: src/process_ast/PHP_unparser.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PHP_unparser.o -MD -MP -MF "$(DEPDIR)/PHP_unparser.Tpo" -c -o PHP_unparser.o `test -f 'src/process_ast/PHP_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/PHP_unparser.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/PHP_unparser.Tpo" "$(DEPDIR)/PHP_unparser.Po"; else rm -f "$(DEPDIR)/PHP_unparser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/PHP_unparser.cpp' object='PHP_unparser.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-PHP_unparser.o `test -f 'src/process_ast/PHP_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/PHP_unparser.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PHP_unparser.o `test -f 'src/process_ast/PHP_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/PHP_unparser.cpp
 
-src_phc-PHP_unparser.obj: src/process_ast/PHP_unparser.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-PHP_unparser.obj -MD -MP -MF "$(DEPDIR)/src_phc-PHP_unparser.Tpo" -c -o src_phc-PHP_unparser.obj `if test -f 'src/process_ast/PHP_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/PHP_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/PHP_unparser.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-PHP_unparser.Tpo" "$(DEPDIR)/src_phc-PHP_unparser.Po"; else rm -f "$(DEPDIR)/src_phc-PHP_unparser.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/PHP_unparser.cpp' object='src_phc-PHP_unparser.obj' libtool=no @AMDEPBACKSLASH@
+PHP_unparser.obj: src/process_ast/PHP_unparser.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PHP_unparser.obj -MD -MP -MF "$(DEPDIR)/PHP_unparser.Tpo" -c -o PHP_unparser.obj `if test -f 'src/process_ast/PHP_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/PHP_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/PHP_unparser.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/PHP_unparser.Tpo" "$(DEPDIR)/PHP_unparser.Po"; else rm -f "$(DEPDIR)/PHP_unparser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/PHP_unparser.cpp' object='PHP_unparser.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-PHP_unparser.obj `if test -f 'src/process_ast/PHP_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/PHP_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/PHP_unparser.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PHP_unparser.obj `if test -f 'src/process_ast/PHP_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/PHP_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/PHP_unparser.cpp'; fi`
 
-src_phc-process_ast.o: src/process_ast/process_ast.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-process_ast.o -MD -MP -MF "$(DEPDIR)/src_phc-process_ast.Tpo" -c -o src_phc-process_ast.o `test -f 'src/process_ast/process_ast.cpp' || echo '$(srcdir)/'`src/process_ast/process_ast.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-process_ast.Tpo" "$(DEPDIR)/src_phc-process_ast.Po"; else rm -f "$(DEPDIR)/src_phc-process_ast.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/process_ast.cpp' object='src_phc-process_ast.o' libtool=no @AMDEPBACKSLASH@
+process_ast.o: src/process_ast/process_ast.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT process_ast.o -MD -MP -MF "$(DEPDIR)/process_ast.Tpo" -c -o process_ast.o `test -f 'src/process_ast/process_ast.cpp' || echo '$(srcdir)/'`src/process_ast/process_ast.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/process_ast.Tpo" "$(DEPDIR)/process_ast.Po"; else rm -f "$(DEPDIR)/process_ast.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/process_ast.cpp' object='process_ast.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-process_ast.o `test -f 'src/process_ast/process_ast.cpp' || echo '$(srcdir)/'`src/process_ast/process_ast.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o process_ast.o `test -f 'src/process_ast/process_ast.cpp' || echo '$(srcdir)/'`src/process_ast/process_ast.cpp
 
-src_phc-process_ast.obj: src/process_ast/process_ast.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-process_ast.obj -MD -MP -MF "$(DEPDIR)/src_phc-process_ast.Tpo" -c -o src_phc-process_ast.obj `if test -f 'src/process_ast/process_ast.cpp'; then $(CYGPATH_W) 'src/process_ast/process_ast.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/process_ast.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-process_ast.Tpo" "$(DEPDIR)/src_phc-process_ast.Po"; else rm -f "$(DEPDIR)/src_phc-process_ast.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/process_ast.cpp' object='src_phc-process_ast.obj' libtool=no @AMDEPBACKSLASH@
+process_ast.obj: src/process_ast/process_ast.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT process_ast.obj -MD -MP -MF "$(DEPDIR)/process_ast.Tpo" -c -o process_ast.obj `if test -f 'src/process_ast/process_ast.cpp'; then $(CYGPATH_W) 'src/process_ast/process_ast.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/process_ast.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/process_ast.Tpo" "$(DEPDIR)/process_ast.Po"; else rm -f "$(DEPDIR)/process_ast.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/process_ast.cpp' object='process_ast.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-process_ast.obj `if test -f 'src/process_ast/process_ast.cpp'; then $(CYGPATH_W) 'src/process_ast/process_ast.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/process_ast.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o process_ast.obj `if test -f 'src/process_ast/process_ast.cpp'; then $(CYGPATH_W) 'src/process_ast/process_ast.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/process_ast.cpp'; fi`
 
-src_phc-Process_includes.o: src/process_ast/Process_includes.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Process_includes.o -MD -MP -MF "$(DEPDIR)/src_phc-Process_includes.Tpo" -c -o src_phc-Process_includes.o `test -f 'src/process_ast/Process_includes.cpp' || echo '$(srcdir)/'`src/process_ast/Process_includes.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Process_includes.Tpo" "$(DEPDIR)/src_phc-Process_includes.Po"; else rm -f "$(DEPDIR)/src_phc-Process_includes.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Process_includes.cpp' object='src_phc-Process_includes.o' libtool=no @AMDEPBACKSLASH@
+Process_includes.o: src/process_ast/Process_includes.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Process_includes.o -MD -MP -MF "$(DEPDIR)/Process_includes.Tpo" -c -o Process_includes.o `test -f 'src/process_ast/Process_includes.cpp' || echo '$(srcdir)/'`src/process_ast/Process_includes.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Process_includes.Tpo" "$(DEPDIR)/Process_includes.Po"; else rm -f "$(DEPDIR)/Process_includes.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Process_includes.cpp' object='Process_includes.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Process_includes.o `test -f 'src/process_ast/Process_includes.cpp' || echo '$(srcdir)/'`src/process_ast/Process_includes.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Process_includes.o `test -f 'src/process_ast/Process_includes.cpp' || echo '$(srcdir)/'`src/process_ast/Process_includes.cpp
 
-src_phc-Process_includes.obj: src/process_ast/Process_includes.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Process_includes.obj -MD -MP -MF "$(DEPDIR)/src_phc-Process_includes.Tpo" -c -o src_phc-Process_includes.obj `if test -f 'src/process_ast/Process_includes.cpp'; then $(CYGPATH_W) 'src/process_ast/Process_includes.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Process_includes.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Process_includes.Tpo" "$(DEPDIR)/src_phc-Process_includes.Po"; else rm -f "$(DEPDIR)/src_phc-Process_includes.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Process_includes.cpp' object='src_phc-Process_includes.obj' libtool=no @AMDEPBACKSLASH@
+Process_includes.obj: src/process_ast/Process_includes.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Process_includes.obj -MD -MP -MF "$(DEPDIR)/Process_includes.Tpo" -c -o Process_includes.obj `if test -f 'src/process_ast/Process_includes.cpp'; then $(CYGPATH_W) 'src/process_ast/Process_includes.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Process_includes.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Process_includes.Tpo" "$(DEPDIR)/Process_includes.Po"; else rm -f "$(DEPDIR)/Process_includes.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Process_includes.cpp' object='Process_includes.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Process_includes.obj `if test -f 'src/process_ast/Process_includes.cpp'; then $(CYGPATH_W) 'src/process_ast/Process_includes.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Process_includes.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Process_includes.obj `if test -f 'src/process_ast/Process_includes.cpp'; then $(CYGPATH_W) 'src/process_ast/Process_includes.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Process_includes.cpp'; fi`
 
-src_phc-Remove_concat_null.o: src/process_ast/Remove_concat_null.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Remove_concat_null.o -MD -MP -MF "$(DEPDIR)/src_phc-Remove_concat_null.Tpo" -c -o src_phc-Remove_concat_null.o `test -f 'src/process_ast/Remove_concat_null.cpp' || echo '$(srcdir)/'`src/process_ast/Remove_concat_null.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Remove_concat_null.Tpo" "$(DEPDIR)/src_phc-Remove_concat_null.Po"; else rm -f "$(DEPDIR)/src_phc-Remove_concat_null.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Remove_concat_null.cpp' object='src_phc-Remove_concat_null.o' libtool=no @AMDEPBACKSLASH@
+Remove_concat_null.o: src/process_ast/Remove_concat_null.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Remove_concat_null.o -MD -MP -MF "$(DEPDIR)/Remove_concat_null.Tpo" -c -o Remove_concat_null.o `test -f 'src/process_ast/Remove_concat_null.cpp' || echo '$(srcdir)/'`src/process_ast/Remove_concat_null.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Remove_concat_null.Tpo" "$(DEPDIR)/Remove_concat_null.Po"; else rm -f "$(DEPDIR)/Remove_concat_null.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Remove_concat_null.cpp' object='Remove_concat_null.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Remove_concat_null.o `test -f 'src/process_ast/Remove_concat_null.cpp' || echo '$(srcdir)/'`src/process_ast/Remove_concat_null.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Remove_concat_null.o `test -f 'src/process_ast/Remove_concat_null.cpp' || echo '$(srcdir)/'`src/process_ast/Remove_concat_null.cpp
 
-src_phc-Remove_concat_null.obj: src/process_ast/Remove_concat_null.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Remove_concat_null.obj -MD -MP -MF "$(DEPDIR)/src_phc-Remove_concat_null.Tpo" -c -o src_phc-Remove_concat_null.obj `if test -f 'src/process_ast/Remove_concat_null.cpp'; then $(CYGPATH_W) 'src/process_ast/Remove_concat_null.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Remove_concat_null.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Remove_concat_null.Tpo" "$(DEPDIR)/src_phc-Remove_concat_null.Po"; else rm -f "$(DEPDIR)/src_phc-Remove_concat_null.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Remove_concat_null.cpp' object='src_phc-Remove_concat_null.obj' libtool=no @AMDEPBACKSLASH@
+Remove_concat_null.obj: src/process_ast/Remove_concat_null.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Remove_concat_null.obj -MD -MP -MF "$(DEPDIR)/Remove_concat_null.Tpo" -c -o Remove_concat_null.obj `if test -f 'src/process_ast/Remove_concat_null.cpp'; then $(CYGPATH_W) 'src/process_ast/Remove_concat_null.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Remove_concat_null.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Remove_concat_null.Tpo" "$(DEPDIR)/Remove_concat_null.Po"; else rm -f "$(DEPDIR)/Remove_concat_null.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Remove_concat_null.cpp' object='Remove_concat_null.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Remove_concat_null.obj `if test -f 'src/process_ast/Remove_concat_null.cpp'; then $(CYGPATH_W) 'src/process_ast/Remove_concat_null.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Remove_concat_null.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Remove_concat_null.obj `if test -f 'src/process_ast/Remove_concat_null.cpp'; then $(CYGPATH_W) 'src/process_ast/Remove_concat_null.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Remove_concat_null.cpp'; fi`
 
-src_phc-Remove_parser_temporaries.o: src/process_ast/Remove_parser_temporaries.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Remove_parser_temporaries.o -MD -MP -MF "$(DEPDIR)/src_phc-Remove_parser_temporaries.Tpo" -c -o src_phc-Remove_parser_temporaries.o `test -f 'src/process_ast/Remove_parser_temporaries.cpp' || echo '$(srcdir)/'`src/process_ast/Remove_parser_temporaries.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Remove_parser_temporaries.Tpo" "$(DEPDIR)/src_phc-Remove_parser_temporaries.Po"; else rm -f "$(DEPDIR)/src_phc-Remove_parser_temporaries.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Remove_parser_temporaries.cpp' object='src_phc-Remove_parser_temporaries.o' libtool=no @AMDEPBACKSLASH@
+Remove_parser_temporaries.o: src/process_ast/Remove_parser_temporaries.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Remove_parser_temporaries.o -MD -MP -MF "$(DEPDIR)/Remove_parser_temporaries.Tpo" -c -o Remove_parser_temporaries.o `test -f 'src/process_ast/Remove_parser_temporaries.cpp' || echo '$(srcdir)/'`src/process_ast/Remove_parser_temporaries.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Remove_parser_temporaries.Tpo" "$(DEPDIR)/Remove_parser_temporaries.Po"; else rm -f "$(DEPDIR)/Remove_parser_temporaries.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Remove_parser_temporaries.cpp' object='Remove_parser_temporaries.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Remove_parser_temporaries.o `test -f 'src/process_ast/Remove_parser_temporaries.cpp' || echo '$(srcdir)/'`src/process_ast/Remove_parser_temporaries.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Remove_parser_temporaries.o `test -f 'src/process_ast/Remove_parser_temporaries.cpp' || echo '$(srcdir)/'`src/process_ast/Remove_parser_temporaries.cpp
 
-src_phc-Remove_parser_temporaries.obj: src/process_ast/Remove_parser_temporaries.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Remove_parser_temporaries.obj -MD -MP -MF "$(DEPDIR)/src_phc-Remove_parser_temporaries.Tpo" -c -o src_phc-Remove_parser_temporaries.obj `if test -f 'src/process_ast/Remove_parser_temporaries.cpp'; then $(CYGPATH_W) 'src/process_ast/Remove_parser_temporaries.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Remove_parser_temporaries.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Remove_parser_temporaries.Tpo" "$(DEPDIR)/src_phc-Remove_parser_temporaries.Po"; else rm -f "$(DEPDIR)/src_phc-Remove_parser_temporaries.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Remove_parser_temporaries.cpp' object='src_phc-Remove_parser_temporaries.obj' libtool=no @AMDEPBACKSLASH@
+Remove_parser_temporaries.obj: src/process_ast/Remove_parser_temporaries.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Remove_parser_temporaries.obj -MD -MP -MF "$(DEPDIR)/Remove_parser_temporaries.Tpo" -c -o Remove_parser_temporaries.obj `if test -f 'src/process_ast/Remove_parser_temporaries.cpp'; then $(CYGPATH_W) 'src/process_ast/Remove_parser_temporaries.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Remove_parser_temporaries.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Remove_parser_temporaries.Tpo" "$(DEPDIR)/Remove_parser_temporaries.Po"; else rm -f "$(DEPDIR)/Remove_parser_temporaries.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Remove_parser_temporaries.cpp' object='Remove_parser_temporaries.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Remove_parser_temporaries.obj `if test -f 'src/process_ast/Remove_parser_temporaries.cpp'; then $(CYGPATH_W) 'src/process_ast/Remove_parser_temporaries.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Remove_parser_temporaries.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Remove_parser_temporaries.obj `if test -f 'src/process_ast/Remove_parser_temporaries.cpp'; then $(CYGPATH_W) 'src/process_ast/Remove_parser_temporaries.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Remove_parser_temporaries.cpp'; fi`
 
-src_phc-Token_conversion.o: src/process_ast/Token_conversion.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Token_conversion.o -MD -MP -MF "$(DEPDIR)/src_phc-Token_conversion.Tpo" -c -o src_phc-Token_conversion.o `test -f 'src/process_ast/Token_conversion.cpp' || echo '$(srcdir)/'`src/process_ast/Token_conversion.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Token_conversion.Tpo" "$(DEPDIR)/src_phc-Token_conversion.Po"; else rm -f "$(DEPDIR)/src_phc-Token_conversion.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Token_conversion.cpp' object='src_phc-Token_conversion.o' libtool=no @AMDEPBACKSLASH@
+Token_conversion.o: src/process_ast/Token_conversion.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Token_conversion.o -MD -MP -MF "$(DEPDIR)/Token_conversion.Tpo" -c -o Token_conversion.o `test -f 'src/process_ast/Token_conversion.cpp' || echo '$(srcdir)/'`src/process_ast/Token_conversion.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Token_conversion.Tpo" "$(DEPDIR)/Token_conversion.Po"; else rm -f "$(DEPDIR)/Token_conversion.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Token_conversion.cpp' object='Token_conversion.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Token_conversion.o `test -f 'src/process_ast/Token_conversion.cpp' || echo '$(srcdir)/'`src/process_ast/Token_conversion.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Token_conversion.o `test -f 'src/process_ast/Token_conversion.cpp' || echo '$(srcdir)/'`src/process_ast/Token_conversion.cpp
 
-src_phc-Token_conversion.obj: src/process_ast/Token_conversion.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Token_conversion.obj -MD -MP -MF "$(DEPDIR)/src_phc-Token_conversion.Tpo" -c -o src_phc-Token_conversion.obj `if test -f 'src/process_ast/Token_conversion.cpp'; then $(CYGPATH_W) 'src/process_ast/Token_conversion.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Token_conversion.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Token_conversion.Tpo" "$(DEPDIR)/src_phc-Token_conversion.Po"; else rm -f "$(DEPDIR)/src_phc-Token_conversion.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Token_conversion.cpp' object='src_phc-Token_conversion.obj' libtool=no @AMDEPBACKSLASH@
+Token_conversion.obj: src/process_ast/Token_conversion.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Token_conversion.obj -MD -MP -MF "$(DEPDIR)/Token_conversion.Tpo" -c -o Token_conversion.obj `if test -f 'src/process_ast/Token_conversion.cpp'; then $(CYGPATH_W) 'src/process_ast/Token_conversion.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Token_conversion.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Token_conversion.Tpo" "$(DEPDIR)/Token_conversion.Po"; else rm -f "$(DEPDIR)/Token_conversion.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Token_conversion.cpp' object='Token_conversion.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Token_conversion.obj `if test -f 'src/process_ast/Token_conversion.cpp'; then $(CYGPATH_W) 'src/process_ast/Token_conversion.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Token_conversion.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Token_conversion.obj `if test -f 'src/process_ast/Token_conversion.cpp'; then $(CYGPATH_W) 'src/process_ast/Token_conversion.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Token_conversion.cpp'; fi`
 
-src_phc-Variable_targets.o: src/process_ast/Variable_targets.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Variable_targets.o -MD -MP -MF "$(DEPDIR)/src_phc-Variable_targets.Tpo" -c -o src_phc-Variable_targets.o `test -f 'src/process_ast/Variable_targets.cpp' || echo '$(srcdir)/'`src/process_ast/Variable_targets.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Variable_targets.Tpo" "$(DEPDIR)/src_phc-Variable_targets.Po"; else rm -f "$(DEPDIR)/src_phc-Variable_targets.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Variable_targets.cpp' object='src_phc-Variable_targets.o' libtool=no @AMDEPBACKSLASH@
+Variable_targets.o: src/process_ast/Variable_targets.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Variable_targets.o -MD -MP -MF "$(DEPDIR)/Variable_targets.Tpo" -c -o Variable_targets.o `test -f 'src/process_ast/Variable_targets.cpp' || echo '$(srcdir)/'`src/process_ast/Variable_targets.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Variable_targets.Tpo" "$(DEPDIR)/Variable_targets.Po"; else rm -f "$(DEPDIR)/Variable_targets.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Variable_targets.cpp' object='Variable_targets.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Variable_targets.o `test -f 'src/process_ast/Variable_targets.cpp' || echo '$(srcdir)/'`src/process_ast/Variable_targets.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Variable_targets.o `test -f 'src/process_ast/Variable_targets.cpp' || echo '$(srcdir)/'`src/process_ast/Variable_targets.cpp
 
-src_phc-Variable_targets.obj: src/process_ast/Variable_targets.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Variable_targets.obj -MD -MP -MF "$(DEPDIR)/src_phc-Variable_targets.Tpo" -c -o src_phc-Variable_targets.obj `if test -f 'src/process_ast/Variable_targets.cpp'; then $(CYGPATH_W) 'src/process_ast/Variable_targets.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Variable_targets.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Variable_targets.Tpo" "$(DEPDIR)/src_phc-Variable_targets.Po"; else rm -f "$(DEPDIR)/src_phc-Variable_targets.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Variable_targets.cpp' object='src_phc-Variable_targets.obj' libtool=no @AMDEPBACKSLASH@
+Variable_targets.obj: src/process_ast/Variable_targets.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Variable_targets.obj -MD -MP -MF "$(DEPDIR)/Variable_targets.Tpo" -c -o Variable_targets.obj `if test -f 'src/process_ast/Variable_targets.cpp'; then $(CYGPATH_W) 'src/process_ast/Variable_targets.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Variable_targets.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Variable_targets.Tpo" "$(DEPDIR)/Variable_targets.Po"; else rm -f "$(DEPDIR)/Variable_targets.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Variable_targets.cpp' object='Variable_targets.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Variable_targets.obj `if test -f 'src/process_ast/Variable_targets.cpp'; then $(CYGPATH_W) 'src/process_ast/Variable_targets.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Variable_targets.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Variable_targets.obj `if test -f 'src/process_ast/Variable_targets.cpp'; then $(CYGPATH_W) 'src/process_ast/Variable_targets.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Variable_targets.cpp'; fi`
 
-src_phc-Visit_everything.o: src/process_ast/Visit_everything.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Visit_everything.o -MD -MP -MF "$(DEPDIR)/src_phc-Visit_everything.Tpo" -c -o src_phc-Visit_everything.o `test -f 'src/process_ast/Visit_everything.cpp' || echo '$(srcdir)/'`src/process_ast/Visit_everything.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Visit_everything.Tpo" "$(DEPDIR)/src_phc-Visit_everything.Po"; else rm -f "$(DEPDIR)/src_phc-Visit_everything.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Visit_everything.cpp' object='src_phc-Visit_everything.o' libtool=no @AMDEPBACKSLASH@
+Visit_everything.o: src/process_ast/Visit_everything.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Visit_everything.o -MD -MP -MF "$(DEPDIR)/Visit_everything.Tpo" -c -o Visit_everything.o `test -f 'src/process_ast/Visit_everything.cpp' || echo '$(srcdir)/'`src/process_ast/Visit_everything.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Visit_everything.Tpo" "$(DEPDIR)/Visit_everything.Po"; else rm -f "$(DEPDIR)/Visit_everything.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Visit_everything.cpp' object='Visit_everything.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Visit_everything.o `test -f 'src/process_ast/Visit_everything.cpp' || echo '$(srcdir)/'`src/process_ast/Visit_everything.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Visit_everything.o `test -f 'src/process_ast/Visit_everything.cpp' || echo '$(srcdir)/'`src/process_ast/Visit_everything.cpp
 
-src_phc-Visit_everything.obj: src/process_ast/Visit_everything.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-Visit_everything.obj -MD -MP -MF "$(DEPDIR)/src_phc-Visit_everything.Tpo" -c -o src_phc-Visit_everything.obj `if test -f 'src/process_ast/Visit_everything.cpp'; then $(CYGPATH_W) 'src/process_ast/Visit_everything.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Visit_everything.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-Visit_everything.Tpo" "$(DEPDIR)/src_phc-Visit_everything.Po"; else rm -f "$(DEPDIR)/src_phc-Visit_everything.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Visit_everything.cpp' object='src_phc-Visit_everything.obj' libtool=no @AMDEPBACKSLASH@
+Visit_everything.obj: src/process_ast/Visit_everything.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Visit_everything.obj -MD -MP -MF "$(DEPDIR)/Visit_everything.Tpo" -c -o Visit_everything.obj `if test -f 'src/process_ast/Visit_everything.cpp'; then $(CYGPATH_W) 'src/process_ast/Visit_everything.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Visit_everything.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Visit_everything.Tpo" "$(DEPDIR)/Visit_everything.Po"; else rm -f "$(DEPDIR)/Visit_everything.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/Visit_everything.cpp' object='Visit_everything.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-Visit_everything.obj `if test -f 'src/process_ast/Visit_everything.cpp'; then $(CYGPATH_W) 'src/process_ast/Visit_everything.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Visit_everything.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Visit_everything.obj `if test -f 'src/process_ast/Visit_everything.cpp'; then $(CYGPATH_W) 'src/process_ast/Visit_everything.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/Visit_everything.cpp'; fi`
 
-src_phc-XML_unparser.o: src/process_ast/XML_unparser.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-XML_unparser.o -MD -MP -MF "$(DEPDIR)/src_phc-XML_unparser.Tpo" -c -o src_phc-XML_unparser.o `test -f 'src/process_ast/XML_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/XML_unparser.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-XML_unparser.Tpo" "$(DEPDIR)/src_phc-XML_unparser.Po"; else rm -f "$(DEPDIR)/src_phc-XML_unparser.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/XML_unparser.cpp' object='src_phc-XML_unparser.o' libtool=no @AMDEPBACKSLASH@
+XML_unparser.o: src/process_ast/XML_unparser.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XML_unparser.o -MD -MP -MF "$(DEPDIR)/XML_unparser.Tpo" -c -o XML_unparser.o `test -f 'src/process_ast/XML_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/XML_unparser.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/XML_unparser.Tpo" "$(DEPDIR)/XML_unparser.Po"; else rm -f "$(DEPDIR)/XML_unparser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/XML_unparser.cpp' object='XML_unparser.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-XML_unparser.o `test -f 'src/process_ast/XML_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/XML_unparser.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XML_unparser.o `test -f 'src/process_ast/XML_unparser.cpp' || echo '$(srcdir)/'`src/process_ast/XML_unparser.cpp
 
-src_phc-XML_unparser.obj: src/process_ast/XML_unparser.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -MT src_phc-XML_unparser.obj -MD -MP -MF "$(DEPDIR)/src_phc-XML_unparser.Tpo" -c -o src_phc-XML_unparser.obj `if test -f 'src/process_ast/XML_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/XML_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/XML_unparser.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/src_phc-XML_unparser.Tpo" "$(DEPDIR)/src_phc-XML_unparser.Po"; else rm -f "$(DEPDIR)/src_phc-XML_unparser.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/XML_unparser.cpp' object='src_phc-XML_unparser.obj' libtool=no @AMDEPBACKSLASH@
+XML_unparser.obj: src/process_ast/XML_unparser.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XML_unparser.obj -MD -MP -MF "$(DEPDIR)/XML_unparser.Tpo" -c -o XML_unparser.obj `if test -f 'src/process_ast/XML_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/XML_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/XML_unparser.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/XML_unparser.Tpo" "$(DEPDIR)/XML_unparser.Po"; else rm -f "$(DEPDIR)/XML_unparser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/process_ast/XML_unparser.cpp' object='XML_unparser.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(src_phc_CXXFLAGS) $(CXXFLAGS) -c -o src_phc-XML_unparser.obj `if test -f 'src/process_ast/XML_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/XML_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/XML_unparser.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XML_unparser.obj `if test -f 'src/process_ast/XML_unparser.cpp'; then $(CYGPATH_W) 'src/process_ast/XML_unparser.cpp'; else $(CYGPATH_W) '$(srcdir)/src/process_ast/XML_unparser.cpp'; fi`
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
