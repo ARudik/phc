@@ -6,8 +6,8 @@
 
       public function X()
       {
-         $this->f = 'foo';
-         $this->a = array('foo');
+         $this->f = "foo";
+         $this->a = array("foo");
       }
 
       public function foo()
@@ -21,8 +21,8 @@
       echo "foo\n";
    }
 
-   $f = 'foo';
-   $a = array('foo');
+   $f = "foo";
+   $a = array("foo");
    $x = new X();
    // foo
    foo();
@@ -31,7 +31,7 @@
    // X::foo
    $x->$f();
    // X::foo
-   $x->{'f' . 'oo'}();
+   $x->{"f" . "oo"}();
    // foo
    $x->a[0]();
    // X::foo

@@ -1,4 +1,4 @@
 <?php
-   $x = shell_exec('ls');
+   $x = shell_exec("ls");
    echo $x;
 ?>

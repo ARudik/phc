@@ -9,14 +9,14 @@
 
       public function g()
       {
-         $a1 = 'old string';
-         $a2 = 'old string';
+         $a1 = "old string";
+         $a2 = "old string";
          echo "about to include included_var_overwrite.php\n";
-         $a1 = 'new value';
-         $a2 = 'a DIFFEnt new value';
-         if($a1 == 'old value' or $a2 == 'my old value')
+         $a1 = "new value";
+         $a2 = "a DIFFEnt new value";
+         if($a1 == "old value" or $a2 == "my old value")
          {
-            fail(__FILE__, __LINE__, 'var overwrite within class');
+            fail(__FILE__, __LINE__, "var overwrite within class");
          }
       }
    }
@@ -49,8 +49,8 @@
 
       public function X()
       {
-         $this->f = 'foo';
-         $this->a = array('foo');
+         $this->f = "foo";
+         $this->a = array("foo");
       }
 
       public function foo()
@@ -74,9 +74,9 @@
          global $i2;
          var_dump($i1);
          var_dump($i2);
-         if($i1 != 'some value' and $i2 != 'another value')
+         if($i1 != "some value" and $i2 != "another value")
          {
-            fail(__FILE__, __LINE__, 'using variables in included class');
+            fail(__FILE__, __LINE__, "using variables in included class");
          }
          return $my_var;
       }
@@ -104,22 +104,22 @@
    # --compile-time-includes
    function fail($file, $line, $reason)
    {
-      print "Failure: '" . $reason . "' on " . $file . ':' . $line . "\n";
+      print "Failure: '" . $reason . "' on " . $file . ":" . $line . "\n";
    }
 
    # including within a function
    function g()
    {
-      $a1 = 'old string';
-      $a2 = 'old string';
+      $a1 = "old string";
+      $a2 = "old string";
       echo "about to include included_var_overwrite.php\n";
-      $a1 = 'new value';
-      $a2 = 'a DIFFEnt new value';
+      $a1 = "new value";
+      $a2 = "a DIFFEnt new value";
       var_dump($a1);
       var_dump($a2);
-      if($a1 == 'old value' or $a2 == 'my old value')
+      if($a1 == "old value" or $a2 == "my old value")
       {
-         fail(__FILE__, __LINE__, 'var overwrite within function');
+         fail(__FILE__, __LINE__, "var overwrite within function");
       }
    }
 
@@ -142,24 +142,24 @@
       echo $i2;
       echo $j1;
       echo $j2;
-      if($i1 != 'some value' and $i2 != 'another value')
+      if($i1 != "some value" and $i2 != "another value")
       {
-         fail(__FILE__, __LINE__, 'using variables in included function');
+         fail(__FILE__, __LINE__, "using variables in included function");
       }
       return 6;
    }
 
    # checks variables are overwritten
-   $a1 = 'old value';
-   $a2 = 'my old value';
+   $a1 = "old value";
+   $a2 = "my old value";
    echo "about to include included_var_overwrite.php\n";
-   $a1 = 'new value';
-   $a2 = 'a DIFFEnt new value';
+   $a1 = "new value";
+   $a2 = "a DIFFEnt new value";
    var_dump($a1);
    var_dump($a2);
-   if($a1 == 'old value' or $a2 == 'my old value')
+   if($a1 == "old value" or $a2 == "my old value")
    {
-      fail(__FILE__, __LINE__, 'var overwrite');
+      fail(__FILE__, __LINE__, "var overwrite");
    }
    # checks classes are added
    echo "about to include included_classes_and_functions.php\n";
@@ -169,13 +169,13 @@
    var_dump($b);
    if(!$b)
    {
-      fail(__FILE__, __LINE__, 'included class');
+      fail(__FILE__, __LINE__, "included class");
    }
    $b = b();
    var_dump($b);
    if(!$b)
    {
-      fail(__FILE__, __LINE__, 'included function');
+      fail(__FILE__, __LINE__, "included function");
    }
    # include a file with return statements in the classes
    # if this fails, the grep will remove it
@@ -186,12 +186,12 @@
    var_dump($c);
    if($c != 7)
    {
-      fail(__FILE__, __LINE__, 'class with return value');
+      fail(__FILE__, __LINE__, "class with return value");
    }
    # files with directory levels
    echo "about to include include_dir/../../bugs/././../horrible/invocation_priorities.php\n";
-   $f = 'foo';
-   $a = array('foo');
+   $f = "foo";
+   $a = array("foo");
    $x = new X();
    // foo
    foo();
@@ -200,7 +200,7 @@
    // X::foo
    $x->$f();
    // X::foo
-   $x->{'f' . 'oo'}();
+   $x->{"f" . "oo"}();
    // foo
    $x->a[0]();
    // X::foo
@@ -210,14 +210,14 @@
    var_dump($x);
    if(!$x)
    {
-      fail(__FILE__, __LINE__, 'directory levels');
+      fail(__FILE__, __LINE__, "directory levels");
    }
    # files from the current working directory, with ./
-   $x = 'zzz';
-   $y = 'zzz';
-   $xx = 'zzz';
+   $x = "zzz";
+   $y = "zzz";
+   $xx = "zzz";
    echo "about to include ./test/subjects/horrible/obfuscated_foreach.php\n";
-   $x = array(1 => 'a', 2 => 'b', 3 => 'c');
+   $x = array(1 => "a", 2 => "b", 3 => "c");
    echo "** 1 **\n";
    foreach($x as $y)
    {
@@ -236,7 +236,7 @@
    echo "** 4 **\n";
    foreach($x as $a->b)
    {
-      echo '(' . $a . ') ' . $a->b . "\n";
+      echo "(" . $a . ") " . $a->b . "\n";
    }
    /* Breaks */
    /*
@@ -246,7 +246,7 @@
 		echo "$y\n";
 	}
 	*/
-   $xx = 'x';
+   $xx = "x";
    echo "** 6 **\n";
    foreach($$xx as $y)
    {
@@ -262,23 +262,23 @@
    echo "** 8 **\n";
    foreach($$xx as $y => $z)
    {
-      echo $y . ' => ' . $z . "\n";
+      echo $y . " => " . $z . "\n";
    }
    echo "** 9 **\n";
    foreach($$xx as $y => &$z)
    {
-      echo $y . ' => ' . $z . "\n";
+      echo $y . " => " . $z . "\n";
    }
    var_dump($x);
    var_dump($y);
    var_dump($xx);
    if(!$xx)
    {
-      fail(__FILE__, __LINE__, 'current working directory');
+      fail(__FILE__, __LINE__, "current working directory");
    }
    # files from the current working directory
    echo "about to include test/subjects/horrible/obfuscated_foreach.php\n";
-   $x = array(1 => 'a', 2 => 'b', 3 => 'c');
+   $x = array(1 => "a", 2 => "b", 3 => "c");
    echo "** 1 **\n";
    foreach($x as $y)
    {
@@ -297,7 +297,7 @@
    echo "** 4 **\n";
    foreach($x as $a->b)
    {
-      echo '(' . $a . ') ' . $a->b . "\n";
+      echo "(" . $a . ") " . $a->b . "\n";
    }
    /* Breaks */
    /*
@@ -307,7 +307,7 @@
 		echo "$y\n";
 	}
 	*/
-   $xx = 'x';
+   $xx = "x";
    echo "** 6 **\n";
    foreach($$xx as $y)
    {
@@ -323,19 +323,19 @@
    echo "** 8 **\n";
    foreach($$xx as $y => $z)
    {
-      echo $y . ' => ' . $z . "\n";
+      echo $y . " => " . $z . "\n";
    }
    echo "** 9 **\n";
    foreach($$xx as $y => &$z)
    {
-      echo $y . ' => ' . $z . "\n";
+      echo $y . " => " . $z . "\n";
    }
    var_dump($x);
    var_dump($y);
    var_dump($xx);
    if(!$xx)
    {
-      fail(__FILE__, __LINE__, 'current working directory');
+      fail(__FILE__, __LINE__, "current working directory");
    }
    # including files with correct __FILE__
    # Note: this test taken out. We dont want to process file, merely include it
@@ -356,7 +356,7 @@
    var_dump($f);
    if($f !== 26)
    {
-      fail(__FILE__, __LINE__, 'recursive include');
+      fail(__FILE__, __LINE__, "recursive include");
    }
    g();
    $h = new H();
@@ -364,14 +364,14 @@
    $h = $h->g();
    var_dump($h);
    # the included file using varaibles from this file
-   $i1 = 'some value';
-   $i2 = 'another value';
+   $i1 = "some value";
+   $i2 = "another value";
    echo "about to include included_use_existing_vars.php\n";
    var_dump($i1);
    var_dump($i2);
-   if($i1 !== 'some value' and $i2 !== 'another value')
+   if($i1 !== "some value" and $i2 !== "another value")
    {
-      fail(__FILE__, __LINE__, 'using variables inncluded file');
+      fail(__FILE__, __LINE__, "using variables inncluded file");
    }
    # the included file using functions from this file
    echo "about to include included_use_vars_in_function.php\n";

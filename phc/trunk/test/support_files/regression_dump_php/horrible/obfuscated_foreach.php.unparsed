@@ -1,5 +1,5 @@
 <?php
-   $x = array(1 => 'a', 2 => 'b', 3 => 'c');
+   $x = array(1 => "a", 2 => "b", 3 => "c");
    echo "** 1 **\n";
    foreach($x as $y)
    {
@@ -18,7 +18,7 @@
    echo "** 4 **\n";
    foreach($x as $a->b)
    {
-      echo '(' . $a . ') ' . $a->b . "\n";
+      echo "(" . $a . ") " . $a->b . "\n";
    }
    /* Breaks */
    /*
@@ -28,7 +28,7 @@
 		echo "$y\n";
 	}
 	*/
-   $xx = 'x';
+   $xx = "x";
    echo "** 6 **\n";
    foreach($$xx as $y)
    {
@@ -44,11 +44,11 @@
    echo "** 8 **\n";
    foreach($$xx as $y => $z)
    {
-      echo $y . ' => ' . $z . "\n";
+      echo $y . " => " . $z . "\n";
    }
    echo "** 9 **\n";
    foreach($$xx as $y => &$z)
    {
-      echo $y . ' => ' . $z . "\n";
+      echo $y . " => " . $z . "\n";
    }
 ?>

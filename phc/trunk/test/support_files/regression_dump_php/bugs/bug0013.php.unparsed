@@ -5,7 +5,7 @@
    elseif($c2)
    {
       // This comment is fine (followed by a statement) 
-      echo 'Hi';
+      echo "Hi";
    }
    elseif($c3)
    {

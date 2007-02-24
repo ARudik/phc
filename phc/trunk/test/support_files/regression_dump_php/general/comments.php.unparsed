@@ -10,7 +10,7 @@
       // (11) Method definition
       public function c11()
       {
-         echo 'In c11 (without comment)';
+         echo "In c11 (without comment)";
       }
    }
 
@@ -20,7 +20,7 @@
    // (7) Some function definition
    function f7()
    {
-      echo 'In f7 (without comment)';
+      echo "In f7 (without comment)";
    }
 
    // 27 This function has 

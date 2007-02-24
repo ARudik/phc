@@ -14,6 +14,6 @@
    }
 
    $test = new Testclass();
-   $test->logicalKey = 'testkeyname';
+   $test->logicalKey = "testkeyname";
    echo $test->getLogicalKey();
 ?>

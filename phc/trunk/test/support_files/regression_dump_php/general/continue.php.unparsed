@@ -7,6 +7,6 @@
       {
          continue 3;
       }
-      printf('x is ' . $x);
+      printf("x is " . $x);
    }
 ?>

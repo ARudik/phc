@@ -1,6 +1,6 @@
 <?php
    // this would be printed in hex with the bug
-   $a = 'a ' . $b . ' c';
+   $a = "a " . $b . " c";
    $a = "\x01\x02 " . $b . " \x03\x04";
    $a = "\x01\x02 " . $b . " \x03\x04";
    $a = "\x01\x02 " . $b . " \x03\x04";

@@ -1,17 +1,17 @@
 <?php
    function f($a, $b, $c)
    {
-      echo 'Function 1 with ' . $a . ', ' . $b . ' and ' . $c . "\n";
+      echo "Function 1 with " . $a . ", " . $b . " and " . $c . "\n";
    }
 
    function f($a, $b, $c)
    {
-      echo 'Function 2 with ' . $a . ', ' . $b . ' and ' . $c . "\n";
+      echo "Function 2 with " . $a . ", " . $b . " and " . $c . "\n";
    }
 
    function g($a, $b)
    {
-      echo 'Function g with ' . $a . ' and ' . $b . "\n";
+      echo "Function g with " . $a . " and " . $b . "\n";
    }
 
    $x = 17;
@@ -19,7 +19,7 @@
    {
    }
    f(1, 2, 3);
-   if(function_exists('g'))
+   if(function_exists("g"))
    {
       g(7, 8);
    }

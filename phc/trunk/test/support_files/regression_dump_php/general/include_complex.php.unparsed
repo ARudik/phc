@@ -9,13 +9,13 @@
 
       public function g()
       {
-         $a1 = 'old string';
-         $a2 = 'old string';
+         $a1 = "old string";
+         $a2 = "old string";
          echo "about to include included_var_overwrite.php\n";
-         include 'included_var_overwrite.php';
-         if($a1 == 'old value' or $a2 == 'my old value')
+         include "included_var_overwrite.php";
+         if($a1 == "old value" or $a2 == "my old value")
          {
-            fail(__FILE__, __LINE__, 'var overwrite within class');
+            fail(__FILE__, __LINE__, "var overwrite within class");
          }
       }
    }
@@ -42,107 +42,107 @@
    # --compile-time-includes
    function fail($file, $line, $reason)
    {
-      print "Failure: '" . $reason . "' on " . $file . ':' . $line . "\n";
+      print "Failure: '" . $reason . "' on " . $file . ":" . $line . "\n";
    }
 
    # including within a function
    function g()
    {
-      $a1 = 'old string';
-      $a2 = 'old string';
+      $a1 = "old string";
+      $a2 = "old string";
       echo "about to include included_var_overwrite.php\n";
-      require 'included_var_overwrite.php';
+      require "included_var_overwrite.php";
       var_dump($a1);
       var_dump($a2);
-      if($a1 == 'old value' or $a2 == 'my old value')
+      if($a1 == "old value" or $a2 == "my old value")
       {
-         fail(__FILE__, __LINE__, 'var overwrite within function');
+         fail(__FILE__, __LINE__, "var overwrite within function");
       }
    }
 
    # checks variables are overwritten
-   $a1 = 'old value';
-   $a2 = 'my old value';
+   $a1 = "old value";
+   $a2 = "my old value";
    echo "about to include included_var_overwrite.php\n";
-   include 'included_var_overwrite.php';
+   include "included_var_overwrite.php";
    var_dump($a1);
    var_dump($a2);
-   if($a1 == 'old value' or $a2 == 'my old value')
+   if($a1 == "old value" or $a2 == "my old value")
    {
-      fail(__FILE__, __LINE__, 'var overwrite');
+      fail(__FILE__, __LINE__, "var overwrite");
    }
    # checks classes are added
    echo "about to include included_classes_and_functions.php\n";
-   include 'included_classes_and_functions.php';
+   include "included_classes_and_functions.php";
    $b = new B();
    var_dump($b);
    $b = $b->b();
    var_dump($b);
    if(!$b)
    {
-      fail(__FILE__, __LINE__, 'included class');
+      fail(__FILE__, __LINE__, "included class");
    }
    $b = b();
    var_dump($b);
    if(!$b)
    {
-      fail(__FILE__, __LINE__, 'included function');
+      fail(__FILE__, __LINE__, "included function");
    }
    # include a file with return statements in the classes
    # if this fails, the grep will remove it
    echo "about to include included_classes_with_return_values.php\n";
-   include 'included_classes_with_return_values.php';
+   include "included_classes_with_return_values.php";
    $c = new C();
    var_dump($c);
    $c = $c->cc();
    var_dump($c);
    if($c != 7)
    {
-      fail(__FILE__, __LINE__, 'class with return value');
+      fail(__FILE__, __LINE__, "class with return value");
    }
    # files with directory levels
    echo "about to include include_dir/../../bugs/././../horrible/invocation_priorities.php\n";
-   include 'include_dir/../../bugs/./../horrible/invocation_priorities.php';
+   include "include_dir/../../bugs/./../horrible/invocation_priorities.php";
    var_dump($f);
    var_dump($a);
    var_dump($x);
    if(!$x)
    {
-      fail(__FILE__, __LINE__, 'directory levels');
+      fail(__FILE__, __LINE__, "directory levels");
    }
    # files from the current working directory, with ./
-   $x = 'zzz';
-   $y = 'zzz';
-   $xx = 'zzz';
+   $x = "zzz";
+   $y = "zzz";
+   $xx = "zzz";
    echo "about to include ./test/subjects/horrible/obfuscated_foreach.php\n";
-   include './test/subjects/horrible/obfuscated_foreach.php';
+   include "./test/subjects/horrible/obfuscated_foreach.php";
    var_dump($x);
    var_dump($y);
    var_dump($xx);
    if(!$xx)
    {
-      fail(__FILE__, __LINE__, 'current working directory');
+      fail(__FILE__, __LINE__, "current working directory");
    }
    # files from the current working directory
    echo "about to include test/subjects/horrible/obfuscated_foreach.php\n";
-   include 'test/subjects/horrible/obfuscated_foreach.php';
+   include "test/subjects/horrible/obfuscated_foreach.php";
    var_dump($x);
    var_dump($y);
    var_dump($xx);
    if(!$xx)
    {
-      fail(__FILE__, __LINE__, 'current working directory');
+      fail(__FILE__, __LINE__, "current working directory");
    }
    # including files with correct __FILE__
    # Note: this test taken out. We dont want to process file, merely include it
    # in the tree	
    # calling files with include
    echo "about to include included_recursive1.php\n";
-   require 'included_recursive1.php';
+   require "included_recursive1.php";
    var_dump($f);
    if($f !== 26)
    {
-      fail(__FILE__, __LINE__, 'recursive include');
+      fail(__FILE__, __LINE__, "recursive include");
    }
    g();
    $h = new H();
@@ -150,18 +150,18 @@
    $h = $h->g();
    var_dump($h);
    # the included file using varaibles from this file
-   $i1 = 'some value';
-   $i2 = 'another value';
+   $i1 = "some value";
+   $i2 = "another value";
    echo "about to include included_use_existing_vars.php\n";
-   include 'included_use_existing_vars.php';
+   include "included_use_existing_vars.php";
    # the included file using functions from this file
    echo "about to include included_use_vars_in_function.php\n";
-   include 'included_use_vars_in_function.php';
+   include "included_use_vars_in_function.php";
    $j = j(1, 2);
    var_dump($j);
    # the included file using classes from this file
    echo "about to include included_use_vars_in_classes.php\n";
-   include 'included_use_vars_in_classes.php';
+   include "included_use_vars_in_classes.php";
    $k = new K();
    var_dump($k);
    $k = $k->kk();

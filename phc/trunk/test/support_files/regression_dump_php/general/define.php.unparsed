@@ -1,4 +1,4 @@
 <?php
-   define('FOO', 5);
+   define("FOO", 5);
    $x = FOO;
 ?>

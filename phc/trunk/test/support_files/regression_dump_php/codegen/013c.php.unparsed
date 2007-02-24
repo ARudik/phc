@@ -1,4 +1,4 @@
 <?php
-   $a['foo']['bar'] = 'baz';
+   $a["foo"]["bar"] = "baz";
    var_dump($a);
 ?>

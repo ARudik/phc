@@ -987,35 +987,19 @@ void PHP_unparser::children_string(Token_string* in)
 	}
 	else
 	{
-		/* we have to jump through some hoops here to allow \x00 be in the
-		 * string. Obviously it can't be in the c string, so we use a char array
-		 * instead, so that we can use sizeof. */
-		char escape_chars[] = 
-			/* i < 32 - we dont check for zero here, it screws up the search */
-			"\x00\x01\x02\x03"
-			"\x04\x05\x06\x07"
-			"\x08\x09\x0A\x0B"
-			"\x0C\x0D\x0E\x0F"
-			"\x10\x11\x12\x13"
-			"\x14\x15\x16\x17"
-			"\x18\x19\x1A\x1B"
-			"\x1C\x1D\x1E\x1F"
-
-			/* i == 127 */
-			"\x7f"
-
-			/* normal escape chars (this is to check if we can put these in ', so
-			 * we check for ', and not ". Otherwise, these are the same characters
-			 * that we check for in echo_escaped) */
-			"\n\r\t\\$'";
-
-		int length = sizeof(escape_chars) - 1; /* for the null char at the end */
-		String* str_escape_chars = new String(escape_chars, length);
-
-		if( in->source_rep->find_first_of(*str_escape_chars) == String::npos) 
+		if(in->source_rep->attrs->is_true("phc.unparser.is_singly_quoted"))
 		{
+			string::iterator i;
+
 			echo("'");
-			echo(in->source_rep);
+			// Only thing that can be escaped in an SQ string is the single quote 
+			for(i = in->source_rep->begin(); i != in->source_rep->end(); i++)
+			{
+				if(*i == '\'') 
+					os << "\\'";
+				else
+					os << *i;
+			}
 			echo("'");
 		}
 		else 

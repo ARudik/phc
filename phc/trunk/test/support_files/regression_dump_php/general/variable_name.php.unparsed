@@ -12,7 +12,7 @@
 
    function f2()
    {
-      return 'x';
+      return "x";
    }
 
    function f3()

@@ -7,7 +7,7 @@
 
       public function g()
       {
-         echo 'Hi!';
+         echo "Hi!";
       }
 
       abstract function h();

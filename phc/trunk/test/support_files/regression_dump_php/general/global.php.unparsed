@@ -1,7 +1,7 @@
 <?php
    function foo()
    {
-      $y = 'y';
+      $y = "y";
       global $x;
       global $$y;
    }

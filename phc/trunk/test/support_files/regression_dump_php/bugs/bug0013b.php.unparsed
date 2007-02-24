@@ -1,15 +1,15 @@
 <?php
    if($c1)
    {
-      echo 'Hi';
+      echo "Hi";
    }
    elseif($c2)
    {
-      echo 'World';
+      echo "World";
    }
    else
    {
       // Comment
-      echo 'Bye';
+      echo "Bye";
    }
 ?>

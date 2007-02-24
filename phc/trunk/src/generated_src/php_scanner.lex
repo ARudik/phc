@@ -272,7 +272,9 @@ UNSET_CAST		{CS}"unset"{CE}
 	/* Deal with singly quoted strings */
 
 <SQ_STR>\'			{
-							*yylval = new String(yyextra->buffer);
+							String* str = new String(yyextra->buffer);
+							str->attrs->set("phc.unparser.is_singly_quoted", new Boolean(true)); 
+							*yylval = str;
 							BEGIN(PHP);
 							yyextra->buffer = "";
 							RETURN(STRING);
@@ -497,9 +499,9 @@ UNSET_CAST		{CS}"unset"{CE}
 
 								// The linebreak of the last line of the HEREDOC
 								// string should also be stripped
-								if(yyextra->buffer.size() >= 0 && yyextra->buffer[string_len - 1] == '\n')
+								if(string_len > 0 && yyextra->buffer[string_len - 1] == '\n')
 									string_len--;
-								if(yyextra->buffer.size() >= 0 && yyextra->buffer[string_len - 1] == '\r')
+								if(string_len > 0 && yyextra->buffer[string_len - 1] == '\r')
 									string_len--; // Windows file
 							
 								*yylval = new String(yyextra->buffer.substr(0, string_len));
