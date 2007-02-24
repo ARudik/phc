@@ -65,6 +65,7 @@ src_phc_SOURCES =												\
 	src/lib/Integer.h											\
 	src/lib/List.h												\
 	src/lib/Object.h											\
+	src/lib/String.cpp										\
 	src/lib/String.h											\
 	src/parsing/parse.cpp									\
 	src/parsing/parse.h										\

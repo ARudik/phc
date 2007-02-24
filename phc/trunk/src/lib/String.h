@@ -19,40 +19,21 @@ extern Wildcard* WILDCARD;
 
 class String : public string, virtual public Object
 {
-public:
+public:	
 	AttrMap* attrs;
 
 public:
-	String() : attrs(NULL) {}
-	String(const string& s) : string(s), attrs(NULL) {}
-	String(const char* s) : string(s), attrs(NULL) {}
-	String(const char* s, size_t n) : string(s, n), attrs(NULL) {}
-	String* deep_clone(Object* partial_result = NULL)
-	{
-		String* clone;
-		assert(!partial_result);
-		clone = new String(*this);
-		if(attrs)
-			clone->attrs = attrs->deep_clone();
-	}	
-	virtual bool try_match(Object* pattern)
-	{
-		String* that = dynamic_cast<String*>(pattern);
-		if(!that) return false;
-		return (*this == *that);
-	}
-	virtual void replace_wildcards(Object* pattern)
-	{
-		String* that = dynamic_cast<String*>(pattern);
-		assert(that);
-	}
-	virtual bool deep_equals(Object* other)
-	{
-		String* that = dynamic_cast<String*>(other);
-		if(!that) return false;
-		return (*this == *that);
-	}
-	virtual ~String() {}
+	String(); 
+	String(const string& s); 
+	String(char const* s); 
+	String(char const* s, size_t n);
+	virtual ~String();
+
+public: // Required by Object
+	virtual String* deep_clone(Object* partial_result = NULL);
+	virtual bool try_match(Object* pattern);
+	virtual void replace_wildcards(Object* pattern);
+	virtual bool deep_equals(Object* other);
 };
 
 #endif
