@@ -139,7 +139,7 @@ transform_class gr ctxts = CppClass Concrete "Tree_transform" [] [] ([destructor
 		pp = pre_post_methods gr ctxts
 		ch = default_transform_children gr ctxts 
 		tc = token_children (terminal_list gr)
-		lt = list_transform_methods ctxts gr 
+		lt = list_transform_methods gr ctxts
 		destructor = Method (Signature Virtual NonStatic NoType "~Tree_transform" []) [] 
 {-
 	The pre_transform and post_transform methods
@@ -218,40 +218,40 @@ token_children (t:ts) = (method:token_children ts)
 {-
 	Implementation of pre_, children_ and post_ for all list classes	
 -}
-list_transform_methods :: [Context] -> Grammar -> [Method]
-list_transform_methods ctxts gr = concatMap f (nub (find_lists gr))
+list_transform_methods :: Grammar -> [Context] -> [Method]
+list_transform_methods gr cx = concatMap f (find_lists gr cx)
 	where
-		f :: Symbol -> [Method]
-		f sym = [list_pre sym, list_children ctxts sym, list_post sym]
+		f :: ClassName -> [Method]
+		f cn = [list_pre cn, list_children cx cn, list_post cn]
 
-list_pre :: Symbol -> Method
-list_pre sym = Method (Signature Virtual NonStatic (Type (symbol_to_classname sym ++ "_list*")) ("pre_" ++ symbol_to_varname sym ++ "_list") [param]) body
+list_pre :: ClassName -> Method
+list_pre cn = Method (Signature Virtual NonStatic (Type (cn ++ "_list*")) ("pre_" ++ classname_to_varname cn ++ "_list") [param]) body
 	where
-		param = Parameter (Variable (Type (symbol_to_classname sym ++ "_list*")) "in") ""
+		param = Parameter (Variable (Type (cn ++ "_list*")) "in") ""
 		body = ["return in;"]
 
-list_post :: Symbol -> Method
-list_post sym = Method (Signature Virtual NonStatic (Type (symbol_to_classname sym ++ "_list*")) ("post_" ++ symbol_to_varname sym ++ "_list") [param]) body
+list_post :: ClassName -> Method
+list_post cn = Method (Signature Virtual NonStatic (Type (cn ++ "_list*")) ("post_" ++ classname_to_varname cn ++ "_list") [param]) body
 	where
-		param = Parameter (Variable (Type (symbol_to_classname sym ++ "_list*")) "in") ""
+		param = Parameter (Variable (Type (cn ++ "_list*")) "in") ""
 		body = ["return in;"]
 
-list_children :: [Context] -> Symbol -> Method
-list_children ctxts sym = Method (Signature Virtual NonStatic Void ("children_" ++ symbol_to_varname sym ++ "_list") [param]) body
+list_children :: [Context] -> ClassName -> Method
+list_children ctxts cn = Method (Signature Virtual NonStatic Void ("children_" ++ classname_to_varname cn ++ "_list") [param]) body
 	where
-		param = Parameter (Variable (Type (symbol_to_classname sym ++ "_list*")) "in") ""
-		(_, _, mult) = find_context (symbol_to_classname sym) ctxts
+		param = Parameter (Variable (Type (cn ++ "_list*")) "in") ""
+		(_, _, mult) = find_context cn ctxts
 		body = 
 			[
-				symbol_to_classname sym ++ "_list*" ++ " new_v = new " ++ symbol_to_classname sym ++ "_list;",
-				"List<" ++ symbol_to_classname sym ++ "*>::const_iterator i;",
+				cn ++ "_list*" ++ " new_v = new " ++ cn ++ "_list;",
+				"List<" ++ cn ++ "*>::const_iterator i;",
 				"for(i = in->begin(); i != in->end(); i++)",
 				"\tif(*i)"
 			]
 			++
 			(if is_vector mult then
 				["\t{",
-				 "\t\t" ++ symbol_to_classname sym ++ "_list*" ++ " ret_v = (*i)->transform(this);",
+				 "\t\t" ++ cn ++ "_list*" ++ " ret_v = (*i)->transform(this);",
 				 "\t\tnew_v->push_back_all(ret_v);",
 				 "\t}"]
 			else

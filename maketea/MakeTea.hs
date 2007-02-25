@@ -38,7 +38,7 @@ import FactoryMethod
 	create skeleton classes; the skeleton classes define their superclasses
 	and the definitions for the variables, but do not contain any methods.
 
-	"list_classes" generates specialised list classes for all non-terminals in
+	"list_classes" generates specialised list classes for the non-terminals in
 	the grammar
 
 	"superclass" finds the class that all other classes in the AST hierarchy
@@ -95,18 +95,18 @@ process_grammar args grammar includes partial_classes =
 		let ac = map add_constructors sk
 		let tc = map (add_transform_calls cx) ac
 		let vc = map (add_visitor_calls ih) tc
-		let lc = (list_classes grammar ih) ++ vc 
+		let lc = (list_classes grammar cx ih) ++ vc 
 		let pm = map (add_match_method (Type "Object*")) lc 
 		let mc = map (merge_class partial_classes) pm 
 		let cm = map (add_clone_method (Type "Object*")) mc
 		let de = map (add_deep_equals_method (Type "Object*")) cm
 		let ai = map add_init de 
 		let wc = (wildcard (Type "Object*") (class_names ai)) : ai
-		let fm = (factory_method grammar ih (Type "Object*"):wc)
+		let fm = (factory_method grammar ih cx (Type "Object*"):wc)
 		let oc = order_classes fm
 		-- Construct the Tree_transform and Tree_visitor classes
 		let tr = transform_class grammar cx
-		let vi = visitor_class grammar 
+		let vi = visitor_class grammar cx 
 		-- Construct an XML Schema representation of the grammar
 		let xs = xml_schema grammar
 		-- Generate code

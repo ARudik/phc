@@ -14,6 +14,7 @@ import MakeTeaLib
 import GrammarAnalysis
 import List 
 import ListClasses
+import Contexts
 
 {-
 	Add calls to the TreeVisitor API
@@ -79,9 +80,9 @@ post_visit ir name = Method sig body
 	Generate the Tree_visitor class
 -}
 
-visitor_class :: Grammar -> CppClass
-visitor_class g = CppClass Concrete "Tree_visitor" [] [] 
-	([destructor] ++ ast_visitor_methods g ++ token_visitor_methods (terminal_list g) ++ list_visitor_methods g)
+visitor_class :: Grammar -> [Context] -> CppClass
+visitor_class g cx = CppClass Concrete "Tree_visitor" [] [] 
+	([destructor] ++ ast_visitor_methods g ++ token_visitor_methods (terminal_list g) ++ list_visitor_methods g cx)
 	where
 		destructor = Method (Signature Virtual NonStatic NoType "~Tree_visitor" []) [] 
 token_visitor_methods :: [Symbol] -> [Method]
@@ -127,29 +128,29 @@ default_visit_children rhs = concatMap f rhs
 					[]) ++
 				["in->" ++ var_name ++ "->visit(this);"]
 
-list_visitor_methods :: Grammar -> [Method]
-list_visitor_methods gr = concatMap f (nub (find_lists gr))
+list_visitor_methods :: Grammar -> [Context] -> [Method]
+list_visitor_methods gr cx = concatMap f (find_lists gr cx)
 	where
-		f :: Symbol -> [Method]
-		f sym = [list_pre sym, list_children sym, list_post sym]
+		f :: ClassName -> [Method]
+		f cn = [list_pre cn, list_children cn, list_post cn]
 
-list_pre :: Symbol -> Method
-list_pre sym = Method (Signature Virtual NonStatic Void ("pre_" ++ symbol_to_varname sym ++ "_list") [param]) []
+list_pre :: ClassName -> Method
+list_pre cn = Method (Signature Virtual NonStatic Void ("pre_" ++ classname_to_varname cn ++ "_list") [param]) []
 	where
-		param = Parameter (Variable (Type (symbol_to_classname sym ++ "_list*")) "in") ""
+		param = Parameter (Variable (Type (cn ++ "_list*")) "in") ""
 
-list_post :: Symbol -> Method
-list_post sym = Method (Signature Virtual NonStatic Void ("post_" ++ symbol_to_varname sym ++ "_list") [param]) []
+list_post :: ClassName -> Method
+list_post cn = Method (Signature Virtual NonStatic Void ("post_" ++ classname_to_varname cn ++ "_list") [param]) []
 	where
-		param = Parameter (Variable (Type (symbol_to_classname sym ++ "_list*")) "in") ""
+		param = Parameter (Variable (Type (cn ++ "_list*")) "in") ""
 
-list_children :: Symbol -> Method
-list_children sym = Method (Signature Virtual NonStatic Void ("children_" ++ symbol_to_varname sym ++ "_list") [param]) body 
+list_children :: ClassName -> Method
+list_children cn = Method (Signature Virtual NonStatic Void ("children_" ++ classname_to_varname cn ++ "_list") [param]) body 
 	where
-		param = Parameter (Variable (Type (symbol_to_classname sym ++ "_list*")) "in") ""
+		param = Parameter (Variable (Type (cn ++ "_list*")) "in") ""
 		body =
 			[
-				"List<" ++ symbol_to_classname sym ++ "*>::const_iterator i;",
+				"List<" ++ cn ++ "*>::const_iterator i;",
 				"for(i = in->begin(); i != in->end(); i++)",
 				"\tif(*i) (*i)->visit(this);"
 			]

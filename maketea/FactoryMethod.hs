@@ -11,16 +11,17 @@ import MakeTeaParser
 import MakeTeaCpp
 import GrammarAnalysis
 import ListClasses
+import Contexts
 import List
 
-factory_method :: Grammar -> InheritanceRel -> Type -> CppClass 
-factory_method gr ih gt = CppClass Concrete "AST_node_factory" [] [] [create, create1] 
+factory_method :: Grammar -> InheritanceRel -> [Context] -> Type -> CppClass 
+factory_method gr ih cx gt = CppClass Concrete "AST_node_factory" [] [] [create, create1] 
 	where
 		create = Method sig body
 		body = prefix ++ ast_classes ++ token_classes ++ list_classes ++ postfix 
 		ast_classes = concatMap rule_to_body gr
 		token_classes = concatMap terminal_to_body (terminal_list gr)
-		list_classes = concatMap list_to_body (nub (find_lists gr))
+		list_classes = concatMap list_to_body (find_lists gr cx)
 		prefix =
 			[
 			 "List<" ++ (show gt) ++ ">::const_iterator i = args->begin();",
@@ -40,7 +41,7 @@ factory_method gr ih gt = CppClass Concrete "AST_node_factory" [] [] [create, cr
 		create1 = Method (Signature NonVirtual Static (Type (sc ++ "*")) "create" [name, one]) 
 			[
 			 "List<" ++ (show gt) ++ ">* list = new List<" ++ (show gt) ++ ">;",
-			 "list->push_back(arg);",
+			 "list->list::push_back(arg);",
 			 "return create(name, list);"
 			]
 		one = Parameter (Variable (Type (show gt)) "arg") ""
@@ -112,8 +113,8 @@ terminal_to_body term@(Terminal name value) =
 	where
 		classname = symbol_to_classname term 
 
-list_to_body :: Symbol -> Body
-list_to_body sym = 
+list_to_body :: ClassName -> Body
+list_to_body classname = 
 		[
 		 "if(!strcmp(name, \"" ++ listname ++ "\")) {",
 		 "\t" ++ listname ++ "* rv = new " ++ listname ++ ";",
@@ -121,11 +122,10 @@ list_to_body sym =
 		 "\t{",
 		 "\t\t" ++ classname ++ "* arg = dynamic_cast<" ++ classname ++ "*>(*i);",
 		 "\t\tassert(!*i || arg); // Verify argument type",
-		 "\t\trv->push_back(arg);",
+		 "\t\trv->list::push_back(arg);",
 		 "\t}",
 		 "\treturn rv;",
 		 "}"
 		]
 	where
-		classname = symbol_to_classname sym
 		listname = classname ++ "_list" 
