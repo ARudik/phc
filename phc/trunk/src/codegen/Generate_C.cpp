@@ -1026,6 +1026,7 @@ void Generate_C::escape(String* s)
 	}
 }
 
+/* Generate a new temporary name, with the passed PREFIX */
 String* Generate_C::fresh(string prefix)
 {
 	static map<string, int> temps;

@@ -13,6 +13,13 @@ using namespace std;
 
 extern struct gengetopt_args_info args_info;
 
+/* Dump the XML for anynode to stderr. A global function. */
+void xdebug (AST_node* in)
+{
+	static XML_unparser *xup = new XML_unparser (cerr);
+	in->visit (xup);
+}
+
 void XML_unparser::print_indent()
 {
 	for(int i = 0; i < indent; i++)
@@ -121,30 +128,40 @@ void XML_unparser::pre_node(AST_node* in)
 				print_indent();
 				os << "</attr>" << endl;
 			}
-			else if((*i).first == "phc.unparser.is_elseif")
-			{
-				print_indent();
-				bool is_elseif = dynamic_cast<Boolean*>((*i).second)->value();
-				os << "<attr key=\"phc.unparser.is_elseif\">" << (is_elseif ? "true" : "false") << "</attr>" << endl;
+#define HANDLE_BOOLEAN(A)																										\
+			else if((*i).first == A)																							\
+			{																															\
+				print_indent();																									\
+				bool attr_true = in->attrs->is_true (A);																	\
+				os << "<attr key=\"" A "\">" << (attr_true ? "true" : "false") << "</attr>" << endl;		\
 			}
-			else if((*i).first == "phc.unparser.needs_brackets")
-			{
-				print_indent();
-				bool needs_brackets = dynamic_cast<Boolean*>((*i).second)->value();
-				os << "<attr key=\"phc.unparser.needs_brackets\">" << (needs_brackets ? "true" : "false") << "</attr>" << endl;
+#define HANDLE_STRING(A)																										\
+			else if((*i).first == A)																							\
+			{																															\
+				print_indent();																									\
+				String* string = in->attrs->get_string (A);																\
+				os << "<attr key=\"" A "\">" << *string << "</attr>" << endl;										\
 			}
-			else if((*i).first == "phc.unparser.needs_curlies")
-			{
-				print_indent();
-				bool needs_curlies = dynamic_cast<Boolean*>((*i).second)->value();
-				os << "<attr key=\"phc.unparser.needs_curlies\">" << (needs_curlies ? "true" : "false") << "</attr>" << endl;
+#define HANDLE_INT(A)																											\
+			else if((*i).first == A)																							\
+			{																															\
+				print_indent();																									\
+				Integer* integer = in->attrs->get_integer (A);															\
+				os << "<attr key=\"" A "\">" << integer->value () << "</attr>" << endl;							\
 			}
-			else if((*i).first == "phc.unparser.is_global_stmt")
-			{
-				print_indent();
-				bool is_global_stmt = dynamic_cast<Boolean*>((*i).second)->value();
-				os << "<attr key=\"phc.unparser.is_global_stmt\">" << (is_global_stmt ? "true" : "false") << "</attr>" << endl;
-			}
+			HANDLE_BOOLEAN ("phc.unparser.is_elseif")
+			HANDLE_BOOLEAN ("phc.unparser.needs_brackets")
+			HANDLE_BOOLEAN ("phc.unparser.needs_curlies")
+			HANDLE_BOOLEAN ("phc.unparser.is_global_stmt")
+			HANDLE_STRING ("phc.generate_c.location")
+			HANDLE_BOOLEAN ("phc.generate_c.is_addr")
+			HANDLE_STRING ("phc.generate_c.hash")
+			HANDLE_STRING ("phc.generate_c.stridx")
+			HANDLE_INT ("phc.generate_c.strlen")
+			HANDLE_STRING ("phc.generate_c.zvalidx")
+#undef HANDLE_BOOLEAN
+#undef HANDLE_STRING
+#undef HANDLE_INT
 			else
 			{
 				phc_warning(WARNING_UNKNOWN_ATTRIBUTE, NULL, 0, (*i).first.c_str());	

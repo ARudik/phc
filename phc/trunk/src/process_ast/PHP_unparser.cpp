@@ -12,6 +12,12 @@ extern struct gengetopt_args_info args_info;
 
 using namespace std;
 
+void debug (AST_node *in)
+{
+	static PHP_unparser *pup = new PHP_unparser (cerr);
+	in->visit (pup);
+}
+
 void PHP_unparser::echo(const char* str)
 {
 	output_tabs();
