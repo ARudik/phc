@@ -115,11 +115,15 @@ order_classes classes = order_classes' outside_class_defs classes
 
 order_classes' :: [CppClass] -> [CppClass] -> [CppClass]
 order_classes' _ [] = [] 
-order_classes' visited to_visit = next ++ (order_classes' (visited ++ next) (list_diff to_visit next))
+order_classes' visited to_visit = 
+		if next == []
+		then error $ "cyclic inheritance hierarchy:\n" ++ unlines (map errMsg to_visit) 
+		else next ++ (order_classes' (visited ++ next) (list_diff to_visit next))
 	where
 		next = [c | c <- to_visit, parents_visited c]
 		parents_visited :: CppClass -> Bool
 		parents_visited (CppClass _ _ inh _ _) = sublist inh (class_names visited)
+		errMsg (CppClass _ c inh _ _) = c ++ " inherits from " ++ show inh
 
 {-
 	Check whether a symbol is a marker
@@ -228,6 +232,13 @@ is_concrete _ (Terminal _ _) = True
 is_concrete ((Conjunction nt _):rest) (NonTerminal nt') | nt == nt' = True
 is_concrete ((Disjunction nt _):rest) (NonTerminal nt') | nt == nt' = False
 is_concrete (_:rest) sym = is_concrete rest sym
+
+{-
+	Check whether a non-terminal corresponds to an abstract class
+-}
+
+is_abstract :: Grammar -> Symbol -> Bool
+is_abstract gr = not . is_concrete gr
 
 {-
 	Check whether a symbol is optional

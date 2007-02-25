@@ -41,7 +41,7 @@ factory_method gr ih cx gt = CppClass Concrete "AST_node_factory" [] [] [create,
 		create1 = Method (Signature NonVirtual Static (Type (sc ++ "*")) "create" [name, one]) 
 			[
 			 "List<" ++ (show gt) ++ ">* list = new List<" ++ (show gt) ++ ">;",
-			 "list->list::push_back(arg);",
+			 "list->push_back(arg);",
 			 "return create(name, list);"
 			]
 		one = Parameter (Variable (Type (show gt)) "arg") ""
@@ -122,7 +122,7 @@ list_to_body classname =
 		 "\t{",
 		 "\t\t" ++ classname ++ "* arg = dynamic_cast<" ++ classname ++ "*>(*i);",
 		 "\t\tassert(!*i || arg); // Verify argument type",
-		 "\t\trv->list::push_back(arg);",
+		 "\t\trv->push_back(arg);",
 		 "\t}",
 		 "\treturn rv;",
 		 "}"

@@ -153,6 +153,15 @@ all_contexts gr ((Conjunction _ rhs):rest) = (concatMap f rhs) ++ (all_contexts 
 -- methods an appropriate (covariant) return type.
 add_missing_contexts :: Grammar -> [Context] -> [Context]
 add_missing_contexts [] ctxts = ctxts
+{-
+add_missing_contexts ((Disjunction lhs rhs):tail) ctxts
+		= add_missing_contexts tail (ctxt ++ ctxts) 
+	where
+		ctxt = case [c | c@(sym, _, _) <- ctxts, "AST_" ++ lhs == sym] of
+			[] -> [("AST_" ++ lhs,"AST_" ++ lhs,Single)]
+			_ -> []
+-}
+-- {-
 add_missing_contexts ((Disjunction lhs rhs):tail) ctxts
 		= add_missing_contexts tail (ctxt:ctxts')
 	where
@@ -175,7 +184,7 @@ add_missing_contexts ((Disjunction lhs rhs):tail) ctxts
 						(a, b, Single)
 					else
 						error ("Error: cannot deal with mixed multiplicity in rule for " ++ show lhs)
-
+-- -}
 add_missing_contexts ((Conjunction lhs _):tail) ctxts 
 		= add_missing_contexts tail (ctxt ++ ctxts) 
 	where

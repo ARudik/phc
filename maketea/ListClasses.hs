@@ -2,15 +2,16 @@
  	phc -- the open source PHP compiler
 	See license/README.license for licensing information
 
-	For each context (_, c, Vector), we generate a specialised list class 
-	AST_c_list for c. AST_c_list will inherit from List<c*> so that it can
-	be treated like a standard STL list. In addition, in order to make 
-	covariance work, we need to find all superclasses s of c, and their
-	contexts (s, s', m). If m is not a vector, AST_c_list must inherit from s;
-	otherwise, AST_c_list must inherit from AST_s_list.
+	For every symbol c where this is necessary, we generate a specialised list
+	class c_list, which will inherit from List<c*>. 
 
-	Then, for all remaining symbols s that appear as a vector in the grammar,
-	we generate a list class which does inherits only from AST_node.
+	We must be careful with covariance. If there is a context (c', c, Vector)
+	that means that there will be methods in c' that return a c_list (in
+	particular, the pre_ and post_ transform methods). For that to be correct
+	(covariantly), c_list must inherit from whatever pre_method returns in all
+	superclasses of c'. More precisely, for all superclasses s of c', we must
+	find the context (s, s', m), and c_list must inherit whatever class
+	represents (s', m).
 -}
 
 module ListClasses where
@@ -21,6 +22,7 @@ import MakeTeaLib
 import GrammarAnalysis
 import Contexts
 import List
+import Debug.Trace
 
 {-
 	Traverse the grammar and for every (unique) occurence of foo*,
@@ -30,21 +32,18 @@ list_classes :: Grammar -> [Context] -> InheritanceRel -> [CppClass]
 list_classes gr cx ih = map (make_list_class cx ih) (find_lists gr cx) 
 
 find_lists :: Grammar -> [Context] -> [ClassName]
-find_lists gr cx = nub (from_contexts ++ remaining_lists gr)
+find_lists gr cx = nub (from_contexts ++ expl_lists gr)
 	where
-		from_contexts = [c | (_, c, v) <- cx, is_vector v]
+		from_contexts = [c | (_, c, m) <- cx, is_vector m]
 
-remaining_lists :: Grammar -> [ClassName]
-remaining_lists [] = []
-remaining_lists (Disjunction _ _:tail) = remaining_lists tail
-remaining_lists (Conjunction _ body:tail) 
-		= concatMap f body ++ remaining_lists tail
+-- All explicitely mentioned lists 
+expl_lists :: Grammar -> [ClassName]
+expl_lists [] = []
+expl_lists (Disjunction nt _:tail) = expl_lists tail 
+expl_lists (Conjunction nt body:tail) = concatMap f body ++ expl_lists tail
 	where
 		f :: Term -> [ClassName]
- 		f (_, sym, mult) 
-			| is_vector mult = [symbol_to_classname sym]
-			| otherwise = []
-
+ 		f (_, sym, m) = if is_vector m then [symbol_to_classname sym] else []
 
 {-
 	Make a list class foo_list for a symbol foo
@@ -53,14 +52,7 @@ make_list_class :: [Context] -> InheritanceRel -> ClassName -> CppClass
 make_list_class cx ih cn = CppClass Concrete name extends [] methods 
 	where
 		name = cn ++ "_list"
-		extends = 
-			let (_, _, m) = find_context cn cx in
-			if is_vector m 
-			then ("List<" ++ cn ++ "*>") : map inh (direct_superclasses ih cn)
-			else ["List<" ++ cn ++ "*>", "AST_node"] 
-		inh s = 
-			let (_, s', m) = find_context s cx in 
-			if is_vector m then s' ++ "_list" else s'
+		extends = ("List<" ++ cn ++ "*>") : covariance cx ih cn 
 		methods =
 			[
 				visit,
@@ -112,3 +104,23 @@ make_list_class cx ih cn = CppClass Concrete name extends [] methods
 			[
 				"return transform->post_" ++ classname_to_varname cn ++ "_list(this);"
 			]
+
+{-
+	covariance c works out what list_c needs to inherit from 
+	(see remark at the top of this file)
+
+	Note that a class should never inherit from itself, and every class should
+	inherit from AST_node.
+-}
+
+covariance :: [Context] -> InheritanceRel -> ClassName -> [ClassName]
+covariance cx ih c = nub . filter (/= (c ++ "_list")) $ "AST_node":map f cx_s 
+	where
+		-- Map a context to a classname
+		f (_, cn, m) = if is_vector m then cn ++ "_list" else cn
+		-- Context for each superclass s
+		cx_s = map (flip find_context cx) ss
+		-- Superclasses of c's
+		ss = (concatMap (direct_superclasses ih) c's)
+		-- Find out which classes return a c_list
+		c's = [c' | (c',c0,m) <- cx, c == c0, is_vector m]

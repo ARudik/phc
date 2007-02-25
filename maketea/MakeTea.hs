@@ -106,7 +106,7 @@ process_grammar args grammar includes partial_classes =
 		let oc = order_classes fm
 		-- Construct the Tree_transform and Tree_visitor classes
 		let tr = transform_class grammar cx
-		let vi = visitor_class grammar cx 
+		let vi = visitor_class grammar cx
 		-- Construct an XML Schema representation of the grammar
 		let xs = xml_schema grammar
 		-- Generate code
