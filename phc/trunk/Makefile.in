@@ -164,7 +164,8 @@ am_src_phc_OBJECTS = getopt1.$(OBJEXT) getopt.$(OBJEXT) \
 	cmdline.$(OBJEXT) keywords.$(OBJEXT) lex.yy.$(OBJEXT) \
 	php_parser.tab.$(OBJEXT) Tree_transform.$(OBJEXT) \
 	Tree_visitor.$(OBJEXT) AttrMap.$(OBJEXT) base64.$(OBJEXT) \
-	demangle.$(OBJEXT) error.$(OBJEXT) String.$(OBJEXT) \
+	Boolean.$(OBJEXT) demangle.$(OBJEXT) error.$(OBJEXT) \
+	Integer.$(OBJEXT) Object.$(OBJEXT) String.$(OBJEXT) \
 	parse.$(OBJEXT) PHP_context.$(OBJEXT) XML_parser.$(OBJEXT) \
 	phc.$(OBJEXT) DOT_unparser.$(OBJEXT) \
 	Invocation_targets.$(OBJEXT) PHP_unparser.$(OBJEXT) \
@@ -430,13 +431,16 @@ src_phc_SOURCES = \
 	src/lib/base64.cpp										\
 	src/lib/base64.h											\
 	src/lib/Boolean.h											\
+	src/lib/Boolean.cpp										\
 	src/lib/demangle.cpp										\
 	src/lib/demangle.h										\
 	src/lib/error.cpp											\
 	src/lib/error.h											\
 	src/lib/Integer.h											\
+	src/lib/Integer.cpp										\
 	src/lib/List.h												\
 	src/lib/Object.h											\
+	src/lib/Object.cpp										\
 	src/lib/String.cpp										\
 	src/lib/String.h											\
 	src/parsing/parse.cpp									\
@@ -798,13 +802,16 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AttrMap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Boolean.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Comment_ifs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOT_unparser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Expand_includes.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Generate_C.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InsertDB.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Integer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Invocation_targets.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MySQL2DBX.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Object.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PHP_context.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PHP_unparser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Prep.Po@am__quote@
@@ -1197,6 +1204,20 @@ base64.obj: src/lib/base64.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o base64.obj `if test -f 'src/lib/base64.cpp'; then $(CYGPATH_W) 'src/lib/base64.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/base64.cpp'; fi`
 
+Boolean.o: src/lib/Boolean.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Boolean.o -MD -MP -MF "$(DEPDIR)/Boolean.Tpo" -c -o Boolean.o `test -f 'src/lib/Boolean.cpp' || echo '$(srcdir)/'`src/lib/Boolean.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Boolean.Tpo" "$(DEPDIR)/Boolean.Po"; else rm -f "$(DEPDIR)/Boolean.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/Boolean.cpp' object='Boolean.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Boolean.o `test -f 'src/lib/Boolean.cpp' || echo '$(srcdir)/'`src/lib/Boolean.cpp
+
+Boolean.obj: src/lib/Boolean.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Boolean.obj -MD -MP -MF "$(DEPDIR)/Boolean.Tpo" -c -o Boolean.obj `if test -f 'src/lib/Boolean.cpp'; then $(CYGPATH_W) 'src/lib/Boolean.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/Boolean.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Boolean.Tpo" "$(DEPDIR)/Boolean.Po"; else rm -f "$(DEPDIR)/Boolean.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/Boolean.cpp' object='Boolean.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Boolean.obj `if test -f 'src/lib/Boolean.cpp'; then $(CYGPATH_W) 'src/lib/Boolean.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/Boolean.cpp'; fi`
+
 demangle.o: src/lib/demangle.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT demangle.o -MD -MP -MF "$(DEPDIR)/demangle.Tpo" -c -o demangle.o `test -f 'src/lib/demangle.cpp' || echo '$(srcdir)/'`src/lib/demangle.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/demangle.Tpo" "$(DEPDIR)/demangle.Po"; else rm -f "$(DEPDIR)/demangle.Tpo"; exit 1; fi
@@ -1224,6 +1245,34 @@ error.obj: src/lib/error.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/error.cpp' object='error.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o error.obj `if test -f 'src/lib/error.cpp'; then $(CYGPATH_W) 'src/lib/error.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/error.cpp'; fi`
+
+Integer.o: src/lib/Integer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Integer.o -MD -MP -MF "$(DEPDIR)/Integer.Tpo" -c -o Integer.o `test -f 'src/lib/Integer.cpp' || echo '$(srcdir)/'`src/lib/Integer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Integer.Tpo" "$(DEPDIR)/Integer.Po"; else rm -f "$(DEPDIR)/Integer.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/Integer.cpp' object='Integer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Integer.o `test -f 'src/lib/Integer.cpp' || echo '$(srcdir)/'`src/lib/Integer.cpp
+
+Integer.obj: src/lib/Integer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Integer.obj -MD -MP -MF "$(DEPDIR)/Integer.Tpo" -c -o Integer.obj `if test -f 'src/lib/Integer.cpp'; then $(CYGPATH_W) 'src/lib/Integer.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/Integer.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Integer.Tpo" "$(DEPDIR)/Integer.Po"; else rm -f "$(DEPDIR)/Integer.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/Integer.cpp' object='Integer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Integer.obj `if test -f 'src/lib/Integer.cpp'; then $(CYGPATH_W) 'src/lib/Integer.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/Integer.cpp'; fi`
+
+Object.o: src/lib/Object.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Object.o -MD -MP -MF "$(DEPDIR)/Object.Tpo" -c -o Object.o `test -f 'src/lib/Object.cpp' || echo '$(srcdir)/'`src/lib/Object.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Object.Tpo" "$(DEPDIR)/Object.Po"; else rm -f "$(DEPDIR)/Object.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/Object.cpp' object='Object.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Object.o `test -f 'src/lib/Object.cpp' || echo '$(srcdir)/'`src/lib/Object.cpp
+
+Object.obj: src/lib/Object.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Object.obj -MD -MP -MF "$(DEPDIR)/Object.Tpo" -c -o Object.obj `if test -f 'src/lib/Object.cpp'; then $(CYGPATH_W) 'src/lib/Object.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/Object.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/Object.Tpo" "$(DEPDIR)/Object.Po"; else rm -f "$(DEPDIR)/Object.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/lib/Object.cpp' object='Object.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Object.obj `if test -f 'src/lib/Object.cpp'; then $(CYGPATH_W) 'src/lib/Object.cpp'; else $(CYGPATH_W) '$(srcdir)/src/lib/Object.cpp'; fi`
 
 String.o: src/lib/String.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT String.o -MD -MP -MF "$(DEPDIR)/String.Tpo" -c -o String.o `test -f 'src/lib/String.cpp' || echo '$(srcdir)/'`src/lib/String.cpp; \

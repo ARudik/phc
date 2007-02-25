@@ -27,20 +27,8 @@ public:
 	void operator++(POST_INCREMENT) { _n++; }
 
 public:
-	Integer* deep_clone(Object* partial_result = NULL)
-	{
-		assert(!partial_result);
-		return new Integer(_n);
-	}
-	
-	bool deep_equals(Object* other)
-	{
-		Integer* that = dynamic_cast<Integer*>(other);
-		if(!that)
-			return false;
-
-		return _n == that->_n;
-	}
+	Integer* deep_clone(Object* partial_result = NULL);
+	bool deep_equals(Object* other);
 };
 
 #endif

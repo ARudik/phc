@@ -58,13 +58,16 @@ src_phc_SOURCES =												\
 	src/lib/base64.cpp										\
 	src/lib/base64.h											\
 	src/lib/Boolean.h											\
+	src/lib/Boolean.cpp										\
 	src/lib/demangle.cpp										\
 	src/lib/demangle.h										\
 	src/lib/error.cpp											\
 	src/lib/error.h											\
 	src/lib/Integer.h											\
+	src/lib/Integer.cpp										\
 	src/lib/List.h												\
 	src/lib/Object.h											\
+	src/lib/Object.cpp										\
 	src/lib/String.cpp										\
 	src/lib/String.h											\
 	src/parsing/parse.cpp									\

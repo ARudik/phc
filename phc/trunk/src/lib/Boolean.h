@@ -24,20 +24,8 @@ public:
 	bool value() { return _b; }
 
 public:
-	Boolean* deep_clone(Object* partial_result = NULL)
-	{
-		assert(!partial_result);
-		return new Boolean(_b);
-	}
-	
-	bool deep_equals(Object* other)
-	{
-		Boolean* that = dynamic_cast<Boolean*>(other);
-		if(!that)
-			return false;
-
-		return _b == that->_b;
-	}
+	Boolean* deep_clone(Object* partial_result = NULL);
+	bool deep_equals(Object* other);
 };
 
 #endif 

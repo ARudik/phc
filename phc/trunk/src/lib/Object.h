@@ -35,34 +35,15 @@ class Object
 {
 public:
 	// Deep cloning and deep equality
-	virtual Object* deep_clone(Object* partial_result = NULL)
-	{
-		return partial_result;
-	}
-	virtual bool deep_equals(Object* other)
-	{
-		return true;
-	}
+	virtual Object* deep_clone(Object* partial_result = NULL);
+	virtual bool deep_equals(Object* other);
+
 	// Pattern matching
-	virtual bool match(Object* pattern)
-	{
-		if(try_match(pattern))
-		{
-			replace_wildcards(pattern);
-			return true;
-		}
-		else
-			return false;
-	}
-	virtual bool try_match(Object* pattern)
-	{
-		assert(NOT_IMPLEMENTED);
-		return false;
-	}
-	virtual void replace_wildcards(Object* pattern)
-	{
-		assert(NOT_IMPLEMENTED);
-	}
+	virtual bool match(Object* pattern);
+	
+	virtual bool try_match(Object* pattern);
+	virtual void replace_wildcards(Object* pattern);
+
 	// Make Object a virtual base (required for RTTI and dynamic casts)
 	virtual ~Object() {}
 };
