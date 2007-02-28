@@ -13,14 +13,14 @@
 $input_string = $_GET["q"];
 
 // get absolute path
-$string = "/tmp/phc_testing/trunk/tests/logs/" . $input_string;
+$string = "/tmp/phc_testing/trunk/test/logs/" . $input_string;
 
 // get real absolute path
 $real_path = realpath($string);
 
 // check the file is within the sub-directory we want
 if ($real_path 
-		and strstr("/tmp/phc_testing/trunk/tests/logs/", $real_path) == 0
+		and strstr("/tmp/phc_testing/trunk/test/logs/", $real_path) == 0
 		and is_file($real_path))
 {
 	// read the file
