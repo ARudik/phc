@@ -224,5 +224,7 @@ void XML_unparser::visit_null(char* type_id)
 void XML_unparser::visit_marker(char* name, bool value)
 {
 	print_indent();
-	os << "<bool>" << (value ? "true" : "false") << "</bool>" << endl;
+	os << "<bool>" 
+		<< "<!-- " << name << " -->"
+		<< (value ? "true" : "false") << "</bool>" << endl;
 }
