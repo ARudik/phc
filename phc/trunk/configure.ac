@@ -1,3 +1,6 @@
+dnl phc -- the open source PHP compiler
+dnl See doc/license/README.license for licensing information
+dnl
 dnl Process this file using autoconf to produce configure
 
 dnl Autoconf requirements

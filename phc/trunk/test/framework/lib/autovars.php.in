@@ -1,4 +1,10 @@
 <?php
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Get values from configure
+ */
 
 $valgrind = "@valgrind@";
 $graphviz_gc = "@graphviz_gc@";

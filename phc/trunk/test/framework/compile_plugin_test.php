@@ -1,8 +1,9 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See license/README.is_license for licensing information
- * Unit test for dot output. Checks for syntax errors
+ * See doc/license/README.license for licensing information
+ *
+ * Compile a plugin using phc_compile_plugin, and check it works
  */
 
 require_once ("lib/no_subject_test.php");

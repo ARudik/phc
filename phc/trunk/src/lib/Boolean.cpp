@@ -1,3 +1,11 @@
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Class to represent bools 
+ */
+
+
 #include "lib/Boolean.h"
 
 Boolean* Boolean::deep_clone(Object* partial_result)

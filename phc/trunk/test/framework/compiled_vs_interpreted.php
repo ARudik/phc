@@ -1,10 +1,9 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
- * Test an unparsed script interprets the same as the original, using php
- * command line.
+ * Test the output of a compiled script against php's output for the same script. 
  */
 
 
@@ -14,7 +13,7 @@ class CompiledVsInterpreted extends Test
 	function check_prerequisites ()
 	{
 		global $gcc, $libphp;
-		if (!check_for_program ($gcc)) return false;
+#		if (!check_for_program ($gcc)) return false;
 		if (!check_for_program ("$libphp/libphp5.so")) return false;
 		return true;
 	}

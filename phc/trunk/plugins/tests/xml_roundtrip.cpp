@@ -1,6 +1,6 @@
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * Test whether XML serialisation followed by deserialisation is the identity 
  */

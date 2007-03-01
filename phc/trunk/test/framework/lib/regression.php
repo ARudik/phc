@@ -1,7 +1,7 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  */
 require_once ("support_file_test.php");
 

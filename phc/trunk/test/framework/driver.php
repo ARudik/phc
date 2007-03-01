@@ -1,4 +1,10 @@
 <?php
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Run the tests
+ */
 
 // when dealing with the manual, we need more space
 ini_set("memory_limit","256M");

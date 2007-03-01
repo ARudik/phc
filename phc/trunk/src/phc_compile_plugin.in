@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# phc -- the open source PHP compiler 
+# See doc/license/README.license for licensing information
+#
 # Shell script to compile phc plugins
 
 _FILENAME=$1

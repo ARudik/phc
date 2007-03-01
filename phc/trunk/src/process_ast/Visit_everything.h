@@ -1,6 +1,6 @@
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * Visit_everything redefines the pre_children methods of Tree_visitor to
  * insert calls to "visit_marker" for each marker encountered, and to call

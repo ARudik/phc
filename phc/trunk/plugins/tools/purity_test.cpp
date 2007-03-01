@@ -1,3 +1,11 @@
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Printout any impure function calls in a given script
+ */
+
+
 #include "generated/Tree_visitor.h"
 #include "process_ast/XML_unparser.h"
 #include "process_ast/PHP_unparser.h"

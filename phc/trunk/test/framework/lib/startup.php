@@ -1,4 +1,10 @@
 <?php
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Handle command line parameters
+ */
 
 require_once ("Console/Getopt.php");
 require_once ("Console/ProgressBar.php");

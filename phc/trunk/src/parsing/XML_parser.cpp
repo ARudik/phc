@@ -1,5 +1,7 @@
 /*
  * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
  * Parser for the AST in XML format
  */
 

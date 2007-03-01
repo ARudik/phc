@@ -9,7 +9,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 33
+#define YY_FLEX_SUBMINOR_VERSION 31
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -31,15 +31,7 @@
 
 /* C99 systems have <inttypes.h>. Non-C99 systems may or may not. */
 
-#if __STDC_VERSION__ >= 199901L
-
-/* C99 says to define __STDC_LIMIT_MACROS before including stdint.h,
- * if you want the limit (max/min) macros for int types. 
- */
-#ifndef __STDC_LIMIT_MACROS
-#define __STDC_LIMIT_MACROS 1
-#endif
-
+#if defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L
 #include <inttypes.h>
 typedef int8_t flex_int8_t;
 typedef uint8_t flex_uint8_t;
@@ -161,10 +153,6 @@ int PHP_lex_init (yyscan_t* scanner);
 #ifndef YY_BUF_SIZE
 #define YY_BUF_SIZE 16384
 #endif
-
-/* The state buf must be large enough to hold one state per character in the main buffer.
- */
-#define YY_STATE_BUF_SIZE   ((YY_BUF_SIZE + 2) * sizeof(yy_state_type))
 
 #ifndef YY_TYPEDEF_YY_BUFFER_STATE
 #define YY_TYPEDEF_YY_BUFFER_STATE
@@ -768,7 +756,7 @@ goto find_rule; \
 #line 1 "src/generated_src/php_scanner.lex"
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * Lexical analyser
  *
@@ -836,7 +824,7 @@ goto find_rule; \
 
 
 /* Define a few tokens referenced in the grammar, below */
-#line 840 "src/generated/lex.yy.cc"
+#line 828 "src/generated/lex.yy.cc"
 
 #define INITIAL 0
 #define PHP 1
@@ -1095,13 +1083,13 @@ YY_DECL
 
 	/* Update source_line */
 
-#line 1099 "src/generated/lex.yy.cc"
+#line 1087 "src/generated/lex.yy.cc"
 
     yylval = yylval_param;
 
-	if ( !yyg->yy_init )
+	if ( yyg->yy_init )
 		{
-		yyg->yy_init = 1;
+		yyg->yy_init = 0;
 
 #ifdef YY_USER_INIT
 		YY_USER_INIT;
@@ -1109,7 +1097,7 @@ YY_DECL
 
         /* Create the reject buffer large enough to save one state per allowed character. */
         if ( ! yyg->yy_state_buf )
-            yyg->yy_state_buf = (yy_state_type *)PHP_alloc(YY_STATE_BUF_SIZE  ,yyscanner);
+            yyg->yy_state_buf = (yy_state_type *)PHP_alloc(((YY_BUF_SIZE + 2) * sizeof(yy_state_type))  ,yyscanner);
 
 		if ( ! yyg->yy_start )
 			yyg->yy_start = 1;	/* first start state */
@@ -2029,7 +2017,7 @@ YY_RULE_SETUP
 #line 575 "src/generated_src/php_scanner.lex"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 2033 "src/generated/lex.yy.cc"
+#line 2021 "src/generated/lex.yy.cc"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2230,7 +2218,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			yyg->yy_n_chars, (size_t) num_to_read );
+			yyg->yy_n_chars, num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = yyg->yy_n_chars;
 		}
@@ -2301,7 +2289,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
     static yy_state_type yy_try_NUL_trans  (yy_state_type yy_current_state , yyscan_t yyscanner)
 {
 	register int yy_is_jam;
-    struct yyguts_t * yyg = (struct yyguts_t*)yyscanner; /* This var may be unused depending upon options. */
+    struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
 	register YY_CHAR yy_c = 1;
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
@@ -2704,16 +2692,16 @@ YY_BUFFER_STATE PHP__scan_buffer  (char * base, yy_size_t  size , yyscan_t yysca
 
 /** Setup the input buffer state to scan a string. The next call to PHP_lex() will
  * scan from a @e copy of @a str.
- * @param yystr a NUL-terminated string to scan
+ * @param str a NUL-terminated string to scan
  * @param yyscanner The scanner object.
  * @return the newly allocated buffer state object.
  * @note If you want to scan bytes that may contain NUL values, then use
  *       PHP__scan_bytes() instead.
  */
-YY_BUFFER_STATE PHP__scan_string (yyconst char * yystr , yyscan_t yyscanner)
+YY_BUFFER_STATE PHP__scan_string (yyconst char * yy_str , yyscan_t yyscanner)
 {
     
-	return PHP__scan_bytes(yystr,strlen(yystr) ,yyscanner);
+	return PHP__scan_bytes(yy_str,strlen(yy_str) ,yyscanner);
 }
 
 /** Setup the input buffer state to scan the given bytes. The next call to PHP_lex() will
@@ -2723,7 +2711,7 @@ YY_BUFFER_STATE PHP__scan_string (yyconst char * yystr , yyscan_t yyscanner)
  * @param yyscanner The scanner object.
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE PHP__scan_bytes  (yyconst char * yybytes, int  _yybytes_len , yyscan_t yyscanner)
+YY_BUFFER_STATE PHP__scan_bytes  (yyconst char * bytes, int  len , yyscan_t yyscanner)
 {
 	YY_BUFFER_STATE b;
 	char *buf;
@@ -2731,15 +2719,15 @@ YY_BUFFER_STATE PHP__scan_bytes  (yyconst char * yybytes, int  _yybytes_len , yy
 	int i;
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
-	n = _yybytes_len + 2;
+	n = len + 2;
 	buf = (char *) PHP_alloc(n ,yyscanner );
 	if ( ! buf )
 		YY_FATAL_ERROR( "out of dynamic memory in PHP__scan_bytes()" );
 
-	for ( i = 0; i < _yybytes_len; ++i )
-		buf[i] = yybytes[i];
+	for ( i = 0; i < len; ++i )
+		buf[i] = bytes[i];
 
-	buf[_yybytes_len] = buf[_yybytes_len+1] = YY_END_OF_BUFFER_CHAR;
+	buf[len] = buf[len+1] = YY_END_OF_BUFFER_CHAR;
 
 	b = PHP__scan_buffer(buf,n ,yyscanner);
 	if ( ! b )
@@ -2973,6 +2961,42 @@ void PHP_set_lval (YYSTYPE *  yylval_param , yyscan_t yyscanner)
     yylval = yylval_param;
 }
 
+static int yy_init_globals (yyscan_t yyscanner)
+{
+    struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
+    /* Initialization is the same as for the non-reentrant scanner.
+       This function is called once per scanner lifetime. */
+
+    yyg->yy_buffer_stack = 0;
+    yyg->yy_buffer_stack_top = 0;
+    yyg->yy_buffer_stack_max = 0;
+    yyg->yy_c_buf_p = (char *) 0;
+    yyg->yy_init = 1;
+    yyg->yy_start = 0;
+    yyg->yy_start_stack_ptr = 0;
+    yyg->yy_start_stack_depth = 0;
+    yyg->yy_start_stack = (int *) 0;
+
+    yyg->yy_state_buf = 0;
+    yyg->yy_state_ptr = 0;
+    yyg->yy_full_match = 0;
+    yyg->yy_lp = 0;
+
+/* Defined in main.c */
+#ifdef YY_STDINIT
+    yyin = stdin;
+    yyout = stdout;
+#else
+    yyin = (FILE *) 0;
+    yyout = (FILE *) 0;
+#endif
+
+    /* For future reference: Set errno on error, since we are called by
+     * PHP_lex_init()
+     */
+    return 0;
+}
+
 /* User-visible API */
 
 /* PHP_lex_init is special because it creates the scanner itself, so it is
@@ -2995,48 +3019,9 @@ int PHP_lex_init(yyscan_t* ptr_yy_globals)
         return 1;
     }
 
-    /* By setting to 0xAA, we expose bugs in yy_init_globals. Leave at 0x00 for releases. */
-    memset(*ptr_yy_globals,0x00,sizeof(struct yyguts_t));
+    memset(*ptr_yy_globals,0,sizeof(struct yyguts_t));
 
     return yy_init_globals ( *ptr_yy_globals );
-}
-
-static int yy_init_globals (yyscan_t yyscanner)
-{
-    struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
-    /* Initialization is the same as for the non-reentrant scanner.
-     * This function is called from PHP_lex_destroy(), so don't allocate here.
-     */
-
-    yyg->yy_buffer_stack = 0;
-    yyg->yy_buffer_stack_top = 0;
-    yyg->yy_buffer_stack_max = 0;
-    yyg->yy_c_buf_p = (char *) 0;
-    yyg->yy_init = 0;
-    yyg->yy_start = 0;
-
-    yyg->yy_start_stack_ptr = 0;
-    yyg->yy_start_stack_depth = 0;
-    yyg->yy_start_stack =  NULL;
-
-    yyg->yy_state_buf = 0;
-    yyg->yy_state_ptr = 0;
-    yyg->yy_full_match = 0;
-    yyg->yy_lp = 0;
-
-/* Defined in main.c */
-#ifdef YY_STDINIT
-    yyin = stdin;
-    yyout = stdout;
-#else
-    yyin = (FILE *) 0;
-    yyout = (FILE *) 0;
-#endif
-
-    /* For future reference: Set errno on error, since we are called by
-     * PHP_lex_init()
-     */
-    return 0;
 }
 
 /* PHP_lex_destroy is for both reentrant and non-reentrant scanners. */
@@ -3060,15 +3045,9 @@ int PHP_lex_destroy  (yyscan_t yyscanner)
         yyg->yy_start_stack = NULL;
 
     PHP_free ( yyg->yy_state_buf , yyscanner);
-    yyg->yy_state_buf  = NULL;
-
-    /* Reset the globals. This is important in a non-reentrant scanner so the next time
-     * PHP_lex() is called, initialization will occur. */
-    yy_init_globals( yyscanner);
 
     /* Destroy the main struct (reentrant only). */
     PHP_free ( yyscanner , yyscanner );
-    yyscanner = NULL;
     return 0;
 }
 
@@ -3080,6 +3059,7 @@ int PHP_lex_destroy  (yyscan_t yyscanner)
 static void yy_flex_strncpy (char* s1, yyconst char * s2, int n , yyscan_t yyscanner)
 {
 	register int i;
+    struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	for ( i = 0; i < n; ++i )
 		s1[i] = s2[i];
 }
@@ -3089,6 +3069,7 @@ static void yy_flex_strncpy (char* s1, yyconst char * s2, int n , yyscan_t yysca
 static int yy_flex_strlen (yyconst char * s , yyscan_t yyscanner)
 {
 	register int n;
+    struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	for ( n = 0; s[n]; ++n )
 		;
 
@@ -3120,6 +3101,18 @@ void PHP_free (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
+#undef YY_NEW_FILE
+#undef YY_FLUSH_BUFFER
+#undef yy_set_bol
+#undef yy_new_buffer
+#undef yy_set_interactive
+#undef yytext_ptr
+#undef YY_DO_BEFORE_ACTION
+
+#ifdef YY_DECL_IS_OURS
+#undef YY_DECL_IS_OURS
+#undef YY_DECL
+#endif
 #line 575 "src/generated_src/php_scanner.lex"
 
 

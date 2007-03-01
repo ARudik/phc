@@ -1,4 +1,10 @@
 <?php
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Functions and data to parse and maniupulate label files
+ */
 
 $subject_dir =		"test/subjects/";
 $label_file =		"test/subjects/labels";

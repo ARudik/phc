@@ -1,3 +1,6 @@
+## phc -- the open source PHP compiler
+## See doc/license/README.license for licensing information
+##
 ## Process this file with automake to produce Makefile.in
 
 # A lot of what's going on in explained in:

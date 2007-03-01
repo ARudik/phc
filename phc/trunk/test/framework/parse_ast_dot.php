@@ -1,7 +1,8 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See license/README.is_license for licensing information
+ * See doc/license/README.is_license for licensing information
+ *
  * Unit test for dot output. Checks for syntax errors
  */
 

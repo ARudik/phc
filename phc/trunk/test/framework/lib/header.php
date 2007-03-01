@@ -1,4 +1,10 @@
 <?php
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Some standard functions
+ */
 
 require_once ("autovars.php");
 require_once ("startup.php");

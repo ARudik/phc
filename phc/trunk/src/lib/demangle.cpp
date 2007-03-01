@@ -1,6 +1,6 @@
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * Return the demangled classname of the specified object 
  */

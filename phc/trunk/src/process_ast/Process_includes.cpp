@@ -1,6 +1,6 @@
 /* 
  * phc -- the open source PHP compiler 
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * Replaces an include statement with the parsed contents of the included file.
  * 

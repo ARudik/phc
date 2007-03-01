@@ -1,8 +1,9 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
- * Compares phc's internal values with the source representations of them
+ * See doc/license/README.license for licensing information
+ *
+ * Check the XML output of a script is the same as if it was parsed from XML
  */
 
 array_push($tests, new XMLRoundtrip());

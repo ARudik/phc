@@ -1,7 +1,9 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
+ *
+ * Run phc with the required plugin, checking for known success conditions.
  */
 
 class PluginTest extends Test

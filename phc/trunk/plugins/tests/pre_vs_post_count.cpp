@@ -1,6 +1,6 @@
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * This transform tests the same number of pre_node and post_node calls are
  * done on an unmodified tree.

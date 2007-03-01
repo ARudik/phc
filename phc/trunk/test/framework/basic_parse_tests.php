@@ -1,7 +1,9 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
+ *
+ * Check that all scripts parse, with expected errors taken into account.
  */
 
 // This is a regression test to check that all the scripts parse as we expect

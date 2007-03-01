@@ -1,6 +1,6 @@
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * Modify 'target' attribute on variables in %MAIN%::%run%(), 
  * and add them as static member variables to the %MAIN% class.

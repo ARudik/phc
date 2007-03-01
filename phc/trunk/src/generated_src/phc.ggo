@@ -1,5 +1,5 @@
 # phc -- the open source PHP compiler
-# See license/README.license for licensing information
+# See doc/license/README.license for licensing information
 
 option "compile" c "Compile" flag off
 option "c-option" C "Pass option to the C compile (e.g., -C-g; can be specified multiple times)" string no multiple 

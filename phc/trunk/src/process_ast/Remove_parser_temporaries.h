@@ -1,6 +1,6 @@
 /* 
  * phc -- the open source PHP compiler 
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * The parser a number of attributes to AST nodes that it needs to be
  * able to build the tree. These attributes are no longer necessary 

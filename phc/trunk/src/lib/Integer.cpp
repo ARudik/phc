@@ -1,3 +1,11 @@
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Class to represent ints (for passing around as synthesized attributes) 
+ */
+
+
 #include "lib/Integer.h"
 
 Integer* 

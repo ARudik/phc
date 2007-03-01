@@ -1,7 +1,8 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
+ *
  * Compares phc's internal values with the source representations of them
  */
 

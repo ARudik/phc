@@ -1,7 +1,7 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See license/README.license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * Test an unparsed script interprets the same as the original, using php
  * command line and phc --compile-time-includes.
