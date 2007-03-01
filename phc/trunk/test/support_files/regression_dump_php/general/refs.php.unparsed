@@ -2,20 +2,20 @@
    function f1($par)
    {
       var_dump($par);
-      $par = $par * (2);
+      $par *= 2;
    }
 
    function f2(&$par)
    {
       var_dump($par);
-      $par = $par * (2);
+      $par *= 2;
    }
 
    function f3(&$par)
    {
       global $par;
       var_dump($par);
-      $par = $par * (2);
+      $par *= 2;
    }
 
    /*
@@ -111,22 +111,22 @@
    var_dump($arr);
    foreach($arr as $key => $val)
    {
-      $key = $key + (10);
-      $val = $val * (2);
+      $key += 10;
+      $val *= 2;
    }
    // array(2) { [1]=> int(11) [2]=> int(12) }
    var_dump($arr);
    foreach($arr as $key => &$val)
    {
-      $key = $key + (10);
-      $val = $val * (2);
+      $key += 10;
+      $val *= 2;
    }
    // array(2) { [1]=> &int(22) [2]=> &int(24) }
    var_dump($arr);
    foreach($arr as $key => &$val)
    {
-      $key = $key + (10);
-      $val = $val * (2);
+      $key += 10;
+      $val *= 2;
    }
    // array(2) { [1]=> &int(44) [2]=> &int(48) }
    var_dump($arr);

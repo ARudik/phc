@@ -1,4 +1,4 @@
 <?php
    # Add line of code to current opcode handler
-   $opcodes["code"] = $opcodes["code"] . ($line);
+   $opcodes["code"] .= $line;
 ?>
