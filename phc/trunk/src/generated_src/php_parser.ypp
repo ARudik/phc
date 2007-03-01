@@ -312,6 +312,10 @@ start:
 	  top_statement_list
 	  	{ 
 			CAST_AST(body, $1, AST_statement_list);
+
+			// If there are any remaining comments, add them as a NOP
+			if(!context->last_comments.empty())
+				body->push_back(NEW(AST_nop, ()));
 		
 			AST_signature* signature = NEW(AST_signature, ("%run%"));
 			signature->method_mod = AST_method_mod::new_STATIC();
@@ -457,9 +461,9 @@ keyword_foreach:
  * Synthesises a AST_statement_list or an AST_statement
  */
 unticked_statement:
-	  '{' inner_statement_list '}'
-		{ 
-			$$ = $2;
+	  block
+	  	{ 
+			$$ = $1;
 		}
 	| keyword_if '(' expr ')' statement elseif_list else_single
 		{
@@ -740,15 +744,15 @@ unticked_statement:
 		}
 	| ';'
 		{ $$ = NULL; }
-	| K_TRY {$1 = NEW(AST_try, ());} '{' inner_statement_list '}' K_CATCH {$6 = NEW(AST_catch, ());} '(' fully_qualified_class_name VARIABLE ')' '{' inner_statement_list '}' additional_catches
+	| K_TRY {$1 = NEW(AST_try, ());} block K_CATCH {$4 = NEW(AST_catch, ());} '(' fully_qualified_class_name VARIABLE ')' block additional_catches
 		{ 
 			CAST_AST(new_try, $1, AST_try);
-			CAST_STATEMENT_VECTOR(try_stat, $4);
-			CAST_AST(new_catch, $6, AST_catch);
-			CAST_AST(class_name, $9, Token_class_name);
-			CAST_STR(var, $10, Token_variable_name);
-			CAST_STATEMENT_VECTOR(catch_stat, $13);
-			CAST_AST(additional_catches, $15, AST_catch_list);
+			CAST_STATEMENT_VECTOR(try_stat, $3);
+			CAST_AST(new_catch, $4, AST_catch);
+			CAST_AST(class_name, $7, Token_class_name);
+			CAST_STR(var, $8, Token_variable_name);
+			CAST_STATEMENT_VECTOR(catch_stat, $10);
+			CAST_AST(additional_catches, $11, AST_catch_list);
 			
 			new_catch->class_name = class_name;
 			new_catch->variable_name = var;
@@ -812,12 +816,12 @@ non_empty_additional_catches:
  * Synthesises an AST_catch* 
  */
 additional_catch:
-	  K_CATCH {$1 = NEW(AST_catch, ());} '(' fully_qualified_class_name VARIABLE ')' '{' inner_statement_list '}'
+	  K_CATCH {$1 = NEW(AST_catch, ());} '(' fully_qualified_class_name VARIABLE ')' block 
 		{
 			CAST_AST(new_catch, $1, AST_catch);
 			CAST_AST(class_name, $4, Token_class_name);
 			CAST_STR(var, $5, Token_variable_name);
-			CAST_STATEMENT_VECTOR(stat, $8);
+			CAST_STATEMENT_VECTOR(stat, $7);
 			
 			new_catch->class_name = class_name;
 			new_catch->variable_name = var;
@@ -915,13 +919,13 @@ is_reference:
  * only) disagrees with the structure of the PHP grammar here.
  */
 unticked_function_declaration_statement:
-	  K_FUNCTION {$1 = NEW(AST_method, ());} is_reference IDENT {context->current_method = dynamic_cast<String*>($4);} '(' parameter_list ')' '{' inner_statement_list '}'
+	  K_FUNCTION {$1 = NEW(AST_method, ());} is_reference IDENT {context->current_method = dynamic_cast<String*>($4);} '(' parameter_list ')' block
 		{
 			CAST_AST(fn, $1, AST_method);
 			CAST_AST(is_ref, $3, Integer);
 			CAST_STR(name, $4, Token_method_name);
 			CAST_AST(params, $7, AST_formal_parameter_list); 
-			CAST_AST(body, $10, AST_statement_list);
+			CAST_AST(body, $9, AST_statement_list);
 		
 			AST_signature* signature = NEW(AST_signature, (AST_method_mod::new_STATIC(), is_ref->value(), name, params));
 			fn->signature = signature;
@@ -1692,9 +1696,9 @@ method_body:
 			// Abstract method
 			$$ = NULL; 
 		}
-	| '{' inner_statement_list '}'
+	| block 
 		{
-			$$ = $2;
+			$$ = $1;
 		}
 	;
 
@@ -3355,3 +3359,19 @@ class_constant:
 			$$ = NEW(AST_constant, (class_name, constant));
 		}
 	;
+
+/*
+ * Specific to phc; in the original grammar, this always appeared inlined
+ * We factor it out since we need to generate the NOP if necessary
+ */
+block:
+	  '{' inner_statement_list '}'
+		{
+			CAST_STATEMENT_VECTOR(list, $2);
+			
+			// If there are any remaining comments, add them as a NOP
+			if(!context->last_comments.empty())
+				list->push_back(NEW(AST_nop, ()));
+
+			$$ = list;
+		}

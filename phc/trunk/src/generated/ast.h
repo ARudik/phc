@@ -22,29 +22,11 @@ class Tree_visitor;
 class AST_node_factory;
 class AST_node;
 class Token_interface_name_list;
-class AST_class_mod_list;
-class Token_class_name_list;
-class AST_signature_list;
-class AST_method_mod_list;
-class Token_method_name_list;
 class AST_formal_parameter_list;
-class AST_type_list;
-class Token_variable_name_list;
-class AST_expr_list;
-class AST_attr_mod_list;
-class AST_variable_list;
 class AST_directive_list;
-class Token_directive_name_list;
-class AST_list_elements_list;
 class AST_list_element_list;
-class Token_cast_list;
-class Token_op_list;
-class Token_constant_name_list;
-class AST_class_name_list;
-class AST_target_list;
-class AST_variable_name_list;
+class AST_expr_list;
 class AST_array_elem_list;
-class AST_method_name_list;
 class AST_actual_parameter_list;
 class AST_php_script;
 class AST_class_mod;
@@ -103,6 +85,7 @@ class AST_declare;
 class AST_try;
 class AST_throw;
 class AST_eval_expr;
+class AST_nop;
 class AST_literal;
 class AST_assignment;
 class AST_list_assignment;
@@ -178,101 +161,6 @@ public:
 	virtual Token_interface_name_list* post_transform(Tree_transform* transform);
 };
 
-class AST_class_mod_list : public virtual List<AST_class_mod*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_class_mod_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_class_mod_list* transform(Tree_transform* transform);
-	virtual AST_class_mod_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_class_mod_list* post_transform(Tree_transform* transform);
-};
-
-class Token_class_name_list : public virtual List<Token_class_name*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual Token_class_name_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual Token_class_name_list* transform(Tree_transform* transform);
-	virtual Token_class_name_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual Token_class_name_list* post_transform(Tree_transform* transform);
-};
-
-class AST_signature_list : public virtual List<AST_signature*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_signature_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_signature_list* transform(Tree_transform* transform);
-	virtual AST_signature_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_signature_list* post_transform(Tree_transform* transform);
-};
-
-class AST_method_mod_list : public virtual List<AST_method_mod*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_method_mod_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_method_mod_list* transform(Tree_transform* transform);
-	virtual AST_method_mod_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_method_mod_list* post_transform(Tree_transform* transform);
-};
-
-class Token_method_name_list : public virtual List<Token_method_name*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual Token_method_name_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual Token_method_name_list* transform(Tree_transform* transform);
-	virtual Token_method_name_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual Token_method_name_list* post_transform(Tree_transform* transform);
-};
-
 class AST_formal_parameter_list : public virtual List<AST_formal_parameter*>, public virtual AST_node
 {
 public:
@@ -290,101 +178,6 @@ public:
 	virtual AST_formal_parameter_list* pre_transform(Tree_transform* transform);
 	virtual void transform_children(Tree_transform* transform);
 	virtual AST_formal_parameter_list* post_transform(Tree_transform* transform);
-};
-
-class AST_type_list : public virtual List<AST_type*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_type_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_type_list* transform(Tree_transform* transform);
-	virtual AST_type_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_type_list* post_transform(Tree_transform* transform);
-};
-
-class Token_variable_name_list : public virtual List<Token_variable_name*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual Token_variable_name_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual Token_variable_name_list* transform(Tree_transform* transform);
-	virtual Token_variable_name_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual Token_variable_name_list* post_transform(Tree_transform* transform);
-};
-
-class AST_expr_list : public virtual List<AST_expr*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_expr_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_expr_list* transform(Tree_transform* transform);
-	virtual AST_expr_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_expr_list* post_transform(Tree_transform* transform);
-};
-
-class AST_attr_mod_list : public virtual List<AST_attr_mod*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_attr_mod_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_attr_mod_list* transform(Tree_transform* transform);
-	virtual AST_attr_mod_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_attr_mod_list* post_transform(Tree_transform* transform);
-};
-
-class AST_variable_list : public virtual List<AST_variable*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_variable_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_variable_list* transform(Tree_transform* transform);
-	virtual AST_variable_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_variable_list* post_transform(Tree_transform* transform);
 };
 
 class AST_directive_list : public virtual List<AST_directive*>, public virtual AST_node
@@ -406,44 +199,6 @@ public:
 	virtual AST_directive_list* post_transform(Tree_transform* transform);
 };
 
-class Token_directive_name_list : public virtual List<Token_directive_name*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual Token_directive_name_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual Token_directive_name_list* transform(Tree_transform* transform);
-	virtual Token_directive_name_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual Token_directive_name_list* post_transform(Tree_transform* transform);
-};
-
-class AST_list_elements_list : public virtual List<AST_list_elements*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_list_elements_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_list_elements_list* transform(Tree_transform* transform);
-	virtual AST_list_elements_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_list_elements_list* post_transform(Tree_transform* transform);
-};
-
 class AST_list_element_list : public virtual List<AST_list_element*>, public virtual AST_node
 {
 public:
@@ -463,118 +218,23 @@ public:
 	virtual AST_list_element_list* post_transform(Tree_transform* transform);
 };
 
-class Token_cast_list : public virtual List<Token_cast*>, public virtual AST_node
+class AST_expr_list : public virtual List<AST_expr*>, public virtual AST_node
 {
 public:
 
 public:
 	virtual bool deep_equals(Object* other);
-	virtual Token_cast_list* deep_clone(Object* partial_result = NULL);
+	virtual AST_expr_list* deep_clone(Object* partial_result = NULL);
 	virtual bool try_match(Object* pattern);
 	virtual void replace_wildcards(Object* pattern);
 	virtual void visit(Tree_visitor* visitor);
 	virtual void pre_visit(Tree_visitor* visitor);
 	virtual void visit_children(Tree_visitor* visitor);
 	virtual void post_visit(Tree_visitor* visitor);
-	virtual Token_cast_list* transform(Tree_transform* transform);
-	virtual Token_cast_list* pre_transform(Tree_transform* transform);
+	virtual AST_expr_list* transform(Tree_transform* transform);
+	virtual AST_expr_list* pre_transform(Tree_transform* transform);
 	virtual void transform_children(Tree_transform* transform);
-	virtual Token_cast_list* post_transform(Tree_transform* transform);
-};
-
-class Token_op_list : public virtual List<Token_op*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual Token_op_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual Token_op_list* transform(Tree_transform* transform);
-	virtual Token_op_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual Token_op_list* post_transform(Tree_transform* transform);
-};
-
-class Token_constant_name_list : public virtual List<Token_constant_name*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual Token_constant_name_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual Token_constant_name_list* transform(Tree_transform* transform);
-	virtual Token_constant_name_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual Token_constant_name_list* post_transform(Tree_transform* transform);
-};
-
-class AST_class_name_list : public virtual List<AST_class_name*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_class_name_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_class_name_list* transform(Tree_transform* transform);
-	virtual AST_class_name_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_class_name_list* post_transform(Tree_transform* transform);
-};
-
-class AST_target_list : public virtual List<AST_target*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_target_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_target_list* transform(Tree_transform* transform);
-	virtual AST_target_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_target_list* post_transform(Tree_transform* transform);
-};
-
-class AST_variable_name_list : public virtual List<AST_variable_name*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_variable_name_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_variable_name_list* transform(Tree_transform* transform);
-	virtual AST_variable_name_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_variable_name_list* post_transform(Tree_transform* transform);
+	virtual AST_expr_list* post_transform(Tree_transform* transform);
 };
 
 class AST_array_elem_list : public virtual List<AST_array_elem*>, public virtual AST_node
@@ -594,25 +254,6 @@ public:
 	virtual AST_array_elem_list* pre_transform(Tree_transform* transform);
 	virtual void transform_children(Tree_transform* transform);
 	virtual AST_array_elem_list* post_transform(Tree_transform* transform);
-};
-
-class AST_method_name_list : public virtual List<AST_method_name*>, public virtual AST_node
-{
-public:
-
-public:
-	virtual bool deep_equals(Object* other);
-	virtual AST_method_name_list* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual void visit(Tree_visitor* visitor);
-	virtual void pre_visit(Tree_visitor* visitor);
-	virtual void visit_children(Tree_visitor* visitor);
-	virtual void post_visit(Tree_visitor* visitor);
-	virtual AST_method_name_list* transform(Tree_transform* transform);
-	virtual AST_method_name_list* pre_transform(Tree_transform* transform);
-	virtual void transform_children(Tree_transform* transform);
-	virtual AST_method_name_list* post_transform(Tree_transform* transform);
 };
 
 class AST_actual_parameter_list : public virtual List<AST_actual_parameter*>, public virtual AST_node
@@ -1924,6 +1565,26 @@ public:
 	virtual void post_visit(Tree_visitor* visitor);
 };
 
+class AST_nop : public virtual AST_statement
+{
+public:
+
+public:
+	AST_nop();
+	virtual bool deep_equals(Object* other);
+	virtual AST_nop* deep_clone(Object* partial_result = NULL);
+	virtual bool try_match(Object* pattern);
+	virtual void replace_wildcards(Object* pattern);
+	virtual AST_statement_list* transform(Tree_transform* transform);
+	virtual AST_statement_list* pre_transform(Tree_transform* transform);
+	virtual void transform_children(Tree_transform* transform);
+	virtual AST_statement_list* post_transform(Tree_transform* transform);
+	virtual void visit(Tree_visitor* visitor);
+	virtual void pre_visit(Tree_visitor* visitor);
+	virtual void visit_children(Tree_visitor* visitor);
+	virtual void post_visit(Tree_visitor* visitor);
+};
+
 class AST_literal : public virtual AST_expr
 {
 public:
@@ -2452,7 +2113,7 @@ public:
 	virtual String* get_value_as_string();
 };
 
-class Wildcard : public virtual String, public virtual AST_interface_def_list, public virtual AST_class_def_list, public virtual Token_interface_name_list, public virtual AST_member_list, public virtual AST_class_mod_list, public virtual Token_class_name_list, public virtual AST_signature_list, public virtual AST_statement_list, public virtual AST_method_mod_list, public virtual Token_method_name_list, public virtual AST_formal_parameter_list, public virtual AST_type_list, public virtual Token_variable_name_list, public virtual AST_expr_list, public virtual AST_attr_mod_list, public virtual AST_variable_list, public virtual AST_switch_case_list, public virtual AST_directive_list, public virtual Token_directive_name_list, public virtual AST_catch_list, public virtual AST_list_elements_list, public virtual AST_list_element_list, public virtual Token_cast_list, public virtual Token_op_list, public virtual Token_constant_name_list, public virtual AST_class_name_list, public virtual AST_target_list, public virtual AST_variable_name_list, public virtual AST_array_elem_list, public virtual AST_method_name_list, public virtual AST_actual_parameter_list, public virtual AST_php_script, public virtual AST_interface_def, public virtual AST_class_def, public virtual AST_class_mod, public virtual AST_member, public virtual AST_method, public virtual AST_signature, public virtual AST_method_mod, public virtual AST_formal_parameter, public virtual AST_type, public virtual AST_attribute, public virtual AST_attr_mod, public virtual AST_statement, public virtual AST_if, public virtual AST_while, public virtual AST_do, public virtual AST_for, public virtual AST_foreach, public virtual AST_switch, public virtual AST_switch_case, public virtual AST_break, public virtual AST_continue, public virtual AST_return, public virtual AST_static_declaration, public virtual AST_unset, public virtual AST_declare, public virtual AST_directive, public virtual AST_try, public virtual AST_catch, public virtual AST_throw, public virtual AST_eval_expr, public virtual AST_expr, public virtual AST_literal, public virtual AST_assignment, public virtual AST_list_assignment, public virtual AST_list_elements, public virtual AST_list_element, public virtual AST_cast, public virtual AST_unary_op, public virtual AST_bin_op, public virtual AST_conditional_expr, public virtual AST_ignore_errors, public virtual AST_constant, public virtual AST_instanceof, public virtual AST_variable, public virtual AST_variable_name, public virtual AST_reflection, public virtual AST_target, public virtual AST_pre_op, public virtual AST_post_op, public virtual AST_array, public virtual AST_array_elem, public virtual AST_method_invocation, public virtual AST_method_name, public virtual AST_actual_parameter, public virtual AST_new, public virtual AST_class_name, public virtual AST_clone, public virtual AST_node, public virtual AST_commented_node, public virtual AST_identifier, public virtual Token_interface_name, public virtual Token_class_name, public virtual Token_method_name, public virtual Token_variable_name, public virtual Token_directive_name, public virtual Token_int, public virtual Token_real, public virtual Token_string, public virtual Token_bool, public virtual Token_null, public virtual Token_cast, public virtual Token_op, public virtual Token_constant_name
+class Wildcard : public virtual String, public virtual AST_interface_def_list, public virtual AST_class_def_list, public virtual Token_interface_name_list, public virtual AST_member_list, public virtual AST_statement_list, public virtual AST_formal_parameter_list, public virtual AST_switch_case_list, public virtual AST_directive_list, public virtual AST_catch_list, public virtual AST_list_element_list, public virtual AST_expr_list, public virtual AST_array_elem_list, public virtual AST_actual_parameter_list, public virtual AST_php_script, public virtual AST_interface_def, public virtual AST_class_def, public virtual AST_class_mod, public virtual AST_member, public virtual AST_method, public virtual AST_signature, public virtual AST_method_mod, public virtual AST_formal_parameter, public virtual AST_type, public virtual AST_attribute, public virtual AST_attr_mod, public virtual AST_statement, public virtual AST_if, public virtual AST_while, public virtual AST_do, public virtual AST_for, public virtual AST_foreach, public virtual AST_switch, public virtual AST_switch_case, public virtual AST_break, public virtual AST_continue, public virtual AST_return, public virtual AST_static_declaration, public virtual AST_unset, public virtual AST_declare, public virtual AST_directive, public virtual AST_try, public virtual AST_catch, public virtual AST_throw, public virtual AST_eval_expr, public virtual AST_nop, public virtual AST_expr, public virtual AST_literal, public virtual AST_assignment, public virtual AST_list_assignment, public virtual AST_list_elements, public virtual AST_list_element, public virtual AST_cast, public virtual AST_unary_op, public virtual AST_bin_op, public virtual AST_conditional_expr, public virtual AST_ignore_errors, public virtual AST_constant, public virtual AST_instanceof, public virtual AST_variable, public virtual AST_variable_name, public virtual AST_reflection, public virtual AST_target, public virtual AST_pre_op, public virtual AST_post_op, public virtual AST_array, public virtual AST_array_elem, public virtual AST_method_invocation, public virtual AST_method_name, public virtual AST_actual_parameter, public virtual AST_new, public virtual AST_class_name, public virtual AST_clone, public virtual AST_node, public virtual AST_commented_node, public virtual AST_identifier, public virtual Token_interface_name, public virtual Token_class_name, public virtual Token_method_name, public virtual Token_variable_name, public virtual Token_directive_name, public virtual Token_int, public virtual Token_real, public virtual Token_string, public virtual Token_bool, public virtual Token_null, public virtual Token_cast, public virtual Token_op, public virtual Token_constant_name
 {
 public:
 

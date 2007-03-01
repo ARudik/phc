@@ -116,7 +116,7 @@ public:
 	void pre_expr(AST_expr* in);
 	void post_expr(AST_expr* in);
 	void pre_commented_node(AST_commented_node* in);
-
+	void post_commented_node(AST_commented_node* in);
 };
 
 #endif // PHC_PHP_UNPARSER 

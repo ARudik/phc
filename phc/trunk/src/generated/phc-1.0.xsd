@@ -58,6 +58,7 @@
 <xs:element name="AST_try" type="AST_try" nillable="false"/>
 <xs:element name="AST_throw" type="AST_throw" nillable="false"/>
 <xs:element name="AST_eval_expr" type="AST_eval_expr" nillable="false"/>
+<xs:element name="AST_nop" type="AST_nop" nillable="false"/>
 </xs:choice>
 </xs:group>
 
@@ -555,6 +556,12 @@
 <xs:sequence>
 <xs:element name="attrs" type="attrs"/>
 <xs:group ref="AST_expr"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="AST_nop">
+<xs:sequence>
+<xs:element name="attrs" type="attrs"/>
 </xs:sequence>
 </xs:complexType>
 

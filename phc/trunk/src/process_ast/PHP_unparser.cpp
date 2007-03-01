@@ -248,7 +248,8 @@ void PHP_unparser::children_attribute(AST_attribute* in)
 		echo(" = ");
 		in->expr->visit(this);
 	}
-	echo_nl(";");
+	echo("; ");
+	// newline is output by post_commented_node
 }
 
 void PHP_unparser::children_attr_mod(AST_attr_mod* in)
@@ -468,7 +469,8 @@ void PHP_unparser::children_throw(AST_throw* in)
 void PHP_unparser::children_eval_expr(AST_eval_expr* in)
 {
 	in->expr->visit(this);
-	echo_nl(";");
+	echo("; ");
+	// The newline gets added by post_commented_node
 }
 
 void PHP_unparser::children_assignment(AST_assignment* in)
@@ -1064,7 +1066,34 @@ void PHP_unparser::pre_commented_node(AST_commented_node* in)
 	List<String*>* comments = in->get_comments();
 	for(i = comments->begin(); i != comments->end(); i++)
 	{
-		echo(*i);
+		if(!(*i)->attrs->is_true("phc.unparser.comment.after"))
+		{
+			echo(*i);
+			newline();
+		}
+	}
+}
+
+void PHP_unparser::post_commented_node(AST_commented_node* in)
+{
+	List<String*>::const_iterator i;
+	List<String*>* comments = in->get_comments();
+	bool output_comment = false;
+
+	for(i = comments->begin(); i != comments->end(); i++)
+	{
+		if((*i)->attrs->is_true("phc.unparser.comment.after"))
+		{
+			echo(*i);
+			newline();
+			output_comment = true;
+		}
+	}
+
+	if(!output_comment && (
+		dynamic_cast<AST_eval_expr*>(in) || 
+		dynamic_cast<AST_attribute*>(in)))
+	{
 		newline();
 	}
 }

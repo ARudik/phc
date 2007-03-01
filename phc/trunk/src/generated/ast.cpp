@@ -723,6 +723,11 @@ AST_node* AST_node_factory::create(char* name, List<Object*>* args)
 		assert(i == args->end()); // Check for too many arguments
 		return rv;
 	}
+	if(!strcmp(name, "AST_nop")) {
+		AST_nop* rv = new AST_nop();
+		assert(i == args->end()); // Check for too many arguments
+		return rv;
+	}
 	if(!strcmp(name, "AST_assignment")) {
 		AST_assignment* rv = new AST_assignment();
 		{
@@ -1257,36 +1262,6 @@ AST_node* AST_node_factory::create(char* name, List<Object*>* args)
 		}
 		return rv;
 	}
-	if(!strcmp(name, "AST_class_mod_list")) {
-		AST_class_mod_list* rv = new AST_class_mod_list;
-		for(; i != args->end(); i++)
-		{
-			AST_class_mod* arg = dynamic_cast<AST_class_mod*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "Token_class_name_list")) {
-		Token_class_name_list* rv = new Token_class_name_list;
-		for(; i != args->end(); i++)
-		{
-			Token_class_name* arg = dynamic_cast<Token_class_name*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_signature_list")) {
-		AST_signature_list* rv = new AST_signature_list;
-		for(; i != args->end(); i++)
-		{
-			AST_signature* arg = dynamic_cast<AST_signature*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
 	if(!strcmp(name, "AST_statement_list")) {
 		AST_statement_list* rv = new AST_statement_list;
 		for(; i != args->end(); i++)
@@ -1297,81 +1272,11 @@ AST_node* AST_node_factory::create(char* name, List<Object*>* args)
 		}
 		return rv;
 	}
-	if(!strcmp(name, "AST_method_mod_list")) {
-		AST_method_mod_list* rv = new AST_method_mod_list;
-		for(; i != args->end(); i++)
-		{
-			AST_method_mod* arg = dynamic_cast<AST_method_mod*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "Token_method_name_list")) {
-		Token_method_name_list* rv = new Token_method_name_list;
-		for(; i != args->end(); i++)
-		{
-			Token_method_name* arg = dynamic_cast<Token_method_name*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
 	if(!strcmp(name, "AST_formal_parameter_list")) {
 		AST_formal_parameter_list* rv = new AST_formal_parameter_list;
 		for(; i != args->end(); i++)
 		{
 			AST_formal_parameter* arg = dynamic_cast<AST_formal_parameter*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_type_list")) {
-		AST_type_list* rv = new AST_type_list;
-		for(; i != args->end(); i++)
-		{
-			AST_type* arg = dynamic_cast<AST_type*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "Token_variable_name_list")) {
-		Token_variable_name_list* rv = new Token_variable_name_list;
-		for(; i != args->end(); i++)
-		{
-			Token_variable_name* arg = dynamic_cast<Token_variable_name*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_expr_list")) {
-		AST_expr_list* rv = new AST_expr_list;
-		for(; i != args->end(); i++)
-		{
-			AST_expr* arg = dynamic_cast<AST_expr*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_attr_mod_list")) {
-		AST_attr_mod_list* rv = new AST_attr_mod_list;
-		for(; i != args->end(); i++)
-		{
-			AST_attr_mod* arg = dynamic_cast<AST_attr_mod*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_variable_list")) {
-		AST_variable_list* rv = new AST_variable_list;
-		for(; i != args->end(); i++)
-		{
-			AST_variable* arg = dynamic_cast<AST_variable*>(*i);
 			assert(!*i || arg); // Verify argument type
 			rv->push_back(arg);
 		}
@@ -1397,31 +1302,11 @@ AST_node* AST_node_factory::create(char* name, List<Object*>* args)
 		}
 		return rv;
 	}
-	if(!strcmp(name, "Token_directive_name_list")) {
-		Token_directive_name_list* rv = new Token_directive_name_list;
-		for(; i != args->end(); i++)
-		{
-			Token_directive_name* arg = dynamic_cast<Token_directive_name*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
 	if(!strcmp(name, "AST_catch_list")) {
 		AST_catch_list* rv = new AST_catch_list;
 		for(; i != args->end(); i++)
 		{
 			AST_catch* arg = dynamic_cast<AST_catch*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_list_elements_list")) {
-		AST_list_elements_list* rv = new AST_list_elements_list;
-		for(; i != args->end(); i++)
-		{
-			AST_list_elements* arg = dynamic_cast<AST_list_elements*>(*i);
 			assert(!*i || arg); // Verify argument type
 			rv->push_back(arg);
 		}
@@ -1437,61 +1322,11 @@ AST_node* AST_node_factory::create(char* name, List<Object*>* args)
 		}
 		return rv;
 	}
-	if(!strcmp(name, "Token_cast_list")) {
-		Token_cast_list* rv = new Token_cast_list;
+	if(!strcmp(name, "AST_expr_list")) {
+		AST_expr_list* rv = new AST_expr_list;
 		for(; i != args->end(); i++)
 		{
-			Token_cast* arg = dynamic_cast<Token_cast*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "Token_op_list")) {
-		Token_op_list* rv = new Token_op_list;
-		for(; i != args->end(); i++)
-		{
-			Token_op* arg = dynamic_cast<Token_op*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "Token_constant_name_list")) {
-		Token_constant_name_list* rv = new Token_constant_name_list;
-		for(; i != args->end(); i++)
-		{
-			Token_constant_name* arg = dynamic_cast<Token_constant_name*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_class_name_list")) {
-		AST_class_name_list* rv = new AST_class_name_list;
-		for(; i != args->end(); i++)
-		{
-			AST_class_name* arg = dynamic_cast<AST_class_name*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_target_list")) {
-		AST_target_list* rv = new AST_target_list;
-		for(; i != args->end(); i++)
-		{
-			AST_target* arg = dynamic_cast<AST_target*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_variable_name_list")) {
-		AST_variable_name_list* rv = new AST_variable_name_list;
-		for(; i != args->end(); i++)
-		{
-			AST_variable_name* arg = dynamic_cast<AST_variable_name*>(*i);
+			AST_expr* arg = dynamic_cast<AST_expr*>(*i);
 			assert(!*i || arg); // Verify argument type
 			rv->push_back(arg);
 		}
@@ -1502,16 +1337,6 @@ AST_node* AST_node_factory::create(char* name, List<Object*>* args)
 		for(; i != args->end(); i++)
 		{
 			AST_array_elem* arg = dynamic_cast<AST_array_elem*>(*i);
-			assert(!*i || arg); // Verify argument type
-			rv->push_back(arg);
-		}
-		return rv;
-	}
-	if(!strcmp(name, "AST_method_name_list")) {
-		AST_method_name_list* rv = new AST_method_name_list;
-		for(; i != args->end(); i++)
-		{
-			AST_method_name* arg = dynamic_cast<AST_method_name*>(*i);
 			assert(!*i || arg); // Verify argument type
 			rv->push_back(arg);
 		}
@@ -1715,476 +1540,6 @@ Token_interface_name_list* Token_interface_name_list::post_transform(Tree_transf
 	return transform->post_interface_name_list(this);
 }
 
-bool AST_class_mod_list::deep_equals(Object* other)
-{
-	AST_class_mod_list* that = dynamic_cast<AST_class_mod_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_class_mod*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_class_mod_list* AST_class_mod_list::deep_clone(Object* partial_result)
-{
-	AST_class_mod_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_class_mod_list*>(partial_result);
-	else
-		clone = new AST_class_mod_list();
-	assert(clone);
-	
-	List<AST_class_mod*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_class_mod_list::try_match(Object* pattern)
-{
-	AST_class_mod_list* that = dynamic_cast<AST_class_mod_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_class_mod*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_class_mod_list::replace_wildcards(Object* pattern)
-{
-	AST_class_mod_list* that = dynamic_cast<AST_class_mod_list*>(pattern);
-	assert(that);
-	
-	List<AST_class_mod*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_class_mod_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_class_mod_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_class_mod_list(this);
-}
-
-void AST_class_mod_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_class_mod_list(this);
-}
-
-void AST_class_mod_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_class_mod_list(this);
-}
-
-AST_class_mod_list* AST_class_mod_list::transform(Tree_transform* transform)
-{
-	AST_class_mod_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_class_mod_list* AST_class_mod_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_class_mod_list(this);
-}
-
-void AST_class_mod_list::transform_children(Tree_transform* transform)
-{
-	transform->children_class_mod_list(this);
-}
-
-AST_class_mod_list* AST_class_mod_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_class_mod_list(this);
-}
-
-bool Token_class_name_list::deep_equals(Object* other)
-{
-	Token_class_name_list* that = dynamic_cast<Token_class_name_list*>(other);
-	if(!that) return false;
-	
-	if(!List<Token_class_name*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-Token_class_name_list* Token_class_name_list::deep_clone(Object* partial_result)
-{
-	Token_class_name_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<Token_class_name_list*>(partial_result);
-	else
-		clone = new Token_class_name_list();
-	assert(clone);
-	
-	List<Token_class_name*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool Token_class_name_list::try_match(Object* pattern)
-{
-	Token_class_name_list* that = dynamic_cast<Token_class_name_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<Token_class_name*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void Token_class_name_list::replace_wildcards(Object* pattern)
-{
-	Token_class_name_list* that = dynamic_cast<Token_class_name_list*>(pattern);
-	assert(that);
-	
-	List<Token_class_name*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void Token_class_name_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void Token_class_name_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_class_name_list(this);
-}
-
-void Token_class_name_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_class_name_list(this);
-}
-
-void Token_class_name_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_class_name_list(this);
-}
-
-Token_class_name_list* Token_class_name_list::transform(Tree_transform* transform)
-{
-	Token_class_name_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-Token_class_name_list* Token_class_name_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_class_name_list(this);
-}
-
-void Token_class_name_list::transform_children(Tree_transform* transform)
-{
-	transform->children_class_name_list(this);
-}
-
-Token_class_name_list* Token_class_name_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_class_name_list(this);
-}
-
-bool AST_signature_list::deep_equals(Object* other)
-{
-	AST_signature_list* that = dynamic_cast<AST_signature_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_signature*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_signature_list* AST_signature_list::deep_clone(Object* partial_result)
-{
-	AST_signature_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_signature_list*>(partial_result);
-	else
-		clone = new AST_signature_list();
-	assert(clone);
-	
-	List<AST_signature*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_signature_list::try_match(Object* pattern)
-{
-	AST_signature_list* that = dynamic_cast<AST_signature_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_signature*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_signature_list::replace_wildcards(Object* pattern)
-{
-	AST_signature_list* that = dynamic_cast<AST_signature_list*>(pattern);
-	assert(that);
-	
-	List<AST_signature*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_signature_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_signature_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_signature_list(this);
-}
-
-void AST_signature_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_signature_list(this);
-}
-
-void AST_signature_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_signature_list(this);
-}
-
-AST_signature_list* AST_signature_list::transform(Tree_transform* transform)
-{
-	AST_signature_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_signature_list* AST_signature_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_signature_list(this);
-}
-
-void AST_signature_list::transform_children(Tree_transform* transform)
-{
-	transform->children_signature_list(this);
-}
-
-AST_signature_list* AST_signature_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_signature_list(this);
-}
-
-bool AST_method_mod_list::deep_equals(Object* other)
-{
-	AST_method_mod_list* that = dynamic_cast<AST_method_mod_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_method_mod*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_method_mod_list* AST_method_mod_list::deep_clone(Object* partial_result)
-{
-	AST_method_mod_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_method_mod_list*>(partial_result);
-	else
-		clone = new AST_method_mod_list();
-	assert(clone);
-	
-	List<AST_method_mod*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_method_mod_list::try_match(Object* pattern)
-{
-	AST_method_mod_list* that = dynamic_cast<AST_method_mod_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_method_mod*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_method_mod_list::replace_wildcards(Object* pattern)
-{
-	AST_method_mod_list* that = dynamic_cast<AST_method_mod_list*>(pattern);
-	assert(that);
-	
-	List<AST_method_mod*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_method_mod_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_method_mod_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_method_mod_list(this);
-}
-
-void AST_method_mod_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_method_mod_list(this);
-}
-
-void AST_method_mod_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_method_mod_list(this);
-}
-
-AST_method_mod_list* AST_method_mod_list::transform(Tree_transform* transform)
-{
-	AST_method_mod_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_method_mod_list* AST_method_mod_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_method_mod_list(this);
-}
-
-void AST_method_mod_list::transform_children(Tree_transform* transform)
-{
-	transform->children_method_mod_list(this);
-}
-
-AST_method_mod_list* AST_method_mod_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_method_mod_list(this);
-}
-
-bool Token_method_name_list::deep_equals(Object* other)
-{
-	Token_method_name_list* that = dynamic_cast<Token_method_name_list*>(other);
-	if(!that) return false;
-	
-	if(!List<Token_method_name*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-Token_method_name_list* Token_method_name_list::deep_clone(Object* partial_result)
-{
-	Token_method_name_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<Token_method_name_list*>(partial_result);
-	else
-		clone = new Token_method_name_list();
-	assert(clone);
-	
-	List<Token_method_name*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool Token_method_name_list::try_match(Object* pattern)
-{
-	Token_method_name_list* that = dynamic_cast<Token_method_name_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<Token_method_name*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void Token_method_name_list::replace_wildcards(Object* pattern)
-{
-	Token_method_name_list* that = dynamic_cast<Token_method_name_list*>(pattern);
-	assert(that);
-	
-	List<Token_method_name*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void Token_method_name_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void Token_method_name_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_method_name_list(this);
-}
-
-void Token_method_name_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_method_name_list(this);
-}
-
-void Token_method_name_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_method_name_list(this);
-}
-
-Token_method_name_list* Token_method_name_list::transform(Tree_transform* transform)
-{
-	Token_method_name_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-Token_method_name_list* Token_method_name_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_method_name_list(this);
-}
-
-void Token_method_name_list::transform_children(Tree_transform* transform)
-{
-	transform->children_method_name_list(this);
-}
-
-Token_method_name_list* Token_method_name_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_method_name_list(this);
-}
-
 bool AST_formal_parameter_list::deep_equals(Object* other)
 {
 	AST_formal_parameter_list* that = dynamic_cast<AST_formal_parameter_list*>(other);
@@ -2279,478 +1634,6 @@ void AST_formal_parameter_list::transform_children(Tree_transform* transform)
 AST_formal_parameter_list* AST_formal_parameter_list::post_transform(Tree_transform* transform)
 {
 	return transform->post_formal_parameter_list(this);
-}
-
-bool AST_type_list::deep_equals(Object* other)
-{
-	AST_type_list* that = dynamic_cast<AST_type_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_type*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_type_list* AST_type_list::deep_clone(Object* partial_result)
-{
-	AST_type_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_type_list*>(partial_result);
-	else
-		clone = new AST_type_list();
-	assert(clone);
-	
-	List<AST_type*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_type_list::try_match(Object* pattern)
-{
-	AST_type_list* that = dynamic_cast<AST_type_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_type*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_type_list::replace_wildcards(Object* pattern)
-{
-	AST_type_list* that = dynamic_cast<AST_type_list*>(pattern);
-	assert(that);
-	
-	List<AST_type*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_type_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_type_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_type_list(this);
-}
-
-void AST_type_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_type_list(this);
-}
-
-void AST_type_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_type_list(this);
-}
-
-AST_type_list* AST_type_list::transform(Tree_transform* transform)
-{
-	AST_type_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_type_list* AST_type_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_type_list(this);
-}
-
-void AST_type_list::transform_children(Tree_transform* transform)
-{
-	transform->children_type_list(this);
-}
-
-AST_type_list* AST_type_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_type_list(this);
-}
-
-bool Token_variable_name_list::deep_equals(Object* other)
-{
-	Token_variable_name_list* that = dynamic_cast<Token_variable_name_list*>(other);
-	if(!that) return false;
-	
-	if(!List<Token_variable_name*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-Token_variable_name_list* Token_variable_name_list::deep_clone(Object* partial_result)
-{
-	Token_variable_name_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<Token_variable_name_list*>(partial_result);
-	else
-		clone = new Token_variable_name_list();
-	assert(clone);
-	
-	List<Token_variable_name*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool Token_variable_name_list::try_match(Object* pattern)
-{
-	Token_variable_name_list* that = dynamic_cast<Token_variable_name_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<Token_variable_name*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void Token_variable_name_list::replace_wildcards(Object* pattern)
-{
-	Token_variable_name_list* that = dynamic_cast<Token_variable_name_list*>(pattern);
-	assert(that);
-	
-	List<Token_variable_name*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void Token_variable_name_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void Token_variable_name_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_variable_name_list(this);
-}
-
-void Token_variable_name_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_variable_name_list(this);
-}
-
-void Token_variable_name_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_variable_name_list(this);
-}
-
-Token_variable_name_list* Token_variable_name_list::transform(Tree_transform* transform)
-{
-	Token_variable_name_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-Token_variable_name_list* Token_variable_name_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_variable_name_list(this);
-}
-
-void Token_variable_name_list::transform_children(Tree_transform* transform)
-{
-	transform->children_variable_name_list(this);
-}
-
-Token_variable_name_list* Token_variable_name_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_variable_name_list(this);
-}
-
-bool AST_expr_list::deep_equals(Object* other)
-{
-	AST_expr_list* that = dynamic_cast<AST_expr_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_expr*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_expr_list* AST_expr_list::deep_clone(Object* partial_result)
-{
-	AST_expr_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_expr_list*>(partial_result);
-	else
-		clone = new AST_expr_list();
-	assert(clone);
-	
-	List<AST_expr*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_expr_list::try_match(Object* pattern)
-{
-	AST_expr_list* that = dynamic_cast<AST_expr_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_expr*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_expr_list::replace_wildcards(Object* pattern)
-{
-	AST_expr_list* that = dynamic_cast<AST_expr_list*>(pattern);
-	assert(that);
-	
-	List<AST_expr*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_expr_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_expr_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_node(this);
-	visitor->pre_expr_list(this);
-}
-
-void AST_expr_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_expr_list(this);
-}
-
-void AST_expr_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_expr_list(this);
-	visitor->post_node(this);
-}
-
-AST_expr_list* AST_expr_list::transform(Tree_transform* transform)
-{
-	AST_expr_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_expr_list* AST_expr_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_expr_list(this);
-}
-
-void AST_expr_list::transform_children(Tree_transform* transform)
-{
-	transform->children_expr_list(this);
-}
-
-AST_expr_list* AST_expr_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_expr_list(this);
-}
-
-bool AST_attr_mod_list::deep_equals(Object* other)
-{
-	AST_attr_mod_list* that = dynamic_cast<AST_attr_mod_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_attr_mod*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_attr_mod_list* AST_attr_mod_list::deep_clone(Object* partial_result)
-{
-	AST_attr_mod_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_attr_mod_list*>(partial_result);
-	else
-		clone = new AST_attr_mod_list();
-	assert(clone);
-	
-	List<AST_attr_mod*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_attr_mod_list::try_match(Object* pattern)
-{
-	AST_attr_mod_list* that = dynamic_cast<AST_attr_mod_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_attr_mod*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_attr_mod_list::replace_wildcards(Object* pattern)
-{
-	AST_attr_mod_list* that = dynamic_cast<AST_attr_mod_list*>(pattern);
-	assert(that);
-	
-	List<AST_attr_mod*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_attr_mod_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_attr_mod_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_attr_mod_list(this);
-}
-
-void AST_attr_mod_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_attr_mod_list(this);
-}
-
-void AST_attr_mod_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_attr_mod_list(this);
-}
-
-AST_attr_mod_list* AST_attr_mod_list::transform(Tree_transform* transform)
-{
-	AST_attr_mod_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_attr_mod_list* AST_attr_mod_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_attr_mod_list(this);
-}
-
-void AST_attr_mod_list::transform_children(Tree_transform* transform)
-{
-	transform->children_attr_mod_list(this);
-}
-
-AST_attr_mod_list* AST_attr_mod_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_attr_mod_list(this);
-}
-
-bool AST_variable_list::deep_equals(Object* other)
-{
-	AST_variable_list* that = dynamic_cast<AST_variable_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_variable*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_variable_list* AST_variable_list::deep_clone(Object* partial_result)
-{
-	AST_variable_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_variable_list*>(partial_result);
-	else
-		clone = new AST_variable_list();
-	assert(clone);
-	
-	List<AST_variable*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_variable_list::try_match(Object* pattern)
-{
-	AST_variable_list* that = dynamic_cast<AST_variable_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_variable*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_variable_list::replace_wildcards(Object* pattern)
-{
-	AST_variable_list* that = dynamic_cast<AST_variable_list*>(pattern);
-	assert(that);
-	
-	List<AST_variable*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_variable_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_variable_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_variable_list(this);
-}
-
-void AST_variable_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_variable_list(this);
-}
-
-void AST_variable_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_variable_list(this);
-}
-
-AST_variable_list* AST_variable_list::transform(Tree_transform* transform)
-{
-	AST_variable_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_variable_list* AST_variable_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_variable_list(this);
-}
-
-void AST_variable_list::transform_children(Tree_transform* transform)
-{
-	transform->children_variable_list(this);
-}
-
-AST_variable_list* AST_variable_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_variable_list(this);
 }
 
 bool AST_directive_list::deep_equals(Object* other)
@@ -2849,194 +1732,6 @@ AST_directive_list* AST_directive_list::post_transform(Tree_transform* transform
 	return transform->post_directive_list(this);
 }
 
-bool Token_directive_name_list::deep_equals(Object* other)
-{
-	Token_directive_name_list* that = dynamic_cast<Token_directive_name_list*>(other);
-	if(!that) return false;
-	
-	if(!List<Token_directive_name*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-Token_directive_name_list* Token_directive_name_list::deep_clone(Object* partial_result)
-{
-	Token_directive_name_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<Token_directive_name_list*>(partial_result);
-	else
-		clone = new Token_directive_name_list();
-	assert(clone);
-	
-	List<Token_directive_name*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool Token_directive_name_list::try_match(Object* pattern)
-{
-	Token_directive_name_list* that = dynamic_cast<Token_directive_name_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<Token_directive_name*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void Token_directive_name_list::replace_wildcards(Object* pattern)
-{
-	Token_directive_name_list* that = dynamic_cast<Token_directive_name_list*>(pattern);
-	assert(that);
-	
-	List<Token_directive_name*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void Token_directive_name_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void Token_directive_name_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_directive_name_list(this);
-}
-
-void Token_directive_name_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_directive_name_list(this);
-}
-
-void Token_directive_name_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_directive_name_list(this);
-}
-
-Token_directive_name_list* Token_directive_name_list::transform(Tree_transform* transform)
-{
-	Token_directive_name_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-Token_directive_name_list* Token_directive_name_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_directive_name_list(this);
-}
-
-void Token_directive_name_list::transform_children(Tree_transform* transform)
-{
-	transform->children_directive_name_list(this);
-}
-
-Token_directive_name_list* Token_directive_name_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_directive_name_list(this);
-}
-
-bool AST_list_elements_list::deep_equals(Object* other)
-{
-	AST_list_elements_list* that = dynamic_cast<AST_list_elements_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_list_elements*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_list_elements_list* AST_list_elements_list::deep_clone(Object* partial_result)
-{
-	AST_list_elements_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_list_elements_list*>(partial_result);
-	else
-		clone = new AST_list_elements_list();
-	assert(clone);
-	
-	List<AST_list_elements*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_list_elements_list::try_match(Object* pattern)
-{
-	AST_list_elements_list* that = dynamic_cast<AST_list_elements_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_list_elements*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_list_elements_list::replace_wildcards(Object* pattern)
-{
-	AST_list_elements_list* that = dynamic_cast<AST_list_elements_list*>(pattern);
-	assert(that);
-	
-	List<AST_list_elements*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_list_elements_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_list_elements_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_list_elements_list(this);
-}
-
-void AST_list_elements_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_list_elements_list(this);
-}
-
-void AST_list_elements_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_list_elements_list(this);
-}
-
-AST_list_elements_list* AST_list_elements_list::transform(Tree_transform* transform)
-{
-	AST_list_elements_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_list_elements_list* AST_list_elements_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_list_elements_list(this);
-}
-
-void AST_list_elements_list::transform_children(Tree_transform* transform)
-{
-	transform->children_list_elements_list(this);
-}
-
-AST_list_elements_list* AST_list_elements_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_list_elements_list(this);
-}
-
 bool AST_list_element_list::deep_equals(Object* other)
 {
 	AST_list_element_list* that = dynamic_cast<AST_list_element_list*>(other);
@@ -3133,568 +1828,100 @@ AST_list_element_list* AST_list_element_list::post_transform(Tree_transform* tra
 	return transform->post_list_element_list(this);
 }
 
-bool Token_cast_list::deep_equals(Object* other)
+bool AST_expr_list::deep_equals(Object* other)
 {
-	Token_cast_list* that = dynamic_cast<Token_cast_list*>(other);
+	AST_expr_list* that = dynamic_cast<AST_expr_list*>(other);
 	if(!that) return false;
 	
-	if(!List<Token_cast*>::deep_equals(that)) return false;
+	if(!List<AST_expr*>::deep_equals(that)) return false;
 	if(!AST_node::deep_equals(that)) return false;
 	
 	
 	return true;
 }
 
-Token_cast_list* Token_cast_list::deep_clone(Object* partial_result)
+AST_expr_list* AST_expr_list::deep_clone(Object* partial_result)
 {
-	Token_cast_list* clone;
+	AST_expr_list* clone;
 	
 	if(partial_result)
-		clone = dynamic_cast<Token_cast_list*>(partial_result);
+		clone = dynamic_cast<AST_expr_list*>(partial_result);
 	else
-		clone = new Token_cast_list();
+		clone = new AST_expr_list();
 	assert(clone);
 	
-	List<Token_cast*>::deep_clone(clone);
+	List<AST_expr*>::deep_clone(clone);
 	AST_node::deep_clone(clone);
 	
 	return clone;
 }
 
-bool Token_cast_list::try_match(Object* pattern)
+bool AST_expr_list::try_match(Object* pattern)
 {
-	Token_cast_list* that = dynamic_cast<Token_cast_list*>(pattern);
+	AST_expr_list* that = dynamic_cast<AST_expr_list*>(pattern);
 	if(!that) return false;
 	
-	if(!List<Token_cast*>::try_match(that)) return false;
+	if(!List<AST_expr*>::try_match(that)) return false;
 	if(!AST_node::try_match(that)) return false;
 	
 	
 	return true;
 }
 
-void Token_cast_list::replace_wildcards(Object* pattern)
+void AST_expr_list::replace_wildcards(Object* pattern)
 {
-	Token_cast_list* that = dynamic_cast<Token_cast_list*>(pattern);
+	AST_expr_list* that = dynamic_cast<AST_expr_list*>(pattern);
 	assert(that);
 	
-	List<Token_cast*>::replace_wildcards(that);
+	List<AST_expr*>::replace_wildcards(that);
 	AST_node::replace_wildcards(that);
 	
 }
 
-void Token_cast_list::visit(Tree_visitor* visitor)
+void AST_expr_list::visit(Tree_visitor* visitor)
 {
 	pre_visit(visitor);
 	visit_children(visitor);
 	post_visit(visitor);
 }
 
-void Token_cast_list::pre_visit(Tree_visitor* visitor)
+void AST_expr_list::pre_visit(Tree_visitor* visitor)
 {
-	visitor->pre_cast_list(this);
+	visitor->pre_node(this);
+	visitor->pre_expr_list(this);
 }
 
-void Token_cast_list::visit_children(Tree_visitor* visitor)
+void AST_expr_list::visit_children(Tree_visitor* visitor)
 {
-	visitor->children_cast_list(this);
+	visitor->children_expr_list(this);
 }
 
-void Token_cast_list::post_visit(Tree_visitor* visitor)
+void AST_expr_list::post_visit(Tree_visitor* visitor)
 {
-	visitor->post_cast_list(this);
+	visitor->post_expr_list(this);
+	visitor->post_node(this);
 }
 
-Token_cast_list* Token_cast_list::transform(Tree_transform* transform)
+AST_expr_list* AST_expr_list::transform(Tree_transform* transform)
 {
-	Token_cast_list* node = pre_transform(transform);
+	AST_expr_list* node = pre_transform(transform);
 	node->transform_children(transform);
 	return node->post_transform(transform);
 }
 
-Token_cast_list* Token_cast_list::pre_transform(Tree_transform* transform)
+AST_expr_list* AST_expr_list::pre_transform(Tree_transform* transform)
 {
-	return transform->pre_cast_list(this);
+	return transform->pre_expr_list(this);
 }
 
-void Token_cast_list::transform_children(Tree_transform* transform)
+void AST_expr_list::transform_children(Tree_transform* transform)
 {
-	transform->children_cast_list(this);
+	transform->children_expr_list(this);
 }
 
-Token_cast_list* Token_cast_list::post_transform(Tree_transform* transform)
+AST_expr_list* AST_expr_list::post_transform(Tree_transform* transform)
 {
-	return transform->post_cast_list(this);
-}
-
-bool Token_op_list::deep_equals(Object* other)
-{
-	Token_op_list* that = dynamic_cast<Token_op_list*>(other);
-	if(!that) return false;
-	
-	if(!List<Token_op*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-Token_op_list* Token_op_list::deep_clone(Object* partial_result)
-{
-	Token_op_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<Token_op_list*>(partial_result);
-	else
-		clone = new Token_op_list();
-	assert(clone);
-	
-	List<Token_op*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool Token_op_list::try_match(Object* pattern)
-{
-	Token_op_list* that = dynamic_cast<Token_op_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<Token_op*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void Token_op_list::replace_wildcards(Object* pattern)
-{
-	Token_op_list* that = dynamic_cast<Token_op_list*>(pattern);
-	assert(that);
-	
-	List<Token_op*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void Token_op_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void Token_op_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_op_list(this);
-}
-
-void Token_op_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_op_list(this);
-}
-
-void Token_op_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_op_list(this);
-}
-
-Token_op_list* Token_op_list::transform(Tree_transform* transform)
-{
-	Token_op_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-Token_op_list* Token_op_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_op_list(this);
-}
-
-void Token_op_list::transform_children(Tree_transform* transform)
-{
-	transform->children_op_list(this);
-}
-
-Token_op_list* Token_op_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_op_list(this);
-}
-
-bool Token_constant_name_list::deep_equals(Object* other)
-{
-	Token_constant_name_list* that = dynamic_cast<Token_constant_name_list*>(other);
-	if(!that) return false;
-	
-	if(!List<Token_constant_name*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-Token_constant_name_list* Token_constant_name_list::deep_clone(Object* partial_result)
-{
-	Token_constant_name_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<Token_constant_name_list*>(partial_result);
-	else
-		clone = new Token_constant_name_list();
-	assert(clone);
-	
-	List<Token_constant_name*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool Token_constant_name_list::try_match(Object* pattern)
-{
-	Token_constant_name_list* that = dynamic_cast<Token_constant_name_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<Token_constant_name*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void Token_constant_name_list::replace_wildcards(Object* pattern)
-{
-	Token_constant_name_list* that = dynamic_cast<Token_constant_name_list*>(pattern);
-	assert(that);
-	
-	List<Token_constant_name*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void Token_constant_name_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void Token_constant_name_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_constant_name_list(this);
-}
-
-void Token_constant_name_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_constant_name_list(this);
-}
-
-void Token_constant_name_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_constant_name_list(this);
-}
-
-Token_constant_name_list* Token_constant_name_list::transform(Tree_transform* transform)
-{
-	Token_constant_name_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-Token_constant_name_list* Token_constant_name_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_constant_name_list(this);
-}
-
-void Token_constant_name_list::transform_children(Tree_transform* transform)
-{
-	transform->children_constant_name_list(this);
-}
-
-Token_constant_name_list* Token_constant_name_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_constant_name_list(this);
-}
-
-bool AST_class_name_list::deep_equals(Object* other)
-{
-	AST_class_name_list* that = dynamic_cast<AST_class_name_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_class_name*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_class_name_list* AST_class_name_list::deep_clone(Object* partial_result)
-{
-	AST_class_name_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_class_name_list*>(partial_result);
-	else
-		clone = new AST_class_name_list();
-	assert(clone);
-	
-	List<AST_class_name*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_class_name_list::try_match(Object* pattern)
-{
-	AST_class_name_list* that = dynamic_cast<AST_class_name_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_class_name*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_class_name_list::replace_wildcards(Object* pattern)
-{
-	AST_class_name_list* that = dynamic_cast<AST_class_name_list*>(pattern);
-	assert(that);
-	
-	List<AST_class_name*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_class_name_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_class_name_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_class_name_list(this);
-}
-
-void AST_class_name_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_class_name_list(this);
-}
-
-void AST_class_name_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_class_name_list(this);
-}
-
-AST_class_name_list* AST_class_name_list::transform(Tree_transform* transform)
-{
-	AST_class_name_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_class_name_list* AST_class_name_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_class_name_list(this);
-}
-
-void AST_class_name_list::transform_children(Tree_transform* transform)
-{
-	transform->children_class_name_list(this);
-}
-
-AST_class_name_list* AST_class_name_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_class_name_list(this);
-}
-
-bool AST_target_list::deep_equals(Object* other)
-{
-	AST_target_list* that = dynamic_cast<AST_target_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_target*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_target_list* AST_target_list::deep_clone(Object* partial_result)
-{
-	AST_target_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_target_list*>(partial_result);
-	else
-		clone = new AST_target_list();
-	assert(clone);
-	
-	List<AST_target*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_target_list::try_match(Object* pattern)
-{
-	AST_target_list* that = dynamic_cast<AST_target_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_target*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_target_list::replace_wildcards(Object* pattern)
-{
-	AST_target_list* that = dynamic_cast<AST_target_list*>(pattern);
-	assert(that);
-	
-	List<AST_target*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_target_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_target_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_target_list(this);
-}
-
-void AST_target_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_target_list(this);
-}
-
-void AST_target_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_target_list(this);
-}
-
-AST_target_list* AST_target_list::transform(Tree_transform* transform)
-{
-	AST_target_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_target_list* AST_target_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_target_list(this);
-}
-
-void AST_target_list::transform_children(Tree_transform* transform)
-{
-	transform->children_target_list(this);
-}
-
-AST_target_list* AST_target_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_target_list(this);
-}
-
-bool AST_variable_name_list::deep_equals(Object* other)
-{
-	AST_variable_name_list* that = dynamic_cast<AST_variable_name_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_variable_name*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_variable_name_list* AST_variable_name_list::deep_clone(Object* partial_result)
-{
-	AST_variable_name_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_variable_name_list*>(partial_result);
-	else
-		clone = new AST_variable_name_list();
-	assert(clone);
-	
-	List<AST_variable_name*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_variable_name_list::try_match(Object* pattern)
-{
-	AST_variable_name_list* that = dynamic_cast<AST_variable_name_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_variable_name*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_variable_name_list::replace_wildcards(Object* pattern)
-{
-	AST_variable_name_list* that = dynamic_cast<AST_variable_name_list*>(pattern);
-	assert(that);
-	
-	List<AST_variable_name*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_variable_name_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_variable_name_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_variable_name_list(this);
-}
-
-void AST_variable_name_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_variable_name_list(this);
-}
-
-void AST_variable_name_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_variable_name_list(this);
-}
-
-AST_variable_name_list* AST_variable_name_list::transform(Tree_transform* transform)
-{
-	AST_variable_name_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_variable_name_list* AST_variable_name_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_variable_name_list(this);
-}
-
-void AST_variable_name_list::transform_children(Tree_transform* transform)
-{
-	transform->children_variable_name_list(this);
-}
-
-AST_variable_name_list* AST_variable_name_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_variable_name_list(this);
+	return transform->post_expr_list(this);
 }
 
 bool AST_array_elem_list::deep_equals(Object* other)
@@ -3791,100 +2018,6 @@ void AST_array_elem_list::transform_children(Tree_transform* transform)
 AST_array_elem_list* AST_array_elem_list::post_transform(Tree_transform* transform)
 {
 	return transform->post_array_elem_list(this);
-}
-
-bool AST_method_name_list::deep_equals(Object* other)
-{
-	AST_method_name_list* that = dynamic_cast<AST_method_name_list*>(other);
-	if(!that) return false;
-	
-	if(!List<AST_method_name*>::deep_equals(that)) return false;
-	if(!AST_node::deep_equals(that)) return false;
-	
-	
-	return true;
-}
-
-AST_method_name_list* AST_method_name_list::deep_clone(Object* partial_result)
-{
-	AST_method_name_list* clone;
-	
-	if(partial_result)
-		clone = dynamic_cast<AST_method_name_list*>(partial_result);
-	else
-		clone = new AST_method_name_list();
-	assert(clone);
-	
-	List<AST_method_name*>::deep_clone(clone);
-	AST_node::deep_clone(clone);
-	
-	return clone;
-}
-
-bool AST_method_name_list::try_match(Object* pattern)
-{
-	AST_method_name_list* that = dynamic_cast<AST_method_name_list*>(pattern);
-	if(!that) return false;
-	
-	if(!List<AST_method_name*>::try_match(that)) return false;
-	if(!AST_node::try_match(that)) return false;
-	
-	
-	return true;
-}
-
-void AST_method_name_list::replace_wildcards(Object* pattern)
-{
-	AST_method_name_list* that = dynamic_cast<AST_method_name_list*>(pattern);
-	assert(that);
-	
-	List<AST_method_name*>::replace_wildcards(that);
-	AST_node::replace_wildcards(that);
-	
-}
-
-void AST_method_name_list::visit(Tree_visitor* visitor)
-{
-	pre_visit(visitor);
-	visit_children(visitor);
-	post_visit(visitor);
-}
-
-void AST_method_name_list::pre_visit(Tree_visitor* visitor)
-{
-	visitor->pre_method_name_list(this);
-}
-
-void AST_method_name_list::visit_children(Tree_visitor* visitor)
-{
-	visitor->children_method_name_list(this);
-}
-
-void AST_method_name_list::post_visit(Tree_visitor* visitor)
-{
-	visitor->post_method_name_list(this);
-}
-
-AST_method_name_list* AST_method_name_list::transform(Tree_transform* transform)
-{
-	AST_method_name_list* node = pre_transform(transform);
-	node->transform_children(transform);
-	return node->post_transform(transform);
-}
-
-AST_method_name_list* AST_method_name_list::pre_transform(Tree_transform* transform)
-{
-	return transform->pre_method_name_list(this);
-}
-
-void AST_method_name_list::transform_children(Tree_transform* transform)
-{
-	transform->children_method_name_list(this);
-}
-
-AST_method_name_list* AST_method_name_list::post_transform(Tree_transform* transform)
-{
-	return transform->post_method_name_list(this);
 }
 
 bool AST_actual_parameter_list::deep_equals(Object* other)
@@ -11562,6 +9695,124 @@ void AST_eval_expr::visit_children(Tree_visitor* visitor)
 void AST_eval_expr::post_visit(Tree_visitor* visitor)
 {
 	visitor->post_eval_expr(this);
+	visitor->post_statement(this);
+	visitor->post_commented_node(this);
+	visitor->post_node(this);
+}
+
+AST_nop::AST_nop()
+{
+}
+
+bool AST_nop::deep_equals(Object* other)
+{
+	AST_nop* that = dynamic_cast<AST_nop*>(other);
+	if(!that) return false;
+	
+	if(!AST_statement::deep_equals(that)) return false;
+	
+	
+	return true;
+}
+
+AST_nop* AST_nop::deep_clone(Object* partial_result)
+{
+	AST_nop* clone;
+	
+	if(partial_result)
+		clone = dynamic_cast<AST_nop*>(partial_result);
+	else
+		clone = new AST_nop();
+	assert(clone);
+	
+	AST_statement::deep_clone(clone);
+	
+	return clone;
+}
+
+bool AST_nop::try_match(Object* pattern)
+{
+	AST_nop* that = dynamic_cast<AST_nop*>(pattern);
+	if(!that) return false;
+	
+	if(!AST_statement::try_match(that)) return false;
+	
+	
+	return true;
+}
+
+void AST_nop::replace_wildcards(Object* pattern)
+{
+	AST_nop* that = dynamic_cast<AST_nop*>(pattern);
+	assert(that);
+	
+	AST_statement::replace_wildcards(that);
+	
+}
+
+AST_statement_list* AST_nop::transform(Tree_transform* transform)
+{
+	AST_statement_list* node = pre_transform(transform);
+	AST_statement_list::const_iterator i;
+	AST_statement_list* new_v = new AST_statement_list;
+	for(i = node->begin(); i != node->end(); i++)
+	{
+		if(*i)
+		{
+			(*i)->transform_children(transform);
+			AST_statement_list* ret_v = (*i)->post_transform(transform);
+			new_v->push_back_all(ret_v);
+		}
+		else
+		{
+			new_v->push_back(NULL);
+		}
+	}
+	return new_v;
+}
+
+AST_statement_list* AST_nop::pre_transform(Tree_transform* transform)
+{
+	AST_statement_list* new_v = new AST_statement_list;
+	transform->pre_nop(this, new_v);
+	return new_v;
+}
+
+void AST_nop::transform_children(Tree_transform* transform)
+{
+	transform->children_nop(this);
+}
+
+AST_statement_list* AST_nop::post_transform(Tree_transform* transform)
+{
+	AST_statement_list* new_v = new AST_statement_list;
+	transform->post_nop(this, new_v);
+	return new_v;
+}
+
+void AST_nop::visit(Tree_visitor* visitor)
+{
+	pre_visit(visitor);
+	visit_children(visitor);
+	post_visit(visitor);
+}
+
+void AST_nop::pre_visit(Tree_visitor* visitor)
+{
+	visitor->pre_node(this);
+	visitor->pre_commented_node(this);
+	visitor->pre_statement(this);
+	visitor->pre_nop(this);
+}
+
+void AST_nop::visit_children(Tree_visitor* visitor)
+{
+	visitor->children_nop(this);
+}
+
+void AST_nop::post_visit(Tree_visitor* visitor)
+{
+	visitor->post_nop(this);
 	visitor->post_statement(this);
 	visitor->post_commented_node(this);
 	visitor->post_node(this);

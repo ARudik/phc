@@ -30,7 +30,8 @@ statement ::=
      if | while | do | for | foreach 
    | switch | break | continue | return
    | static_declaration
-   | unset | declare | try | throw | eval_expr ;
+   | unset | declare | try | throw | eval_expr 
+	| nop ;
 
 if ::= expr iftrue:statement* iffalse:statement* ;
 while ::= expr statement* ;
@@ -55,6 +56,8 @@ catch ::= CLASS_NAME VARIABLE_NAME statement* ;
 throw ::= expr ;
 
 eval_expr ::= expr ;
+
+nop ::= ;
 
 expr ::=
      assignment | list_assignment | cast | unary_op | bin_op | conditional_expr

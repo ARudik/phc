@@ -595,9 +595,11 @@ void PHP_context::return_to_complex_syntax()
 {
 	yy_pop_state(scanner);
 }
-	
+
+// Attach a comment to the last node generated
 void PHP_context::attach_comment(String *s)
 {
+	s->attrs->set("phc.unparser.comment.after", new Boolean(true));
 	assert(last_commented_node);
 	last_commented_node->get_comments()->push_back(s);
 }	
