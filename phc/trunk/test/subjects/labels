@@ -22,8 +22,9 @@
 bugs/.*									short interpretable
 codegen/.*								short interpretable
 dynamic/.*								short interpretable
-horrible/.*								short interpretable
 general/.*								short interpretable
+horrible/.*								short interpretable
+inline-c/.*								short non-interpretable
 
 bugs/bug0009.php						size-dependent
 bugs/bug0011.php						size-dependent
