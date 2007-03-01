@@ -221,7 +221,7 @@ require_once("Text/Diff/Renderer/unified.php");
 function diff ($string1, $string2)
 {
 	global $pear_text_diff;
-	if ((strlen ($string1) > 300 and strlen ($string2) > 300))
+	if ((strlen ($string1) > 32000 and strlen ($string2) > 32000))
 	{
 		return "Diffs too long, skipping.\nString1:\n$string1\nString2:\n$string2";
 	}
