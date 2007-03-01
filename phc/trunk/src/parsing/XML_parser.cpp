@@ -207,6 +207,13 @@ public:
 					else
 						attrs_stack.top()->set("phc.unparser.is_global_stmt", new Boolean(false));
 				}
+				else if(key == "phc.unparser.is_opeq")
+				{
+					if(buffer == "true")
+						attrs_stack.top()->set("phc.unparser.is_opeq", new Boolean(true));
+					else
+						attrs_stack.top()->set("phc.unparser.is_opeq", new Boolean(false));
+				}
 				else
 				{
 					::phc_warning(WARNING_UNKNOWN_ATTRIBUTE, NULL, locator->getLineNumber(), key.c_str()); 

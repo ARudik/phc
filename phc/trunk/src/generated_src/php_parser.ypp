@@ -1947,9 +1947,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "+")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "+"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_MINUSEQ expr
 		{
@@ -1959,9 +1960,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "-")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "-"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_MULEQ expr
 		{
@@ -1971,9 +1973,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "*")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "*"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_DIVEQ expr
 		{
@@ -1983,9 +1986,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "/")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "/"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_CONCATEQ expr
 		{
@@ -1995,9 +1999,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-	
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, ".")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "."))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_MODEQ expr
 		{
@@ -2007,9 +2012,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "%")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "%"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_ANDEQ expr
 		{
@@ -2019,9 +2025,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "&")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "&"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_OREQ expr
 		{
@@ -2031,9 +2038,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "|")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "|"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_XOREQ expr
 		{
@@ -2043,9 +2051,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "^")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "^"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_SLEQ expr
 		{
@@ -2055,9 +2064,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "<<")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "<<"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| variable O_SREQ expr
 		{
@@ -2067,9 +2077,10 @@ expr_without_variable:
 			
 			AST_expr* var_c;
 			var_c = var->deep_clone();
-			expr->attrs->set("phc.unparser.needs_brackets", new Boolean(true));
-		
-			$$ = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, ">>")))); 
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, ">>"))));
+			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
+			$$ = agn;
 		}
 	| rw_variable O_INC
 		{ 

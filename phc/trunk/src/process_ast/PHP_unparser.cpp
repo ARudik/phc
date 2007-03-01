@@ -471,7 +471,19 @@ void PHP_unparser::children_eval_expr(AST_eval_expr* in)
 
 void PHP_unparser::children_assignment(AST_assignment* in)
 {
-	if(in->attrs->get_boolean("phc.unparser.is_global_stmt")->value())
+	if(in->attrs->is_true("phc.unparser.is_opeq"))
+	{
+		AST_bin_op* bin_op = dynamic_cast<AST_bin_op*>(in->expr);
+		assert(bin_op);
+
+		// $a += $b;
+		bin_op->left->visit(this);
+		echo(" ");
+		bin_op->op->visit(this);
+		echo("= ");
+		bin_op->right->visit(this);
+	}
+	else if(in->attrs->is_true("phc.unparser.is_global_stmt"))
 	{
 		echo("global ");
 		in->variable->visit(this);
