@@ -145,7 +145,7 @@ conjunction =
 	try (do
 		(NonTerminal head) <- nonterminal
 		reservedOp "::="
-		body <- many1 symbol
+		body <- many symbol
 		reservedOp ";"
 		return (Conjunction head body)
 	)

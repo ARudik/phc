@@ -19,11 +19,12 @@ import MakeTeaCpp
 add_constructors :: CppClass -> CppClass
 add_constructors cl = case concrete of
 		Abstract -> cl
-		Concrete -> CppClass concrete name inh vars (dc:sc:meth) 
+		Concrete -> CppClass concrete name inh vars meth' 
 	where
 		(CppClass concrete name inh vars meth) = cl
 		dc = default_constructor name
 		sc = setup_constructor name vars
+		meth' = if null vars then sc:meth else dc:sc:meth
 
 -- Default constructor (that does nothing)
 default_constructor :: ClassName -> Method
