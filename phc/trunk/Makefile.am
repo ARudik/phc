@@ -86,6 +86,8 @@ src_phc_SOURCES =												\
 	src/process_ast/Invocation_targets.h				\
 	src/process_ast/PHP_unparser.cpp						\
 	src/process_ast/PHP_unparser.h						\
+	src/process_ast/Zend_style_unparser.cpp			\
+	src/process_ast/Zend_style_unparser.h				\
 	src/process_ast/process_ast.cpp						\
 	src/process_ast/process_ast.h							\
 	src/process_ast/Process_includes.cpp				\
