@@ -229,6 +229,11 @@ UNSET_CAST		{CS}"unset"{CE}
 
 	/* Comments */
 
+<PHP>^[ \t]*\n			{
+								// Following a suggestion by Tim Van Holder on bison-help,
+								// we treat blank lines as comments
+								yyextra->last_comments.push_back(new String(""));
+							}
 <PHP>"/*"				{
 								yyextra->buffer = yytext;	
 								BEGIN(ML_COMM); 
