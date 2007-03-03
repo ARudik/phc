@@ -24,6 +24,7 @@
 <!ENTITY treetutorial6 SYSTEM "treetutorial6.sgml">
 <!ENTITY grammar SYSTEM "grammar.sgml">
 <!ENTITY representingphp SYSTEM "representingphp.sgml">
+<!ENTITY generatedcode SYSTEM "generatedcode.sgml">
 <!ENTITY maketeatheory SYSTEM "maketeatheory.sgml">
 <!-- Couple of macro definitions -->
 <!ENTITY phc "<Application>phc</Application>">
@@ -51,6 +52,7 @@
 		<title>Reference</title>
 		&grammar
 		&representingphp
+		&generatedcode
 		&maketeatheory
 	</part>
 </book>
