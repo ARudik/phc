@@ -1,6 +1,5 @@
 <chapter id="treetutorial2">
-
-<title>Modifying Tree Nodes</title>
+<title id="treetutorial2.title">Modifying Tree Nodes</title>
 
 <section>
 
@@ -31,7 +30,7 @@ phc --run plugins/tutorials/MySQL2DBX.la --dump-php test.php
 <para> As in the previous tutorial, we are interested in all function calls.
 However, now we are interested only in function calls to
 <code>mysql_connect</code>. Let us have a look at the precise definition of a
-function call according to the <xref linkend="grammar" endterm="grammar">:
+function call according to the <xref linkend="grammar" endterm="grammar.title">:
 </para>
 
 <programlisting>
@@ -147,8 +146,8 @@ defined in a class. Constants defined in the PHP standard library, such as
 <code>DBX_MYSQL</code>, should be defined in the special &ldquo;class&rdquo;
 <code>%STDLIB%</code>. (For more information on how PHP gets converted to the
 abstract syntax tree, see <xref linkend="representingphp"
-endterm="representingphp">.) <para> Finally, <code>NULL</code> is represented
-by <code>Token_null</code>.  </para>
+endterm="representingphp.title">.) <para> Finally, <code>NULL</code> is
+represented by <code>Token_null</code>.  </para>
 
 <para> We are now ready to write our conversion function: </para>
 

@@ -1,12 +1,11 @@
 <chapter id="treetutorial5">
-
-<title>Modifying the Traversal Order</title>
+<title id="treetutorial5.title">Modifying the Traversal Order</title>
 
 <section>
 <title></title>
 
 <para> As explained in the previous tutorials (in particular, <xref
-linkend="treetutorial1" endterm="treetutorial1">), when a
+linkend="treetutorial1" endterm="treetutorial1.title">), when a
 <code>Tree_visitor</code> traverses a tree, it first calls <code>pre_xxx</code>
 for a node of type <emphasis>xxx</emphasis>, it then visits all the children of
 the node, and finally it calls <code>post_xxx</code> on the node.  For many

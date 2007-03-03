@@ -26,6 +26,7 @@
 <!ENTITY treetutorial6 SYSTEM "treetutorial6.sgml">
 <!ENTITY grammar SYSTEM "grammar.sgml">
 <!ENTITY representingphp SYSTEM "representingphp.sgml">
+<!ENTITY limitations SYSTEM "limitations.sgml">
 <!ENTITY generatedcode SYSTEM "generatedcode.sgml">
 <!ENTITY maketeatheory SYSTEM "maketeatheory.sgml">
 <!-- Couple of macro definitions -->
@@ -42,7 +43,7 @@
 	<title>The &phc Developer's Manual</title>
 	&devintro
 	<part id="treetutorials">
-		<title>Tree Traversal API Tutorials</title>
+		<title id="treetutorials.title">Tree Traversal API Tutorials</title>
 		&gettingstarted
 		&treetutorial1
 		&treetutorial2
@@ -52,9 +53,10 @@
 		&treetutorial6
 	</part>
 	<part id="reference">
-		<title>Reference</title>
+		<title id="reference.title">Reference</title>
 		&grammar
 		&representingphp
+		&limitations
 		&generatedcode
 		&maketeatheory
 	</part>

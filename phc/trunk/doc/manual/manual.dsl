@@ -43,6 +43,7 @@
 <style-specification id="html" use="html-stylesheet">
 <style-specification-body>
 
+(define xref.with.number.and.title 1)
 (define %use-id-as-filename% #t)
 (define %html-ext% ".html")
 (define (chunk-element-list)

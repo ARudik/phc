@@ -1,5 +1,5 @@
 <chapter id="devintro">
-<title>Introduction</title>
+<title id="devintro.title">Introduction</title>
 
 <section>
 <title></title>
@@ -24,10 +24,10 @@ then use &phc to convert the XML back to PHP syntax.  </para></listitem>
 
 </itemizedlist>
 
-<para> <xref linkend="treetutorials" endterm="treetutorials"> explains how to
-write plugins for &phc, and provides numerous examples. You will find <xref
-linkend="reference" endterm="reference"> very useful when writing serious
-applications using &phc;.
+<para> <xref linkend="treetutorials" endterm="treetutorials.title"> explains
+how to write plugins for &phc, and provides numerous examples. You will find
+<xref linkend="reference" endterm="reference.title"> very useful when writing
+serious applications using &phc;.
 
 <para> You can download the documentation for this and for older versions from
 the <ulink url="http://www.phpcompiler.org/src/archive/">archive</ulink>.
@@ -76,39 +76,39 @@ Use with care. </para>
 
 <title>Writing Plugins</title>
 
-<para><xref linkend="gettingstarted" endterm="gettingstarted"> introduces
+<para><xref linkend="gettingstarted" endterm="gettingstarted.title"> introduces
 writing plugins for &phc;. It then explains how &phc represents PHP scripts
 internally, and shows how to write a simple plugin that counts the number of
 classes in a PHP script.</para>
 
-<para><xref linkend="treetutorial1" endterm="treetutorial1"> introduces the
-support that &phc offers for traversing (and transforming) scripts. It shows
-how to write a program that counts the number of function calls in a
+<para><xref linkend="treetutorial1" endterm="treetutorial1.title"> introduces
+the support that &phc offers for traversing (and transforming) scripts. It
+shows how to write a program that counts the number of function calls in a
 script.</para>
 
-<para><xref linkend="treetutorial2" endterm="treetutorial2"> shows how you can
-modify nodes in the tree (without modifying the structure of the tree). It
-shows how to replace calls to <code>mysql_connect</code> by calls to
+<para><xref linkend="treetutorial2" endterm="treetutorial2.title"> shows how
+you can modify nodes in the tree (without modifying the structure of the tree).
+It shows how to replace calls to <code>mysql_connect</code> by calls to
 <code>dbx_connect</code>.</para>
 
-<para><xref linkend="treetutorial3" endterm="treetutorial3"> shows how you can
-modify the structure of the tree. It works through an example that removes
-unnecessary string concatenations (for example, <code>$a .  ""</code> is
-replaced by just <code>$a</code>).</para>	
+<para><xref linkend="treetutorial3" endterm="treetutorial3.title"> shows how
+you can modify the structure of the tree. It works through an example that
+removes unnecessary string concatenations (for example, <code>$a .  ""</code>
+is replaced by just <code>$a</code>).</para>	
 
-<para><xref linkend="treetutorial4" endterm="treetutorial4"> explains an
+<para><xref linkend="treetutorial4" endterm="treetutorial4.title"> explains an
 advanced features of pattern matching, and shows an important technique: the
 use of state in transformations (where one transformation depends on a previous
 transformation). It shows how to write a program that renames all functions
 <code>foo</code> in a script to <code>db_foo</code>, if there are calls to a
 database engine within <code>foo</code>.</para>
 
-<para><xref linkend="treetutorial5" endterm="treetutorial5"> explains how to
-change the order in which the children of a node are visited, avoid visiting
+<para><xref linkend="treetutorial5" endterm="treetutorial5.title"> explains how
+to change the order in which the children of a node are visited, avoid visiting
 some children, or how to execute a piece of code in between visiting two
 children.</para>
 
-<para><xref linkend="treetutorial6" endterm="treetutorial6"> shows how to
+<para><xref linkend="treetutorial6" endterm="treetutorial6.title"> shows how to
 define transformations that replace nodes in the tree by multiple other nodes,
 and how to delete nodes from the tree. It also shows to call the &phc parser
 and unparsers from plugins.</para>
@@ -120,23 +120,24 @@ and unparsers from plugins.</para>
 
 <para>&phc represents PHP scripts internally as an abstract syntax tree. The
 structure of this tree is dictated by the <xref linkend="grammar"
-endterm="grammar">. The grammar definition is a very important part of &phc;.
+endterm="grammar.title">. The grammar definition is a very important part of
+&phc;.
 
 <para>&phc's view on the world (as dictated by the grammar) does not completely
 agree with the PHP standard view.  <xref linkend="representingphp"
-endterm="representingphp"> describes how the various PHP constructs get
+endterm="representingphp.title"> describes how the various PHP constructs get
 translated into the abstract syntax.</para>
 
-<para><xref linkend="generatedcode" endterm="generatedcode"> gives an overview
-of the AST classes, the tree visitor API and the tree transformation API from a
-programmer's perspective.</para>
+<para><xref linkend="generatedcode" endterm="generatedcode.title"> gives an
+overview of the AST classes, the tree visitor API and the tree transformation
+API from a programmer's perspective.</para>
 
 <para><application>Maketea</application> is a tool bundled with &phc which,
 based on a grammar definition of a language, generates a C++ hierarchy for the
 corresponding abstract syntax tree, a tree transformation and visitor API, and
 deep cloning, deep equality and pattern matching on the AST. <xref
-linkend="maketeatheory" endterm="maketeatheory">  explains some of the theory
-behind <application>maketea</application>; in particular, the grammar
+linkend="maketeatheory" endterm="maketeatheory.title">  explains some of the
+theory behind <application>maketea</application>; in particular, the grammar
 formalism, the mapping from the grammar to the AST classes, and the derivation
 of the tree transformation API.</para>
 	

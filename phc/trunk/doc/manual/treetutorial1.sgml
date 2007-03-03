@@ -1,6 +1,5 @@
 <chapter id="treetutorial1">
-
-<title>Traversing the Tree</title>
+<title id="treetutorial1.title">Traversing the Tree</title>
 
 <section>
 
@@ -8,7 +7,7 @@
 
 <para> In <xref linkend="gettingstarted">, we explained that &phc represents
 PHP scripts internally as an abstract syntax tree, and that the structure of
-this tree is determined by the <xref linkend="grammar" endterm="grammar">. We
+this tree is determined by the <xref linkend="grammar" endterm="grammar.title">. We
 then showed how to make use of this tree to count the number of classes.  In
 this tutorial, we will consider an equally simple task: we want to count the
 number of function calls in a script. So, for the following PHP script, </para>
@@ -90,7 +89,7 @@ invocation&rdquo; nodes. The <code>eval expr</code> nodes just above them
 probably need some explanation. There are many different types of statements in
 PHP: <code>if</code>-statements, <code>while</code>-statements,
 <code>for</code>-loops, etc. You can find the full list in the <xref
-linkend="grammar" endterm="grammar">. If you do look at the grammar, you will
+linkend="grammar" endterm="grammar.title">. If you do look at the grammar, you will
 notice in particular that a function call is not actually a statement! Instead,
 a function call is an <emphasis>expression</emphasis>. </para> 
 
@@ -267,7 +266,7 @@ distribution.) </para>
 <para> Suppose we wanted to count all statements, rather than just function
 calls. We could define methods for <code>eval_expr</code>, <code>for</code>,
 <code>while</code>, <code>if</code>, etc., but there is an easier way. If you
-check the <xref linkend="grammar" endterm="grammar">, you will find the
+check the <xref linkend="grammar" endterm="grammar.title">, you will find the
 following rules: </para>
 
 <programlisting>

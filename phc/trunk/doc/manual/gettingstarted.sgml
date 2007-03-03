@@ -1,5 +1,5 @@
 <chapter id="gettingstarted">
-<title>Getting Started</title>
+<title id="gettingstarted.title">Getting Started</title>
 
 <section>
 
@@ -190,11 +190,11 @@ code again. </para>
 
 <para> Let's write a very simple plugin that counts the number of class
 definitions in a script. If you look at the <xref linkend="grammar"
-endterm="grammar">, you will notice that class definitions are represented by a
-(C++) class called <code>AST_class_def</code>. So, we need to count the number
-of objects of type <code>AST_class_def</code> in the tree. Create a new file
-<filename>~/myplugins/count_classes.cpp</filename>.  Recall the skeleton
-plugin: </para>
+endterm="grammar.title">, you will notice that class definitions are
+represented by a (C++) class called <code>AST_class_def</code>. So, we need to
+count the number of objects of type <code>AST_class_def</code> in the tree.
+Create a new file <filename>~/myplugins/count_classes.cpp</filename>.  Recall
+the skeleton plugin: </para>
 		
 <programlisting>
 <reserved>#include</reserved> &lt;phc/ast.h&gt;

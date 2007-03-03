@@ -1,5 +1,5 @@
 <chapter id="representingphp">
-<title>Representing PHP</title>
+<title id="representingphp.title">Representing PHP</title>
 
 <section>
 <title></title>
@@ -46,7 +46,7 @@ statement ::= if | while | <emphasis>... other statements ...</emphasis>
 </programlisting>
 	
 <para> (This shows essentials only; see <xref linkend="grammar"
-endterm="grammar"> for the details). </para>
+endterm="grammar.title"> for the details). </para>
 
 <para> This mismatch has two consequences. The first is that PHP allows scripts
 have methods that do not belong to any class, and statements that do not belong
@@ -90,7 +90,7 @@ scope of any method get added to a special method <code>%run%</code> (in
 definitions <emphasis>inside</emphasis> other function definitions (or inside
 <code>if</code>-statements, <code>while</code>-loops, etc.). This is not
 correctly supported by &phc; see <xref linkend="limitations"
-endterm="limitations">. </para>
+endterm="limitations.title">. </para>
 
 </section>
 <section>
@@ -366,7 +366,7 @@ comments. If something goes wrong with comments, please <ulink
 url="http://www.phpcompiler.org/contact.html">send</ulink> us a sample program
 that shows where it goes wrong. Note that whitespace in multi-line comments
 gets dealt with in a less than satisfactory way; see <xref
-linkend="limitations" endterm="limitations"> for details for details. </para> 
+linkend="limitations" endterm="limitations.title"> for details for details. </para> 
 
 </section>
 <section>
@@ -410,7 +410,7 @@ dedicated more advanced pretty-printing tools for PHP could be built on top of
 <para> Global variable declarations are not explicitly recorded in the &phc
 AST. Instead the local variable declared global is assigned a reference to the
 appropriate global variable, which will be a static class attribute of %MAIN%
-(see <xref linkend="tlgs" endterm="tlgs">, above).  </para>
+(see <xref linkend="tlgs">, above).  </para>
 
 <para> For example, the following code </para>
 

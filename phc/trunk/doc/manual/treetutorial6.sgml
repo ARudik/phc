@@ -1,5 +1,5 @@
 <chapter id="treetutorial6">
-<title>Returning Lists</title>
+<title id="treetutorial6.title">Returning Lists</title>
 
 <section>
 <title></title>
@@ -316,8 +316,8 @@ your own transforms. Hopefully, the tutorials will help you do so.
 The following sources should also be useful: </para>
 
 <itemizedlist>
-<listitem><para>The <xref linkend="grammar" endterm="grammar"> (and the <xref linkend="maketeatheory" endterm="maketeatheory">)</para></listitem>
-<listitem><para>The explanation of how PHP gets represented in the abstract syntax as detailed in <xref linkend="representingphp" endterm="representingphp"> </para></listitem>
+<listitem><para>The <xref linkend="grammar" endterm="grammar"> (and the <xref linkend="maketeatheory" endterm="maketeatheory.title">)</para></listitem>
+<listitem><para>The explanation of how PHP gets represented in the abstract syntax as detailed in <xref linkend="representingphp" endterm="representingphp.title"> </para></listitem>
 <listitem><para>The definition of the C++ classes for the AST nodes in <filename>&lt;phc/ast.h&gt;</filename></para></listitem>
 <listitem><para>The definition of the <code>Tree_visitor</code> and <code>Tree_transform</code> classes in <filename>&lt;phc/Tree_visitor.h&gt;</filename> and <filename>&lt;phc/Tree_transform.h&gt;</filename> respectively</para></listitem>
 </itemizedlist>

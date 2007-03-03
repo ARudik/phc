@@ -1,5 +1,5 @@
 <chapter id="treetutorial3">
-<title>Restructuring the Tree</title>
+<title id="treetutorial3.title">Restructuring the Tree</title>
 
 <section>
 <title></title>
@@ -148,7 +148,7 @@ must return <code>in</code>. This will replace <code>*in</code> by
 <code>pre_bin_op</code> is <code>AST_expr</code> instead of
 <code>AST_bin_op</code>. This means that we can replace a binary operator node
 by another other expression node. The <xref linkend="maketeatheory"
-endterm="maketeatheory"> explains exactly how the signatures for the
+endterm="maketeatheory.title"> explains exactly how the signatures for the
 <code>pre</code> and <code>post</code> methods are derived, but in most cases
 they are what you'd expect.  The easiest way to check is to simply look them up
 in <filename>&lt;phc/Tree_transform.h&gt;</filename>. </para> 
@@ -296,7 +296,7 @@ you would replace </para>
 <title> What's Next? </title>
 
 <para> The next tutorial in this series, <xref linkend="treetutorial4"
-endterm="treetutorial4">, introduces a very important notion in transforms: the
+endterm="treetutorial4.title">, introduces a very important notion in transforms: the
 use of <emphasis>state</emphasis>. </para>
 
 </section>
