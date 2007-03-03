@@ -72,6 +72,100 @@ feature is experimental and seems to lead to runtime errors on some systems.
 Use with care. </para> 
 
 </section>
+
+<section>
+
+<title>Demonstration</title>
+
+<para> This section is intended as a quick introduction outlining what the
+current release of &phc can do for you. It does not explain everything in
+detail. </para>
+
+<section>
+<title>The Source Program</title>
+
+<para> Consider the following simple PHP script. </para>
+
+<programlisting>
+&lt;?<reserved>php</reserved>
+   <reserved>function</reserved> foo()
+   {
+      <reserved>return</reserved> 5;
+   }
+
+   $foo = foo();
+   <reserved>echo</reserved> "foo is $foo&lt;br&gt;";
+?&gt;
+</programlisting>
+
+<para> Internally this program gets represented as an abstract syntax tree, as shown in figure <xref linkend="ast">. </para>
+
+<figure id="ast">
+<title>Abstract syntax tree for the demo example</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="img/demo.jpg">
+</imageobject>
+</mediaobject>
+</figure>
+
+</section>
+<section>
+
+<title>The Transform</title>
+
+<para> Suppose we want to rename function <code>foo</code> to
+<code>bar</code>. This is done by the following (C++) program: </para>
+
+<programlisting>
+<reserved>#include</reserved> "Tree_visitor.h"
+
+<reserved>class</reserved> Rename_foo_to_bar : <reserved>public</reserved> Tree_visitor
+{
+   <reserved>void</reserved> pre_method_name(Token_method_name* in)
+   {
+      <reserved>if</reserved>(*in-&gt;get_value == "foo")
+         in-&gt;value = <reserved>new</reserved> String("bar");
+   }
+};
+</programlisting>
+
+<para> We need to instruct &phc to run our transform: </para>
+
+<programlisting>
+Rename_foo_to_bar f2b;
+php_script-&gt;transform(&amp;f2b);
+</programlisting>					
+
+</section>
+<section>
+
+<title>The Result</title>
+
+<para> Running &phc gives </para>
+
+<programlisting>
+&lt;?<reserved>php</reserved>
+   <reserved>function</reserved> bar()
+   {
+      <reserved>return</reserved> 5;
+   }
+
+   $foo = bar();
+   <reserved>echo</reserved> "foo is " . $foo . "&lt;br&gt;";
+?&gt;
+</programlisting>
+
+<para> where the name of the function has been changed, while the name of the
+variable remained unaltered, as has the text <code>"foo"</code> inside
+the string. It's that simple! Of course, in this example, it would
+have been quicker to do it by hand, but that's not the point; the
+example shows how easy it is to operate on PHP scripts within the
+&phc framework. </para>
+
+</section>
+</section>
+
 <section>
 
 <title>Writing Plugins</title>
