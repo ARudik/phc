@@ -1,0 +1,112 @@
+<chapter id="devintro">
+<title>Introduction</title>
+
+<section>
+<title></title>
+
+<para> Because &phc does not generate machine code, it not yet useful to end
+users. However, it can be used as a framework for writing applications that
+process PHP code. &phc parses PHP code into an internal representation known as
+an <emphasis>abstract syntax tree</emphasis> or <emphasis>AST</emphasis>.
+Applications can process PHP code by analysing and modifying this abstract
+representation in one of two ways: </para>  
+
+<itemizedlist>
+
+<listitem><para> &phc supports <emphasis>plugins</emphasis>. Plugins are
+modules that can be loaded into &phc, which get access to the AST. &phc
+provides sophisticated support for writing operations over the AST through the
+<emphasis>Tree Transformation API</emphasis>. </para></listitem> 
+
+<listitem><para> Alternatively, you can export the AST to
+<emphasis>XML</emphasis>. You can then process the XML in any way you like, and
+then use &phc to convert the XML back to PHP syntax.  </para></listitem>
+
+</itemizedlist>
+
+<para> <xref linkend="treetutorials" endterm="treetutorials"> explains how to
+write plugins for &phc, and provides numerous examples. You will find <xref
+linkend="reference" endterm="reference"> very useful when writing serious
+applications using &phc;.
+
+<para> You can download the documentation for this and for older versions from
+the <ulink url="http://www.phpcompiler.org/src/archive/">archive</ulink>.
+Moreover, although we have tried to document &phc as well as we can, if
+anything is still unclear, please let us know by sending an email to the <ulink
+url="http://www.phpcompiler.org/contact.html">mailing list</ulink>.  </para>
+
+<para> Note that if you are developing applications using &phc, you may want to
+install some standard UNIX tools; this is explained in the installation
+instructions in the users' manual (<xref linkend="install">). </para>
+
+</section>
+
+<section>
+<title>Writing Plugins</title>
+
+<para><xref linkend="gettingstarted" endterm="gettingstarted"> introduces
+writing plugins for &phc;. It then explains how &phc represents PHP scripts
+internally, and shows how to write a simple plugin that counts the number of
+classes in a PHP script.</para>
+
+<para><xref linkend="treetutorial1" endterm="treetutorial1"> introduces the
+support that &phc offers for traversing (and transforming) scripts. It shows
+how to write a program that counts the number of function calls in a
+script.</para>
+
+<para><xref linkend="treetutorial2" endterm="treetutorial2"> shows how you can
+modify nodes in the tree (without modifying the structure of the tree). It
+shows how to replace calls to <code>mysql_connect</code> by calls to
+<code>dbx_connect</code>.</para>
+
+<para><xref linkend="treetutorial3" endterm="treetutorial3"> shows how you can
+modify the structure of the tree. It works through an example that removes
+unnecessary string concatenations (for example, <code>$a .  ""</code> is
+replaced by just <code>$a</code>).</para>	
+
+<para><xref linkend="treetutorial4" endterm="treetutorial4"> explains an
+advanced features of pattern matching, and shows an important technique: the
+use of state in transformations (where one transformation depends on a previous
+transformation). It shows how to write a program that renames all functions
+<code>foo</code> in a script to <code>db_foo</code>, if there are calls to a
+database engine within <code>foo</code>.</para>
+
+<para><xref linkend="treetutorial5" endterm="treetutorial5"> explains how to
+change the order in which the children of a node are visited, avoid visiting
+some children, or how to execute a piece of code in between visiting two
+children.</para>
+
+<para><xref linkend="treetutorial6" endterm="treetutorial6"> shows how to
+define transformations that replace nodes in the tree by multiple other nodes,
+and how to delete nodes from the tree. It also shows to call the &phc parser
+and unparsers from plugins.</para>
+
+</section>
+<section>
+
+<title>Reference</title>
+
+<para>&phc represents PHP scripts internally as an abstract syntax tree. The
+structure of this tree is dictated by the <xref linkend="grammar"
+endterm="grammar">. The grammar definition is a very important part of &phc;.
+
+<para>&phc's view on the world (as dictated by the grammar) does not completely
+agree with the PHP standard view.  <xref linkend="representingphp"
+endterm="representingphp"> describes how the various PHP constructs get
+translated into the abstract syntax.</para>
+
+<para><xref linkend="generatedcode" endterm="generatedcode"> gives an overview
+of the AST classes, the tree visitor API and the tree transformation API from a
+programmer's perspective.</para>
+
+<para><application>Maketea</application> is a tool bundled with &phc which,
+based on a grammar definition of a language, generates a C++ hierarchy for the
+corresponding abstract syntax tree, a tree transformation and visitor API, and
+deep cloning, deep equality and pattern matching on the AST. <xref
+linkend="maketeatheory" endterm="maketeatheory">  explains some of the theory
+behind <application>maketea</application>; in particular, the grammar
+formalism, the mapping from the grammar to the AST classes, and the derivation
+of the tree transformation API.</para>
+	
+</section>
+</chapter>

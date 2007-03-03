@@ -12,9 +12,11 @@
 		jadetex manual.tex
 -->
 <!DOCTYPE set PUBLIC "-//phc//DTD DocBook V3.1-Based Extension//EN" "manual.dtd" [
-<!-- Include all files -->
+<!-- User manual -->
 <!ENTITY install SYSTEM "install.sgml">
 <!ENTITY runningphc SYSTEM "runningphc.sgml">
+<!-- Developers' manual -->
+<!ENTITY devintro SYSTEM "devintro.sgml">
 <!ENTITY gettingstarted SYSTEM "gettingstarted.sgml">
 <!ENTITY treetutorial1 SYSTEM "treetutorial1.sgml">
 <!ENTITY treetutorial2 SYSTEM "treetutorial2.sgml">
@@ -38,6 +40,7 @@
 </book>
 <book id="devmanual">
 	<title>The &phc Developer's Manual</title>
+	&devintro
 	<part id="treetutorials">
 		<title>Tree Traversal API Tutorials</title>
 		&gettingstarted

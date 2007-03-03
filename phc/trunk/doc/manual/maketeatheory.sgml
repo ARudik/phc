@@ -2,7 +2,7 @@
 <title><application>Maketea</application> Theory</title>
 
 <section>
-<title></title>
+<title>Introduction</title>
 
 <para> <application>maketea</application> is a tool bundled with &phc which,
 based on a grammar definition of a language, generates a C++ hierarchy for the
