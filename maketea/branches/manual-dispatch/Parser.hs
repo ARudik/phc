@@ -19,11 +19,23 @@ identifier = T.identifier lexer
 reservedOp = T.reservedOp lexer
 
 {-
- - Syntax analysis
+ - Top-level 
+ -}
+
+maketeaInput :: Parser Grammar
+maketeaInput =
+		do
+			whiteSpace
+			g <- grammar
+			eof
+			return g
+
+{-
+ - EBNF 
  -}
 
 grammar :: Parser Grammar
-grammar = many rule
+grammar = many rule 
 
 rule :: Parser Rule
 rule = disjunction <|> conjunction
@@ -34,10 +46,10 @@ disjunction = try $
 		do
 			head <- nonTerminal
 			reservedOp "::="
-			x <- symbol ; reservedOp "|"
-			xs <- symbol `sepBy` reservedOp "|"
+			s <- symbol ; reservedOp "|"
+			ss <- symbol `sepBy` reservedOp "|"
 			reservedOp ";"
-			return (Disj head (x:xs))
+			return (Disj head (s:ss))
 
 -- a conjunction may be empty
 conjunction :: Parser Rule

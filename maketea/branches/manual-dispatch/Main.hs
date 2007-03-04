@@ -1,9 +1,11 @@
 module Main where
 
-import DataStructures
-import Parser
 import Text.ParserCombinators.Parsec
 import System
+
+import DataStructures
+import Parser
+import MakeTea
 
 main :: IO ()
 main = do
@@ -11,12 +13,11 @@ main = do
 	parseResult <- case args of
 		[] -> do
 			src <- getContents
-			return (parse grammar "" src)
+			return (parse maketeaInput "" src)
 		file:_ ->
-			parseFromFile grammar file
+			parseFromFile maketeaInput file
 	case parseResult of 
 		Left parseError -> do
 			print parseError
 		Right grammar ->
-			print grammar
-		
+			maketea grammar
