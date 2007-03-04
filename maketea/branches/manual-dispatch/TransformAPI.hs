@@ -166,14 +166,15 @@ ppConcrete :: String -> Symbol -> MakeTeaMonad Member
 ppConcrete pp s = do
 	(_,s',m) <- findContext s
 	let fnName = pp ++ symbolToVarName s
-	cn <- symbolToClassName s'
+	cn <- symbolToClassName s
+	cn' <- symbolToClassName s'
 	let inType = cn ++ "*"
 	if isVector m 
 		then do
-			let outType = "list<" ++ cn ++ "*>*"
+			let outType = "list<" ++ cn' ++ "*>*"
 			let sig = ("void", fnName, [inType ++ " in", outType ++ " out"])
 			return $ Method sig ["out->push_back(in);"]
 		else do
-			let outType = cn ++ "*"
+			let outType = cn' ++ "*"
 			let sig = (outType, fnName, [inType ++ " in"])
 			return $ Method sig ["return in;"]

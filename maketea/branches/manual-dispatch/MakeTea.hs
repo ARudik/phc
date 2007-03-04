@@ -24,6 +24,7 @@ maketea prefix grammar = do
 	writeFile (prefix ++ ".h") $
 		commonHeader ++
 		unlines (map (\c -> "class " ++ c ++ ";") (map name classes)) ++
+		"\n" ++
 		unlines (map showClassHeader classes) 
 	writeFile (prefix ++ ".cpp") $
 		"#include \"" ++ prefix ++ ".h\"\n\n" ++ 
