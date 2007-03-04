@@ -72,3 +72,14 @@ directSuperclasses c = withGrammar (return . catMaybes . (map f))
 		f :: Rule -> Maybe NonTerminal 
 		f (Disj s cs) = if c `elem` cs then Just s else Nothing
 		f (Conj _ _)  = Nothing
+
+{-
+ - isVector is true for Vector, VectorOpt and OptVector
+ -}
+
+isVector :: Multiplicity -> Bool
+isVector Single = False
+isVector Optional = False
+isVector Vector = True
+isVector VectorOpt = True
+isVector OptVector = True

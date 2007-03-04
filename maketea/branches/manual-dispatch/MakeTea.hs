@@ -6,14 +6,15 @@ import ContextResolution
 import MakeTeaMonad
 import BasicClasses
 import Cpp
+import TransformAPI
 
 maketea :: Grammar -> IO ()
 maketea grammar = do
-	let (classes) = flip evalState (initState grammar) $ do
+	let (classes, transform) = flip evalState (initState grammar) $ do
 		contextResolution
 		createBasicClasses
-		classes <- withClasses return 
-		return classes
-	forM_ classes $ \cl -> do
-		print cl
-		putStrLn ""
+		classes <- withClasses return
+		transform <- transformClass
+		return (classes, transform)
+	forM_ classes print 
+	print transform

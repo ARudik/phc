@@ -9,7 +9,8 @@ import Control.Monad.State
 type Grammar = [Rule]
 data Rule = Disj NonTerminal [Symbol] | Conj NonTerminal [Term] deriving Show
 data Symbol = NT NonTerminal deriving (Show,Eq,Ord)
-type Term = (Symbol, Multiplicity)
+type Term = (Label, Symbol, Multiplicity)
+type Label = Maybe String
 data Multiplicity = Single | Optional | Vector | VectorOpt | OptVector deriving (Show,Eq)
 type NonTerminal = String
 type Context = (Symbol, Symbol, Multiplicity)
@@ -21,7 +22,11 @@ type Context = (Symbol, Symbol, Multiplicity)
 data CppClass = CppClass {
 	  name :: Name 
 	, extends :: [Name]
+	, sections :: [Section]
 	}
+data Section = Section Access [Member]
+data Access = Private | Protected | Public
+type Member = String
 type Name = String  
 
 {-

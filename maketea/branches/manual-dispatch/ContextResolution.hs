@@ -70,6 +70,6 @@ initContexts (Disj _ _) = return []
 initContexts (Conj h ts) = concatMapM f ts
 	where
 		f :: Term -> MakeTeaMonad [Context]
-		f (t,m) = do 
+		f (_,t,m) = do 
 		 	is <- allInstances t	
 			return (map (\i -> (i,t,m)) is)

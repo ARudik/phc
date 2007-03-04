@@ -70,9 +70,17 @@ symbolP =
 termP :: Parser Term
 termP = 
 		do
+			l <- labelP
 			s <- symbolP
 			m <- multiplicityP
-			return (s, m)
+			return (l, s, m)
+
+labelP :: Parser Label
+labelP = option Nothing $ 
+		try (do
+			id <- identifier
+			reservedOp ":"
+			return (Just id))
 
 multiplicityP :: Parser Multiplicity
 multiplicityP =
