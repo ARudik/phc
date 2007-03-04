@@ -50,7 +50,7 @@ symbolToVarName :: Symbol -> Name
 symbolToVarName (NT nt) = nt
 
 termToType :: Term -> String
-termToType (l,s,m) 
+termToType (_,s,m) 
 	| isVector m = "list<" ++ symbolToClassName s ++ "*>"
 	| otherwise = symbolToClassName s 
 
