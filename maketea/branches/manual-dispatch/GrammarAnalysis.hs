@@ -15,7 +15,7 @@ isAbstract :: NonTerminal -> MakeTeaMonad Bool
 isAbstract nt = do
 	r <- findRuleFor nt
 	return (elim isDisj r)
-		
+
 {-
  - Is a rule a disjunction?
  -}
@@ -52,6 +52,22 @@ allInstances i@(NT nt) =
 		f (Disj _ xs) = do
 			is <- mapM allInstances xs
 			return (i:concat is)
+		f (Conj _ _) = return [i]
+
+{-
+ - Like allInstances, but filtered to include the concrete instances only
+ -}
+
+concreteInstances :: Symbol -> MakeTeaMonad [Symbol]
+concreteInstances i@(NT nt) = 
+	do
+		r <- findRuleFor nt
+		elim f r	
+	where
+		f :: Rule a -> MakeTeaMonad [Symbol]
+		f (Disj _ xs) = do
+			is <- mapM allInstances xs
+			return (concat is)
 		f (Conj _ _) = return [i]
 
 {-

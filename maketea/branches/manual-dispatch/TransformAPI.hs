@@ -7,6 +7,7 @@ import GrammarAnalysis
 import ContextResolution
 import MakeTeaMonad
 import Cpp
+import Util
 
 transformClass :: MakeTeaMonad CppClass
 transformClass = do
@@ -85,10 +86,21 @@ ppAbstract pp nt = do
 			return $ Method sig ["return in;"]
 
 chAbstract :: NonTerminal -> MakeTeaMonad Member
-chAbstract nt = do 
-	let sig = "void children_" ++ nt ++ "(" ++ symbolToClassName (NT nt) ++ "* in)"
-	return (Method sig [])
-
+chAbstract nt = 
+	do 
+		let sig = "void children_" ++ nt ++ "(" ++ symbolToClassName (NT nt) ++ "* in)"
+		conc <- concreteInstances (NT nt)
+		cases <- concatMapM switchcase conc	
+		let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
+		return (Method sig body)
+	where
+		switchcase s = do
+			cid <- findClassID s
+			return [
+				  "case " ++ show cid ++ ":"
+				, "\tchildren_" ++ symbolToVarName s ++ "(dynamic_cast<" ++ symbolToClassName s ++ "*>(in));"
+				, "\tbreak;"
+				]
 {-
  - API methods
  -}

@@ -1,6 +1,9 @@
 module Cpp where
 
 import Text.PrettyPrint
+import Data.Maybe
+import Data.List
+
 import DataStructures
 import MakeTeaMonad
 import GrammarAnalysis
@@ -33,6 +36,9 @@ emptyClassNoID n = CppClass {
 		, sections = []
 		, classid = 0
 		}
+
+findClassID :: Symbol -> MakeTeaMonad Integer
+findClassID s = withClasses $ return . classid . fromJust . find (\c -> name c == symbolToClassName s)
 
 symbolToClassName :: Symbol -> Name
 symbolToClassName (NT nt) = "AST_" ++ nt
