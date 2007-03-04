@@ -54,3 +54,7 @@ initState gr = MTS {
 	, contexts = Nothing
 	, classes = Nothing
 	}
+
+fromJustM :: Monad m => String -> Maybe a -> m a
+fromJustM err (Just a) = return a
+fromJustM err Nothing = fail err

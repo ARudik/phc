@@ -29,7 +29,7 @@ isDisj (Conj _ _) = False
  -}
 
 findRuleFor :: NonTerminal -> MakeTeaMonad (Exists Rule)
-findRuleFor nt = withGrammar $ return . fromJust . find (elim f)
+findRuleFor nt = withGrammar $ (fromJustM $ "Unknown non-terminal " ++ nt) . find (elim f)
 	where
 		f :: Rule a -> Bool
 		f r = ruleHead r == nt 
@@ -102,3 +102,10 @@ concreteSymbols = withConj $ return . (map (NT . ruleHead))
 ruleHead :: Rule a -> NonTerminal
 ruleHead (Disj h _) = h
 ruleHead (Conj h _) = h
+
+{-
+ - Body of a conjunction
+ -}
+
+conjBody :: Rule Conj -> [Term]
+conjBody (Conj _ body) = body 
