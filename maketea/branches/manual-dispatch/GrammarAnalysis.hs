@@ -96,6 +96,14 @@ concreteSymbols :: MakeTeaMonad [Symbol]
 concreteSymbols = withConj $ return . (map (NT . ruleHead))
 
 {-
+ - All abstract symbols (that is, non-terminal sysbols that are defined as a
+ - disjunction)
+ -}
+
+abstractSymbols :: MakeTeaMonad [NonTerminal]
+abstractSymbols = withDisj $ return . (map ruleHead)
+
+{-
  - The head of a rule
  -}
 

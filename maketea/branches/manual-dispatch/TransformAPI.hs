@@ -10,18 +10,27 @@ import Cpp
 
 transformClass :: MakeTeaMonad CppClass
 transformClass = do
-	sym <- concreteSymbols
-	pre <- mapM (ppTransforms "pre_") sym
-	post <- mapM (ppTransforms "post_") sym
-	children <- withConj $ return . (map transformChildren)
+	{- API methods -}
+	conc <- concreteSymbols
+	c_pre <- mapM (ppConcrete "pre_") conc
+	c_post <- mapM (ppConcrete "post_") conc
+	c_children <- withConj $ return . (map chConcrete)
+	{- Internal methods -}
 	allTerms <- withConj $ return . nub . concat . (map conjBody)
 	transforms <- mapM transform allTerms
+	abs <- abstractSymbols
+	a_pre <- mapM (ppAbstract "pre_") abs
+	a_post <- mapM (ppAbstract "post_") abs
+	a_children <- mapM chAbstract abs
 	return $ (emptyClassNoID "Tree_transform") {
 		  sections = [
-		  	  Section Public pre
-			, Section Public post 
-			, Section Public children
+		  	  Section Public c_pre
+			, Section Public c_post 
+			, Section Public c_children
 			, Section Private transforms
+			, Section Private a_pre
+			, Section Private a_post
+			, Section Private a_children
 			]
 		}
 
@@ -60,13 +69,32 @@ transform t@(l,s,m) | not (isVector m) = do
 		]
 	return (Method sig body)
 
+ppAbstract :: String -> NonTerminal -> MakeTeaMonad Member 
+ppAbstract pp nt = do
+	(_,s',m) <- findContext (NT nt)
+	let fnName = pp ++ symbolToVarName (NT nt)
+	let inType = symbolToClassName s' ++ "*"
+	if isVector m 
+		then do
+			let outType = "list<" ++ symbolToClassName s' ++ "*>*"
+			let sig = "void " ++ fnName ++ "(" ++ inType ++ " in, " ++ outType ++ " out)";
+			return $ Method sig []
+		else do
+			let outType = symbolToClassName s' ++ "*"
+			let sig = outType ++ " " ++ fnName ++ "(" ++ inType ++ " in)"
+			return $ Method sig ["return in;"]
+
+chAbstract :: NonTerminal -> MakeTeaMonad Member
+chAbstract nt = do 
+	let sig = "void children_" ++ nt ++ "(" ++ symbolToClassName (NT nt) ++ "* in)"
+	return (Method sig [])
 
 {-
  - API methods
  -}
 
-transformChildren :: Rule Conj -> Member
-transformChildren (Conj h ts) = 
+chConcrete :: Rule Conj -> Member
+chConcrete (Conj h ts) = 
 	let
 		sig = "void children_" ++ h ++ "(" ++ symbolToClassName (NT h) ++ "* in)"
 		f t = "in->" ++ termToVarName t ++ " = transform_" ++ termToTransform t ++ "(in->" ++ termToVarName t ++ ");"
@@ -78,8 +106,8 @@ termToTransform (_,s,m)
 	| isVector m = symbolToVarName s ++ "_list"
 	| otherwise = symbolToVarName s
 
-ppTransforms :: String -> Symbol -> MakeTeaMonad Member 
-ppTransforms pp s = do
+ppConcrete :: String -> Symbol -> MakeTeaMonad Member 
+ppConcrete pp s = do
 	(_,s',m) <- findContext s
 	let fnName = pp ++ symbolToVarName s
 	let inType = symbolToClassName s' ++ "*"
