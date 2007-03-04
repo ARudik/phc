@@ -18,7 +18,10 @@ type Context = (Symbol, Symbol, Multiplicity)
  - C++ classes
  -}
 
-data CppClass = CppClass Name 
+data CppClass = CppClass {
+	  name :: Name 
+	, extends :: [Name]
+	}
 type Name = String  
 
 {-

@@ -9,7 +9,7 @@ import MakeTeaMonad
 
 contextResolution :: MakeTeaMonad () 
 contextResolution = do
-	init <- withGrammar initContexts
+	init <- withGrammar (concatMapM initContexts)
 	let sorted = sortBy (\(a,b,c) (a',b',c') -> compare a a') init
 	reduced <- reduce sorted
 	setContexts reduced
@@ -65,12 +65,11 @@ multMeet m1 m2 = multMeet m2 m1 -- multMeet is commutative
  - definition of "instance of").
  -}
 
-initContexts :: Grammar -> MakeTeaMonad [Context]
-initContexts [] = return []
-initContexts (Disj _ _:rs) = initContexts rs
-initContexts (Conj h ts:rs) = liftM2 (++) (concatMapM f ts) (initContexts rs)
+initContexts :: Rule -> MakeTeaMonad [Context]
+initContexts (Disj _ _) = return []
+initContexts (Conj h ts) = concatMapM f ts
 	where
 		f :: Term -> MakeTeaMonad [Context]
 		f (t,m) = do 
 		 	is <- allInstances t	
-			return (map (\i -> (i,t,m)) is) 
+			return (map (\i -> (i,t,m)) is)

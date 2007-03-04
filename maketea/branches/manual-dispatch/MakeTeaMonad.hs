@@ -1,10 +1,15 @@
 module MakeTeaMonad where
 
 import Control.Monad.State
+import Data.Maybe
+
 import DataStructures
 
 withGrammar :: (Grammar -> MakeTeaMonad a) -> MakeTeaMonad a
-withGrammar f = get >>= \st -> f (grammar st) 
+withGrammar f = get >>= f . grammar 
+
+withClasses :: ([CppClass] -> MakeTeaMonad a) -> MakeTeaMonad a
+withClasses f = get >>= f . fromJust . classes 
 
 setContexts :: [Context] -> MakeTeaMonad ()
 setContexts cxs = do

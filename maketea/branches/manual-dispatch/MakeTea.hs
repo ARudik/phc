@@ -9,7 +9,11 @@ import Cpp
 
 maketea :: Grammar -> IO ()
 maketea grammar = do
-	let result = flip evalState (initState grammar) $ do
+	let (classes) = flip evalState (initState grammar) $ do
 		contextResolution
 		createBasicClasses
-	print result
+		classes <- withClasses return 
+		return classes
+	forM_ classes $ \cl -> do
+		print cl
+		putStrLn ""

@@ -1,6 +1,8 @@
 module GrammarAnalysis where
 
 import Data.List
+import Data.Maybe
+
 import DataStructures
 import MakeTeaMonad
 
@@ -58,3 +60,15 @@ commonInstance s1 s2 = do
 	is1 <- allInstances s1
 	is2 <- allInstances s2
 	return (find (`elem` is2) is1)
+
+{-
+ - The direct superclasses of a symbol c are all those symbols s which are
+ - defined by a rule s ::= ... | c | ...
+ -}
+
+directSuperclasses :: Symbol -> MakeTeaMonad [NonTerminal]
+directSuperclasses c = withGrammar (return . catMaybes . (map f)) 
+	where
+		f :: Rule -> Maybe NonTerminal 
+		f (Disj s cs) = if c `elem` cs then Just s else Nothing
+		f (Conj _ _)  = Nothing
