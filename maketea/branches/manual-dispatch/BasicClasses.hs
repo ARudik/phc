@@ -29,4 +29,4 @@ createClass (Conj c body) = do
 		}
 
 createField :: Term -> Member
-createField t = Attribute (termToType t ++ " " ++ termToVarName t)
+createField t = Attribute (termToType t ++ "* " ++ termToVarName t)

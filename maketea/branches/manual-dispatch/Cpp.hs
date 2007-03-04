@@ -42,8 +42,8 @@ symbolToVarName (NT nt) = nt
 
 termToType :: Term -> String
 termToType (l,s,m) 
-	| isVector m = "list<" ++ symbolToClassName s ++ "*>*"
-	| otherwise = symbolToClassName s ++ "*"
+	| isVector m = "list<" ++ symbolToClassName s ++ "*>"
+	| otherwise = symbolToClassName s 
 
 termToVarName :: Term -> Name
 termToVarName (Nothing,s,m) 

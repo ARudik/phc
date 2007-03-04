@@ -11,13 +11,15 @@ import Cpp
 transformClass :: MakeTeaMonad CppClass
 transformClass = do
 	sym <- concreteSymbols
-	pre <- mapM preTransforms sym
+	pre <- mapM (ppTransforms "pre_") sym
+	post <- mapM (ppTransforms "post_") sym
 	children <- withConj $ return . (map transformChildren)
 	allTerms <- withConj $ return . nub . concat . (map conjBody)
 	transforms <- mapM transform allTerms
 	return $ (emptyClassNoID "Tree_transform") {
 		  sections = [
 		  	  Section Public pre
+			, Section Public post 
 			, Section Public children
 			, Section Private transforms
 			]
@@ -28,9 +30,36 @@ transformClass = do
  -}
 
 transform :: Term -> MakeTeaMonad Member
-transform t@(l,s,m) = do
-	let sig = termToType t ++ " transform_" ++ termToTransform t ++ "(" ++ termToType t ++ " in)" 
-	return (Method sig [])
+transform t@(l,s,m) | isVector m = do
+	let sig = termToType t ++ "* transform_" ++ termToTransform t ++ "(" ++ termToType t ++ "* in)" 
+	let body = [
+		  termToType t ++ "::const_iterator i;"
+		, termToType t ++ "* out1 = new " ++ termToType t ++ ";"
+		, termToType t ++ "* out2 = new " ++ termToType t ++ ";"
+		, ""
+		, "for(i = in->begin(); i != in->end(); i++)"
+		, "\tpre_" ++ symbolToVarName s ++ "(*i, out1);"
+		, "for(i = out1->begin(); i != out1->end(); i++)"
+		, "\tchildren_" ++ symbolToVarName s ++ "(*i);"
+		, "for(i = out1->begin(); i != out1->end(); i++)"
+		, "\tpost_" ++ symbolToVarName s ++ "(*i, out2);"
+		, ""
+		, "return out2;"
+		]
+	return (Method sig body)
+transform t@(l,s,m) | not (isVector m) = do
+	let sig = termToType t ++ "* transform_" ++ termToTransform t ++ "(" ++ termToType t ++ "* in)"
+	let body =  [
+		  termToType t ++ "* out;"
+		, ""
+		, "out = pre_" ++ symbolToVarName s ++ "(in);"
+		, "children_" ++ symbolToVarName s ++ "(out);"
+		, "out = post_" ++ symbolToVarName s ++ "(out);"
+		, ""
+		, "return out;"
+		]
+	return (Method sig body)
+
 
 {-
  - API methods
@@ -49,10 +78,10 @@ termToTransform (_,s,m)
 	| isVector m = symbolToVarName s ++ "_list"
 	| otherwise = symbolToVarName s
 
-preTransforms :: Symbol -> MakeTeaMonad Member 
-preTransforms s = do
+ppTransforms :: String -> Symbol -> MakeTeaMonad Member 
+ppTransforms pp s = do
 	(_,s',m) <- findContext s
-	let fnName = "pre_" ++ symbolToVarName s
+	let fnName = pp ++ symbolToVarName s
 	let inType = symbolToClassName s' ++ "*"
 	if isVector m 
 		then do
