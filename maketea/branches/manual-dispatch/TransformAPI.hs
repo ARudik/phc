@@ -163,7 +163,7 @@ ppConcrete pp s = do
 		then do
 			let outType = "list<" ++ symbolToClassName s' ++ "*>*"
 			let sig = "void " ++ fnName ++ "(" ++ inType ++ " in, " ++ outType ++ " out)";
-			return $ Method sig []
+			return $ Method sig ["out->push_back(in);"]
 		else do
 			let outType = symbolToClassName s' ++ "*"
 			let sig = outType ++ " " ++ fnName ++ "(" ++ inType ++ " in)"
