@@ -26,7 +26,9 @@ data CppClass = CppClass {
 	}
 data Section = Section Access [Member]
 data Access = Private | Protected | Public
-type Member = String
+data Member = Attribute String | Method Signature Body 
+type Signature = String
+type Body = [String]
 type Name = String  
 
 {-

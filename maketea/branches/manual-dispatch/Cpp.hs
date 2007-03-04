@@ -26,9 +26,10 @@ instance Show CppClass where
 docClass :: CppClass -> Doc
 docClass c = 
 	text "class" <+> text (name c) <> docExtends (extends c) $+$
-	text "{" $+$ vcat (map docSection (sections c)) $+$ text "};"
+	text "{" $+$ vcat (map docSection (sections c)) $+$ text "};" $+$ text ""
 
 docSection :: Section -> Doc
+docSection (Section _ []) = empty
 docSection (Section m ms) = docAccess m <> colon $+$ nest 4 (vcat (map docMember ms))
 
 docAccess :: Access -> Doc
@@ -37,7 +38,14 @@ docAccess Protected = text "protected"
 docAccess Public = text "public"
 
 docMember :: Member -> Doc
-docMember = text
+docMember (Attribute a) = text a <> semi
+docMember (Method sig body) = docSignature sig $+$ text "{" $+$ nest 4 (docBody body) $+$ text "}"
+
+docSignature :: Signature -> Doc
+docSignature = text
+
+docBody :: Body -> Doc
+docBody = vcat . map text
 
 docExtends :: [Name] -> Doc
 docExtends [] = empty

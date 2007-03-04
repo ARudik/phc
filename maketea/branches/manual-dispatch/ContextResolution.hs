@@ -7,6 +7,20 @@ import DataStructures
 import GrammarAnalysis
 import MakeTeaMonad
 
+{-
+ - Find context finds the context for a symbol in the grammar; if the symbol is
+ - never used, no context is known for the symbol and we assume (c,c,Single)
+ -}
+
+findContext :: Symbol -> MakeTeaMonad Context
+findContext s = withContexts $ \cxs -> case (find (\(s',_,_) -> s == s')) cxs of
+	Nothing -> return (s,s,Single)
+	Just cx -> return cx
+
+{-
+ - Context resolution
+ -}
+
 contextResolution :: MakeTeaMonad () 
 contextResolution = do
 	init <- withGrammar (concatMapM initContexts)

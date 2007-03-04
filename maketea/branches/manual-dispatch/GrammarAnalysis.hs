@@ -67,7 +67,7 @@ commonInstance s1 s2 = do
  -}
 
 directSuperclasses :: Symbol -> MakeTeaMonad [NonTerminal]
-directSuperclasses c = withGrammar (return . catMaybes . (map f)) 
+directSuperclasses c = withGrammar $ return . catMaybes . (map f)
 	where
 		f :: Rule -> Maybe NonTerminal 
 		f (Disj s cs) = if c `elem` cs then Just s else Nothing
@@ -83,3 +83,15 @@ isVector Optional = False
 isVector Vector = True
 isVector VectorOpt = True
 isVector OptVector = True
+
+{-
+ - All concrete symbols (that is, non-terminal symbols that are defined as a
+ - conjunction, and terminal symbols) in the grammar
+ -}
+
+concreteSymbols :: MakeTeaMonad [Symbol]
+concreteSymbols = withGrammar $ return . catMaybes . (map f)
+	where
+		f :: Rule -> Maybe Symbol
+		f (Disj _ _) = Nothing
+		f (Conj c _) = Just (NT c)

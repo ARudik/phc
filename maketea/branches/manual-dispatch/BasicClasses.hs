@@ -26,7 +26,7 @@ createClass (Conj c body) = do
 		}
 
 createField :: Term -> Member
-createField (l,s,m) = typ ++ " " ++ name l ++ ";"
+createField (l,s,m) = Attribute (typ ++ " " ++ name l)
 	where
 		typ = 
 			if isVector m 
