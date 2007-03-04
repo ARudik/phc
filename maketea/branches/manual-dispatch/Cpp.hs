@@ -3,6 +3,7 @@ module Cpp where
 import Text.PrettyPrint
 import DataStructures
 import MakeTeaMonad
+import GrammarAnalysis
 
 emptyClass :: Name -> MakeTeaMonad CppClass 
 emptyClass n = do
@@ -38,6 +39,17 @@ symbolToClassName (NT nt) = "AST_" ++ nt
 
 symbolToVarName :: Symbol -> Name
 symbolToVarName (NT nt) = nt
+
+termToType :: Term -> String
+termToType (l,s,m) 
+	| isVector m = "list<" ++ symbolToClassName s ++ "*>*"
+	| otherwise = symbolToClassName s ++ "*"
+
+termToVarName :: Term -> Name
+termToVarName (Nothing,s,m) 
+	| isVector m = symbolToVarName s ++ "s" 
+	| otherwise = symbolToVarName s
+termToVarName (Just n,s,m) = n
 
 {-
  - Pretty-printing

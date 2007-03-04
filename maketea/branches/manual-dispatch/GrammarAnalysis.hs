@@ -5,6 +5,7 @@ import Data.Maybe
 
 import DataStructures
 import MakeTeaMonad
+import Util
 
 {-
  - isAbstract nt is true if nt is defined by a disjunction
@@ -13,24 +14,25 @@ import MakeTeaMonad
 isAbstract :: NonTerminal -> MakeTeaMonad Bool
 isAbstract nt = do
 	r <- findRuleFor nt
-	return (case r of
-		Disj _ _ -> True
-		Conj _ _ -> False)
+	return (elim isDisj r)
+		
+{-
+ - Is a rule a disjunction?
+ -}
+
+isDisj :: Rule a -> Bool
+isDisj (Disj _ _) = True
+isDisj (Conj _ _) = False 
 
 {-
  - findRuleFor nt finds the rule in the grammar that defines nt
  -}
 
-findRuleFor :: NonTerminal -> MakeTeaMonad Rule
-findRuleFor nt = withGrammar f
+findRuleFor :: NonTerminal -> MakeTeaMonad (Exists Rule)
+findRuleFor nt = withGrammar $ return . fromJust . find (elim f)
 	where
-		f [] = fail $ "Unknown non-terminal " ++ show nt
-		f (r@(Disj nt' _):rs) 
-			| nt == nt' = return r 
-			| otherwise = f rs
-		f (r@(Conj nt' _):rs)
-			| nt == nt' = return r
-			| otherwise = f rs
+		f :: Rule a -> Bool
+		f r = ruleHead r == nt 
 
 {-
  - The instances of a symbol s always includes s itself. For abstract symbols
@@ -41,14 +43,16 @@ findRuleFor nt = withGrammar f
  -}
 
 allInstances :: Symbol -> MakeTeaMonad [Symbol]
-allInstances i@(NT nt) = do
-	r <- findRuleFor nt
-	case r of
-		Conj _ _ -> do
-			return [i]
-		Disj _ xs -> do
+allInstances i@(NT nt) = 
+	do
+		r <- findRuleFor nt
+		elim f r	
+	where
+		f :: Rule a -> MakeTeaMonad [Symbol]
+		f (Disj _ xs) = do
 			is <- mapM allInstances xs
 			return (i:concat is)
+		f (Conj _ _) = return [i]
 
 {-
  - commonInstance finds the most general common instance of two symbols, if it
@@ -69,7 +73,7 @@ commonInstance s1 s2 = do
 directSuperclasses :: Symbol -> MakeTeaMonad [NonTerminal]
 directSuperclasses c = withDisj $ return . catMaybes . (map f)
 	where
-		f :: Rule -> Maybe NonTerminal 
+		f :: Rule Disj -> Maybe NonTerminal 
 		f (Disj s cs) = if c `elem` cs then Just s else Nothing
 
 {-
@@ -95,6 +99,6 @@ concreteSymbols = withConj $ return . (map (NT . ruleHead))
  - The head of a rule
  -}
 
-ruleHead :: Rule -> NonTerminal
+ruleHead :: Rule a -> NonTerminal
 ruleHead (Disj h _) = h
 ruleHead (Conj h _) = h

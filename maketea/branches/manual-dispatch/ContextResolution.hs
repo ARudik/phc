@@ -6,6 +6,7 @@ import Data.List
 import DataStructures
 import GrammarAnalysis
 import MakeTeaMonad
+import Util
 
 {-
  - Find context finds the context for a symbol in the grammar; if the symbol is
@@ -79,7 +80,7 @@ multMeet m1 m2 = multMeet m2 m1 -- multMeet is commutative
  - definition of "instance of").
  -}
 
-initContexts :: Rule -> MakeTeaMonad [Context]
+initContexts :: Rule Conj -> MakeTeaMonad [Context]
 initContexts (Conj h ts) = concatMapM f ts
 	where
 		f :: Term -> MakeTeaMonad [Context]

@@ -1,9 +1,11 @@
 module Parser where
 
-import DataStructures
 import Text.ParserCombinators.Parsec
 import qualified Text.ParserCombinators.Parsec.Token as T
 import Text.ParserCombinators.Parsec.Language
+
+import DataStructures
+import Util
 
 {-
  - Lexical analysis
@@ -37,11 +39,18 @@ maketeaP =
 grammarP :: Parser Grammar
 grammarP = many ruleP
 
-ruleP :: Parser Rule
-ruleP = disjunctionP <|> conjunctionP
+ruleP :: Parser (Exists Rule)
+ruleP = 
+		do
+			r <- disjunctionP
+			return (Exists r)
+	<|> 
+		do
+			r <- conjunctionP
+			return (Exists r)
 
 -- a disjunction consists of at least two symbols
-disjunctionP :: Parser Rule
+disjunctionP :: Parser (Rule Disj)
 disjunctionP = try $ 
 		do
 			head <- nonTerminalP
@@ -52,7 +61,7 @@ disjunctionP = try $
 			return (Disj head (s:ss))
 
 -- a conjunction may be empty
-conjunctionP :: Parser Rule
+conjunctionP :: Parser (Rule Conj)
 conjunctionP = 
 		do
 			head <- nonTerminalP

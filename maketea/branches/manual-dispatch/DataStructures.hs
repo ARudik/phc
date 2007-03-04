@@ -1,17 +1,24 @@
 module DataStructures where
 
 import Control.Monad.State
+import Util
 
 {-
  - Definition of EBNF
  -}
 
-type Grammar = [Rule]
-data Rule = Disj NonTerminal [Symbol] | Conj NonTerminal [Term] deriving Show
-data Symbol = NT NonTerminal deriving (Show,Eq,Ord)
+type Grammar = [Exists Rule]
+
+data Conj
+data Disj
+data Rule :: * -> * where
+	Disj :: NonTerminal -> [Symbol] -> Rule Disj
+	Conj :: NonTerminal -> [Term] -> Rule Conj
+
+data Symbol = NT NonTerminal deriving (Eq,Ord)
 type Term = (Label, Symbol, Multiplicity)
 type Label = Maybe String
-data Multiplicity = Single | Optional | Vector | VectorOpt | OptVector deriving (Show,Eq)
+data Multiplicity = Single | Optional | Vector | VectorOpt | OptVector deriving (Eq)
 type NonTerminal = String
 type Context = (Symbol, Symbol, Multiplicity)
 
@@ -38,7 +45,7 @@ type Name = String
 
 type MakeTeaMonad a = State MakeTeaState a
 data MakeTeaState = MTS {
-	  grammar :: Grammar 
+	  grammar :: Grammar  
 	, nextClassID :: Integer
 	, contexts :: Maybe [Context]
 	, classes :: Maybe [CppClass]

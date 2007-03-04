@@ -4,13 +4,14 @@ import DataStructures
 import MakeTeaMonad
 import GrammarAnalysis
 import Cpp
+import Util
 
 createBasicClasses :: MakeTeaMonad () 
 createBasicClasses = do
-	classes <- withGrammar (mapM createClass)
+	classes <- withGrammar (mapM (elim createClass))
 	setClasses classes
 
-createClass :: Rule -> MakeTeaMonad CppClass
+createClass :: Rule a -> MakeTeaMonad CppClass
 createClass (Disj c _) = do
 	inh <- directSuperclasses (NT c)
 	let (cn:inhn) = map (symbolToClassName . NT) (c:inh)
@@ -28,14 +29,4 @@ createClass (Conj c body) = do
 		}
 
 createField :: Term -> Member
-createField (l,s,m) = Attribute (typ ++ " " ++ name l)
-	where
-		typ = 
-			if isVector m 
-			then "list<" ++ symbolToClassName s ++ "*>*" 
-			else symbolToClassName s ++ "*"
-		name Nothing = 
-			if isVector m 
-			then symbolToVarName s ++ "s"
-			else symbolToVarName s
-		name (Just n) = n
+createField t = Attribute (termToType t ++ " " ++ termToVarName t)

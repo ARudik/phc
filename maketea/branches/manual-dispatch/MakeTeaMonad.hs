@@ -5,15 +5,24 @@ import Data.Maybe
 import Data.List
 
 import DataStructures
+import Util
 
 withGrammar :: (Grammar -> MakeTeaMonad a) -> MakeTeaMonad a
 withGrammar f = get >>= f . grammar 
 
-withConj :: (Grammar -> MakeTeaMonad a) -> MakeTeaMonad a
-withConj f = withGrammar $ \grammar -> f [r | r@(Conj _ _) <- grammar]
+withConj :: ([Rule Conj] -> MakeTeaMonad a) -> MakeTeaMonad a
+withConj f = withGrammar $ f . catMaybes . map (elim conj) 
+	where
+		conj :: Rule a -> Maybe (Rule Conj)
+		conj r@(Conj _ _) = Just r
+		conj (Disj _ _) = Nothing
 
-withDisj :: (Grammar -> MakeTeaMonad a) -> MakeTeaMonad a
-withDisj f = withGrammar $ \grammar -> f [r | r@(Disj _ _) <- grammar]
+withDisj :: ([Rule Disj] -> MakeTeaMonad a) -> MakeTeaMonad a
+withDisj f = withGrammar $ f . catMaybes . map (elim disj)
+	where
+		disj :: Rule a -> Maybe (Rule Disj)
+		disj (Conj _ _) = Nothing
+		disj r@(Disj _ _) = Just r
 
 withClasses :: ([CppClass] -> MakeTeaMonad a) -> MakeTeaMonad a
 withClasses f = get >>= f . fromJust . classes 
@@ -45,10 +54,3 @@ initState gr = MTS {
 	, contexts = Nothing
 	, classes = Nothing
 	}
-
-concatMapM :: Monad m => (a -> m [b]) -> [a] -> m [b]
-concatMapM f [] = return []
-concatMapM f (a:as) = do
-	bs1 <- f a
-	bs2 <- concatMapM f as
-	return (bs1 ++ bs2)
