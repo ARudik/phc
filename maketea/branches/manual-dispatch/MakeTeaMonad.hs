@@ -4,7 +4,24 @@ import Control.Monad.State
 import DataStructures
 
 withGrammar :: (Grammar -> MakeTeaMonad a) -> MakeTeaMonad a
-withGrammar f = get >>= f 
+withGrammar f = get >>= \st -> f (grammar st) 
+
+setContexts :: [Context] -> MakeTeaMonad ()
+setContexts cxs = do
+	s <- get
+	put (s { contexts = Just cxs })
+
+setClasses :: [CppClass] -> MakeTeaMonad ()
+setClasses cs = do
+	s <- get
+	put (s { classes = Just cs })
+
+initState :: Grammar -> MakeTeaState
+initState gr = MTS {
+	  grammar = gr
+	, contexts = Nothing
+	, classes = Nothing
+	}
 
 concatMapM :: Monad m => (a -> m [b]) -> [a] -> m [b]
 concatMapM f [] = return []

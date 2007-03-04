@@ -7,12 +7,12 @@ import DataStructures
 import GrammarAnalysis
 import MakeTeaMonad
 
-contexts :: MakeTeaMonad [Context] 
-contexts = do
+contextResolution :: MakeTeaMonad () 
+contextResolution = do
 	init <- withGrammar initContexts
 	let sorted = sortBy (\(a,b,c) (a',b',c') -> compare a a') init
 	reduced <- reduce sorted
-	return reduced 
+	setContexts reduced
 
 {-
  - reduce does context resolution, reducing two contexts (i,t1,m1) and

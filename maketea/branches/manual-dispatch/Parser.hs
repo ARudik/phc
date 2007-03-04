@@ -22,11 +22,11 @@ reservedOp = T.reservedOp lexer
  - Top-level 
  -}
 
-maketeaInput :: Parser Grammar
-maketeaInput =
+maketeaP :: Parser Grammar
+maketeaP =
 		do
 			whiteSpace
-			g <- grammar
+			g <- grammarP
 			eof
 			return g
 
@@ -34,48 +34,48 @@ maketeaInput =
  - EBNF 
  -}
 
-grammar :: Parser Grammar
-grammar = many rule 
+grammarP :: Parser Grammar
+grammarP = many ruleP
 
-rule :: Parser Rule
-rule = disjunction <|> conjunction
+ruleP :: Parser Rule
+ruleP = disjunctionP <|> conjunctionP
 
 -- a disjunction consists of at least two symbols
-disjunction :: Parser Rule
-disjunction = try $ 
+disjunctionP :: Parser Rule
+disjunctionP = try $ 
 		do
-			head <- nonTerminal
+			head <- nonTerminalP
 			reservedOp "::="
-			s <- symbol ; reservedOp "|"
-			ss <- symbol `sepBy` reservedOp "|"
+			s <- symbolP ; reservedOp "|"
+			ss <- symbolP `sepBy` reservedOp "|"
 			reservedOp ";"
 			return (Disj head (s:ss))
 
 -- a conjunction may be empty
-conjunction :: Parser Rule
-conjunction = 
+conjunctionP :: Parser Rule
+conjunctionP = 
 		do
-			head <- nonTerminal
+			head <- nonTerminalP
 			reservedOp "::="
-			body <- many term
+			body <- many termP
 			reservedOp ";"
 			return (Conj head body)
 
-symbol :: Parser Symbol
-symbol = 
+symbolP :: Parser Symbol
+symbolP = 
 		do
-			nt <- nonTerminal
+			nt <- nonTerminalP
 			return (NT nt)
 
-term :: Parser Term
-term = 
+termP :: Parser Term
+termP = 
 		do
-			s <- symbol
-			m <- multiplicity
+			s <- symbolP
+			m <- multiplicityP
 			return (s, m)
 
-multiplicity :: Parser Multiplicity
-multiplicity =
+multiplicityP :: Parser Multiplicity
+multiplicityP =
 		do
 			reservedOp "?"
 			return Optional 
@@ -95,5 +95,5 @@ multiplicity =
 		do
 			return Single
 
-nonTerminal :: Parser NonTerminal 
-nonTerminal = identifier 
+nonTerminalP :: Parser NonTerminal 
+nonTerminalP = identifier 

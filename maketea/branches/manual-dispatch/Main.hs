@@ -13,9 +13,9 @@ main = do
 	parseResult <- case args of
 		[] -> do
 			src <- getContents
-			return (parse maketeaInput "" src)
+			return (parse maketeaP "" src)
 		file:_ ->
-			parseFromFile maketeaInput file
+			parseFromFile maketeaP file
 	case parseResult of 
 		Left parseError -> do
 			print parseError

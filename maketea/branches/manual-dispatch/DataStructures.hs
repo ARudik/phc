@@ -15,8 +15,19 @@ type NonTerminal = String
 type Context = (Symbol, Symbol, Multiplicity)
 
 {-
+ - C++ classes
+ -}
+
+data CppClass = CppClass Name 
+type Name = String  
+
+{-
  - The maketea monad (means we don't have to manually carry a lot of state around)
  -}
 
 type MakeTeaMonad a = State MakeTeaState a
-type MakeTeaState = Grammar
+data MakeTeaState = MTS {
+	  grammar :: Grammar 
+	, contexts :: Maybe [Context]
+	, classes :: Maybe [CppClass]
+	}
