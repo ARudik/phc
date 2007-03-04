@@ -30,6 +30,9 @@ withClasses f = get >>= f . fromJust . classes
 withContexts :: ([Context] -> MakeTeaMonad a) -> MakeTeaMonad a
 withContexts f = get >>= f . fromJust . contexts
 
+withPrefix :: (String -> MakeTeaMonad a) -> MakeTeaMonad a
+withPrefix f = get >>= f . prefix
+
 getNextClassID :: MakeTeaMonad Integer
 getNextClassID = do
 	s <- get
@@ -47,9 +50,10 @@ setClasses cs = do
 	s <- get
 	put (s { classes = Just cs })
 
-initState :: Grammar -> MakeTeaState
-initState gr = MTS {
-	  grammar = gr
+initState :: String -> Grammar -> MakeTeaState
+initState pr gr = MTS {
+	  prefix = pr
+	, grammar = gr
 	, nextClassID = 1 
 	, contexts = Nothing
 	, classes = Nothing

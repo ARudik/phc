@@ -35,8 +35,10 @@ data CppClass = CppClass {
 	}
 data Section = Section Access [Member]
 data Access = Private | Protected | Public
-data Member = Attribute String | Method Sig Body | VirtualMethod Sig
-type Sig = String
+data Member = Attribute String | Method Sig Body | PureVirtual Sig
+type Sig = (ReturnType, Name, [Arg])
+type ReturnType = String
+type Arg = String
 type Body = [String]
 type Name = String  
 
@@ -46,7 +48,8 @@ type Name = String
 
 type MakeTeaMonad a = State MakeTeaState a
 data MakeTeaState = MTS {
-	  grammar :: Grammar  
+	  prefix :: String
+	, grammar :: Grammar  
 	, nextClassID :: Integer
 	, contexts :: Maybe [Context]
 	, classes :: Maybe [CppClass]

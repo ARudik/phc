@@ -10,14 +10,13 @@ import MakeTea
 main :: IO ()
 main = do
 	args <- getArgs
-	parseResult <- case args of
-		[] -> do
-			src <- getContents
-			return (parse maketeaP "" src)
-		file:_ ->
-			parseFromFile maketeaP file
+	let [prefix, filename] = 
+		if length args == 2 
+			then args 
+			else error "usage: maketea prefix filename"
+	parseResult <- parseFromFile maketeaP filename
 	case parseResult of 
 		Left parseError -> do
 			print parseError
 		Right grammar ->
-			maketea grammar
+			maketea prefix grammar

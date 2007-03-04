@@ -15,7 +15,7 @@ transformClass = do
 	conc <- concreteSymbols
 	c_pre <- mapM (ppConcrete "pre_") conc
 	c_post <- mapM (ppConcrete "post_") conc
-	c_children <- withConj $ return . (map chConcrete)
+	c_children <- withConj $ mapM chConcrete
 	{- Internal methods -}
 	allTerms <- withConj $ return . nub . concat . (map conjBody)
 	transforms <- mapM transform allTerms
@@ -23,7 +23,8 @@ transformClass = do
 	a_pre <- mapM (ppAbstract "pre_") abs
 	a_post <- mapM (ppAbstract "post_") abs
 	a_children <- mapM chAbstract abs
-	return $ (emptyClassNoID "Tree_transform") {
+	prefix <- withPrefix return
+	return $ (emptyClassNoID (prefix ++ "transform")) {
 		  sections = [
 		  	  Section Public c_pre
 			, Section Public c_post 
@@ -41,11 +42,12 @@ transformClass = do
 
 transform :: Term -> MakeTeaMonad Member
 transform t@(l,s,m) | isVector m = do
-	let sig = termToType t ++ "* transform_" ++ termToTransform t ++ "(" ++ termToType t ++ "* in)" 
+	tType <- termToType t
+	let sig = (tType ++ "*", termToTransform t, [tType ++ "* in"])
 	let body = [
-		  termToType t ++ "::const_iterator i;"
-		, termToType t ++ "* out1 = new " ++ termToType t ++ ";"
-		, termToType t ++ "* out2 = new " ++ termToType t ++ ";"
+		  tType ++ "::const_iterator i;"
+		, tType ++ "* out1 = new " ++ tType ++ ";"
+		, tType ++ "* out2 = new " ++ tType ++ ";"
 		, ""
 		, "for(i = in->begin(); i != in->end(); i++)"
 		, "\tpre_" ++ symbolToVarName s ++ "(*i, out1);"
@@ -58,9 +60,10 @@ transform t@(l,s,m) | isVector m = do
 		]
 	return (Method sig body)
 transform t@(l,s,m) | not (isVector m) = do
-	let sig = termToType t ++ "* transform_" ++ termToTransform t ++ "(" ++ termToType t ++ "* in)"
+	tType <- termToType t
+	let sig = (tType ++ "*", termToTransform t, [tType ++ "* in"])
 	let body =  [
-		  termToType t ++ "* out;"
+		  tType ++ "* out;"
 		, ""
 		, "out = pre_" ++ symbolToVarName s ++ "(in);"
 		, "children_" ++ symbolToVarName s ++ "(out);"
@@ -75,40 +78,44 @@ ppAbstract pp nt =
 	do
 		(_,s',m) <- findContext (NT nt)
 		let fnName = pp ++ symbolToVarName (NT nt)
-		let inType = symbolToClassName s' ++ "*"
+		cn <- symbolToClassName s'
+		let inType = cn ++ "*"
 		conc <- concreteInstances (NT nt)
 		if isVector m 
 			then do
-				let outType = "list<" ++ symbolToClassName s' ++ "*>*"
-				let sig = "void " ++ fnName ++ "(" ++ inType ++ " in, " ++ outType ++ " out)";
+				let outType = "list<" ++ cn ++ "*>*"
+				let sig = ("void", fnName, [inType ++ " in", outType ++ " out"])
 				cases <- concatMapM listCase conc	
 				let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
 				return $ Method sig body 
 			else do
-				let outType = symbolToClassName s' ++ "*"
-				let sig = outType ++ " " ++ fnName ++ "(" ++ inType ++ " in)"
+				let outType = cn ++ "*"
+				let sig = (outType, fnName, [inType ++ " in"])
 				cases <- concatMapM nonListCase conc	
 				let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
 				return $ Method sig body; 
 	where
 		nonListCase s = do
 			cid <- findClassID s
+			cn <- symbolToClassName s
 			return [
 				  "case " ++ show cid ++ ": " ++
-				  "return " ++ pp ++ symbolToVarName s ++ "(dynamic_cast<" ++ symbolToClassName s ++ "*>(in));"
+				  "return " ++ pp ++ symbolToVarName s ++ "(dynamic_cast<" ++ cn ++ "*>(in));"
 				]
 		listCase s = do
 			cid <- findClassID s
+			cn <- symbolToClassName s
 			(_,s',m) <- findContext s
 			let t' = (undefined, s', m)
+			tType' <- termToType t'
 			-- Context for the symbol may be more restrictive
 			if isVector m 
 				then return [
 					  "case " ++ show cid ++ ": "
 					, "\t{"
-					, "\t\t" ++ termToType t' ++ "* local_out = new " ++ termToType t' ++ ";"
-					, "\t\t" ++ termToType t' ++ "::const_iterator i;" 
-					, "\t\t" ++ pp ++ symbolToVarName s ++ "(dynamic_cast<" ++ symbolToClassName s ++ "*>(in), local_out);" 
+					, "\t\t" ++ tType' ++ "* local_out = new " ++ tType' ++ ";"
+					, "\t\t" ++ tType' ++ "::const_iterator i;" 
+					, "\t\t" ++ pp ++ symbolToVarName s ++ "(dynamic_cast<" ++ cn ++ "*>(in), local_out);" 
 					, "\t\tfor(i = local_out->begin(); i != local_out->end(); i++)"
 					, "\t\t\tout->push_back(*i);"
 					, "\t}"
@@ -116,7 +123,7 @@ ppAbstract pp nt =
 					]
 				else return [
 					  "case " ++ show cid ++ ": "
-					, "\tout->push_back(" ++ pp ++ symbolToVarName s ++ "(dynamic_cast<" ++ symbolToClassName s ++ "*>(in)));"
+					, "\tout->push_back(" ++ pp ++ symbolToVarName s ++ "(dynamic_cast<" ++ cn ++ "*>(in)));"
 					, "\tbreak;"
 					]
 
@@ -124,7 +131,8 @@ ppAbstract pp nt =
 chAbstract :: NonTerminal -> MakeTeaMonad Member
 chAbstract nt = 
 	do 
-		let sig = "void children_" ++ nt ++ "(" ++ symbolToClassName (NT nt) ++ "* in)"
+		cn <- symbolToClassName (NT nt)
+		let sig = ("void", "children_" ++ nt, [cn ++ "* in"])
 		conc <- concreteInstances (NT nt)
 		cases <- concatMapM switchcase conc	
 		let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
@@ -132,39 +140,40 @@ chAbstract nt =
 	where
 		switchcase s = do
 			cid <- findClassID s
+			cn <- symbolToClassName s
 			return [
 				  "case " ++ show cid ++ ":"
-				, "\tchildren_" ++ symbolToVarName s ++ "(dynamic_cast<" ++ symbolToClassName s ++ "*>(in));"
+				, "\tchildren_" ++ symbolToVarName s ++ "(dynamic_cast<" ++ cn ++ "*>(in));"
 				, "\tbreak;"
 				]
 {-
  - API methods
  -}
 
-chConcrete :: Rule Conj -> Member
-chConcrete (Conj h ts) = 
-	let
-		sig = "void children_" ++ h ++ "(" ++ symbolToClassName (NT h) ++ "* in)"
-		f t = "in->" ++ termToVarName t ++ " = transform_" ++ termToTransform t ++ "(in->" ++ termToVarName t ++ ");"
-	in
-		Method sig (map f ts) 
+chConcrete :: Rule Conj -> MakeTeaMonad Member
+chConcrete (Conj h ts) = do
+	cn <- symbolToClassName (NT h)
+	let sig = ("void", "children_" ++ h, [cn ++ "* in"])
+	let f t = "in->" ++ termToVarName t ++ " = " ++ termToTransform t ++ "(in->" ++ termToVarName t ++ ");"
+	return (Method sig (map f ts))
 
 termToTransform :: Term -> Name
 termToTransform (_,s,m) 
-	| isVector m = symbolToVarName s ++ "_list"
-	| otherwise = symbolToVarName s
+	| isVector m = "transform_" ++ symbolToVarName s ++ "_list"
+	| otherwise = "transform_" ++ symbolToVarName s
 
 ppConcrete :: String -> Symbol -> MakeTeaMonad Member 
 ppConcrete pp s = do
 	(_,s',m) <- findContext s
 	let fnName = pp ++ symbolToVarName s
-	let inType = symbolToClassName s' ++ "*"
+	cn <- symbolToClassName s'
+	let inType = cn ++ "*"
 	if isVector m 
 		then do
-			let outType = "list<" ++ symbolToClassName s' ++ "*>*"
-			let sig = "void " ++ fnName ++ "(" ++ inType ++ " in, " ++ outType ++ " out)";
+			let outType = "list<" ++ cn ++ "*>*"
+			let sig = ("void", fnName, [inType ++ " in", outType ++ " out"])
 			return $ Method sig ["out->push_back(in);"]
 		else do
-			let outType = symbolToClassName s' ++ "*"
-			let sig = outType ++ " " ++ fnName ++ "(" ++ inType ++ " in)"
+			let outType = cn ++ "*"
+			let sig = (outType, fnName, [inType ++ " in"])
 			return $ Method sig ["return in;"]
