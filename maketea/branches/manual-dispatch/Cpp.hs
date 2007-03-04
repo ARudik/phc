@@ -2,13 +2,36 @@ module Cpp where
 
 import Text.PrettyPrint
 import DataStructures
+import MakeTeaMonad
 
-emptyClass :: Name -> CppClass 
-emptyClass n = CppClass {
-	  name = n
-	, extends = []
-	, sections = []
-	}
+emptyClass :: Name -> MakeTeaMonad CppClass 
+emptyClass n = do
+	cid <- getNextClassID
+	let getID = Method "int classid()" ["return " ++ show cid ++ ";"]
+	return $ CppClass {
+		  name = n
+		, extends = []
+		, sections = [Section Public [getID]]
+		, classid = cid
+		}
+
+emptyAbstractClass :: Name -> CppClass
+emptyAbstractClass n = CppClass {
+		  name = n
+		, extends = []
+		, sections = [Section Public [getID]]
+		, classid = 0
+		}
+	where
+		getID = VirtualMethod "int classid() = 0"
+
+emptyClassNoID :: Name -> CppClass
+emptyClassNoID n = CppClass {
+		  name = n
+		, extends = []
+		, sections = []
+		, classid = 0
+		}
 
 symbolToClassName :: Symbol -> Name
 symbolToClassName (NT nt) = "AST_" ++ nt
@@ -39,10 +62,11 @@ docAccess Public = text "public"
 
 docMember :: Member -> Doc
 docMember (Attribute a) = text a <> semi
-docMember (Method sig body) = docSignature sig $+$ text "{" $+$ nest 4 (docBody body) $+$ text "}"
+docMember (Method sig body) = docSig sig $+$ text "{" $+$ nest 4 (docBody body) $+$ text "}"
+docMember (VirtualMethod sig) = text "virtual" <+> docSig sig <> semi 
 
-docSignature :: Signature -> Doc
-docSignature = text
+docSig :: Sig -> Doc
+docSig = text
 
 docBody :: Body -> Doc
 docBody = vcat . map text

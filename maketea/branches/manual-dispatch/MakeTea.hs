@@ -16,5 +16,8 @@ maketea grammar = do
 		classes <- withClasses return
 		transform <- transformClass
 		return (classes, transform)
+	putStrLn "#include <list>"
+	putStrLn "using namespace std;"
+	forM_ (map name classes) $ \c -> putStrLn ("class " ++ c ++ ";")
 	forM_ classes print 
 	print transform

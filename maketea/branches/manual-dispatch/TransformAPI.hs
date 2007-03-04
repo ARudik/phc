@@ -9,7 +9,7 @@ transformClass :: MakeTeaMonad CppClass
 transformClass = do
 	sym <- concreteSymbols
 	pre <- mapM preTransforms sym
-	return $ (emptyClass "Tree_transform") {
+	return $ (emptyClassNoID "Tree_transform") {
 		  sections = [Section Public pre]
 		}
 

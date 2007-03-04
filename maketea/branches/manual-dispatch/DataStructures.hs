@@ -23,11 +23,12 @@ data CppClass = CppClass {
 	  name :: Name 
 	, extends :: [Name]
 	, sections :: [Section]
+	, classid :: Integer
 	}
 data Section = Section Access [Member]
 data Access = Private | Protected | Public
-data Member = Attribute String | Method Signature Body 
-type Signature = String
+data Member = Attribute String | Method Sig Body | VirtualMethod Sig
+type Sig = String
 type Body = [String]
 type Name = String  
 
@@ -38,6 +39,7 @@ type Name = String
 type MakeTeaMonad a = State MakeTeaState a
 data MakeTeaState = MTS {
 	  grammar :: Grammar 
+	, nextClassID :: Integer
 	, contexts :: Maybe [Context]
 	, classes :: Maybe [CppClass]
 	}

@@ -15,6 +15,13 @@ withClasses f = get >>= f . fromJust . classes
 withContexts :: ([Context] -> MakeTeaMonad a) -> MakeTeaMonad a
 withContexts f = get >>= f . fromJust . contexts
 
+getNextClassID :: MakeTeaMonad Integer
+getNextClassID = do
+	s <- get
+	let cid = nextClassID s
+	put (s { nextClassID = cid + 1 })
+	return cid
+
 setContexts :: [Context] -> MakeTeaMonad ()
 setContexts cxs = do
 	s <- get
@@ -28,6 +35,7 @@ setClasses cs = do
 initState :: Grammar -> MakeTeaState
 initState gr = MTS {
 	  grammar = gr
+	, nextClassID = 1 
 	, contexts = Nothing
 	, classes = Nothing
 	}

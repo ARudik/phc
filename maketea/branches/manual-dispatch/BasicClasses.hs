@@ -14,15 +14,17 @@ createClass :: Rule -> MakeTeaMonad CppClass
 createClass (Disj c _) = do
 	inh <- directSuperclasses (NT c)
 	let (cn:inhn) = map (symbolToClassName . NT) (c:inh)
-	return $ (emptyClass cn) { extends = inhn }
+	let c = emptyAbstractClass cn
+	return $ c { extends = inhn }
 createClass (Conj c body) = do
 	inh <- directSuperclasses (NT c)
 	let (cn:inhn) = map (symbolToClassName . NT) (c:inh)
 	let fields = map createField body 
 	let fieldSection = Section Public fields
-	return $ (emptyClass cn) { 
+	c <- emptyClass cn
+	return $ c { 
 		  extends = inhn
-		, sections = [fieldSection] 
+		, sections = [fieldSection] ++ sections c 
 		}
 
 createField :: Term -> Member
