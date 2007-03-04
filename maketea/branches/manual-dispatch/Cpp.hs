@@ -15,16 +15,18 @@ emptyClass n = do
 	return $ CppClass {
 		  name = n
 		, extends = []
-		, sections = [Section Public [getID]]
+		, sections = [Section Private [getID]]
 		, classid = cid
+		, friends = []
 		}
 
 emptyAbstractClass :: Name -> CppClass
 emptyAbstractClass n = CppClass {
 		  name = n
 		, extends = []
-		, sections = [Section Public [getID]]
+		, sections = [Section Private [getID]]
 		, classid = 0
+		, friends = []
 		}
 	where
 		getID = VirtualMethod "int classid() = 0"
@@ -35,6 +37,7 @@ emptyClassNoID n = CppClass {
 		, extends = []
 		, sections = []
 		, classid = 0
+		, friends = []
 		}
 
 findClassID :: Symbol -> MakeTeaMonad Integer
@@ -67,7 +70,7 @@ instance Show CppClass where
 docClass :: CppClass -> Doc
 docClass c = 
 	text "class" <+> text (name c) <> docExtends (extends c) $+$
-	text "{" $+$ vcat (map docSection (sections c)) $+$ text "};" $+$ text ""
+	text "{" $+$ vcat (map docSection (sections c)) $+$ vcat (map docFriend (friends c)) $+$ text "};" $+$ text ""
 
 docSection :: Section -> Doc
 docSection (Section _ []) = empty
@@ -82,6 +85,9 @@ docMember :: Member -> Doc
 docMember (Attribute a) = text a <> semi
 docMember (Method sig body) = docSig sig $+$ text "{" $+$ nest 4 (docBody body) $+$ text "}"
 docMember (VirtualMethod sig) = text "virtual" <+> docSig sig <> semi 
+
+docFriend :: Name -> Doc
+docFriend n = text "friend class" <+> text n <> semi 
 
 docSig :: Sig -> Doc
 docSig = text

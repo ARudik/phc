@@ -16,7 +16,10 @@ createClass (Disj c _) = do
 	inh <- directSuperclasses (NT c)
 	let (cn:inhn) = map (symbolToClassName . NT) (c:inh)
 	let c = emptyAbstractClass cn
-	return $ c { extends = inhn }
+	return $ c { 
+		  extends = inhn 
+		, friends = ["Tree_transform"]
+		}
 createClass (Conj c body) = do
 	inh <- directSuperclasses (NT c)
 	let (cn:inhn) = map (symbolToClassName . NT) (c:inh)
@@ -26,6 +29,7 @@ createClass (Conj c body) = do
 	return $ c { 
 		  extends = inhn
 		, sections = [fieldSection] ++ sections c 
+		, friends = ["Tree_transform"]
 		}
 
 createField :: Term -> Member

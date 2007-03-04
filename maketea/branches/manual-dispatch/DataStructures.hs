@@ -31,6 +31,7 @@ data CppClass = CppClass {
 	, extends :: [Name]
 	, sections :: [Section]
 	, classid :: Integer
+	, friends :: [Name]
 	}
 data Section = Section Access [Member]
 data Access = Private | Protected | Public
