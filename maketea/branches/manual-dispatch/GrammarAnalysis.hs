@@ -67,11 +67,10 @@ commonInstance s1 s2 = do
  -}
 
 directSuperclasses :: Symbol -> MakeTeaMonad [NonTerminal]
-directSuperclasses c = withGrammar $ return . catMaybes . (map f)
+directSuperclasses c = withDisj $ return . catMaybes . (map f)
 	where
 		f :: Rule -> Maybe NonTerminal 
 		f (Disj s cs) = if c `elem` cs then Just s else Nothing
-		f (Conj _ _)  = Nothing
 
 {-
  - isVector is true for Vector, VectorOpt and OptVector
@@ -90,8 +89,12 @@ isVector OptVector = True
  -}
 
 concreteSymbols :: MakeTeaMonad [Symbol]
-concreteSymbols = withGrammar $ return . catMaybes . (map f)
-	where
-		f :: Rule -> Maybe Symbol
-		f (Disj _ _) = Nothing
-		f (Conj c _) = Just (NT c)
+concreteSymbols = withConj $ return . (map (NT . ruleHead))
+
+{-
+ - The head of a rule
+ -}
+
+ruleHead :: Rule -> NonTerminal
+ruleHead (Disj h _) = h
+ruleHead (Conj h _) = h

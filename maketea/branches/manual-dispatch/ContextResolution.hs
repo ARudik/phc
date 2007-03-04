@@ -23,7 +23,7 @@ findContext s = withContexts $ \cxs -> case (find (\(s',_,_) -> s == s')) cxs of
 
 contextResolution :: MakeTeaMonad () 
 contextResolution = do
-	init <- withGrammar (concatMapM initContexts)
+	init <- withConj (concatMapM initContexts)
 	let sorted = sortBy (\(a,b,c) (a',b',c') -> compare a a') init
 	reduced <- reduce sorted
 	setContexts reduced
@@ -80,7 +80,6 @@ multMeet m1 m2 = multMeet m2 m1 -- multMeet is commutative
  -}
 
 initContexts :: Rule -> MakeTeaMonad [Context]
-initContexts (Disj _ _) = return []
 initContexts (Conj h ts) = concatMapM f ts
 	where
 		f :: Term -> MakeTeaMonad [Context]

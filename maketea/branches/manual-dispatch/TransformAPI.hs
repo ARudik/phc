@@ -13,6 +13,7 @@ transformClass = do
 		  sections = [Section Public pre]
 		}
 
+
 preTransforms :: Symbol -> MakeTeaMonad Member 
 preTransforms s = do
 	(_,s',m) <- findContext s

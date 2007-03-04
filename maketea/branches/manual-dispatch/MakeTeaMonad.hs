@@ -9,6 +9,12 @@ import DataStructures
 withGrammar :: (Grammar -> MakeTeaMonad a) -> MakeTeaMonad a
 withGrammar f = get >>= f . grammar 
 
+withConj :: (Grammar -> MakeTeaMonad a) -> MakeTeaMonad a
+withConj f = withGrammar $ \grammar -> f [r | r@(Conj _ _) <- grammar]
+
+withDisj :: (Grammar -> MakeTeaMonad a) -> MakeTeaMonad a
+withDisj f = withGrammar $ \grammar -> f [r | r@(Disj _ _) <- grammar]
+
 withClasses :: ([CppClass] -> MakeTeaMonad a) -> MakeTeaMonad a
 withClasses f = get >>= f . fromJust . classes 
 
