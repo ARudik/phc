@@ -68,21 +68,29 @@ accessP =
 
 memberP :: Parser Member
 memberP = try $ do
+	cmnt <- commentP
 	decl <- declP
 	do
 		do	
 			reservedOp ";"
-			return (Attribute decl)
+			return (Attribute cmnt decl)
 		<|> do
 			args <- parens (declP `sepBy` comma)
 			do
 				do
 					symbol "= 0;"
-					return (PureVirtual decl args)
+					return (PureVirtual cmnt decl args)
 				<|> do
 					body <- lexeme bodyP
-					return (Method decl args [body])
+					return (Method cmnt decl args [body])
 			
+commentP :: Parser Comment
+commentP = many $ do
+	string "//" 
+	cmnt <- many (noneOf ['\n'])
+	whiteSpace
+	return cmnt
+
 bodyP :: Parser String
 bodyP = 
 	do
@@ -226,7 +234,7 @@ markerP = try $
  - Lexical analysis
  -}
 
-lexer = T.makeTokenParser javaStyle
+lexer = T.makeTokenParser haskellStyle
 	{
 		reservedNames = ["class","private","protected","public"]
 	,	reservedOpNames = ["|",";","?","*","*?","?*","::=",":","+","{","}","(",")"]

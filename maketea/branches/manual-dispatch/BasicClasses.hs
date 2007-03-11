@@ -38,4 +38,4 @@ createField :: Term -> MakeTeaMonad Member
 createField t = do
 	typ <- termToType t
 	let name = termToVarName t
-	return (Attribute (typ ++ "*", name))
+	return (Attribute [] (typ ++ "*", name))

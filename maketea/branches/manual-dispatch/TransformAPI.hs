@@ -59,7 +59,7 @@ transform t@(Term l s m) | isVector m = do
 		, ""
 		, "return out2;"
 		]
-	return (Method decl args body)
+	return (Method [] decl args body)
 transform t@(Term l s m) | not (isVector m) = do
 	tType <- termToType t
 	let decl = (tType ++ "*", termToTransform t)
@@ -73,7 +73,7 @@ transform t@(Term l s m) | not (isVector m) = do
 		, ""
 		, "return out;"
 		]
-	return (Method decl args body)
+	return (Method [] decl args body)
 
 ppAbstract :: String -> NonTerminal -> MakeTeaMonad Member 
 ppAbstract pp nt = 
@@ -90,14 +90,14 @@ ppAbstract pp nt =
 				let args = [(inType, "in"), (outType, "out")]
 				cases <- concatMapM listCase conc	
 				let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-				return $ Method decl args body 
+				return $ Method [] decl args body 
 			else do
 				let outType = cn ++ "*"
 				let decl = (outType, fnName)
 				let args = [(inType, "in")]
 				cases <- concatMapM nonListCase conc	
 				let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-				return $ Method decl args body 
+				return $ Method [] decl args body 
 	where
 		nonListCase s = do
 			cid <- findClassID s
@@ -141,7 +141,7 @@ chAbstract nt =
 		conc <- concreteInstances (NT nt)
 		cases <- concatMapM switchcase conc	
 		let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-		return (Method decl args body)
+		return (Method [] decl args body)
 	where
 		switchcase s = do
 			cid <- findClassID s
@@ -161,7 +161,7 @@ chConcrete (Conj h ts) = do
 	let decl = ("void", "children_" ++ h)
 	let args = [(cn ++ "*", "in")]
 	let f t = "in->" ++ termToVarName t ++ " = " ++ termToTransform t ++ "(in->" ++ termToVarName t ++ ");"
-	return (Method decl args (map f ts))
+	return (Method [] decl args (map f ts))
 
 termToTransform :: Term -> Name
 termToTransform (Term _ s m) 
@@ -180,9 +180,9 @@ ppConcrete pp s = do
 			let outType = "list<" ++ cn' ++ "*>*"
 			let decl = ("void", fnName)
 			let args = [(inType, "in"), (outType, "out")]
-			return $ Method decl args ["out->push_back(in);"]
+			return $ Method [] decl args ["out->push_back(in);"]
 		else do
 			let outType = cn' ++ "*"
 			let decl = (outType, fnName)
 			let args = [(inType, "in")]
-			return $ Method decl args ["return in;"]
+			return $ Method [] decl args ["return in;"]

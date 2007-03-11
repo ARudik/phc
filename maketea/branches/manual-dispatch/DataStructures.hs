@@ -31,7 +31,8 @@ type Marker = String
 type Include = String
 
 data CppClass = CppClass {
-	  name :: Name 
+	  name :: Name
+	, comment :: Comment 
 	, extends :: [Name]
 	, sections :: [Section]
 	, classid :: Integer
@@ -39,12 +40,16 @@ data CppClass = CppClass {
 	}
 data Section = Section Access [Member]
 data Access = Private | Protected | Public
-data Member = Attribute Decl | Method Decl [Arg] Body | PureVirtual Decl [Arg] 
+data Member = 
+	  Attribute Comment Decl 
+	| Method Comment Decl [Arg] Body 
+	| PureVirtual Comment Decl [Arg] 
 type Decl = (CType, Name)
 type Arg = Decl 
 type Body = [String]
 type CType = String
 type Name = String  
+type Comment = [String] 
 
 {-
  - The maketea monad (means we don't have to manually carry a lot of state around)

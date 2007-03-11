@@ -10,7 +10,7 @@ import GrammarAnalysis
 emptyClass :: Name -> MakeTeaMonad CppClass 
 emptyClass n = do
 	cid <- getNextClassID
-	let getID = Method ("int", "classid") [] ["return " ++ show cid ++ ";"]
+	let getID = Method [] ("int", "classid") [] ["return " ++ show cid ++ ";"]
 	return $ CppClass {
 		  name = n
 		, extends = []
@@ -28,11 +28,12 @@ emptyAbstractClass n = CppClass {
 		, friends = []
 		}
 	where
-		getID = PureVirtual ("int", "classid") []
+		getID = PureVirtual [] ("int", "classid") []
 
 emptyClassNoID :: Name -> CppClass
 emptyClassNoID n = CppClass {
 		  name = n
+		, comment = []
 		, extends = []
 		, sections = []
 		, classid = 0
