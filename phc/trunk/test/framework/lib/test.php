@@ -1,7 +1,7 @@
 <?php
 /*
  * phc -- the open source PHP compiler
- * See doc/license/README.is_license for licensing information
+ * See doc/license/README.license for licensing information
  *
  * Base class for tests
  */
