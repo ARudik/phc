@@ -11,7 +11,7 @@ import Util
  - isAbstract nt is true if nt is defined by a disjunction
  -}
 
-isAbstract :: NonTerminal -> MakeTeaMonad Bool
+isAbstract :: Name NonTerminal -> MakeTeaMonad Bool
 isAbstract nt = do
 	r <- findRuleFor nt
 	return (elim isDisj r)
@@ -28,7 +28,7 @@ isDisj (Conj _ _) = False
  - findRuleFor nt finds the rule in the grammar that defines nt
  -}
 
-findRuleFor :: NonTerminal -> MakeTeaMonad (Exists Rule)
+findRuleFor :: Name NonTerminal -> MakeTeaMonad (Some Rule)
 findRuleFor nt = withGrammar $ (fromJustM $ "Unknown non-terminal " ++ nt) . find (elim f)
 	where
 		f :: Rule a -> Bool
@@ -42,40 +42,41 @@ findRuleFor nt = withGrammar $ (fromJustM $ "Unknown non-terminal " ++ nt) . fin
  - before t).
  -}
 
-allInstances :: Symbol -> MakeTeaMonad [Symbol]
-allInstances i@(NT nt) = 
+allInstances :: Symbol a -> MakeTeaMonad [Some Symbol]
+allInstances i@(NonTerminal nt) = 
 	do
 		r <- findRuleFor nt
 		elim f r	
 	where
-		f :: Rule a -> MakeTeaMonad [Symbol]
+		f :: Rule a -> MakeTeaMonad [Some Symbol]
 		f (Disj _ xs) = do
-			is <- mapM allInstances xs
-			return (i:concat is)
-		f (Conj _ _) = return [i]
+			is <- mapM (elim allInstances) xs
+			return (Exists i:concat is)
+		f (Conj _ _) = return [Exists i]
+allInstances i@(Terminal _ _) = return [Exists i]
 
 {-
  - Like allInstances, but filtered to include the concrete instances only
  -}
 
-concreteInstances :: Symbol -> MakeTeaMonad [Symbol]
-concreteInstances i@(NT nt) = 
+concreteInstances :: Symbol a -> MakeTeaMonad [Some Symbol]
+concreteInstances i@(NonTerminal nt) = 
 	do
 		r <- findRuleFor nt
 		elim f r	
 	where
-		f :: Rule a -> MakeTeaMonad [Symbol]
+		f :: Rule a -> MakeTeaMonad [Some Symbol]
 		f (Disj _ xs) = do
-			is <- mapM allInstances xs
+			is <- mapM (elim concreteInstances) xs
 			return (concat is)
-		f (Conj _ _) = return [i]
+		f (Conj _ _) = return [Exists i]
 
 {-
  - commonInstance finds the most general common instance of two symbols, if it
  - exists.
  -}
 
-commonInstance :: Symbol -> Symbol -> MakeTeaMonad (Maybe Symbol)
+commonInstance :: Symbol a -> Symbol b -> MakeTeaMonad (Maybe (Some Symbol))
 commonInstance s1 s2 = do
 	is1 <- allInstances s1
 	is2 <- allInstances s2
@@ -86,10 +87,10 @@ commonInstance s1 s2 = do
  - defined by a rule s ::= ... | c | ...
  -}
 
-directSuperclasses :: Symbol -> MakeTeaMonad [NonTerminal]
+directSuperclasses :: Some Symbol -> MakeTeaMonad [Name NonTerminal]
 directSuperclasses c = withDisj $ return . catMaybes . (map f)
 	where
-		f :: Rule Disj -> Maybe NonTerminal 
+		f :: Rule Disj -> Maybe (Name NonTerminal)
 		f (Disj s cs) = if c `elem` cs then Just s else Nothing
 
 {-
@@ -106,30 +107,25 @@ isVector OptVector = True
 {-
  - All concrete symbols (that is, non-terminal symbols that are defined as a
  - conjunction, and terminal symbols) in the grammar
+ - TODO: add terminal symbols
  -}
 
-concreteSymbols :: MakeTeaMonad [Symbol]
-concreteSymbols = withConj $ return . (map (NT . ruleHead))
+concreteSymbols :: MakeTeaMonad [Some Symbol]
+concreteSymbols = withConj $ return . (map (Exists . NonTerminal . ruleHead))
 
 {-
  - All abstract symbols (that is, non-terminal sysbols that are defined as a
  - disjunction)
  -}
 
-abstractSymbols :: MakeTeaMonad [NonTerminal]
+abstractSymbols :: MakeTeaMonad [Name NonTerminal]
 abstractSymbols = withDisj $ return . (map ruleHead)
 
 {-
- - The head of a rule
+ - The head/body of a rule
  -}
 
-ruleHead :: Rule a -> NonTerminal
+ruleHead :: Rule a -> Name NonTerminal
 ruleHead (Disj h _) = h
 ruleHead (Conj h _) = h
 
-{-
- - Body of a conjunction
- -}
-
-conjBody :: Rule Conj -> [Term]
-conjBody (Conj _ body) = body 

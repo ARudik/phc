@@ -8,13 +8,14 @@ import Util
 
 createBasicClasses :: MakeTeaMonad () 
 createBasicClasses = do
-	classes <- withGrammar (mapM (elim createClass))
-	setClasses classes
+	ast_classes <- withGrammar (mapM (elim createClass))
+	-- token_classes <- withTokens (mapM createTokenClass)
+	setClasses ast_classes -- (ast_classes ++ token_classes) 
 
-createClass :: Rule a -> MakeTeaMonad CppClass
+createClass :: Rule a -> MakeTeaMonad Class
 createClass (Disj c _) = do
-	inh <- directSuperclasses (NT c)
-	(cn:inhn) <- mapM (symbolToClassName . NT) (c:inh)
+	inh <- directSuperclasses (Exists (NonTerminal c))
+	(cn:inhn) <- mapM (symbolToClassName . NonTerminal) (c:inh)
 	let c = emptyAbstractClass cn
 	prefix <- withPrefix return
 	return $ c { 
@@ -22,9 +23,9 @@ createClass (Disj c _) = do
 		, friends = [prefix ++ "transform"]
 		}
 createClass (Conj c body) = do
-	inh <- directSuperclasses (NT c)
-	(cn:inhn) <- mapM (symbolToClassName . NT) (c:inh)
-	fields <- mapM createField body 
+	inh <- directSuperclasses (Exists (NonTerminal c))
+	(cn:inhn) <- mapM (symbolToClassName . NonTerminal) (c:inh)
+	fields <- mapM (elim createField) body 
 	let fieldSection = Section Public fields
 	c <- emptyClass cn
 	prefix <- withPrefix return
@@ -34,8 +35,11 @@ createClass (Conj c body) = do
 		, friends = [prefix ++ "transform"]
 		}
 
-createField :: Term -> MakeTeaMonad Member
-createField t = do
-	typ <- termToType t
+createField :: Term a -> MakeTeaMonad Member
+createField t@(Marker _ _) = do
+	let name = termToVarName t
+	return (Attribute [] ("bool", name))
+createField t@(Term _ _ _) = do
+	typ <- toClassName t
 	let name = termToVarName t
 	return (Attribute [] (typ ++ "*", name))

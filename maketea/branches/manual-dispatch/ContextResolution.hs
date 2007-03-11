@@ -13,7 +13,7 @@ import Util
  - never used, no context is known for the symbol and we assume (c,c,Single)
  -}
 
-findContext :: Symbol -> MakeTeaMonad Context
+findContext :: Some Symbol -> MakeTeaMonad Context
 findContext s = withContexts $ \cxs -> case (find (\(s',_,_) -> s == s')) cxs of
 	Nothing -> return (s,s,Single)
 	Just cx -> return cx
@@ -51,7 +51,7 @@ reduce ((i1,t1,m1):(i2,t2,m2):cs)
 
 resolve :: Context -> Context -> MakeTeaMonad Context
 resolve (i,t1,m1) (_,t2,m2) = do
-	(Just t) <- commonInstance t1 t2
+	(Just t) <- elim2 commonInstance t1 t2
 	return (i,t,multMeet m1 m2)
 
 {-
@@ -81,9 +81,10 @@ multMeet m1 m2 = multMeet m2 m1 -- multMeet is commutative
  -}
 
 initContexts :: Rule Conj -> MakeTeaMonad [Context]
-initContexts (Conj h ts) = concatMapM f ts
+initContexts (Conj h ts) = concatMapM (elim f) ts
 	where
-		f :: Term -> MakeTeaMonad [Context]
+		f :: Term a -> MakeTeaMonad [Context]
 		f (Term _ t m) = do 
-		 	is <- allInstances t	
+		 	is <- elim allInstances t	
 			return (map (\i -> (i,t,m)) is)
+		f (Marker _ _) = return []

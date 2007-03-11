@@ -13,7 +13,7 @@ import Cpp
  - Top-level 
  -}
 
-maketeaP :: Parser (Grammar, [Include], [CppClass])
+maketeaP :: Parser (Grammar, [Include], [Class])
 maketeaP =
 	do
 		whiteSpace
@@ -27,7 +27,7 @@ maketeaP =
  - Classes
  -}
 
-classP :: Parser CppClass
+classP :: Parser Class
 classP = 
 	do
 		reserved "class"
@@ -102,7 +102,7 @@ bodyP =
 body1 :: Parser String
 body1 = (many1 $ noneOf ['{','}']) <|> bodyP
 
-declP :: Parser Decl
+declP :: Parser (Decl a)
 declP = 
 	do
 		xs <- many1 (lexeme (many1 (alphaNum <|> oneOf ['*','<','>','_'])))
@@ -129,7 +129,7 @@ includeP =
 grammarP :: Parser Grammar
 grammarP = many ruleP
 
-ruleP :: Parser (Exists Rule)
+ruleP :: Parser (Some Rule)
 ruleP = 
 	do
 		r <- disjunctionP
@@ -159,27 +159,30 @@ conjunctionP =
 		reservedOp ";"
 		return (Conj head body)
 
-symbolP :: Parser Symbol
+symbolP :: Parser (Some Symbol)
 symbolP = 
 	do
 		nt <- nonTerminalP
-		return (NT nt)
+		return (Exists (NonTerminal nt))
 	<|> do
 		t <- terminalP
 		ctype <- option "String*" $ lexeme (
 			between (char '<') (char '>') (many $ noneOf ['>'])) 
-		return (T t ctype)
-	<|> do
-		m <- markerP
-		return (M m)
+		return (Exists (Terminal t ctype))
 
-termP :: Parser Term
+termP :: Parser (Some Term)
 termP = 
 	do
 		l <- labelP
-		s <- symbolP
-		m <- multiplicityP
-		return (Term l s m)
+		do
+			do
+				s <- symbolP
+				m <- multiplicityP
+				return (Exists (Term l s m))
+			<|> do
+				m <- markerP
+				reservedOp "?"
+				return (Exists (Marker l m))
 
 labelP :: Parser Label
 labelP = option Nothing $ 
@@ -208,7 +211,7 @@ multiplicityP =
 	<|> do
 		return Single
 
-nonTerminalP :: Parser NonTerminal 
+nonTerminalP :: Parser (Name NonTerminal)
 nonTerminalP = try $
 	do
 		id <- identifier
@@ -216,7 +219,7 @@ nonTerminalP = try $
 			then return id
 			else fail "expected lowercase identifier"
 
-terminalP :: Parser Terminal
+terminalP :: Parser (Name Terminal)
 terminalP = try $
 	do
 		id <- identifier
@@ -224,7 +227,7 @@ terminalP = try $
 			then return id
 			else fail "expected uppercase identifier"
 
-markerP :: Parser Marker
+markerP :: Parser (Name Marker)
 markerP = try $
 	do
 		id <- stringLiteral 

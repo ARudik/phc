@@ -7,22 +7,57 @@ import Util
  - Definition of EBNF
  -}
 
-type Grammar = [Exists Rule]
+type Grammar = [Some Rule]
 
 data Conj
 data Disj
 data Rule :: * -> * where
-	Disj :: NonTerminal -> [Symbol] -> Rule Disj
-	Conj :: NonTerminal -> [Term] -> Rule Conj
+	Disj :: Name NonTerminal -> [Some Symbol] -> Rule Disj
+	Conj :: Name NonTerminal -> [Some Term] -> Rule Conj
 
-data Symbol = NT NonTerminal | T Terminal CType | M Marker deriving (Eq,Ord)
-data Term = Term Label Symbol Multiplicity deriving Eq
+data NonTerminal
+data Terminal
+data Symbol :: * -> * where
+	NonTerminal :: Name NonTerminal -> Symbol NonTerminal
+	Terminal :: Name Terminal -> CType -> Symbol Terminal
+
+data NonMarker
+data Marker
+data Term :: * -> * where
+	Term :: Label -> Some Symbol -> Multiplicity -> Term NonMarker
+	Marker :: Label -> Name Marker -> Term Marker
+
+type Name a = String
 type Label = Maybe String
 data Multiplicity = Single | Optional | Vector | VectorOpt | OptVector deriving (Eq)
-type NonTerminal = String
-type Terminal = String
-type Context = (Symbol, Symbol, Multiplicity)
-type Marker = String
+type Context = (Some Symbol, Some Symbol, Multiplicity)
+
+{-
+ - Equality and ordering
+ -}
+
+instance Eq (Some Symbol) where
+	(==) = elim2 eqSymbol 
+
+instance Eq (Symbol a) where
+	(==) = eqSymbol
+
+eqSymbol :: Symbol a -> Symbol b -> Bool
+eqSymbol (NonTerminal n) (NonTerminal n') = n == n'
+eqSymbol (Terminal n _) (Terminal n' _) = n == n'
+eqSymbol _ _ = False
+
+instance Ord (Some Symbol) where
+	compare = elim2 ordSymbol
+
+instance Ord (Symbol a) where
+	compare = ordSymbol
+
+ordSymbol :: Symbol a -> Symbol b -> Ordering
+ordSymbol (NonTerminal n) (NonTerminal n') = compare n n'
+ordSymbol (Terminal n _) (Terminal n' _) = compare n n'
+ordSymbol (NonTerminal _) _ = LT
+ordSymbol (Terminal _ _) _ = GT
 
 {-
  - C++ classes
@@ -30,25 +65,27 @@ type Marker = String
 
 type Include = String
 
-data CppClass = CppClass {
-	  name :: Name
+data Class = Class {
+	  name :: Name Class
 	, comment :: Comment 
-	, extends :: [Name]
+	, extends :: [Name Class]
 	, sections :: [Section]
 	, classid :: Integer
-	, friends :: [Name]
+	, friends :: [Name Class]
 	}
 data Section = Section Access [Member]
 data Access = Private | Protected | Public
+
+data Variable 
+data Method
 data Member = 
-	  Attribute Comment Decl 
-	| Method Comment Decl [Arg] Body 
-	| PureVirtual Comment Decl [Arg] 
-type Decl = (CType, Name)
-type Arg = Decl 
+	  Attribute Comment (Decl Variable) 
+	| Method Comment (Decl Method) [Decl Variable] Body 
+	| PureVirtual Comment (Decl Method) [Decl Variable] 
+
+type Decl a = (CType, Name a)
 type Body = [String]
 type CType = String
-type Name = String  
 type Comment = [String] 
 
 {-
@@ -61,5 +98,5 @@ data MakeTeaState = MTS {
 	, grammar :: Grammar  
 	, nextClassID :: Integer
 	, contexts :: Maybe [Context]
-	, classes :: Maybe [CppClass]
+	, classes :: Maybe [Class]
 	}

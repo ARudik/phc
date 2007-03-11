@@ -6,22 +6,26 @@ import Data.List
 import DataStructures
 import MakeTeaMonad
 import GrammarAnalysis
+import PrettyPrinter
+import Util
 
-emptyClass :: Name -> MakeTeaMonad CppClass 
+emptyClass :: Name Class -> MakeTeaMonad Class 
 emptyClass n = do
 	cid <- getNextClassID
 	let getID = Method [] ("int", "classid") [] ["return " ++ show cid ++ ";"]
-	return $ CppClass {
+	return $ Class {
 		  name = n
+		, comment = []
 		, extends = []
 		, sections = [Section Private [getID]]
 		, classid = cid
 		, friends = []
 		}
 
-emptyAbstractClass :: Name -> CppClass
-emptyAbstractClass n = CppClass {
+emptyAbstractClass :: Name Class -> Class
+emptyAbstractClass n = Class {
 		  name = n
+		, comment = []
 		, extends = []
 		, sections = [Section Private [getID]]
 		, classid = 0
@@ -30,8 +34,8 @@ emptyAbstractClass n = CppClass {
 	where
 		getID = PureVirtual [] ("int", "classid") []
 
-emptyClassNoID :: Name -> CppClass
-emptyClassNoID n = CppClass {
+emptyClassNoID :: Name Class -> Class
+emptyClassNoID n = Class {
 		  name = n
 		, comment = []
 		, extends = []
@@ -40,28 +44,68 @@ emptyClassNoID n = CppClass {
 		, friends = []
 		}
 
-findClassID :: Symbol -> MakeTeaMonad Integer
+findClassID :: Some Symbol -> MakeTeaMonad Integer
 findClassID s = withClasses $ \classes -> do
-	cn <- symbolToClassName s
-	let (Just cl) = find (\c -> name c == cn) classes
-	return (classid cl) 
+	cn <- toClassName s
+	let cl = find (\c -> name c == cn) classes
+	case cl of
+		Just cl -> return (classid cl) 
+		Nothing -> fail $ "Unknown symbol " ++ show s
 
-symbolToClassName :: Symbol -> MakeTeaMonad Name
-symbolToClassName (NT nt) = withPrefix $ return . (++ nt)
+{-
+ - Translation to C++ class names
+ -}
 
-symbolToVarName :: Symbol -> Name
-symbolToVarName (NT nt) = nt
+class ToClassName a where
+	toClassName :: a -> MakeTeaMonad (Name Class)
 
-termToType :: Term -> MakeTeaMonad String
-termToType (Term _ s m) = do
-	cn <- symbolToClassName s
+instance ToClassName (Symbol a) where
+	toClassName = symbolToClassName
+
+instance ToClassName (Some Symbol) where
+	toClassName = elim symbolToClassName
+
+instance ToClassName (Term NonMarker) where
+	toClassName = termToClassName
+
+symbolToClassName :: Symbol a -> MakeTeaMonad (Name Class)
+symbolToClassName (NonTerminal n) = withPrefix $ return . (++ n)
+symbolToClassName (Terminal n _) = withPrefix $ return . (++ "_token_" ++ n)
+
+termToClassName :: Term NonMarker -> MakeTeaMonad CType 
+termToClassName (Term _ s m) = do
+	cn <- elim symbolToClassName s
 	if isVector m 
 		then return ("list<" ++ cn ++ "*>")
 		else return cn
 
-termToVarName :: Term -> Name
-termToVarName (Term Nothing s m) 
-	| isVector m = symbolToVarName s ++ "s" 
-	| otherwise = symbolToVarName s
-termToVarName (Term (Just n) s m) = n
+{-
+ - Translation to C++ variable names
+ -}
 
+class ToVarName a where
+	toVarName :: a -> Name Variable 
+
+instance ToVarName (Term a) where
+	toVarName = termToVarName
+
+instance ToVarName (Some Term) where
+	toVarName = elim termToVarName
+
+instance ToVarName (Symbol a) where
+	toVarName = symbolToVarName
+
+instance ToVarName (Some Symbol) where
+	toVarName = elim symbolToVarName
+
+termToVarName :: Term a -> Name Variable 
+termToVarName (Term Nothing s m) 
+	| isVector m = toVarName s ++ "s" 
+	| otherwise = toVarName s
+termToVarName (Term (Just n) _ _) = n
+termToVarName (Marker Nothing m) = m
+termToVarName (Marker (Just n) _) = n
+
+symbolToVarName :: Symbol a -> Name Variable 
+symbolToVarName (NonTerminal n) = n
+symbolToVarName (Terminal n _) = n

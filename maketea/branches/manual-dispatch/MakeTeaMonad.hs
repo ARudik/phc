@@ -24,7 +24,22 @@ withDisj f = withGrammar $ f . catMaybes . map (elim disj)
 		disj (Conj _ _) = Nothing
 		disj r@(Disj _ _) = Just r
 
-withClasses :: ([CppClass] -> MakeTeaMonad a) -> MakeTeaMonad a
+{-
+withTokens :: ([Symbol] -> MakeTeaMonad a) -> MakeTeaMonad a
+withTokens f = withGrammar $ \rules -> 
+	do
+		let tokens = concatMap (elim g) rules
+		f (nub tokens)
+	where
+		g :: Rule a -> [Symbol]
+		g (Disj _ body) = [t | t@(Terminal _ _) <- body]
+		g (Conj _ body) = [t | Term _ t@(Terminal _ _) _ <- body]
+-}
+
+withNonMarkers :: ([Term NonMarker] -> MakeTeaMonad a) -> MakeTeaMonad a
+withNonMarkers f = withConj $ f . allNonMarkers
+
+withClasses :: ([Class] -> MakeTeaMonad a) -> MakeTeaMonad a
 withClasses f = get >>= f . fromJust . classes 
 
 withContexts :: ([Context] -> MakeTeaMonad a) -> MakeTeaMonad a
@@ -45,7 +60,7 @@ setContexts cxs = do
 	s <- get
 	put (s { contexts = Just cxs })
 
-setClasses :: [CppClass] -> MakeTeaMonad ()
+setClasses :: [Class] -> MakeTeaMonad ()
 setClasses cs = do
 	s <- get
 	put (s { classes = Just cs })
@@ -62,3 +77,23 @@ initState pr gr = MTS {
 fromJustM :: Monad m => String -> Maybe a -> m a
 fromJustM err (Just a) = return a
 fromJustM err Nothing = fail err
+
+{-
+ - Filtering
+ -}
+
+allTerms :: [Rule Conj] -> [Some Term]
+allTerms =  concatMap conjBody 
+
+allNonMarkers :: [Rule Conj] -> [Term NonMarker]
+allNonMarkers = nonMarkers . allTerms
+
+conjBody :: Rule Conj -> [Some Term]
+conjBody (Conj _ body) = body
+
+nonMarkers :: [Some Term] -> [Term NonMarker]
+nonMarkers = catMaybes . map (elim f) 
+	where
+		f :: Term a -> Maybe (Term NonMarker)
+		f t@(Term _ _ _) = Just t
+		f _ = Nothing

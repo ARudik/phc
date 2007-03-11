@@ -9,7 +9,7 @@ import Cpp
 import TransformAPI
 import PrettyPrinter
 
-maketea :: String -> Grammar -> [Include] -> [CppClass] -> IO ()
+maketea :: String -> Grammar -> [Include] -> [Class] -> IO ()
 maketea prefix grammar includes mixin = do
 	let (classes, transform) = flip evalState (initState (prefix ++ "_") grammar) $ do
 		contextResolution
