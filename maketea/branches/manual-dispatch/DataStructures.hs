@@ -1,3 +1,8 @@
+{-
+ - maketea -- generate C++ AST infrastructure
+ - (C) 2006-2007 Edsko de Vries and John Gilbert
+ -}
+
 module DataStructures where
 
 import Control.Monad.State
@@ -29,7 +34,8 @@ data Term :: * -> * where
 
 type Name a = String
 type Label = Maybe String
-data Multiplicity = Single | Optional | Vector | VectorOpt | OptVector deriving (Eq)
+data Multiplicity = Single | Optional | Vector | VectorOpt | OptVector 
+	deriving Eq
 type Context = (Some Symbol, Some Symbol, Multiplicity)
 
 {-
@@ -44,7 +50,7 @@ instance Eq (Symbol a) where
 
 eqSymbol :: Symbol a -> Symbol b -> Bool
 eqSymbol (NonTerminal n) (NonTerminal n') = n == n'
-eqSymbol (Terminal n _) (Terminal n' _) = n == n'
+eqSymbol (Terminal n ctype) (Terminal n' ctype') = n == n' && ctype == ctype'
 eqSymbol _ _ = False
 
 instance Ord (Some Symbol) where
@@ -55,7 +61,9 @@ instance Ord (Symbol a) where
 
 ordSymbol :: Symbol a -> Symbol b -> Ordering
 ordSymbol (NonTerminal n) (NonTerminal n') = compare n n'
-ordSymbol (Terminal n _) (Terminal n' _) = compare n n'
+ordSymbol (Terminal n ctype) (Terminal n' ctype') 
+	| n == n'   = compare ctype ctype' 
+	| otherwise = compare n n'
 ordSymbol (NonTerminal _) _ = LT
 ordSymbol (Terminal _ _) _ = GT
 
@@ -89,7 +97,12 @@ type CType = String
 type Comment = [String] 
 
 {-
- - The maketea monad (means we don't have to manually carry a lot of state around)
+ - The maketea monad 
+ - 
+ - Nearly all important functions in maketea will be instances of this monad;
+ - all that really means is that they inspect or transform the state (defined
+ - below) in some way; for example, they might add classes, inspect the
+ - grammar, etc. 
  -}
 
 type MakeTeaMonad a = State MakeTeaState a

@@ -1,3 +1,8 @@
+{-
+ - maketea -- generate C++ AST infrastructure
+ - (C) 2006-2007 Edsko de Vries and John Gilbert
+ -}
+
 module GrammarAnalysis where
 
 import Data.List
@@ -23,6 +28,17 @@ isAbstract nt = do
 isDisj :: Rule a -> Bool
 isDisj (Disj _ _) = True
 isDisj (Conj _ _) = False 
+
+{-
+ - Is a symbol a non-terminal?
+ -}
+
+isNonTerminal :: Some Symbol -> Bool
+isNonTerminal = elim f
+	where
+		f :: Symbol a -> Bool
+		f (NonTerminal _) = True
+		f _ = False
 
 {-
  - findRuleFor nt finds the rule in the grammar that defines nt
@@ -70,6 +86,7 @@ concreteInstances i@(NonTerminal nt) =
 			is <- mapM (elim concreteInstances) xs
 			return (concat is)
 		f (Conj _ _) = return [Exists i]
+concreteInstances i@(Terminal _ _) = return [Exists i]
 
 {-
  - commonInstance finds the most general common instance of two symbols, if it
@@ -107,11 +124,13 @@ isVector OptVector = True
 {-
  - All concrete symbols (that is, non-terminal symbols that are defined as a
  - conjunction, and terminal symbols) in the grammar
- - TODO: add terminal symbols
  -}
 
 concreteSymbols :: MakeTeaMonad [Some Symbol]
-concreteSymbols = withConj $ return . (map (Exists . NonTerminal . ruleHead))
+concreteSymbols = do
+	nts <- withConj $ return . (map (Exists . NonTerminal . ruleHead))
+	tokens <- withTokens $ return . map Exists
+	return (nts ++ tokens)
 
 {-
  - All abstract symbols (that is, non-terminal sysbols that are defined as a
@@ -128,4 +147,3 @@ abstractSymbols = withDisj $ return . (map ruleHead)
 ruleHead :: Rule a -> Name NonTerminal
 ruleHead (Disj h _) = h
 ruleHead (Conj h _) = h
-

@@ -1,3 +1,8 @@
+{-
+ - maketea -- generate C++ AST infrastructure
+ - (C) 2006-2007 Edsko de Vries and John Gilbert
+ -}
+
 module Util where
 
 {-
@@ -30,3 +35,8 @@ concatMapM f (a:as) = do
 	bs1 <- f a
 	bs2 <- concatMapM f as
 	return (bs1 ++ bs2)
+
+fromJustM :: Monad m => String -> Maybe a -> m a
+fromJustM err (Just a) = return a
+fromJustM err Nothing = fail err
+

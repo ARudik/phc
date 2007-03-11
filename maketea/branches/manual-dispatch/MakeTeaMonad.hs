@@ -1,3 +1,8 @@
+{-
+ - maketea -- generate C++ AST infrastructure
+ - (C) 2006-2007 Edsko de Vries and John Gilbert
+ -}
+
 module MakeTeaMonad where
 
 import Control.Monad.State
@@ -6,6 +11,10 @@ import Data.List
 
 import DataStructures
 import Util
+
+{-
+ - Convenient access to components of the maketea state
+ -}
 
 withGrammar :: (Grammar -> MakeTeaMonad a) -> MakeTeaMonad a
 withGrammar f = get >>= f . grammar 
@@ -24,17 +33,8 @@ withDisj f = withGrammar $ f . catMaybes . map (elim disj)
 		disj (Conj _ _) = Nothing
 		disj r@(Disj _ _) = Just r
 
-{-
-withTokens :: ([Symbol] -> MakeTeaMonad a) -> MakeTeaMonad a
-withTokens f = withGrammar $ \rules -> 
-	do
-		let tokens = concatMap (elim g) rules
-		f (nub tokens)
-	where
-		g :: Rule a -> [Symbol]
-		g (Disj _ body) = [t | t@(Terminal _ _) <- body]
-		g (Conj _ body) = [t | Term _ t@(Terminal _ _) _ <- body]
--}
+withTokens :: ([Symbol Terminal] -> MakeTeaMonad a) -> MakeTeaMonad a
+withTokens f = withGrammar $ f . allTokens 
 
 withNonMarkers :: ([Term NonMarker] -> MakeTeaMonad a) -> MakeTeaMonad a
 withNonMarkers f = withConj $ f . allNonMarkers
@@ -74,16 +74,26 @@ initState pr gr = MTS {
 	, classes = Nothing
 	}
 
-fromJustM :: Monad m => String -> Maybe a -> m a
-fromJustM err (Just a) = return a
-fromJustM err Nothing = fail err
-
 {-
  - Filtering
  -}
 
 allTerms :: [Rule Conj] -> [Some Term]
 allTerms =  concatMap conjBody 
+
+allTokens :: Grammar -> [Symbol Terminal]
+allTokens = nub . tokens . concatMap (elim body)
+	where
+		body :: Rule a -> [Some Symbol]
+		body (Disj _ ss) = ss
+		body (Conj _ ts) = [s | (Exists (Term _ s _)) <- ts]
+
+tokens :: [Some Symbol] -> [Symbol Terminal]
+tokens = catMaybes . map (elim f) 
+	where
+		f :: Symbol a -> Maybe (Symbol Terminal)
+		f t@(Terminal _ _) = Just t
+		f _ = Nothing
 
 allNonMarkers :: [Rule Conj] -> [Term NonMarker]
 allNonMarkers = nonMarkers . allTerms

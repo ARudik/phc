@@ -1,3 +1,8 @@
+{-
+ - maketea -- generate C++ AST infrastructure
+ - (C) 2006-2007 Edsko de Vries and John Gilbert
+ -}
+
 module ContextResolution where
 
 import Control.Monad

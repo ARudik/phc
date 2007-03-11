@@ -1,3 +1,8 @@
+{-
+ - maketea -- generate C++ AST infrastructure
+ - (C) 2006-2007 Edsko de Vries and John Gilbert
+ -}
+
 module TransformAPI where
 
 import Data.List
@@ -17,7 +22,7 @@ transformClass = do
 	c_post <- mapM (ppConcrete "post_") conc
 	c_children <- withConj $ mapM chConcrete
 	{- Internal methods -}
-	transforms <- withNonMarkers $ mapM transform . nubBy eqTermIgnoreLabel
+	transforms <- withNonMarkers $ mapM transform . nubBy eqTermTransform
 	abs <- abstractSymbols
 	a_pre <- mapM (ppAbstract "pre_") abs
 	a_post <- mapM (ppAbstract "post_") abs
@@ -35,8 +40,10 @@ transformClass = do
 			]
 		}
 
-eqTermIgnoreLabel :: Term NonMarker -> Term NonMarker -> Bool 
-eqTermIgnoreLabel (Term _ s m) (Term _ s' m') = s == s' && m == m'
+-- True if both terms have the same transform
+eqTermTransform :: Term NonMarker -> Term NonMarker -> Bool 
+eqTermTransform (Term _ s m) (Term _ s' m') 
+	= s == s' && isVector m == isVector m'
 
 {-
  - Internal methods
@@ -44,6 +51,8 @@ eqTermIgnoreLabel (Term _ s m) (Term _ s' m') = s == s' && m == m'
 
 transform :: Term NonMarker -> MakeTeaMonad Member
 transform t@(Term l s m) | isVector m = do
+	-- TODO: Even though we are transforming a list, the context for the list
+	-- elements is not necessarily a list
 	tType <- toClassName t
 	let decl = (tType ++ "*", termToTransform t)
 	let args = [(tType ++ "*", "in")]
@@ -54,9 +63,12 @@ transform t@(Term l s m) | isVector m = do
 		, ""
 		, "for(i = in->begin(); i != in->end(); i++)"
 		, "\tpre_" ++ toVarName s ++ "(*i, out1);"
-		, "for(i = out1->begin(); i != out1->end(); i++)"
-		, "\tchildren_" ++ toVarName s ++ "(*i);"
-		, "for(i = out1->begin(); i != out1->end(); i++)"
+		] ++ (if isNonTerminal s then [
+			  "for(i = out1->begin(); i != out1->end(); i++)"
+			, "\tchildren_" ++ toVarName s ++ "(*i);"
+			] else []) 
+		  ++ [
+		  "for(i = out1->begin(); i != out1->end(); i++)"
 		, "\tpost_" ++ toVarName s ++ "(*i, out2);"
 		, ""
 		, "return out2;"
@@ -70,8 +82,11 @@ transform t@(Term l s m) | not (isVector m) = do
 		  tType ++ "* out;"
 		, ""
 		, "out = pre_" ++ toVarName s ++ "(in);"
-		, "children_" ++ toVarName s ++ "(out);"
-		, "out = post_" ++ toVarName s ++ "(out);"
+		] ++ (if isNonTerminal s then [ 
+			  "children_" ++ toVarName s ++ "(out);"
+			] else [])
+		  ++ [
+		  "out = post_" ++ toVarName s ++ "(out);"
 		, ""
 		, "return out;"
 		]
