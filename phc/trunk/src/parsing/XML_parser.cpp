@@ -22,7 +22,7 @@
 #include "lib/error.h"
 #include "lib/AttrMap.h"
 
-#include "generated/cmdline.h"
+#include "cmdline.h"
 extern struct gengetopt_args_info args_info;
 
 XERCES_CPP_NAMESPACE_USE

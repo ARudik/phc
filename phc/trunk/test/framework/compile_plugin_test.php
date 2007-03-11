@@ -29,7 +29,7 @@ class CompilePluginTest extends NoSubjectTest
 		}
 
 
-		$command = "$phc_compile_plugin plugin.cpp 2>&1";
+		$command = "$phc_compile_plugin plugin.cpp 2>&1 > /dev/null "; # throw away stdout. Compiler errors come in on stdout
 		list ($output, $return_value) = complete_exec ($command);
 		if ($output) $this->mark_failure ("All", $command, $return_value, $output);
 		else $this->mark_success ("All");

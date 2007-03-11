@@ -14,8 +14,8 @@
 	#include <assert.h>
 	#include <string.h>
 	#include "lib/Integer.h"
-	#include "generated/php_parser.tab.hpp"
-	#include "generated/cmdline.h"
+	#include "php_parser.tab.hpp"
+	#include "cmdline.h"
 	#include "parsing/PHP_context.h"
 
 	extern struct gengetopt_args_info args_info;

@@ -9,7 +9,7 @@
 #include "XML_unparser.h"
 #include "lib/base64.h"
 #include "lib/demangle.h"
-#include "generated/cmdline.h"
+#include "cmdline.h"
 
 using namespace std;
 

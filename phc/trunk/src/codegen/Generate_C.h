@@ -11,7 +11,7 @@
 #ifndef GENERATE_C
 #define GENERATE_C
 
-#include "generated/Tree_visitor.h"
+#include "Tree_visitor.h"
 
 class Generate_C : public Tree_visitor
 {

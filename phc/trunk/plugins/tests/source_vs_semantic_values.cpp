@@ -5,7 +5,7 @@
  * Compare the semantic value of tokens against their source representation
  */
 
-#include "generated/Tree_visitor.h"
+#include "Tree_visitor.h"
 
 class Get_source_and_semantic_values : public Tree_visitor
 {

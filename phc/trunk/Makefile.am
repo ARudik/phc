@@ -16,6 +16,7 @@ SUBDIRS = libltdl
 # Note the preprocessor supports -Wall, so we put that here, rather than a seperate CXX_FLAGS
 AM_CPPFLAGS = \
 	$(LTDLINCL) -I$(srcdir)/src -I$(srcdir)/3rdparty/getopt -I$(srcdir)/3rdparty/flex \
+	-I$(srcdir)/src/generated \
 	-DDATADIR=\"$(datadir)\" -DPKGLIBDIR=\"$(pkglibdir)\" -Wall
 
 bin_PROGRAMS = src/phc
@@ -129,11 +130,14 @@ BUILT_SOURCES = \
 #   Tree_visitor.h)
 strangephcdir = $(pkgincludedir)
 strangephc_HEADERS =						\
-	src/generated/ast.h					\
 	config.h									\
-	src/parsing/parse.h					\
+	src/generated/ast.h					\
 	src/generated/Tree_transform.h	\
 	src/generated/Tree_visitor.h
+
+strangeparsingdir = $(pkgincludedir)/parsing
+strangeparsing_HEADERS =				\
+	src/parsing/parse.h
 
 strangeprocessastdir = $(pkgincludedir)/process_ast
 strangeprocessast_HEADERS =					\
@@ -162,7 +166,7 @@ PLUGIN_LDFLAGS = -module -avoid-version
 
 nobase_pkglib_LTLIBRARIES += plugins/tests/canonical_unparser.la
 plugins_tests_canonical_unparser_la_SOURCES = plugins/tests/canonical_unparser.cpp
-plugins_tests_canonical_unparser_la_LDFLAGS = -module -avoid-version 
+plugins_tests_canonical_unparser_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 
 nobase_pkglib_LTLIBRARIES += plugins/tests/cloning.la
 plugins_tests_cloning_la_SOURCES = plugins/tests/cloning.cpp

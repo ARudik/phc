@@ -8,7 +8,7 @@
 #ifndef PHC_REMOVE_CONCAT_NULL
 #define PHC_REMOVE_CONCAT_NULL
 
-#include "generated/Tree_transform.h"
+#include "Tree_transform.h"
 
 class Remove_concat_null : public Tree_transform
 {

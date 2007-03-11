@@ -12,7 +12,7 @@
 #ifndef PHC_PARSE
 #define PHC_PARSE
 
-#include "generated/ast.h"
+#include "ast.h"
 
 /*
  * Parse the specified file. Searches for the file in the current working

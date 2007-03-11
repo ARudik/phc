@@ -8,7 +8,7 @@
 #ifndef PHC_PHP_CONTEXT
 #define PHC_PHP_CONTEXT
 
-#include "generated/ast.h"
+#include "ast.h"
 #include "lib/String.h"
 #include "lib/List.h"
 

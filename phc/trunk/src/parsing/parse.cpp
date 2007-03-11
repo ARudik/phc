@@ -11,8 +11,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "parse.h"
-#include "generated/cmdline.h"
-#include "generated/php_parser.tab.hpp"
+#include "cmdline.h"
+#include "php_parser.tab.hpp"
 #include "parsing/XML_parser.h"
 #include "parsing/PHP_context.h"
 #include "process_ast/Invocation_targets.h"

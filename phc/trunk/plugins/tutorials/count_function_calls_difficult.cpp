@@ -1,4 +1,9 @@
-#include "generated/ast.h"
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ */
+
+#include "ast.h"
 
 extern "C" void process_ast(AST_php_script* php_script)
 {

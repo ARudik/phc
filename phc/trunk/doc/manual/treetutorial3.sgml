@@ -106,7 +106,7 @@ would be useful, anyway.) </para>
 
 <para> So, we need to write our transformation using the
 <code>Tree_transform</code> API, defined in
-<filename>generated/Tree_transform.h</filename>. Restructuring the class above
+<filename>Tree_transform.h</filename>. Restructuring the class above
 yields </para>
 
 <programlisting>
@@ -128,7 +128,7 @@ yields </para>
 inherit from a different class, and <code>pre_bin_op</code> now has a return
 value, which is the node that will replace <code>*in</code>. If you check the
 default implementation of <code>pre_bin_op</code> in
-<filename>generated/Tree_transform.cpp</filename>, you'll find: </para>
+<filename>Tree_transform.cpp</filename>, you'll find: </para>
 
 <programlisting>
 AST_expr* Tree_transform::pre_bin_op(AST_bin_op* in)

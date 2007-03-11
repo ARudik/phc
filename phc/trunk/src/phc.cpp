@@ -13,7 +13,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <ltdl.h>
-#include "generated/cmdline.h"
+#include "cmdline.h"
 #include "process_ast/process_ast.h"
 #include "codegen/Generate_C.h"
 #include "codegen/Prep.h"
@@ -21,7 +21,7 @@
 #include "process_ast/Zend_style_unparser.h"
 #include "process_ast/XML_unparser.h"
 #include "process_ast/DOT_unparser.h"
-#include "generated/ast.h"
+#include "ast.h"
 #include "parsing/parse.h"
 
 using namespace std;

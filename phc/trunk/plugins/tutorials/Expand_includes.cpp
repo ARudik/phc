@@ -1,5 +1,10 @@
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ */
+
 #include <iostream>
-#include "generated/Tree_transform.h"
+#include "Tree_transform.h"
 #include "parsing/parse.h"
 
 class Expand_includes : public Tree_transform

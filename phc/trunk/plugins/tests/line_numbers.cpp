@@ -5,7 +5,7 @@
  * Printout all the tokens with their line numbers.
  */
 
-#include "generated/Tree_visitor.h"
+#include "Tree_visitor.h"
 #include "process_ast/PHP_unparser.h"
 
 class Print_line_numbers : public Tree_visitor

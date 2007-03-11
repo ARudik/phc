@@ -51,10 +51,11 @@ host_triplet = @host@
 bin_PROGRAMS = src/phc$(EXEEXT)
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(strangelib_HEADERS) $(strangephc_HEADERS) \
-	$(strangeprocessast_HEADERS) $(top_srcdir)/configure ChangeLog \
-	config/config.guess config/config.sub config/depcomp \
-	config/install-sh config/ltmain.sh config/missing
+	$(strangelib_HEADERS) $(strangeparsing_HEADERS) \
+	$(strangephc_HEADERS) $(strangeprocessast_HEADERS) \
+	$(top_srcdir)/configure ChangeLog config/config.guess \
+	config/config.sub config/depcomp config/install-sh \
+	config/ltmain.sh config/missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -75,7 +76,7 @@ am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(pkglibdir)" "$(DESTDIR)$(bindir)" \
 	"$(DESTDIR)$(bindir)" "$(DESTDIR)$(libexecdir)" \
 	"$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(strangelibdir)" \
-	"$(DESTDIR)$(strangephcdir)" \
+	"$(DESTDIR)$(strangeparsingdir)" "$(DESTDIR)$(strangephcdir)" \
 	"$(DESTDIR)$(strangeprocessastdir)"
 nobase_pkglibLTLIBRARIES_INSTALL = $(install_sh) -c
 LTLIBRARIES = $(nobase_pkglib_LTLIBRARIES)
@@ -245,10 +246,11 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 pkgdataDATA_INSTALL = $(INSTALL_DATA)
 DATA = $(pkgdata_DATA)
 strangelibHEADERS_INSTALL = $(INSTALL_HEADER)
+strangeparsingHEADERS_INSTALL = $(INSTALL_HEADER)
 strangephcHEADERS_INSTALL = $(INSTALL_HEADER)
 strangeprocessastHEADERS_INSTALL = $(INSTALL_HEADER)
-HEADERS = $(strangelib_HEADERS) $(strangephc_HEADERS) \
-	$(strangeprocessast_HEADERS)
+HEADERS = $(strangelib_HEADERS) $(strangeparsing_HEADERS) \
+	$(strangephc_HEADERS) $(strangeprocessast_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = $(SUBDIRS)
@@ -390,6 +392,7 @@ SUBDIRS = libltdl
 # Note the preprocessor supports -Wall, so we put that here, rather than a seperate CXX_FLAGS
 AM_CPPFLAGS = \
 	$(LTDLINCL) -I$(srcdir)/src -I$(srcdir)/3rdparty/getopt -I$(srcdir)/3rdparty/flex \
+	-I$(srcdir)/src/generated \
 	-DDATADIR=\"$(datadir)\" -DPKGLIBDIR=\"$(pkglibdir)\" -Wall
 
 
@@ -500,11 +503,14 @@ BUILT_SOURCES = \
 #   Tree_visitor.h)
 strangephcdir = $(pkgincludedir)
 strangephc_HEADERS = \
-	src/generated/ast.h					\
 	config.h									\
-	src/parsing/parse.h					\
+	src/generated/ast.h					\
 	src/generated/Tree_transform.h	\
 	src/generated/Tree_visitor.h
+
+strangeparsingdir = $(pkgincludedir)/parsing
+strangeparsing_HEADERS = \
+	src/parsing/parse.h
 
 strangeprocessastdir = $(pkgincludedir)/process_ast
 strangeprocessast_HEADERS = \
@@ -544,7 +550,7 @@ nobase_pkglib_LTLIBRARIES = plugins/tests/canonical_unparser.la \
 	plugins/tutorials/show_traversal_order.la
 PLUGIN_LDFLAGS = -module -avoid-version
 plugins_tests_canonical_unparser_la_SOURCES = plugins/tests/canonical_unparser.cpp
-plugins_tests_canonical_unparser_la_LDFLAGS = -module -avoid-version 
+plugins_tests_canonical_unparser_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tests_cloning_la_SOURCES = plugins/tests/cloning.cpp
 plugins_tests_cloning_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 plugins_tests_linear_la_SOURCES = plugins/tests/linear.cpp
@@ -1582,6 +1588,23 @@ uninstall-strangelibHEADERS:
 	  echo " rm -f '$(DESTDIR)$(strangelibdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(strangelibdir)/$$f"; \
 	done
+install-strangeparsingHEADERS: $(strangeparsing_HEADERS)
+	@$(NORMAL_INSTALL)
+	test -z "$(strangeparsingdir)" || $(mkdir_p) "$(DESTDIR)$(strangeparsingdir)"
+	@list='$(strangeparsing_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(strangeparsingHEADERS_INSTALL) '$$d$$p' '$(DESTDIR)$(strangeparsingdir)/$$f'"; \
+	  $(strangeparsingHEADERS_INSTALL) "$$d$$p" "$(DESTDIR)$(strangeparsingdir)/$$f"; \
+	done
+
+uninstall-strangeparsingHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(strangeparsing_HEADERS)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(strangeparsingdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(strangeparsingdir)/$$f"; \
+	done
 install-strangephcHEADERS: $(strangephc_HEADERS)
 	@$(NORMAL_INSTALL)
 	test -z "$(strangephcdir)" || $(mkdir_p) "$(DESTDIR)$(strangephcdir)"
@@ -1899,7 +1922,7 @@ all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(DATA) \
 		$(HEADERS) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(pkglibdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(strangelibdir)" "$(DESTDIR)$(strangephcdir)" "$(DESTDIR)$(strangeprocessastdir)"; do \
+	for dir in "$(DESTDIR)$(pkglibdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(strangelibdir)" "$(DESTDIR)$(strangeparsingdir)" "$(DESTDIR)$(strangephcdir)" "$(DESTDIR)$(strangeprocessastdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -1959,7 +1982,8 @@ info: info-recursive
 info-am:
 
 install-data-am: install-pkgdataDATA install-strangelibHEADERS \
-	install-strangephcHEADERS install-strangeprocessastHEADERS
+	install-strangeparsingHEADERS install-strangephcHEADERS \
+	install-strangeprocessastHEADERS
 
 install-exec-am: install-binPROGRAMS install-binSCRIPTS \
 	install-libexecSCRIPTS install-nobase_pkglibLTLIBRARIES
@@ -1993,8 +2017,8 @@ ps-am:
 uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 	uninstall-info-am uninstall-libexecSCRIPTS \
 	uninstall-nobase_pkglibLTLIBRARIES uninstall-pkgdataDATA \
-	uninstall-strangelibHEADERS uninstall-strangephcHEADERS \
-	uninstall-strangeprocessastHEADERS
+	uninstall-strangelibHEADERS uninstall-strangeparsingHEADERS \
+	uninstall-strangephcHEADERS uninstall-strangeprocessastHEADERS
 
 uninstall-info: uninstall-info-recursive
 
@@ -2011,17 +2035,19 @@ uninstall-info: uninstall-info-recursive
 	install-data-am install-exec install-exec-am install-info \
 	install-info-am install-libexecSCRIPTS install-man \
 	install-nobase_pkglibLTLIBRARIES install-pkgdataDATA \
-	install-strangelibHEADERS install-strangephcHEADERS \
-	install-strangeprocessastHEADERS install-strip installcheck \
-	installcheck-am installcheck-local installdirs installdirs-am \
-	maintainer-clean maintainer-clean-generic \
-	maintainer-clean-recursive mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
-	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
+	install-strangelibHEADERS install-strangeparsingHEADERS \
+	install-strangephcHEADERS install-strangeprocessastHEADERS \
+	install-strip installcheck installcheck-am installcheck-local \
+	installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic maintainer-clean-recursive \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool mostlyclean-recursive pdf pdf-am ps ps-am \
+	tags tags-recursive uninstall uninstall-am \
 	uninstall-binPROGRAMS uninstall-binSCRIPTS uninstall-info-am \
 	uninstall-libexecSCRIPTS uninstall-nobase_pkglibLTLIBRARIES \
 	uninstall-pkgdataDATA uninstall-strangelibHEADERS \
-	uninstall-strangephcHEADERS uninstall-strangeprocessastHEADERS
+	uninstall-strangeparsingHEADERS uninstall-strangephcHEADERS \
+	uninstall-strangeprocessastHEADERS
 
 
 # - In order to have separate build directories (aka VPATH), we would prepend

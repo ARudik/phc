@@ -8,7 +8,7 @@
 #ifndef PHC_PHP_UNPARSER
 #define PHC_PHP_UNPARSER
 
-#include "generated/Tree_visitor.h"
+#include "Tree_visitor.h"
 
 class PHP_unparser : public virtual Tree_visitor
 {

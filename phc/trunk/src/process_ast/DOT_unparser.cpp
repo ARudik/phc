@@ -8,7 +8,7 @@
 #include <iostream>
 #include "lib/demangle.h"
 #include "DOT_unparser.h"
-#include "generated/cmdline.h"
+#include "cmdline.h"
 
 using namespace std;
 

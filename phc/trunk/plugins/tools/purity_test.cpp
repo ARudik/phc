@@ -6,7 +6,7 @@
  */
 
 
-#include "generated/Tree_visitor.h"
+#include "Tree_visitor.h"
 #include "process_ast/XML_unparser.h"
 #include "process_ast/PHP_unparser.h"
 #include "lib/List.h"

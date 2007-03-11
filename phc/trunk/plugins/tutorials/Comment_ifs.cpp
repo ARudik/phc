@@ -1,4 +1,11 @@
-#include "generated/Tree_visitor.h"
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Add a TODO comment in empty if statement bodies.
+ */
+
+#include "Tree_visitor.h"
 
 class Comment_ifs : public Tree_visitor
 {

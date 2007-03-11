@@ -38,7 +38,7 @@
 	 * List of reserved keywords 
 	 */
 	 
-	#include "generated/php_parser.tab.hpp"
+	#include "php_parser.tab.hpp"
 #line 11 "src/generated_src/php.gperf"
 struct keyword { char* name; int token; };
 #include <string.h>

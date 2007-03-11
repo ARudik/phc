@@ -8,7 +8,7 @@
 #include <iostream>
 #include <iomanip> 
 #include "PHP_unparser.h" 
-#include "generated/cmdline.h"
+#include "cmdline.h"
 
 extern struct gengetopt_args_info args_info;
 

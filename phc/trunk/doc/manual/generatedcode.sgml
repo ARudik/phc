@@ -196,7 +196,7 @@ type would probably be <code>AST_foo</code>; in some cases,
 the section <xref linkend="contextresolution" endterm="contextresolution.title"> in
 the grammar formalism for details; here we consider the programmer's
 perspective only. The exact signatures for a particular class can always be
-found in <filename>generated/ast.h</filename>. </para>
+found in <filename>ast.h</filename>. </para>
 
 <para> As with the tree visitor API, <code>transform</code> calls
 <code>pre_transform</code>, <code>transform_children</code> and

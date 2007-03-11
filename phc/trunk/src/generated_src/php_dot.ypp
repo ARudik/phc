@@ -8,8 +8,8 @@
 %{
 	#include <assert.h>
 	#include <typeinfo>
-	#include "generated/ast.h"
-	#include "generated/cmdline.h"
+	#include "ast.h"
+	#include "cmdline.h"
 	#include "lib/Integer.h"
 	#include "lib/String.h"
 	#include "lib/error.h"

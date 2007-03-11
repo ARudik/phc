@@ -1,4 +1,9 @@
-#include "generated/ast.h"
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ */
+
+#include "ast.h"
 #include <iostream>
 
 using namespace std;

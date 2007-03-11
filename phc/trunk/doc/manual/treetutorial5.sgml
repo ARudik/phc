@@ -79,7 +79,7 @@ for visiting all the children of the node. The default implementation for
 </programlisting>
 
 <para> (you can find this definition in
-<filename>generated/Tree_visitor.cpp</filename>). If you want to change the
+<filename>Tree_visitor.cpp</filename>). If you want to change the
 order in which the children of a node are visited, entirely avoid visiting some
 children, or simply execute a piece of code in between two children, this is
 the method you will need to modify. </para>

@@ -1,4 +1,9 @@
-#include "generated/Tree_visitor.h"
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ */
+
+#include "Tree_visitor.h"
 
 class InsertDB : public Tree_visitor
 {

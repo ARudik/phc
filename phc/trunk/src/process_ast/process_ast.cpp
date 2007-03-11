@@ -5,7 +5,7 @@
  * User-defined tree processing
  */
 
-#include "generated/ast.h"
+#include "ast.h"
 
 void process_ast(AST_php_script* php_script)
 {
