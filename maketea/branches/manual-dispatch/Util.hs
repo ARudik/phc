@@ -11,6 +11,13 @@ elim :: (forall a. t a -> b) -> Exists t -> b
 elim f (Exists t) = f t
 
 {-
+ - Various
+ -}
+
+implies :: (a -> Bool) -> (a -> Bool) -> a -> Bool
+f `implies` g = \a -> not (f a) || g a
+
+{-
  - Monadic operators
  -}
 

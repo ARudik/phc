@@ -41,9 +41,10 @@ transformClass = do
  -}
 
 transform :: Term -> MakeTeaMonad Member
-transform t@(l,s,m) | isVector m = do
+transform t@(Term l s m) | isVector m = do
 	tType <- termToType t
-	let sig = (tType ++ "*", termToTransform t, [tType ++ "* in"])
+	let decl = (tType ++ "*", termToTransform t)
+	let args = [(tType ++ "*", "in")]
 	let body = [
 		  tType ++ "::const_iterator i;"
 		, tType ++ "* out1 = new " ++ tType ++ ";"
@@ -58,10 +59,11 @@ transform t@(l,s,m) | isVector m = do
 		, ""
 		, "return out2;"
 		]
-	return (Method sig body)
-transform t@(l,s,m) | not (isVector m) = do
+	return (Method decl args body)
+transform t@(Term l s m) | not (isVector m) = do
 	tType <- termToType t
-	let sig = (tType ++ "*", termToTransform t, [tType ++ "* in"])
+	let decl = (tType ++ "*", termToTransform t)
+	let args = [(tType ++ "*", "in")]
 	let body =  [
 		  tType ++ "* out;"
 		, ""
@@ -71,7 +73,7 @@ transform t@(l,s,m) | not (isVector m) = do
 		, ""
 		, "return out;"
 		]
-	return (Method sig body)
+	return (Method decl args body)
 
 ppAbstract :: String -> NonTerminal -> MakeTeaMonad Member 
 ppAbstract pp nt = 
@@ -84,16 +86,18 @@ ppAbstract pp nt =
 		if isVector m 
 			then do
 				let outType = "list<" ++ cn ++ "*>*"
-				let sig = ("void", fnName, [inType ++ " in", outType ++ " out"])
+				let decl = ("void", fnName)
+				let args = [(inType, "in"), (outType, "out")]
 				cases <- concatMapM listCase conc	
 				let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-				return $ Method sig body 
+				return $ Method decl args body 
 			else do
 				let outType = cn ++ "*"
-				let sig = (outType, fnName, [inType ++ " in"])
+				let decl = (outType, fnName)
+				let args = [(inType, "in")]
 				cases <- concatMapM nonListCase conc	
 				let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-				return $ Method sig body; 
+				return $ Method decl args body 
 	where
 		nonListCase s = do
 			cid <- findClassID s
@@ -106,7 +110,7 @@ ppAbstract pp nt =
 			cid <- findClassID s
 			cn <- symbolToClassName s
 			(_,s',m) <- findContext s
-			let t' = (undefined, s', m)
+			let t' = Term undefined s' m
 			tType' <- termToType t'
 			-- Context for the symbol may be more restrictive
 			if isVector m 
@@ -132,11 +136,12 @@ chAbstract :: NonTerminal -> MakeTeaMonad Member
 chAbstract nt = 
 	do 
 		cn <- symbolToClassName (NT nt)
-		let sig = ("void", "children_" ++ nt, [cn ++ "* in"])
+		let decl = ("void", "children_" ++ nt)
+		let args = [(cn ++ "*", "in")]
 		conc <- concreteInstances (NT nt)
 		cases <- concatMapM switchcase conc	
 		let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-		return (Method sig body)
+		return (Method decl args body)
 	where
 		switchcase s = do
 			cid <- findClassID s
@@ -153,12 +158,13 @@ chAbstract nt =
 chConcrete :: Rule Conj -> MakeTeaMonad Member
 chConcrete (Conj h ts) = do
 	cn <- symbolToClassName (NT h)
-	let sig = ("void", "children_" ++ h, [cn ++ "* in"])
+	let decl = ("void", "children_" ++ h)
+	let args = [(cn ++ "*", "in")]
 	let f t = "in->" ++ termToVarName t ++ " = " ++ termToTransform t ++ "(in->" ++ termToVarName t ++ ");"
-	return (Method sig (map f ts))
+	return (Method decl args (map f ts))
 
 termToTransform :: Term -> Name
-termToTransform (_,s,m) 
+termToTransform (Term _ s m) 
 	| isVector m = "transform_" ++ symbolToVarName s ++ "_list"
 	| otherwise = "transform_" ++ symbolToVarName s
 
@@ -172,9 +178,11 @@ ppConcrete pp s = do
 	if isVector m 
 		then do
 			let outType = "list<" ++ cn' ++ "*>*"
-			let sig = ("void", fnName, [inType ++ " in", outType ++ " out"])
-			return $ Method sig ["out->push_back(in);"]
+			let decl = ("void", fnName)
+			let args = [(inType, "in"), (outType, "out")]
+			return $ Method decl args ["out->push_back(in);"]
 		else do
 			let outType = cn' ++ "*"
-			let sig = (outType, fnName, [inType ++ " in"])
-			return $ Method sig ["return in;"]
+			let decl = (outType, fnName)
+			let args = [(inType, "in")]
+			return $ Method decl args ["return in;"]

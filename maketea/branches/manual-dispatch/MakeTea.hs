@@ -7,9 +7,12 @@ import MakeTeaMonad
 import BasicClasses
 import Cpp
 import TransformAPI
+import PrettyPrinter
 
-maketea :: String -> Grammar -> IO ()
-maketea prefix grammar = do
+maketea :: String -> Grammar -> [Include] -> [CppClass] -> IO ()
+maketea prefix grammar includes mixin = 
+	print mixin 
+	{- do
 	let (classes, transform) = flip evalState (initState (prefix ++ "_") grammar) $ do
 		contextResolution
 		createBasicClasses
@@ -35,4 +38,4 @@ maketea prefix grammar = do
 		showClassHeader transform
 	writeFile (prefix ++ "_transform.cpp") $
 		"#include \"" ++ prefix ++ "_transform.h\"\n\n" ++ 
-		showClassImplementation transform
+		showClassImplementation transform -}

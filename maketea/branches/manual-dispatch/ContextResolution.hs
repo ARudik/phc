@@ -84,6 +84,6 @@ initContexts :: Rule Conj -> MakeTeaMonad [Context]
 initContexts (Conj h ts) = concatMapM f ts
 	where
 		f :: Term -> MakeTeaMonad [Context]
-		f (_,t,m) = do 
+		f (Term _ t m) = do 
 		 	is <- allInstances t	
 			return (map (\i -> (i,t,m)) is)

@@ -18,5 +18,5 @@ main = do
 	case parseResult of 
 		Left parseError -> do
 			print parseError
-		Right grammar ->
-			maketea prefix grammar
+		Right (grammar, includes, mixin) ->
+			maketea prefix grammar includes mixin

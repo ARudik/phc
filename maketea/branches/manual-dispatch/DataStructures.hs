@@ -15,16 +15,20 @@ data Rule :: * -> * where
 	Disj :: NonTerminal -> [Symbol] -> Rule Disj
 	Conj :: NonTerminal -> [Term] -> Rule Conj
 
-data Symbol = NT NonTerminal deriving (Eq,Ord)
-type Term = (Label, Symbol, Multiplicity)
+data Symbol = NT NonTerminal | T Terminal CType | M Marker deriving (Eq,Ord)
+data Term = Term Label Symbol Multiplicity deriving Eq
 type Label = Maybe String
 data Multiplicity = Single | Optional | Vector | VectorOpt | OptVector deriving (Eq)
 type NonTerminal = String
+type Terminal = String
 type Context = (Symbol, Symbol, Multiplicity)
+type Marker = String
 
 {-
  - C++ classes
  -}
+
+type Include = String
 
 data CppClass = CppClass {
 	  name :: Name 
@@ -35,11 +39,11 @@ data CppClass = CppClass {
 	}
 data Section = Section Access [Member]
 data Access = Private | Protected | Public
-data Member = Attribute String | Method Sig Body | PureVirtual Sig
-type Sig = (ReturnType, Name, [Arg])
-type ReturnType = String
-type Arg = String
+data Member = Attribute Decl | Method Decl [Arg] Body | PureVirtual Decl [Arg] 
+type Decl = (CType, Name)
+type Arg = Decl 
 type Body = [String]
+type CType = String
 type Name = String  
 
 {-
