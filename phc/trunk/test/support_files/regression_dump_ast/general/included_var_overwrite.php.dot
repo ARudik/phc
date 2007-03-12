@@ -69,34 +69,36 @@ node_38 -> node_39;
 node_30 -> node_38;
 node_30 -> node_31;
 node_29 -> node_30;
+node_40 [label="AST_nop (6)"];
+node_17 -> node_40;
 node_17 -> node_29;
 node_17 -> node_18;
 node_10 -> node_17;
 node_10 -> node_11;
-node_40 [label="AST_attribute"];
-node_41 [label="AST_attr_mod"];
-node_42 [label="is_static", shape=plaintext]
+node_41 [label="AST_attribute"];
+node_42 [label="AST_attr_mod"];
+node_43 [label="is_static", shape=plaintext]
+node_42 -> node_43;
+node_44 [label="Token_variable_name"];
+node_45 [label="a1", shape=box]
+node_44 -> node_45;
+node_46 [label="NULL\n(AST_expr)", shape=plaintext]
+node_41 -> node_46;
+node_41 -> node_44;
 node_41 -> node_42;
-node_43 [label="Token_variable_name"];
-node_44 [label="a1", shape=box]
-node_43 -> node_44;
-node_45 [label="NULL\n(AST_expr)", shape=plaintext]
-node_40 -> node_45;
-node_40 -> node_43;
-node_40 -> node_41;
-node_46 [label="AST_attribute"];
-node_47 [label="AST_attr_mod"];
-node_48 [label="is_static", shape=plaintext]
+node_47 [label="AST_attribute"];
+node_48 [label="AST_attr_mod"];
+node_49 [label="is_static", shape=plaintext]
+node_48 -> node_49;
+node_50 [label="Token_variable_name"];
+node_51 [label="a2", shape=box]
+node_50 -> node_51;
+node_52 [label="NULL\n(AST_expr)", shape=plaintext]
+node_47 -> node_52;
+node_47 -> node_50;
 node_47 -> node_48;
-node_49 [label="Token_variable_name"];
-node_50 [label="a2", shape=box]
-node_49 -> node_50;
-node_51 [label="NULL\n(AST_expr)", shape=plaintext]
-node_46 -> node_51;
-node_46 -> node_49;
-node_46 -> node_47;
-node_9 -> node_46;
-node_9 -> node_40;
+node_9 -> node_47;
+node_9 -> node_41;
 node_9 -> node_10;
 node_3 -> node_9;
 node_3 -> node_8;

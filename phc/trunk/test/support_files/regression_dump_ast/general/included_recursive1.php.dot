@@ -154,6 +154,8 @@ node_70 -> node_75;
 node_70 -> node_73;
 node_70 -> node_71;
 node_69 -> node_70;
+node_84 [label="AST_nop (9)"];
+node_17 -> node_84;
 node_17 -> node_69;
 node_17 -> node_59;
 node_17 -> node_44;
@@ -161,18 +163,18 @@ node_17 -> node_33;
 node_17 -> node_18;
 node_10 -> node_17;
 node_10 -> node_11;
-node_84 [label="AST_attribute"];
-node_85 [label="AST_attr_mod"];
-node_86 [label="is_static", shape=plaintext]
+node_85 [label="AST_attribute"];
+node_86 [label="AST_attr_mod"];
+node_87 [label="is_static", shape=plaintext]
+node_86 -> node_87;
+node_88 [label="Token_variable_name"];
+node_89 [label="f", shape=box]
+node_88 -> node_89;
+node_90 [label="NULL\n(AST_expr)", shape=plaintext]
+node_85 -> node_90;
+node_85 -> node_88;
 node_85 -> node_86;
-node_87 [label="Token_variable_name"];
-node_88 [label="f", shape=box]
-node_87 -> node_88;
-node_89 [label="NULL\n(AST_expr)", shape=plaintext]
-node_84 -> node_89;
-node_84 -> node_87;
-node_84 -> node_85;
-node_9 -> node_84;
+node_9 -> node_85;
 node_9 -> node_10;
 node_3 -> node_9;
 node_3 -> node_8;

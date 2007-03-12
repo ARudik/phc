@@ -85,8 +85,8 @@ node_30 -> node_31;
 node_29 -> node_30;
 node_10 -> node_29;
 node_10 -> node_11;
-node_46 [label="AST_method (8)"];
-node_47 [label="AST_signature (11)"];
+node_46 [label="AST_method (7)"];
+node_47 [label="AST_signature (10)"];
 node_48 [label="AST_method_mod"];
 node_49 [label="is_static", shape=plaintext]
 node_48 -> node_49;
@@ -98,14 +98,14 @@ node_47 -> node_52;
 node_47 -> node_50;
 node_47 -> node_48;
 node_53 [label="AST_statement_list"];
-node_54 [label="AST_return (10)"];
+node_54 [label="AST_return (9)"];
 node_55 [label="NULL\n(AST_expr)", shape=plaintext]
 node_54 -> node_55;
 node_53 -> node_54;
 node_46 -> node_53;
 node_46 -> node_47;
-node_56 [label="AST_method (13)"];
-node_57 [label="AST_signature (16)"];
+node_56 [label="AST_method (11)"];
+node_57 [label="AST_signature (14)"];
 node_58 [label="AST_method_mod"];
 node_59 [label="is_static", shape=plaintext]
 node_58 -> node_59;
@@ -117,8 +117,8 @@ node_57 -> node_62;
 node_57 -> node_60;
 node_57 -> node_58;
 node_63 [label="AST_statement_list"];
-node_64 [label="AST_return (15)"];
-node_65 [label="AST_variable (15)"];
+node_64 [label="AST_return (13)"];
+node_65 [label="AST_variable (13)"];
 node_66 [label="NULL\n(AST_target)", shape=plaintext]
 node_67 [label="Token_variable_name"];
 node_68 [label="x", shape=box]
@@ -133,8 +133,8 @@ node_64 -> node_65;
 node_63 -> node_64;
 node_56 -> node_63;
 node_56 -> node_57;
-node_71 [label="AST_method (18)"];
-node_72 [label="AST_signature (18)"];
+node_71 [label="AST_method (15)"];
+node_72 [label="AST_signature (15)"];
 node_73 [label="AST_method_mod"];
 node_74 [label="is_static", shape=plaintext]
 node_73 -> node_74;
@@ -146,6 +146,8 @@ node_72 -> node_77;
 node_72 -> node_75;
 node_72 -> node_73;
 node_78 [label="AST_statement_list"];
+node_79 [label="AST_nop (15)"];
+node_78 -> node_79;
 node_71 -> node_78;
 node_71 -> node_72;
 node_9 -> node_71;

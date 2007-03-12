@@ -123,6 +123,8 @@ node_60 -> node_65;
 node_60 -> node_63;
 node_60 -> node_61;
 node_66 [label="AST_statement_list"];
+node_67 [label="AST_nop (19)"];
+node_66 -> node_67;
 node_59 -> node_66;
 node_59 -> node_60;
 node_37 -> node_59;

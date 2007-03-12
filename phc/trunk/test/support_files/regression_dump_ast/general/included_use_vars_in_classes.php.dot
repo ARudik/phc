@@ -313,8 +313,8 @@ node_155 -> node_156;
 node_157 [label="NULL\n(Token_class_name)", shape=plaintext]
 node_158 [label="Token_interface_name_list"];
 node_159 [label="AST_member_list"];
-node_160 [label="AST_method (29)"];
-node_161 [label="AST_signature (29)"];
+node_160 [label="AST_method (28)"];
+node_161 [label="AST_signature (28)"];
 node_162 [label="AST_method_mod"];
 node_163 [label="is_static", shape=plaintext]
 node_162 -> node_163;
@@ -326,6 +326,8 @@ node_161 -> node_166;
 node_161 -> node_164;
 node_161 -> node_162;
 node_167 [label="AST_statement_list"];
+node_168 [label="AST_nop (28)"];
+node_167 -> node_168;
 node_160 -> node_167;
 node_160 -> node_161;
 node_159 -> node_160;

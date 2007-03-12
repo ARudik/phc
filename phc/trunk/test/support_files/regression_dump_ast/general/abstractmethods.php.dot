@@ -31,8 +31,8 @@ node_12 -> node_13;
 node_18 [label="AST_statement_list"];
 node_11 -> node_18;
 node_11 -> node_12;
-node_19 [label="AST_method (8)"];
-node_20 [label="AST_signature (11)"];
+node_19 [label="AST_method (7)"];
+node_20 [label="AST_signature (10)"];
 node_21 [label="AST_method_mod"];
 node_22 [label="is_public", shape=plaintext]
 node_21 -> node_22;
@@ -44,8 +44,8 @@ node_20 -> node_25;
 node_20 -> node_23;
 node_20 -> node_21;
 node_26 [label="AST_statement_list"];
-node_27 [label="AST_eval_expr (10)"];
-node_28 [label="AST_method_invocation (10)"];
+node_27 [label="AST_eval_expr (9)"];
+node_28 [label="AST_method_invocation (9)"];
 node_29 [label="Token_class_name"];
 node_30 [label="%STDLIB%", shape=box]
 node_29 -> node_30;
@@ -54,7 +54,7 @@ node_32 [label="echo", shape=box]
 node_31 -> node_32;
 node_33 [label="AST_actual_parameter_list"];
 node_34 [label="AST_actual_parameter"];
-node_35 [label="Token_string (10)"];
+node_35 [label="Token_string (9)"];
 node_36 [label="Hi!", shape=box]
 node_35 -> node_36;
 node_34 -> node_35;
@@ -66,8 +66,8 @@ node_27 -> node_28;
 node_26 -> node_27;
 node_19 -> node_26;
 node_19 -> node_20;
-node_37 [label="AST_method (13)"];
-node_38 [label="AST_signature (13)"];
+node_37 [label="AST_method (12)"];
+node_38 [label="AST_signature (12)"];
 node_39 [label="AST_method_mod"];
 node_40 [label="is_abstract", shape=plaintext]
 node_39 -> node_40;
@@ -97,8 +97,8 @@ node_47 -> node_48;
 node_49 [label="NULL\n(Token_class_name)", shape=plaintext]
 node_50 [label="Token_interface_name_list"];
 node_51 [label="AST_member_list"];
-node_52 [label="AST_method (15)"];
-node_53 [label="AST_signature (15)"];
+node_52 [label="AST_method (14)"];
+node_53 [label="AST_signature (14)"];
 node_54 [label="AST_method_mod"];
 node_55 [label="is_static", shape=plaintext]
 node_54 -> node_55;

@@ -336,6 +336,8 @@ node_166 -> node_171;
 node_166 -> node_169;
 node_166 -> node_167;
 node_172 [label="AST_statement_list"];
+node_173 [label="AST_nop (22)"];
+node_172 -> node_173;
 node_165 -> node_172;
 node_165 -> node_166;
 node_9 -> node_165;

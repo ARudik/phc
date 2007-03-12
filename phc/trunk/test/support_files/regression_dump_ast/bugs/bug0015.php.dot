@@ -27,6 +27,8 @@ node_11 -> node_16;
 node_11 -> node_14;
 node_11 -> node_12;
 node_17 [label="AST_statement_list"];
+node_18 [label="AST_nop (4)"];
+node_17 -> node_18;
 node_10 -> node_17;
 node_10 -> node_11;
 node_9 -> node_10;

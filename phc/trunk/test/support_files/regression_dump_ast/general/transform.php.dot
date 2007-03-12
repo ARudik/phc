@@ -201,22 +201,24 @@ node_101 -> node_106;
 node_101 -> node_104;
 node_101 -> node_102;
 node_100 -> node_101;
+node_107 [label="AST_nop (27)"];
+node_86 -> node_107;
 node_86 -> node_100;
 node_86 -> node_87;
 node_79 -> node_86;
 node_79 -> node_80;
-node_107 [label="AST_attribute"];
-node_108 [label="AST_attr_mod"];
-node_109 [label="is_static", shape=plaintext]
+node_108 [label="AST_attribute"];
+node_109 [label="AST_attr_mod"];
+node_110 [label="is_static", shape=plaintext]
+node_109 -> node_110;
+node_111 [label="Token_variable_name"];
+node_112 [label="x", shape=box]
+node_111 -> node_112;
+node_113 [label="NULL\n(AST_expr)", shape=plaintext]
+node_108 -> node_113;
+node_108 -> node_111;
 node_108 -> node_109;
-node_110 [label="Token_variable_name"];
-node_111 [label="x", shape=box]
-node_110 -> node_111;
-node_112 [label="NULL\n(AST_expr)", shape=plaintext]
-node_107 -> node_112;
-node_107 -> node_110;
-node_107 -> node_108;
-node_60 -> node_107;
+node_60 -> node_108;
 node_60 -> node_79;
 node_60 -> node_61;
 node_54 -> node_60;

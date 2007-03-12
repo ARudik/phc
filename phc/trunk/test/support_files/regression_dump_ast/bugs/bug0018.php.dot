@@ -14,8 +14,8 @@ node_5 -> node_6;
 node_7 [label="NULL\n(Token_class_name)", shape=plaintext]
 node_8 [label="Token_interface_name_list"];
 node_9 [label="AST_member_list"];
-node_10 [label="AST_method (20)"];
-node_11 [label="AST_signature (20)"];
+node_10 [label="AST_method (19)"];
+node_11 [label="AST_signature (19)"];
 node_12 [label="AST_method_mod"];
 node_13 [label="is_static", shape=plaintext]
 node_12 -> node_13;
@@ -547,6 +547,8 @@ node_261 -> node_262;
 node_253 -> node_261;
 node_253 -> node_254;
 node_252 -> node_253;
+node_283 [label="AST_nop (19)"];
+node_17 -> node_283;
 node_17 -> node_252;
 node_17 -> node_226;
 node_17 -> node_200;
@@ -559,30 +561,30 @@ node_17 -> node_44;
 node_17 -> node_18;
 node_10 -> node_17;
 node_10 -> node_11;
-node_283 [label="AST_attribute"];
-node_284 [label="AST_attr_mod"];
-node_285 [label="is_static", shape=plaintext]
+node_284 [label="AST_attribute"];
+node_285 [label="AST_attr_mod"];
+node_286 [label="is_static", shape=plaintext]
+node_285 -> node_286;
+node_287 [label="Token_variable_name"];
+node_288 [label="a", shape=box]
+node_287 -> node_288;
+node_289 [label="NULL\n(AST_expr)", shape=plaintext]
+node_284 -> node_289;
+node_284 -> node_287;
 node_284 -> node_285;
-node_286 [label="Token_variable_name"];
-node_287 [label="a", shape=box]
-node_286 -> node_287;
-node_288 [label="NULL\n(AST_expr)", shape=plaintext]
-node_283 -> node_288;
-node_283 -> node_286;
-node_283 -> node_284;
-node_289 [label="AST_attribute"];
-node_290 [label="AST_attr_mod"];
-node_291 [label="is_static", shape=plaintext]
+node_290 [label="AST_attribute"];
+node_291 [label="AST_attr_mod"];
+node_292 [label="is_static", shape=plaintext]
+node_291 -> node_292;
+node_293 [label="Token_variable_name"];
+node_294 [label="b", shape=box]
+node_293 -> node_294;
+node_295 [label="NULL\n(AST_expr)", shape=plaintext]
+node_290 -> node_295;
+node_290 -> node_293;
 node_290 -> node_291;
-node_292 [label="Token_variable_name"];
-node_293 [label="b", shape=box]
-node_292 -> node_293;
-node_294 [label="NULL\n(AST_expr)", shape=plaintext]
-node_289 -> node_294;
-node_289 -> node_292;
-node_289 -> node_290;
-node_9 -> node_289;
-node_9 -> node_283;
+node_9 -> node_290;
+node_9 -> node_284;
 node_9 -> node_10;
 node_3 -> node_9;
 node_3 -> node_8;
