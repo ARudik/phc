@@ -7,6 +7,7 @@ module GrammarAnalysis where
 
 import Data.List
 import Data.Maybe
+import Control.Monad
 
 import DataStructures
 import MakeTeaMonad
@@ -139,6 +140,29 @@ concreteSymbols = do
 
 abstractSymbols :: MakeTeaMonad [Name NonTerminal]
 abstractSymbols = withDisj $ return . (map ruleHead)
+
+{-
+ - All used symbols; that is, all symbols that appear in the RHS of a
+ - conjunction 
+ -}
+
+usedSymbols :: MakeTeaMonad [Some Symbol]
+usedSymbols = withConj $ return . nub . concatMap f
+	where
+		f :: Rule Conj -> [Some Symbol]
+		f (Conj _ body) = [s | Exists (Term _ s _) <- body]
+
+{-
+ - All used abstract symbols
+ -}
+
+usedAbstractSymbols :: MakeTeaMonad [Name NonTerminal]
+usedAbstractSymbols 
+		= usedSymbols >>= filterM isAbstract . catMaybes . map (elim f)
+	where
+		f :: Symbol a -> Maybe (Name NonTerminal)
+		f (NonTerminal n) = Just n
+		f _ = Nothing
 
 {-
  - The head/body of a rule

@@ -41,18 +41,20 @@ runMakeTea prefix grammar includes mixin = do
 			createBasicClasses
 			withClasses $ setClasses . orderClasses
 			-- Extract relevant components
+			contexts <- withContexts return
 			classes <- withClasses return
 			transform <- transformClass
-			return (classes, transform)
+			return (contexts, classes, transform)
 		init = initState (prefix ++ "_") grammar
 		runMaketea = evalState maketea init
-		(classes, transform) = runMaketea
+		(contexts, classes, transform) = runMaketea
 		commonHeader = unlines [
 			  "#include <list>"
 			, "using namespace std;"
 			, ""
 			]
 	-- And create output
+	writeFile (prefix ++ "-contexts") $ unlines (map show contexts)
 	writeFile (prefix ++ ".h") $
 		commonHeader ++
 		unlines (map (\c -> "class " ++ c ++ ";") (map name classes)) ++

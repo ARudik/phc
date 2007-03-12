@@ -12,6 +12,7 @@ import DataStructures
 import GrammarAnalysis
 import MakeTeaMonad
 import Util
+import PrettyPrinter
 
 {-
  - Find context finds the context for a symbol in the grammar; if the symbol is
@@ -48,8 +49,7 @@ reduce [c] = return [c]
 reduce ((i1,t1,m1):(i2,t2,m2):cs)
 	| i1 == i2 = do
 		c <- resolve (i1,t1,m1) (i2,t2,m2)
-		cs' <- reduce cs
-		return (c:cs')
+		reduce (c:cs)
 	| otherwise = do
 		cs' <- reduce ((i2,t2,m2):cs)
 		return ((i1,t1,m1) : cs')

@@ -21,9 +21,10 @@ transformClass = do
 	c_pre <- mapM (ppConcrete "pre_") conc
 	c_post <- mapM (ppConcrete "post_") conc
 	c_children <- withConj $ mapM chConcrete
+	c_children_t <- withTokens $ mapM chToken
 	{- Internal methods -}
 	transforms <- withNonMarkers $ mapM transform . nubBy eqTermTransform
-	abs <- abstractSymbols
+	abs <- usedAbstractSymbols
 	a_pre <- mapM (ppAbstract "pre_") abs
 	a_post <- mapM (ppAbstract "post_") abs
 	a_children <- mapM chAbstract abs
@@ -33,6 +34,7 @@ transformClass = do
 		  	  Section Public c_pre
 			, Section Public c_post 
 			, Section Public c_children
+			, Section Public c_children_t
 			, Section Protected transforms
 			, Section Protected a_pre
 			, Section Protected a_post
@@ -51,28 +53,41 @@ eqTermTransform (Term _ s m) (Term _ s' m')
 
 transform :: Term NonMarker -> MakeTeaMonad Member
 transform t@(Term l s m) | isVector m = do
-	-- TODO: Even though we are transforming a list, the context for the list
-	-- elements is not necessarily a list
+	-- Even though we are transforming a list, the context for the list
+	-- elements is not necessarily a list. We don't need to create special
+	-- "local" lists here of the right type though; that will be done in the
+	-- pre_ and post_ transforms
+	(_,_,m') <- findContext s
 	tType <- toClassName t
 	let decl = (tType ++ "*", termToTransform t)
 	let args = [(tType ++ "*", "in")]
-	let body = [
+	let body = if isVector m' then [
 		  tType ++ "::const_iterator i;"
 		, tType ++ "* out1 = new " ++ tType ++ ";"
 		, tType ++ "* out2 = new " ++ tType ++ ";"
 		, ""
 		, "for(i = in->begin(); i != in->end(); i++)"
 		, "\tpre_" ++ toVarName s ++ "(*i, out1);"
-		] ++ (if isNonTerminal s then [
-			  "for(i = out1->begin(); i != out1->end(); i++)"
-			, "\tchildren_" ++ toVarName s ++ "(*i);"
-			] else []) 
-		  ++ [
-		  "for(i = out1->begin(); i != out1->end(); i++)"
+		, "for(i = out1->begin(); i != out1->end(); i++)"
+		, "\tchildren_" ++ toVarName s ++ "(*i);"
+		, "for(i = out1->begin(); i != out1->end(); i++)"
 		, "\tpost_" ++ toVarName s ++ "(*i, out2);"
 		, ""
 		, "return out2;"
-		]
+		] else [
+		  tType ++ "::const_iterator i;"
+		, tType ++ "* out1 = new " ++ tType ++ ";"
+		, tType ++ "* out2 = new " ++ tType ++ ";"
+		, ""
+		, "for(i = in->begin(); i != in->end(); i++)"
+		, "\tout1->push_back(pre_" ++ toVarName s ++ "(*i));"
+		, "for(i = out1->begin(); i != out1->end(); i++)"
+		, "\tchildren_" ++ toVarName s ++ "(*i);"
+		, "for(i = out1->begin(); i != out1->end(); i++)"
+		, "\tout2->push_back(post_" ++ toVarName s ++ "(*i));"
+		, ""
+		, "return out2;"
+		]	
 	return (Method [] decl args body)
 transform t@(Term l s m) | not (isVector m) = do
 	tType <- toClassName t
@@ -82,11 +97,8 @@ transform t@(Term l s m) | not (isVector m) = do
 		  tType ++ "* out;"
 		, ""
 		, "out = pre_" ++ toVarName s ++ "(in);"
-		] ++ (if isNonTerminal s then [ 
-			  "children_" ++ toVarName s ++ "(out);"
-			] else [])
-		  ++ [
-		  "out = post_" ++ toVarName s ++ "(out);"
+		, "children_" ++ toVarName s ++ "(out);"
+		, "out = post_" ++ toVarName s ++ "(out);"
 		, ""
 		, "return out;"
 		]
@@ -183,6 +195,13 @@ chConcrete (Conj h ts) = do
 		f :: Term NonMarker -> String
 		f t = "in->" ++ termToVarName t ++ " = " ++ termToTransform t ++ "(in->" ++ termToVarName t ++ ");"
 	return (Method [] decl args (map f (nonMarkers ts)))
+
+chToken :: Symbol Terminal -> MakeTeaMonad Member
+chToken t@(Terminal n _) = do
+	cn <- toClassName t
+	let decl = ("void", "children_" ++ toVarName t)
+	let args = [(cn ++ "*", "in")]
+	return (Method [] decl args [])
 
 termToTransform :: Term NonMarker -> Name Method
 termToTransform (Term _ s m) 
