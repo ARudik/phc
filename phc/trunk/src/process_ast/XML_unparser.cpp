@@ -16,9 +16,9 @@ using namespace std;
 extern struct gengetopt_args_info args_info;
 
 /* Dump the XML for anynode to stderr. A global function. */
-void xdebug (AST_node* in)
+void xdebug (AST_node* in, bool print_attrs = true)
 {
-	static XML_unparser *xup = new XML_unparser (cerr);
+	XML_unparser *xup = new XML_unparser (cerr, print_attrs);
 	in->visit (xup);
 }
 
@@ -47,7 +47,8 @@ bool XML_unparser::needs_encoding(String* str)
 	return false;
 }
 
-XML_unparser::XML_unparser(ostream& os) : os(os) 
+XML_unparser::XML_unparser(ostream& os, bool print_attrs)
+: os(os), print_attrs (print_attrs)
 {
 	indent = 0;
 }
@@ -75,105 +76,108 @@ void XML_unparser::pre_node(AST_node* in)
 	os << ">" << endl;
 	indent++;
 
-	if(in->attrs->size() == 0)
+	if (print_attrs)
 	{
-		print_indent();
-		os << "<attrs />" << endl;
-	}
-	else
-	{
-		print_indent();
-		os << "<attrs>" << endl;
-		indent++;
-
-		AttrMap::const_iterator i;
-		for(i = in->attrs->begin(); i != in->attrs->end(); i++)
+		if(in->attrs->size() == 0)
 		{
-			if((*i).first == "phc.line_number")
+			print_indent();
+			os << "<attrs />" << endl;
+		}
+		else
+		{
+			print_indent();
+			os << "<attrs>" << endl;
+			indent++;
+
+			AttrMap::const_iterator i;
+			for(i = in->attrs->begin(); i != in->attrs->end(); i++)
 			{
-				print_indent();
-				os << "<attr key=\"phc.line_number\">" << in->get_line_number() << "</attr>" << endl;
-			}
-			else if((*i).first == "phc.filename")
-			{
-				print_indent();
-				os << "<attr key=\"phc.filename\">" << *in->get_filename() << "</attr>" << endl;
-			}
-			else if((*i).first == "phc.comments")
-			{
-				print_indent();
-				os << "<attr key=\"phc.comments\">" << endl;
-				indent++;
-				
-				List<String*>::const_iterator j;
-				List<String*>* comments = dynamic_cast<List<String*>*>((*i).second);
-				for(j = comments->begin(); j != comments->end(); j++)
+				if((*i).first == "phc.line_number")
 				{
 					print_indent();
-					os << "<comment";
-					
-					if(needs_encoding(*j))
+					os << "<attr key=\"phc.line_number\">" << in->get_line_number() << "</attr>" << endl;
+				}
+				else if((*i).first == "phc.filename")
+				{
+					print_indent();
+					os << "<attr key=\"phc.filename\">" << *in->get_filename() << "</attr>" << endl;
+				}
+				else if((*i).first == "phc.comments")
+				{
+					print_indent();
+					os << "<attr key=\"phc.comments\">" << endl;
+					indent++;
+
+					List<String*>::const_iterator j;
+					List<String*>* comments = dynamic_cast<List<String*>*>((*i).second);
+					for(j = comments->begin(); j != comments->end(); j++)
 					{
-						os << " encoding=\"base64\">";
-						os << *base64_encode(*j);
-					}
-					else	
-					{
-						os << ">";
-						os << **j;
+						print_indent();
+						os << "<comment";
+
+						if(needs_encoding(*j))
+						{
+							os << " encoding=\"base64\">";
+							os << *base64_encode(*j);
+						}
+						else	
+						{
+							os << ">";
+							os << **j;
+						}
+
+						os << "</comment>" << endl;
 					}
 
-					os << "</comment>" << endl;
+					indent--;
+					print_indent();
+					os << "</attr>" << endl;
 				}
-				
-				indent--;
-				print_indent();
-				os << "</attr>" << endl;
-			}
-#define HANDLE_BOOLEAN(A)																										\
-			else if((*i).first == A)																							\
-			{																															\
-				print_indent();																									\
-				bool attr_true = in->attrs->is_true (A);																	\
-				os << "<attr key=\"" A "\">" << (attr_true ? "true" : "false") << "</attr>" << endl;		\
-			}
-#define HANDLE_STRING(A)																										\
-			else if((*i).first == A)																							\
-			{																															\
-				print_indent();																									\
-				String* string = in->attrs->get_string (A);																\
-				os << "<attr key=\"" A "\">" << *string << "</attr>" << endl;										\
-			}
-#define HANDLE_INT(A)																											\
-			else if((*i).first == A)																							\
-			{																															\
-				print_indent();																									\
-				Integer* integer = in->attrs->get_integer (A);															\
-				os << "<attr key=\"" A "\">" << integer->value () << "</attr>" << endl;							\
-			}
-			HANDLE_BOOLEAN ("phc.unparser.is_elseif")
-			HANDLE_BOOLEAN ("phc.unparser.needs_brackets")
-			HANDLE_BOOLEAN ("phc.unparser.needs_curlies")
-			HANDLE_BOOLEAN ("phc.unparser.is_global_stmt")
-			HANDLE_BOOLEAN ("phc.unparser.is_opeq")
-			HANDLE_STRING ("phc.generate_c.location")
-			HANDLE_BOOLEAN ("phc.generate_c.is_addr")
-			HANDLE_STRING ("phc.generate_c.hash")
-			HANDLE_STRING ("phc.generate_c.stridx")
-			HANDLE_INT ("phc.generate_c.strlen")
-			HANDLE_STRING ("phc.generate_c.zvalidx")
+#define HANDLE_BOOLEAN(A)																											\
+				else if((*i).first == A)																							\
+				{																															\
+					print_indent();																									\
+					bool attr_true = in->attrs->is_true (A);																	\
+					os << "<attr key=\"" A "\">" << (attr_true ? "true" : "false") << "</attr>" << endl;		\
+				}
+#define HANDLE_STRING(A)																											\
+				else if((*i).first == A)																							\
+				{																															\
+					print_indent();																									\
+					String* string = in->attrs->get_string (A);																\
+					os << "<attr key=\"" A "\">" << *string << "</attr>" << endl;										\
+				}
+#define HANDLE_INT(A)																												\
+				else if((*i).first == A)																							\
+				{																															\
+					print_indent();																									\
+					Integer* integer = in->attrs->get_integer (A);															\
+					os << "<attr key=\"" A "\">" << integer->value () << "</attr>" << endl;							\
+				}
+				HANDLE_BOOLEAN ("phc.unparser.is_elseif")
+				HANDLE_BOOLEAN ("phc.unparser.needs_brackets")
+				HANDLE_BOOLEAN ("phc.unparser.needs_curlies")
+				HANDLE_BOOLEAN ("phc.unparser.is_global_stmt")
+				HANDLE_BOOLEAN ("phc.unparser.is_opeq")
+				HANDLE_STRING ("phc.generate_c.location")
+				HANDLE_BOOLEAN ("phc.generate_c.is_addr")
+				HANDLE_STRING ("phc.generate_c.hash")
+				HANDLE_STRING ("phc.generate_c.stridx")
+				HANDLE_INT ("phc.generate_c.strlen")
+				HANDLE_STRING ("phc.generate_c.zvalidx")
 #undef HANDLE_BOOLEAN
 #undef HANDLE_STRING
 #undef HANDLE_INT
-			else
-			{
-				phc_warning(WARNING_UNKNOWN_ATTRIBUTE, NULL, 0, (*i).first.c_str());	
+				else
+				{
+					phc_warning(WARNING_UNKNOWN_ATTRIBUTE, NULL, 0, (*i).first.c_str());	
+				}
 			}
-		}
 
-		indent--;
-		print_indent();
-		os << "</attrs>" << endl;
+			indent--;
+			print_indent();
+			os << "</attrs>" << endl;
+		}
 	}
 }
 

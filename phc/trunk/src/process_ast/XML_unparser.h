@@ -15,12 +15,13 @@ class XML_unparser : public Visit_everything
 protected:
 	ostream& os;
 	int indent;
+	bool print_attrs;
 
 	void print_indent();
 	bool needs_encoding(String* str);
 
 public:
-	XML_unparser(ostream& os = cout); 
+	XML_unparser(ostream& os = cout, bool print_attrs = true); 
 	virtual ~XML_unparser();
 
 public:
