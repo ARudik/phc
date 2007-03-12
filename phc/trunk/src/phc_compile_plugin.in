@@ -12,7 +12,7 @@ then
 fi
 
 _INSTALL_DIR="@pkglibdir@"
-_INCLUDES="-I@includedir@"
+_INCLUDES="-I@includedir@/phc"
 
 if test "-$CFLAGS" = "-"
 then CFLAGS="@CFLAGS@"
