@@ -27,7 +27,7 @@ emptyClass n = do
 		  name = n
 		, comment = []
 		, extends = []
-		, sections = [Section Private [getID]]
+		, sections = [Section [] Private [getID]]
 		, classid = cid
 		, friends = []
 		}
@@ -37,7 +37,7 @@ emptyAbstractClass n = Class {
 		  name = n
 		, comment = []
 		, extends = []
-		, sections = [Section Private [getID]]
+		, sections = [Section [] Private [getID]]
 		, classid = 0
 		, friends = []
 		}

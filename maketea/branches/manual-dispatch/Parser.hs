@@ -52,9 +52,10 @@ classP =
 sectionP :: Parser Section
 sectionP = 
 	do
+		cmnt <- commentP
 		access <- accessP
 		members <- many memberP
-		return (Section access members)
+		return (Section cmnt access members)
 
 accessP :: Parser Access
 accessP = 

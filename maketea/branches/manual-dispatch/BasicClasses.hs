@@ -27,11 +27,11 @@ createClass (Disj c _) = do
 		  extends = inhn 
 		, friends = [prefix ++ "transform"]
 		}
-createClass (Conj c body) = do
+createClass r@(Conj c body) = do
 	inh <- directSuperclasses (Exists (NonTerminal c))
 	(cn:inhn) <- mapM (toClassName . NonTerminal) (c:inh)
 	fields <- mapM (elim createField) body 
-	let fieldSection = Section Public fields
+	let fieldSection = Section [show r] Public fields
 	c <- emptyClass cn
 	prefix <- withPrefix return
 	return $ c { 

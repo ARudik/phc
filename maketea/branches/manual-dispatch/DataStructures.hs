@@ -81,7 +81,7 @@ data Class = Class {
 	, classid :: Integer
 	, friends :: [Name Class]
 	}
-data Section = Section Access [Member]
+data Section = Section Comment Access [Member]
 data Access = Private | Protected | Public
 
 data Variable 

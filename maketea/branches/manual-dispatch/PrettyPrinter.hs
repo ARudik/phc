@@ -73,8 +73,8 @@ docExtends [] = empty
 docExtends cs = text " : " <> (commaSep $ map (\c -> text "virtual public" <+> text c) cs)
 
 docSectionHeader :: Section -> Doc
-docSectionHeader (Section _ []) = empty
-docSectionHeader (Section m ms) = docAccess m <> colon $+$ nest 4 (vcat (map docMemberSignature ms))
+docSectionHeader (Section _ _ []) = empty
+docSectionHeader (Section cmnt m ms) = docCmnt cmnt $+$ docAccess m <> colon $+$ nest 4 (vcat (map docMemberSignature ms))
 
 docMemberSignature :: Member -> Doc
 docMemberSignature (Attribute cmnt decl) = docCmnt cmnt $+$ 
@@ -104,7 +104,8 @@ showClassImplementation :: Class -> String
 showClassImplementation c = render . vcat $ map f (sections c)
 	where
 		f :: Section -> Doc
-		f (Section _ ms) = vcat $ map (docMethod (name c)) ms
+		f (Section cmnt _ ms) 
+			= docCmnt cmnt $+$ (vcat $ map (docMethod (name c)) ms)
 
 docMethod :: Name Class -> Member -> Doc
 docMethod cn (Method cmnt (ret,name) args body) = 
