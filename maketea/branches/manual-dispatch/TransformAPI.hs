@@ -1,6 +1,8 @@
 {-
  - maketea -- generate C++ AST infrastructure
  - (C) 2006-2007 Edsko de Vries and John Gilbert
+ -
+ - TODO: Deal with NULLs.
  -}
 
 module TransformAPI where
@@ -49,18 +51,38 @@ eqTermTransform (Term _ s m) (Term _ s' m')
 
 {-
  - Internal methods
+ -
+ - We create a "transform" method for every term t@(_,s,m) *that occurs*
+ - in the grammar. This has consequences for the possible shapes of the
+ - context (s,s',m') for s.
+ -
+ - First, we must have that s == s':
+ -
+ - * s' can never be more general than s, since there is an explicit
+ - occurence of s in the grammar.
+ - 
+ - * Then, s is either a concrete symbol (a terminal symbol or a
+ - non-terminal symbol defined by a conjunction) or an abstract symbol
+ - (a non-terminal symbol defined by a disjunction). 
+ - 
+ - * If s is a concrete symbol, the fact that there is an explicit
+ - occurence of s in the grammar means that we must have that s == s'.
+ - 
+ - * If s is an abstract symbol. If there are no terms (_,i,_) in the
+ - grammar, where i in an instance of s, the context for all instances i
+ - of s will be (i,s,_). If there *are* explicit references to instances
+ - of i in the grammar, than for those instances the context will be
+ - more restrictive -- *but* that will not affect the context for s
+ - itself! Therefore, also in this case, s == s'.
+ -
+ - It is however quite possible that m /= m' (we may have a list of
+ - Xs somewhere, but a single X somewhere else; the context for X will
+ - then be (X,_,Single), but we still need to be able to transform a
+ - list of Xs.
  -}
 
 transform :: Term NonMarker -> MakeTeaMonad Member
 transform t@(Term l s m) | isVector m = do
-	-- Even though we are transforming a list, the context for the list
-	-- elements is not necessarily a list. The context cannot be something more
-	-- restrictive though (the only way for it to be more restrictive is when s
-	-- is an abstract type, and there are explicit references to instances of s
-	-- in the grammar, but that will not affect the abstract type itself, only
-	-- the context for the more specific instances), nor more general (since t
-	-- appears in the grammar, the most general context cannot be more general
-	-- than t itself).
 	(_,_,m') <- findContext s
 	tType <- toClassName t
 	let decl = (tType ++ "*", termToTransform t)
