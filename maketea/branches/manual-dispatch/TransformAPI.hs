@@ -52,33 +52,35 @@ eqTermTransform (Term _ s m) (Term _ s' m')
 {-
  - Internal methods
  -
- - We create a "transform" method for every term t@(_,s,m) *that occurs*
- - in the grammar. This has consequences for the possible shapes of the
- - context (s,s',m') for s.
+ - We create a "transform" method for every term t@(_,s,m) *that occurs* in the
+ - grammar. This has consequences for the possible shapes of the context
+ - (s,s',m') for s.
  -
  - First, we must have that s == s':
  -
- - * s' can never be more general than s, since there is an explicit
- - occurence of s in the grammar.
+ - * s' can never be more general than s, since there is an explicit occurence
+ - of s in the grammar.
  - 
- - * Then, s is either a concrete symbol (a terminal symbol or a
- - non-terminal symbol defined by a conjunction) or an abstract symbol
- - (a non-terminal symbol defined by a disjunction). 
+ - * Then, s is either a concrete symbol (a terminal symbol or a non-terminal
+ - symbol defined by a conjunction) or an abstract symbol (a non-terminal
+ - symbol defined by a disjunction). 
  - 
- - * If s is a concrete symbol, the fact that there is an explicit
- - occurence of s in the grammar means that we must have that s == s'.
+ - * If s is a concrete symbol, the fact that there is an explicit occurence of
+ - s in the grammar means that we must have that s == s'.
  - 
- - * If s is an abstract symbol. If there are no terms (_,i,_) in the
- - grammar, where i in an instance of s, the context for all instances i
- - of s will be (i,s,_). If there *are* explicit references to instances
- - of i in the grammar, than for those instances the context will be
- - more restrictive -- *but* that will not affect the context for s
- - itself! Therefore, also in this case, s == s'.
+ - * If s is an abstract symbol. If there are no terms (_,i,_) in the grammar,
+ - where i in an instance of s, the context for all instances i of s will be
+ - (i,s,_). If there *are* explicit references to instances of i in the
+ - grammar, than for those instances the context will be more restrictive --
+ - *but* that will not affect the context for s itself! Therefore, also in this
+ - case, s == s'.
  -
- - It is however quite possible that m /= m' (we may have a list of
- - Xs somewhere, but a single X somewhere else; the context for X will
- - then be (X,_,Single), but we still need to be able to transform a
- - list of Xs.
+ - It is however quite possible that m /= m' (we may have a list of Xs
+ - somewhere, but a single X somewhere else; the context for X will then be
+ - (X,_,Single), but we still need to be able to transform a list of Xs. Of
+ - course, when (not (isVector m)), then we must have that (not (isVector m'))
+ - (if there is an explicit reference to a single X in the grammar, the context
+ - for must be (X,_,Single) or (X,_,Optional).
  -}
 
 transform :: Term NonMarker -> MakeTeaMonad Member
