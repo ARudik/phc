@@ -54,9 +54,13 @@ eqTermTransform (Term _ s m) (Term _ s' m')
 transform :: Term NonMarker -> MakeTeaMonad Member
 transform t@(Term l s m) | isVector m = do
 	-- Even though we are transforming a list, the context for the list
-	-- elements is not necessarily a list. We don't need to create special
-	-- "local" lists here of the right type though; that will be done in the
-	-- pre_ and post_ transforms
+	-- elements is not necessarily a list. The context cannot be something more
+	-- restrictive though (the only way for it to be more restrictive is when s
+	-- is an abstract type, and there are explicit references to instances of s
+	-- in the grammar, but that will not affect the abstract type itself, only
+	-- the context for the more specific instances), nor more general (since t
+	-- appears in the grammar, the most general context cannot be more general
+	-- than t itself).
 	(_,_,m') <- findContext s
 	tType <- toClassName t
 	let decl = (tType ++ "*", termToTransform t)
