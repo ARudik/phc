@@ -70,7 +70,7 @@ eqTermTransform (Term _ s m) (Term _ s' m')
  - 
  - * If s is an abstract symbol. If there are no terms (_,i,_) in the grammar,
  - where i in an instance of s, the context for all instances i of s will be
- - (i,s,_). If there *are* explicit references to instances of i in the
+ - (i,s,_). If there *are* explicit references to instances i of s in the
  - grammar, than for those instances the context will be more restrictive --
  - *but* that will not affect the context for s itself! Therefore, also in this
  - case, s == s'.
@@ -89,17 +89,20 @@ transform t@(Term l s m) | isVector m = do
 	tType <- toClassName t
 	let decl = (tType ++ "*", termToTransform t)
 	let args = [(tType ++ "*", "in")]
+	let checkInNull = ["if(in == NULL) return NULL;",""]
 	let body = if isVector m' then [
 		  tType ++ "::const_iterator i;"
 		, tType ++ "* out1 = new " ++ tType ++ ";"
 		, tType ++ "* out2 = new " ++ tType ++ ";"
 		, ""
 		, "for(i = in->begin(); i != in->end(); i++)"
-		, "\tpre_" ++ toVarName s ++ "(*i, out1);"
+		, "\tif(*i == NULL) out1->push_back(NULL);"
+		, "\telse pre_" ++ toVarName s ++ "(*i, out1);"
 		, "for(i = out1->begin(); i != out1->end(); i++)"
-		, "\tchildren_" ++ toVarName s ++ "(*i);"
+		, "\tif(*i != NULL) children_" ++ toVarName s ++ "(*i);"
 		, "for(i = out1->begin(); i != out1->end(); i++)"
-		, "\tpost_" ++ toVarName s ++ "(*i, out2);"
+		, "\tif(*i == NULL) out2->push_back(NULL);"
+		, "\telse post_" ++ toVarName s ++ "(*i, out2);"
 		, ""
 		, "return out2;"
 		] else [
@@ -108,25 +111,32 @@ transform t@(Term l s m) | isVector m = do
 		, tType ++ "* out2 = new " ++ tType ++ ";"
 		, ""
 		, "for(i = in->begin(); i != in->end(); i++)"
-		, "\tout1->push_back(pre_" ++ toVarName s ++ "(*i));"
+		, "\tif(*i == NULL) out1->push_back(NULL);"
+		, "\telse out1->push_back(pre_" ++ toVarName s ++ "(*i));"
 		, "for(i = out1->begin(); i != out1->end(); i++)"
-		, "\tchildren_" ++ toVarName s ++ "(*i);"
+		, "\tif(*i != NULL) children_" ++ toVarName s ++ "(*i);"
 		, "for(i = out1->begin(); i != out1->end(); i++)"
-		, "\tout2->push_back(post_" ++ toVarName s ++ "(*i));"
+		, "\tif(*i == NULL) out2->push_back(NULL);"
+		, "\telse out2->push_back(post_" ++ toVarName s ++ "(*i));"
 		, ""
 		, "return out2;"
 		]	
-	return (Method [] decl args body)
+	return (Method [] decl args (checkInNull ++ body))
 transform t@(Term l s m) | not (isVector m) = do
 	tType <- toClassName t
 	let decl = (tType ++ "*", termToTransform t)
 	let args = [(tType ++ "*", "in")]
 	let body =  [
-		  tType ++ "* out;"
+		  "if(in == NULL) return NULL;"
+		, ""
+		, tType ++ "* out;"
 		, ""
 		, "out = pre_" ++ toVarName s ++ "(in);"
-		, "children_" ++ toVarName s ++ "(out);"
-		, "out = post_" ++ toVarName s ++ "(out);"
+		, "if(out != NULL)"
+		, "{"
+		, "\tchildren_" ++ toVarName s ++ "(out);"
+		, "\tout = post_" ++ toVarName s ++ "(out);"
+		, "}"
 		, ""
 		, "return out;"
 		]

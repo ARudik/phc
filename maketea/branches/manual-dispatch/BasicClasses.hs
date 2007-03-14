@@ -56,8 +56,10 @@ createTokenClass t@(Terminal n ctype) = do
 	inhn <- mapM (toClassName . NonTerminal) inh
 	c <- emptyClass cn
 	prefix <- withPrefix return
+	let val = Attribute [] (ctype, "value")
 	return $ c {
 		  extends = inhn
 		, friends = [prefix ++ "transform"]
-		}
+		, sections = [Section [] Public [val]]
+}
 		
