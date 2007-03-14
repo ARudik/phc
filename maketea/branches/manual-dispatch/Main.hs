@@ -17,6 +17,7 @@ import BasicClasses
 import Cpp
 import TransformAPI
 import PrettyPrinter
+import Mixin
 
 main :: IO ()
 main = do
@@ -33,13 +34,14 @@ main = do
 			runMakeTea prefix grammar includes mixin
 
 runMakeTea :: String -> Grammar -> [Include] -> [Class] -> IO ()
-runMakeTea prefix grammar includes mixin = do 
+runMakeTea prefix grammar includes mixinCode = do 
 	--  
 	let 
 		maketea = do
 			contextResolution
 			createBasicClasses
-			withClasses $ setClasses . orderClasses
+			mixedIn <- withClasses $ mixin mixinCode
+			setClasses (orderClasses mixedIn)
 			-- Extract relevant components
 			contexts <- withContexts return
 			classes <- withClasses return
