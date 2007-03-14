@@ -20,10 +20,10 @@ instance Show (Rule a) where
 	show = showRule
 
 showRule :: Rule a -> String
-showRule (Disj nt ss) = nt ++ " ::= " ++ foldr1 f (map show ss) ++ ";"
+showRule (Disj nt ss) = show nt ++ " ::= " ++ foldr1 f (map show ss) ++ ";"
 	where
 		f x y = x ++ " | " ++ y
-showRule (Conj nt ts) = nt ++ " ::= " ++ foldr f "" (map show ts) ++ ";"
+showRule (Conj nt ts) = show nt ++ " ::= " ++ foldr f "" (map show ts) ++ ";"
 	where
 		f x y = x ++ " " ++ y
 

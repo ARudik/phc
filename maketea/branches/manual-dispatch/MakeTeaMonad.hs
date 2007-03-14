@@ -48,6 +48,12 @@ withContexts f = get >>= f . fromJust . contexts
 withPrefix :: (String -> MakeTeaMonad a) -> MakeTeaMonad a
 withPrefix f = get >>= f . prefix
 
+withSymbols :: ([Some Symbol] -> MakeTeaMonad a) -> MakeTeaMonad a
+withSymbols f = do
+	nts <- withGrammar $ return . map (Exists . NonTerminal . elim ruleHead)
+	ts <- withTokens $ return . (map Exists)
+	f (nts ++ ts)
+
 getNextClassID :: MakeTeaMonad Integer
 getNextClassID = do
 	s <- get
@@ -107,3 +113,7 @@ nonMarkers = catMaybes . map (elim f)
 		f :: Term a -> Maybe (Term NonMarker)
 		f t@(Term _ _ _) = Just t
 		f _ = Nothing
+
+ruleHead :: Rule a -> Name NonTerminal 
+ruleHead (Disj h _) = h
+ruleHead (Conj h _) = h

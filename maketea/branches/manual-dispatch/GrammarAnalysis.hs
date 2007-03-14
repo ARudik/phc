@@ -8,10 +8,12 @@ module GrammarAnalysis where
 import Data.List
 import Data.Maybe
 import Control.Monad
+import Data.Graph.Inductive
 
 import DataStructures
 import MakeTeaMonad
 import Util
+import PrettyPrinter
 
 {-
  - isAbstract nt is true if nt is defined by a disjunction
@@ -112,6 +114,18 @@ directSuperclasses c = withDisj $ return . catMaybes . (map f)
 		f (Disj s cs) = if c `elem` cs then Just s else Nothing
 
 {-
+ - Transitive reflexive closure of directSuperclasses
+ -}
+
+allSuperclasses :: [Some Symbol] -> MakeTeaMonad [Some Symbol]
+allSuperclasses [] = return []
+allSuperclasses c = do
+	ds <- concatMapM directSuperclasses c
+	let ds' = (nub . map (Exists . NonTerminal)) ds
+	dds <- allSuperclasses ds' 
+	return (nub (c ++ ds' ++ dds))
+
+{-
  - isVector is true for Vector, VectorOpt and OptVector
  -}
 
@@ -165,9 +179,18 @@ usedAbstractSymbols
 		f _ = Nothing
 
 {-
- - The head/body of a rule
+ - Inheritance graph
  -}
 
-ruleHead :: Rule a -> Name NonTerminal
-ruleHead (Disj h _) = h
-ruleHead (Conj h _) = h
+inheritanceGraph :: [Rule Disj] -> MakeTeaMonad (Gr (Some Symbol) ()) 
+inheritanceGraph rs = do
+	labels <- withSymbols $ \ss -> return [(s,no) | s <- ss | no <- [1..]]
+	let 
+		labelFor s = case lookup s labels of Just l -> l
+		nodes = map (\(a,b) -> (b,a)) labels
+		edges = concatMap edgesFor rs
+		edgesFor :: Rule Disj -> [LEdge ()]
+		edgesFor (Disj nt body) =
+			let lr = labelFor (Exists (NonTerminal nt)) 
+			in [(lr,labelFor s,()) | s <- body] 
+	return (mkGraph nodes edges)

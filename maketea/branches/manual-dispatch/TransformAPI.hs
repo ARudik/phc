@@ -1,8 +1,6 @@
 {-
  - maketea -- generate C++ AST infrastructure
  - (C) 2006-2007 Edsko de Vries and John Gilbert
- -
- - TODO: Deal with NULLs.
  -}
 
 module TransformAPI where
@@ -87,39 +85,51 @@ transform :: Term NonMarker -> MakeTeaMonad Member
 transform t@(Term l s m) | isVector m = do
 	(_,_,m') <- findContext s
 	tType <- toClassName t
+	tType' <- toClassName (Term undefined s Single)
 	let decl = (tType ++ "*", termToTransform t)
 	let args = [(tType ++ "*", "in")]
 	let checkInNull = ["if(in == NULL) return NULL;",""]
 	let body = if isVector m' then [
 		  tType ++ "::const_iterator i;"
-		, tType ++ "* out1 = new " ++ tType ++ ";"
-		, tType ++ "* out2 = new " ++ tType ++ ";"
+		, tType ++ "* out = new " ++ tType ++ ";"
 		, ""
 		, "for(i = in->begin(); i != in->end(); i++)"
-		, "\tif(*i == NULL) out1->push_back(NULL);"
-		, "\telse pre_" ++ toVarName s ++ "(*i, out1);"
-		, "for(i = out1->begin(); i != out1->end(); i++)"
-		, "\tif(*i != NULL) children_" ++ toVarName s ++ "(*i);"
-		, "for(i = out1->begin(); i != out1->end(); i++)"
-		, "\tif(*i == NULL) out2->push_back(NULL);"
-		, "\telse post_" ++ toVarName s ++ "(*i, out2);"
+		, "{"	
+		, "\t" ++ tType ++ "* local_out = new " ++ tType ++ ";"
+		, "\tif(*i == NULL) local_out->push_back(NULL);"
+		, "\telse pre_" ++ toVarName s ++ "(*i, local_out);"
+		, "\tfor(i = local_out->begin(); i != local_out->end(); i++)"
+		, "\t{"
+		, "\t\tif(*i != NULL)"
+		, "\t\t{"
+		, "\t\t\tchildren_" ++ toVarName s ++ "(*i);"
+		, "\t\t\tpost_" ++ toVarName s ++ "(*i, out);"
+		, "\t\t}"
+		, "\t\telse out->push_back(NULL);"
+		, "\t}"
+		, "}"
 		, ""
-		, "return out2;"
+		, "return out;"
 		] else [
 		  tType ++ "::const_iterator i;"
-		, tType ++ "* out1 = new " ++ tType ++ ";"
-		, tType ++ "* out2 = new " ++ tType ++ ";"
+		, tType ++ "* out_list = new " ++ tType ++ ";"
 		, ""
 		, "for(i = in->begin(); i != in->end(); i++)"
-		, "\tif(*i == NULL) out1->push_back(NULL);"
-		, "\telse out1->push_back(pre_" ++ toVarName s ++ "(*i));"
-		, "for(i = out1->begin(); i != out1->end(); i++)"
-		, "\tif(*i != NULL) children_" ++ toVarName s ++ "(*i);"
-		, "for(i = out1->begin(); i != out1->end(); i++)"
-		, "\tif(*i == NULL) out2->push_back(NULL);"
-		, "\telse out2->push_back(post_" ++ toVarName s ++ "(*i));"
+		, "{"
+		, "\t" ++ tType' ++ "* out = NULL;"
+		, "\tif(*i != NULL)"
+		, "\t{"
+		, "\t\tout = pre_" ++ toVarName s ++ "(*i);"
+		, "\t\tif(out != NULL)"
+		, "\t\t{"
+		, "\t\t\tchildren_" ++ toVarName s ++ "(out);"
+		, "\t\t\tout = post_" ++ toVarName s ++ "(out);"
+		, "\t\t}"
+		, "\t}"
+		, "\tout_list->push_back(out);"
+		, "}"
 		, ""
-		, "return out2;"
+		, "return out_list;"
 		]	
 	return (Method [] decl args (checkInNull ++ body))
 transform t@(Term l s m) | not (isVector m) = do

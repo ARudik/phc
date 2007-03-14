@@ -57,9 +57,12 @@ createTokenClass t@(Terminal n ctype) = do
 	c <- emptyClass cn
 	prefix <- withPrefix return
 	let val = Attribute [] (ctype, "value")
+	let ss = if null ctype 
+		then sections c
+		else sections c ++ [Section [] Public [val]]
 	return $ c {
 		  extends = inhn
 		, friends = [prefix ++ "transform"]
-		, sections = [Section [] Public [val]]
+		, sections = ss 
 }
 		

@@ -16,6 +16,7 @@ import MakeTeaMonad
 import BasicClasses
 import Cpp
 import TransformAPI
+import VisitorAPI
 import PrettyPrinter
 import Mixin
 
@@ -46,10 +47,11 @@ runMakeTea prefix grammar includes mixinCode = do
 			contexts <- withContexts return
 			classes <- withClasses return
 			transform <- transformClass
-			return (contexts, classes, transform)
+			visitor <- visitorClass
+			return (contexts, classes, transform, visitor)
 		init = initState (prefix ++ "_") grammar
 		runMaketea = evalState maketea init
-		(contexts, classes, transform) = runMaketea
+		(contexts, classes, transform, visitor) = runMaketea
 		commonHeader = unlines [
 			  "#include <list>"
 			, "using namespace std;"
@@ -72,4 +74,11 @@ runMakeTea prefix grammar includes mixinCode = do
 	writeFile (prefix ++ "_transform.cpp") $
 		"#include \"" ++ prefix ++ "_transform.h\"\n\n" ++ 
 		showClassImplementation transform
+	writeFile (prefix ++ "_visitor.h") $
+		commonHeader ++
+		"#include \"" ++ prefix ++ ".h\"\n\n" ++ 
+		showClassHeader visitor 
+	writeFile (prefix ++ "_visitor.cpp") $
+		"#include \"" ++ prefix ++ "_transform.h\"\n\n" ++ 
+		showClassImplementation visitor 
 
