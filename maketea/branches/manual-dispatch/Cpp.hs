@@ -156,3 +156,13 @@ termToVarName (Marker (Just n) _) = n
 symbolToVarName :: Symbol a -> Name Variable 
 symbolToVarName (NonTerminal n) = n
 symbolToVarName (Terminal n _) = map toLower n
+
+mapMethods :: Monad m => (Member -> m Member) -> Class -> m Class
+mapMethods f cls = 
+	do
+		sections' <- mapM mapSection (sections cls)
+		return $ cls { sections = sections' }
+	where
+		mapSection (Section c a ms) = do
+			ms' <- mapM f ms
+			return $ Section c a ms'

@@ -19,6 +19,7 @@ import TransformAPI
 import VisitorAPI
 import PrettyPrinter
 import Mixin
+import Init
 
 main :: IO ()
 main = do
@@ -42,7 +43,8 @@ runMakeTea prefix grammar includes mixinCode = do
 			contextResolution
 			createBasicClasses
 			mixedIn <- withClasses $ mixin mixinCode
-			setClasses (orderClasses mixedIn)
+			withInit <- mapM addInit mixedIn
+			setClasses (orderClasses withInit)
 			-- Extract relevant components
 			contexts <- withContexts return
 			classes <- withClasses return
