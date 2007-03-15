@@ -43,8 +43,7 @@ runMakeTea prefix grammar includes mixinCode = do
 			contextResolution
 			createBasicClasses
 			mixedIn <- withClasses $ mixin mixinCode
-			withInit <- mapM addInit mixedIn
-			setClasses (orderClasses withInit)
+			setClasses (orderClasses . map addInit $ mixedIn)
 			-- Extract relevant components
 			contexts <- withContexts return
 			classes <- withClasses return
