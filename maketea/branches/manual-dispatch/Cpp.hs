@@ -22,7 +22,7 @@ import Util
 emptyClass :: Name Class -> MakeTeaMonad Class 
 emptyClass n = do
 	cid <- getNextClassID
-	let getID = Method [] ("int", "classid") [] ["return " ++ show cid ++ ";"]
+	let getID = Method [] Virtual ("int", "classid") [] ["return " ++ show cid ++ ";"]
 	return $ Class {
 		  name = n
 		, comment = []

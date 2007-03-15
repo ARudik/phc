@@ -256,15 +256,15 @@ class AST_php_script
 public:
 	void init()
 	{
-		interface_defs = new AST_interface_def_list;
-		class_defs = new AST_class_def_list;
+		interface_defs = new list<AST_interface_def*>;
+		class_defs = new list<AST_class_def*>;
 		class_defs->push_back(new AST_class_def("%MAIN%"));
 	}
 
 	// Returns NULL if the class could not be found
 	AST_class_def* get_class_def(const char* name)
 	{
-		AST_class_def_list::const_iterator i;
+		list<AST_class_def*>::const_iterator i;
 		for(i = class_defs->begin(); i != class_defs->end(); i++)
 		{
 			AST_class_def* class_def = dynamic_cast<AST_class_def*>(*i);

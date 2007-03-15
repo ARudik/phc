@@ -24,7 +24,7 @@ data NonTerminal
 data Terminal
 data Symbol :: * -> * where
 	NonTerminal :: Name NonTerminal -> Symbol NonTerminal
-	Terminal :: Name Terminal -> CType -> Symbol Terminal
+	Terminal :: Name Terminal -> Maybe CType -> Symbol Terminal
 
 data NonMarker
 data Marker
@@ -88,8 +88,10 @@ data Variable
 data Method
 data Member = 
 	  Attribute Comment (Decl Variable) 
-	| Method Comment (Decl Method) [Decl Variable] Body 
+	| Method Comment Virtual (Decl Method) [Decl Variable] Body 
 	| PureVirtual Comment (Decl Method) [Decl Variable] 
+
+data Virtual = Virtual | NonVirtual
 
 type Decl a = (CType, Name a)
 type Body = [String]

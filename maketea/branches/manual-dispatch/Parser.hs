@@ -75,6 +75,7 @@ accessP =
 memberP :: Parser Member
 memberP = try $ do
 	cmnt <- commentP
+	virtual <- virtualP
 	decl <- declP
 	do
 		do	
@@ -88,8 +89,17 @@ memberP = try $ do
 					return (PureVirtual cmnt decl args)
 				<|> do
 					body <- lexeme bodyP
-					return (Method cmnt decl args [body])
-			
+					return (Method cmnt virtual decl args [body])
+		
+virtualP :: Parser Virtual
+virtualP = 
+	do
+		reserved "virtual"
+		return Virtual
+	<|>
+	do
+		return NonVirtual
+
 commentP :: Parser Comment
 commentP = many $ do
 	string "//" 
@@ -98,15 +108,21 @@ commentP = many $ do
 	return cmnt
 
 bodyP :: Parser String
-bodyP = 
+bodyP = 	
 	do
-		char '{'
-		bs <- many body1
-		char '}'
-		return ("{" ++ concat bs ++ "}")
+		pos <- getPosition
+		let name = sourceName pos
+		let line = sourceLine pos
+		b <- body1
+		return $ "#line " ++ show line ++ " \"" ++ name ++ "\"\n" ++ b
 
 body1 :: Parser String
-body1 = (many1 $ noneOf ['{','}']) <|> bodyP
+body1 = 
+	do
+		char '{'
+		bs <- many $ (many1 $ noneOf ['{','}']) <|> bodyP 
+		char '}'
+		return ("{" ++ concat bs ++ "}")
 
 declP :: Parser (Decl a)
 declP = 
@@ -126,7 +142,8 @@ declP =
 includeP = 
 	do
 		symbol "#include"
-		lexeme (many $ noneOf ['\n'])
+		l <- lexeme (many $ noneOf ['\n'])
+		return ("#include " ++ l)
 
 {-
  - EBNF 
@@ -172,8 +189,9 @@ symbolP =
 		return (Exists (NonTerminal nt))
 	<|> do
 		t <- terminalP
-		ctype <- option "String*" $ lexeme (
-			between (char '<') (char '>') (many $ noneOf ['>'])) 
+		ctype <- option Nothing $ do
+			l <- lexeme (between (char '<') (char '>') (many $ noneOf ['>'])) 
+			return (Just l)
 		return (Exists (Terminal t ctype))
 
 termP :: Parser (Some Term)
@@ -245,7 +263,7 @@ markerP = try $
 
 lexer = T.makeTokenParser haskellStyle
 	{
-		reservedNames = ["class","private","protected","public"]
+		reservedNames = ["class","private","protected","public","virtual"]
 	,	reservedOpNames = ["|",";","?","*","*?","?*","::=",":","+","{","}","(",")"]
 	}
 

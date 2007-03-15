@@ -52,7 +52,7 @@ runMakeTea prefix grammar includes mixinCode = do
 		init = initState (prefix ++ "_") grammar
 		runMaketea = evalState maketea init
 		(contexts, classes, transform, visitor) = runMaketea
-		commonHeader = unlines [
+		commonHeader = unlines $ includes ++ [
 			  "#include <list>"
 			, "using namespace std;"
 			, ""
@@ -79,6 +79,6 @@ runMakeTea prefix grammar includes mixinCode = do
 		"#include \"" ++ prefix ++ ".h\"\n\n" ++ 
 		showClassHeader visitor 
 	writeFile (prefix ++ "_visitor.cpp") $
-		"#include \"" ++ prefix ++ "_transform.h\"\n\n" ++ 
+		"#include \"" ++ prefix ++ "_visitor.h\"\n\n" ++ 
 		showClassImplementation visitor 
 

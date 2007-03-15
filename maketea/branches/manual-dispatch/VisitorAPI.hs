@@ -24,6 +24,7 @@ visitorClass = do
 	pre_chain <- mapM preChain conc
 	post_chain <- mapM postChain conc
 	children <- withConj $ mapM chPublic
+	children_t <- withTokens $ mapM chToken 
 	{- Internal methods -}
 	visits <- withNonMarkers $ mapM visit . nubBy eqTermVisitor
 	abs <- usedAbstractSymbols
@@ -35,6 +36,7 @@ visitorClass = do
 			  Section [] Public pre
 			, Section [] Public post
 			, Section [] Public children
+			, Section [] Public children_t
 			, Section [] Public pre_chain 
 			, Section [] Public post_chain 
 			, Section [] Protected visits
@@ -67,17 +69,17 @@ visit t@(Term _ s m) | isVector m = do
 		, "\tpost_" ++ toVarName s ++ "_chain(*i);"
 		, "}"
 		]
-	return $ Method [] decl args body
+	return $ Method [] Virtual decl args body
 visit t@(Term _ s m) | not (isVector m) = do
 	cn <- toClassName t
 	let decl = ("void", termToVisitor t)
 	let args = [(cn ++ "*", "in")]
 	let body = [
-		  "pre_" ++ toVarName s ++ "_chain(*i);"
-		, "children_" ++ toVarName s ++ "(*i);"
-		, "post_" ++ toVarName s ++ "_chain(*i);"
+		  "pre_" ++ toVarName s ++ "_chain(in);"
+		, "children_" ++ toVarName s ++ "(in);"
+		, "post_" ++ toVarName s ++ "_chain(in);"
 		]
-	return $ Method [] decl args body 
+	return $ Method [] Virtual decl args body 
 
 dispatcher :: String -> String -> Name NonTerminal -> MakeTeaMonad Member
 dispatcher pre post nt = 
@@ -88,7 +90,7 @@ dispatcher pre post nt =
 		conc <- concreteInstances (NonTerminal nt)
 		cases <- concatMapM switchcase conc	
 		let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-		return (Method [] decl args body)
+		return (Method [] Virtual decl args body)
 	where
 		switchcase :: Some Symbol -> MakeTeaMonad Body
 		switchcase s = do
@@ -109,7 +111,7 @@ prepost pp s = do
 	cn <- toClassName s
 	let decl = ("void", pp ++ toVarName s)
 	let args = [(cn ++ "*", "in")] 
-	return $ Method [] decl args [] 
+	return $ Method [] Virtual decl args [] 
 
 chPublic :: Rule Conj -> MakeTeaMonad Member
 chPublic (Conj nt body) = do
@@ -119,7 +121,14 @@ chPublic (Conj nt body) = do
 	let 
 		f :: Term NonMarker -> String
 		f t = termToVisitor t ++ "(in->" ++ termToVarName t ++ ");"
-	return $ Method [] decl args (map f (nonMarkers body))
+	return $ Method [] Virtual decl args (map f (nonMarkers body))
+
+chToken :: Symbol Terminal -> MakeTeaMonad Member
+chToken t@(Terminal n _) = do
+	cn <- toClassName t
+	let decl = ("void", "children_" ++ toVarName t)
+	let args = [(cn ++ "*", "in")]
+	return (Method [] Virtual decl args [])
 
 termToVisitor :: Term NonMarker -> Name Method
 termToVisitor (Term _ s m) 
@@ -138,7 +147,7 @@ ppChain pp rev s = do
 		= (if rev then reverse else id) $ filter (`elem` sc) topological
 	let decl = ("void", pp ++ toVarName s ++ "_chain")
 	let args = [(cn ++ "*", "in")]
-	return $ Method [] decl args (map (\s -> pp ++ toVarName s ++ "(in);") sc_ordered)
+	return $ Method [] Virtual decl args (map (\s -> pp ++ toVarName s ++ "(in);") sc_ordered)
 
 preChain = ppChain "pre_" False
 postChain = ppChain "post_" True

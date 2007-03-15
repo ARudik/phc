@@ -35,7 +35,8 @@ instance Show (Symbol a) where
 
 showSymbol :: Symbol a -> String
 showSymbol (NonTerminal n) = n
-showSymbol (Terminal n ctype) = n ++ "<" ++ ctype ++ ">"
+showSymbol (Terminal n (Just ctype)) = n ++ "<" ++ ctype ++ ">"
+showSymbol (Terminal n Nothing) = n 
 
 instance Show (Some Term) where
 	show = elim showTerm
@@ -79,8 +80,8 @@ docSectionHeader (Section cmnt m ms) = docCmnt cmnt $+$ docAccess m <> colon $+$
 docMemberSignature :: Member -> Doc
 docMemberSignature (Attribute cmnt decl) = docCmnt cmnt $+$ 
 	docDecl decl <> semi
-docMemberSignature (Method cmnt decl args body) = docCmnt cmnt $+$ 
-	text "virtual" <+> 
+docMemberSignature (Method cmnt virtual decl args body) = docCmnt cmnt $+$ 
+	docVirtual virtual <> 
 	docDecl decl <> parens (commaSep (map docDecl args)) <> semi
 docMemberSignature (PureVirtual cmnt decl args) = docCmnt cmnt $+$
 	text "virtual" <+> 
@@ -88,6 +89,10 @@ docMemberSignature (PureVirtual cmnt decl args) = docCmnt cmnt $+$
 
 docDecl :: Decl a -> Doc
 docDecl (name, ctype) = text name <+> text ctype
+
+docVirtual :: Virtual -> Doc
+docVirtual Virtual = text "virtual "
+docVirtual NonVirtual = text ""
 
 docCmnt :: Comment -> Doc 
 docCmnt = vcat . map (\c -> text "//" <+> text c)
@@ -108,7 +113,7 @@ showClassImplementation c = render . vcat $ map f (sections c)
 			= docCmnt cmnt $+$ (vcat $ map (docMethod (name c)) ms)
 
 docMethod :: Name Class -> Member -> Doc
-docMethod cn (Method cmnt (ret,name) args body) = 
+docMethod cn (Method cmnt _ (ret,name) args body) = 
 	docCmnt cmnt $+$
 	text ret <+> text (cn ++ "::" ++ name) 
 	<> parens (commaSep (map docDecl args))
