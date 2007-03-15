@@ -85,7 +85,6 @@ transform :: Term NonMarker -> MakeTeaMonad Member
 transform t@(Term l s m) | isVector m = do
 	(_,_,m') <- findContext s
 	tType <- toClassName t
-	tType' <- toClassName (Term undefined s Single)
 	let decl = (tType ++ "*", termToTransform t)
 	let args = [(tType ++ "*", "in")]
 	let checkInNull = ["if(in == NULL) return NULL;",""]
@@ -111,22 +110,15 @@ transform t@(Term l s m) | isVector m = do
 		, ""
 		, "return out;"
 		] else [
+		-- We are transforming a list of Xs, but the context is not a list
+		-- That means that we must have a transform method for a single X
+		-- (since we must have an explicit of an occurrence of a single X)
 		  tType ++ "::const_iterator i;"
 		, tType ++ "* out_list = new " ++ tType ++ ";"
 		, ""
 		, "for(i = in->begin(); i != in->end(); i++)"
 		, "{"
-		, "\t" ++ tType' ++ "* out = NULL;"
-		, "\tif(*i != NULL)"
-		, "\t{"
-		, "\t\tout = pre_" ++ toVarName s ++ "(*i);"
-		, "\t\tif(out != NULL)"
-		, "\t\t{"
-		, "\t\t\tchildren_" ++ toVarName s ++ "(out);"
-		, "\t\t\tout = post_" ++ toVarName s ++ "(out);"
-		, "\t\t}"
-		, "\t}"
-		, "\tout_list->push_back(out);"
+		, "\tout_list->push_back(transform_" ++ toVarName s ++ "(*i));"
 		, "}"
 		, ""
 		, "return out_list;"
