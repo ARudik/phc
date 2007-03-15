@@ -76,6 +76,7 @@ memberP :: Parser Member
 memberP = try $ do
 	cmnt <- commentP
 	virtual <- virtualP
+	static <- staticP
 	decl <- declP
 	do
 		do	
@@ -89,9 +90,9 @@ memberP = try $ do
 					return (PureVirtual cmnt decl args)
 				<|> do
 					body <- lexeme bodyP
-					return (Method cmnt virtual decl args [body])
+					return (Method cmnt virtual static decl args [body])
 		
-virtualP :: Parser Virtual
+virtualP :: Parser IsVirtual
 virtualP = 
 	do
 		reserved "virtual"
@@ -99,6 +100,15 @@ virtualP =
 	<|>
 	do
 		return NonVirtual
+
+staticP :: Parser IsStatic 
+staticP = 
+	do
+		reserved "static"
+		return Static 
+	<|>
+	do
+		return NonStatic
 
 commentP :: Parser Comment
 commentP = many $ do
@@ -263,7 +273,7 @@ markerP = try $
 
 lexer = T.makeTokenParser haskellStyle
 	{
-		reservedNames = ["class","private","protected","public","virtual"]
+		reservedNames = ["class","private","protected","public","virtual","static"]
 	,	reservedOpNames = ["|",";","?","*","*?","?*","::=",":","+","{","}","(",")"]
 	}
 

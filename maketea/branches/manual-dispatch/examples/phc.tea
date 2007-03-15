@@ -147,7 +147,6 @@ identifier ::=
 #include "lib/Integer.h"
 #include "lib/AttrMap.h"
 
-{-
 class AST_node : Object 
 {
 public:
@@ -203,7 +202,7 @@ public:
 		this->method_mod = AST_method_mod::new_PUBLIC();
 		this->is_ref = false;
 		this->method_name = new Token_method_name(new String(name));
-		this->formal_parameters = new AST_formal_parameter_list;
+		this->formal_parameters = new list<AST_formal_parameter*>;
 	}
 };
 
@@ -284,8 +283,8 @@ public:
 		this->class_mod = mod;
 		this->class_name = NULL;
 		this->extends = NULL;
-		this->implements = new Token_interface_name_list;
-		this->members = new AST_member_list;
+		this->implements = new list<Token_interface_name*>;
+		this->members = new list<AST_member*>;
 	}
 
 	AST_class_def(char* name)
@@ -293,8 +292,8 @@ public:
 		this->class_mod = new AST_class_mod(false, false);
 		this->class_name = new Token_class_name(new String(name));
 		this->extends = NULL;
-		this->implements = new Token_interface_name_list;
-		this->members = new AST_member_list;
+		this->implements = new list<Token_interface_name*>;
+		this->members = new list<AST_member*>;
 	}
 
 	void add_member(AST_member* member) 
@@ -305,7 +304,7 @@ public:
 	// Returns NULL if the method could not be found
 	AST_method* get_method(const char* name)
 	{
-		AST_member_list::const_iterator i;
+		list<AST_member*>::const_iterator i;
 		for(i = members->begin(); i != members->end(); i++)
 		{
 			AST_method* method = dynamic_cast<AST_method*>(*i);
@@ -324,7 +323,7 @@ public:
 	{
 		this->target = NULL;
 		this->variable_name = name;
-		this->array_indices = new AST_expr_list;
+		this->array_indices = new list<AST_expr*>;
 		this->string_index = NULL;
 	}
 	
@@ -353,7 +352,7 @@ protected:
 		// This leaves the tree in an inconsistent state
 		this->target = NULL;
 		this->method_name = new Token_method_name(new String(name));
-		this->actual_parameters = new AST_actual_parameter_list;
+		this->actual_parameters = new list<AST_actual_parameter*>;
 		this->actual_parameters->push_back(new AST_actual_parameter(false, arg));
 	}
 
@@ -362,7 +361,7 @@ protected:
 	{ 
 		this->target = NULL;
 		this->method_name = name; 
-		this->actual_parameters = new AST_actual_parameter_list;
+		this->actual_parameters = new list<AST_actual_parameter*>;
 		this->actual_parameters->push_back(new AST_actual_parameter(false, arg));
 	}
 
@@ -372,7 +371,7 @@ public:
 	{
 		this->target = new Token_class_name(new String(target));
 		this->method_name = new Token_method_name(new String(name));
-		this->actual_parameters = new AST_actual_parameter_list;
+		this->actual_parameters = new list<AST_actual_parameter*>;
 		this->actual_parameters->push_back(new AST_actual_parameter(false, arg));
 	}
 };
@@ -592,4 +591,3 @@ public:
 		attrs->set("phc.unparser.is_elseif", new Boolean(false));
 	}
 };
--}

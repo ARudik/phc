@@ -88,10 +88,11 @@ data Variable
 data Method
 data Member = 
 	  Attribute Comment (Decl Variable) 
-	| Method Comment Virtual (Decl Method) [Decl Variable] Body 
+	| Method Comment IsVirtual IsStatic (Decl Method) [Decl Variable] Body 
 	| PureVirtual Comment (Decl Method) [Decl Variable] 
 
-data Virtual = Virtual | NonVirtual
+data IsVirtual = Virtual | NonVirtual
+data IsStatic = Static | NonStatic
 
 type Decl a = (CType, Name a)
 type Body = [String]

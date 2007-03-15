@@ -19,10 +19,16 @@ import Util
  - Class templates
  -}
 
+defMethod :: Decl Method -> [Decl Variable] -> Body -> Member
+defMethod = Method [] Virtual NonStatic
+
+defConstr :: Decl Method -> [Decl Variable] -> Body -> Member
+defConstr = Method [] NonVirtual NonStatic
+
 emptyClass :: Name Class -> MakeTeaMonad Class 
 emptyClass n = do
 	cid <- getNextClassID
-	let getID = Method [] Virtual ("int", "classid") [] ["return " ++ show cid ++ ";"]
+	let getID = defMethod ("int", "classid") [] ["return " ++ show cid ++ ";"]
 	return $ Class {
 		  name = n
 		, comment = []

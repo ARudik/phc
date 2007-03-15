@@ -123,7 +123,7 @@ transform t@(Term l s m) | isVector m = do
 		, ""
 		, "return out_list;"
 		]	
-	return (Method [] Virtual decl args (checkInNull ++ body))
+	return (defMethod decl args (checkInNull ++ body))
 transform t@(Term l s m) | not (isVector m) = do
 	tType <- toClassName t
 	let decl = (tType ++ "*", termToTransform t)
@@ -142,7 +142,7 @@ transform t@(Term l s m) | not (isVector m) = do
 		, ""
 		, "return out;"
 		]
-	return (Method [] Virtual decl args body)
+	return (defMethod decl args body)
 
 ppAbstract :: String -> Name NonTerminal -> MakeTeaMonad Member 
 ppAbstract pp nt = 
@@ -159,14 +159,14 @@ ppAbstract pp nt =
 				let args = [(inType, "in"), (outType, "out")]
 				cases <- concatMapM listCase conc	
 				let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-				return $ Method [] Virtual decl args body 
+				return $ defMethod decl args body 
 			else do
 				let outType = cn ++ "*"
 				let decl = (outType, fnName)
 				let args = [(inType, "in")]
 				cases <- concatMapM nonListCase conc	
 				let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-				return $ Method [] Virtual decl args body 
+				return $ defMethod decl args body 
 	where
 		nonListCase :: Some Symbol -> MakeTeaMonad Body
 		nonListCase s = do
@@ -212,7 +212,7 @@ chAbstract nt =
 		conc <- concreteInstances (NonTerminal nt)
 		cases <- concatMapM switchcase conc	
 		let body = ["switch(in->classid())", "{"] ++ cases ++ ["}"]
-		return (Method [] Virtual decl args body)
+		return (defMethod decl args body)
 	where
 		switchcase s = do
 			cid <- findClassID s
@@ -234,14 +234,14 @@ chConcrete (Conj h ts) = do
 	let 
 		f :: Term NonMarker -> String
 		f t = "in->" ++ termToVarName t ++ " = " ++ termToTransform t ++ "(in->" ++ termToVarName t ++ ");"
-	return (Method [] Virtual decl args (map f (nonMarkers ts)))
+	return (defMethod decl args (map f (nonMarkers ts)))
 
 chToken :: Symbol Terminal -> MakeTeaMonad Member
 chToken t@(Terminal n _) = do
 	cn <- toClassName t
 	let decl = ("void", "children_" ++ toVarName t)
 	let args = [(cn ++ "*", "in")]
-	return (Method [] Virtual decl args [])
+	return (defMethod decl args [])
 
 termToTransform :: Term NonMarker -> Name Method
 termToTransform (Term _ s m) 
@@ -260,9 +260,9 @@ ppConcrete pp s = do
 			let outType = "list<" ++ cn' ++ "*>*"
 			let decl = ("void", fnName)
 			let args = [(inType, "in"), (outType, "out")]
-			return $ Method [] Virtual decl args ["out->push_back(in);"]
+			return $ defMethod decl args ["out->push_back(in);"]
 		else do
 			let outType = cn' ++ "*"
 			let decl = (outType, fnName)
 			let args = [(inType, "in")]
-			return $ Method [] Virtual decl args ["return in;"]
+			return $ defMethod decl args ["return in;"]

@@ -80,8 +80,8 @@ docSectionHeader (Section cmnt m ms) = docCmnt cmnt $+$ docAccess m <> colon $+$
 docMemberSignature :: Member -> Doc
 docMemberSignature (Attribute cmnt decl) = docCmnt cmnt $+$ 
 	docDecl decl <> semi
-docMemberSignature (Method cmnt virtual decl args body) = docCmnt cmnt $+$ 
-	docVirtual virtual <> 
+docMemberSignature (Method cmnt virtual static decl args body) = docCmnt cmnt $+$ 
+	docVirtual virtual <> docStatic static <>
 	docDecl decl <> parens (commaSep (map docDecl args)) <> semi
 docMemberSignature (PureVirtual cmnt decl args) = docCmnt cmnt $+$
 	text "virtual" <+> 
@@ -90,9 +90,13 @@ docMemberSignature (PureVirtual cmnt decl args) = docCmnt cmnt $+$
 docDecl :: Decl a -> Doc
 docDecl (name, ctype) = text name <+> text ctype
 
-docVirtual :: Virtual -> Doc
+docVirtual :: IsVirtual -> Doc
 docVirtual Virtual = text "virtual "
 docVirtual NonVirtual = text ""
+
+docStatic :: IsStatic -> Doc
+docStatic Static = text "static "
+docStatic NonStatic = text ""
 
 docCmnt :: Comment -> Doc 
 docCmnt = vcat . map (\c -> text "//" <+> text c)
@@ -113,7 +117,7 @@ showClassImplementation c = render . vcat $ map f (sections c)
 			= docCmnt cmnt $+$ (vcat $ map (docMethod (name c)) ms)
 
 docMethod :: Name Class -> Member -> Doc
-docMethod cn (Method cmnt _ (ret,name) args body) = 
+docMethod cn (Method cmnt _ _ (ret,name) args body) = 
 	docCmnt cmnt $+$
 	text ret <+> text (cn ++ "::" ++ name) 
 	<> parens (commaSep (map docDecl args))
