@@ -50,7 +50,7 @@ withPrefix f = get >>= f . prefix
 
 withSymbols :: ([Some Symbol] -> MakeTeaMonad a) -> MakeTeaMonad a
 withSymbols f = do
-	nts <- withGrammar $ return . map (Exists . NonTerminal . elim ruleHead)
+	nts <- withGrammar $ return . map (Exists . elim ruleHead)
 	ts <- withTokens $ return . (map Exists)
 	f (nts ++ ts)
 
@@ -114,6 +114,6 @@ nonMarkers = catMaybes . map (elim f)
 		f t@(Term _ _ _) = Just t
 		f _ = Nothing
 
-ruleHead :: Rule a -> Name NonTerminal 
+ruleHead :: Rule a -> Symbol NonTerminal 
 ruleHead (Disj h _) = h
 ruleHead (Conj h _) = h

@@ -253,7 +253,7 @@ public:
 class AST_php_script
 {
 public:
-	void init()
+	void _init()
 	{
 		interface_defs = new list<AST_interface_def*>;
 		class_defs = new list<AST_class_def*>;
@@ -327,7 +327,7 @@ public:
 		this->string_index = NULL;
 	}
 	
-	void init()
+	void _init()
 	{
 		attrs->set("phc.parser.is_ref", new Boolean(false));
 		attrs->set("phc.parser.function_params", NULL);
@@ -337,7 +337,7 @@ public:
 class AST_assignment 
 {
 public:
-	void init()
+	void _init()
 	{
 		attrs->set("phc.unparser.is_global_stmt", new Boolean(false));
 	}
@@ -586,7 +586,7 @@ public:
 class AST_if
 {
 public:
-	void init()
+	void _init()
 	{
 		attrs->set("phc.unparser.is_elseif", new Boolean(false));
 	}

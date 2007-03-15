@@ -17,8 +17,8 @@ type Grammar = [Some Rule]
 data Conj
 data Disj
 data Rule :: * -> * where
-	Disj :: Name NonTerminal -> [Some Symbol] -> Rule Disj
-	Conj :: Name NonTerminal -> [Some Term] -> Rule Conj
+	Disj :: Symbol NonTerminal -> [Some Symbol] -> Rule Disj
+	Conj :: Symbol NonTerminal -> [Some Term] -> Rule Conj
 
 data NonTerminal
 data Terminal

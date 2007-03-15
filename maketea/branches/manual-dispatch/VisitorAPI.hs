@@ -115,8 +115,8 @@ prepost pp s = do
 
 chPublic :: Rule Conj -> MakeTeaMonad Member
 chPublic (Conj nt body) = do
-	cn <- toClassName (NonTerminal nt)
-	let decl = ("void", "children_" ++ nt)
+	cn <- toClassName nt 
+	let decl = ("void", "children_" ++ nameOf nt)
 	let args = [(cn ++ "*", "in")]
 	let 
 		f :: Term NonMarker -> String

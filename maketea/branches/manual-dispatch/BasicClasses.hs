@@ -19,8 +19,9 @@ createBasicClasses = do
 
 createClass :: Rule a -> MakeTeaMonad Class
 createClass (Disj c _) = do
-	inh <- directSuperclasses (Exists (NonTerminal c))
-	(cn:inhn) <- mapM (toClassName . NonTerminal) (c:inh)
+	inh <- directSuperclasses (Exists c)
+	cn <- toClassName c
+	inhn <- mapM (toClassName . NonTerminal) inh
 	let c = emptyAbstractClass cn
 	prefix <- withPrefix return
 	return $ c { 
@@ -28,8 +29,9 @@ createClass (Disj c _) = do
 		, friends = [prefix ++ "transform", prefix ++ "visitor"]
 		}
 createClass r@(Conj c body) = do
-	inh <- directSuperclasses (Exists (NonTerminal c))
-	(cn:inhn) <- mapM (toClassName . NonTerminal) (c:inh)
+	inh <- directSuperclasses (Exists c)
+	cn <- toClassName c
+	inhn <- mapM (toClassName . NonTerminal) inh
 	fieldDecls <- mapM (elim createFieldDecl) body
 	let fields = map (Attribute []) fieldDecls 
 	let fieldSection = Section [] Public fields

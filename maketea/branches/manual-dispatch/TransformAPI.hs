@@ -228,8 +228,8 @@ chAbstract nt =
 
 chConcrete :: Rule Conj -> MakeTeaMonad Member
 chConcrete (Conj h ts) = do
-	cn <- toClassName (NonTerminal h)
-	let decl = ("void", "children_" ++ h)
+	cn <- toClassName h 
+	let decl = ("void", "children_" ++ nameOf h)
 	let args = [(cn ++ "*", "in")]
 	let 
 		f :: Term NonMarker -> String

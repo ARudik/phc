@@ -195,14 +195,11 @@ conjunctionP =
 symbolP :: Parser (Some Symbol)
 symbolP = 
 	do
-		nt <- nonTerminalP
-		return (Exists (NonTerminal nt))
+		s <- nonTerminalP
+		return (Exists s)
 	<|> do
-		t <- terminalP
-		ctype <- option Nothing $ do
-			l <- lexeme (between (char '<') (char '>') (many $ noneOf ['>'])) 
-			return (Just l)
-		return (Exists (Terminal t ctype))
+		s <- terminalP
+		return (Exists s)
 
 termP :: Parser (Some Term)
 termP = 
@@ -245,20 +242,23 @@ multiplicityP =
 	<|> do
 		return Single
 
-nonTerminalP :: Parser (Name NonTerminal)
+nonTerminalP :: Parser (Symbol NonTerminal)
 nonTerminalP = try $
 	do
 		id <- identifier
 		if all (isAlpha `implies` isLower) id 
-			then return id
+			then return (NonTerminal id)
 			else fail "expected lowercase identifier"
 
-terminalP :: Parser (Name Terminal)
+terminalP :: Parser (Symbol Terminal)
 terminalP = try $
 	do
 		id <- identifier
+		ctype <- option Nothing $ do
+			l <- lexeme (between (char '<') (char '>') (many $ noneOf ['>'])) 
+			return (Just l)
 		if all (isAlpha `implies` isUpper) id
-			then return id
+			then return (Terminal id ctype)
 			else fail "expected uppercase identifier"
 
 markerP :: Parser (Name Marker)

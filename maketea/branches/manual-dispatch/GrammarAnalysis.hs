@@ -51,7 +51,7 @@ findRuleFor :: Name NonTerminal -> MakeTeaMonad (Some Rule)
 findRuleFor nt = withGrammar $ (fromJustM $ "Unknown non-terminal " ++ nt) . find (elim f)
 	where
 		f :: Rule a -> Bool
-		f r = ruleHead r == nt 
+		f r = nameOf (ruleHead r) == nt 
 
 {-
  - The instances of a symbol s always includes s itself. For abstract symbols
@@ -111,7 +111,7 @@ directSuperclasses :: Some Symbol -> MakeTeaMonad [Name NonTerminal]
 directSuperclasses c = withDisj $ return . catMaybes . (map f)
 	where
 		f :: Rule Disj -> Maybe (Name NonTerminal)
-		f (Disj s cs) = if c `elem` cs then Just s else Nothing
+		f (Disj s cs) = if c `elem` cs then Just (nameOf s) else Nothing
 
 {-
  - Transitive reflexive closure of directSuperclasses
@@ -143,7 +143,7 @@ isVector OptVector = True
 
 concreteSymbols :: MakeTeaMonad [Some Symbol]
 concreteSymbols = do
-	nts <- withConj $ return . (map (Exists . NonTerminal . ruleHead))
+	nts <- withConj $ return . (map (Exists . ruleHead))
 	tokens <- withTokens $ return . map Exists
 	return (nts ++ tokens)
 
@@ -153,7 +153,7 @@ concreteSymbols = do
  -}
 
 abstractSymbols :: MakeTeaMonad [Name NonTerminal]
-abstractSymbols = withDisj $ return . (map ruleHead)
+abstractSymbols = withDisj $ return . (map (nameOf . ruleHead))
 
 {-
  - All used symbols; that is, all symbols that appear in the RHS of a
@@ -191,6 +191,39 @@ inheritanceGraph rs = do
 		edges = concatMap edgesFor rs
 		edgesFor :: Rule Disj -> [LEdge ()]
 		edgesFor (Disj nt body) =
-			let lr = labelFor (Exists (NonTerminal nt)) 
+			let lr = labelFor (Exists nt) 
 			in [(lr,labelFor s,()) | s <- body] 
 	return (mkGraph nodes edges)
+
+{-
+ - Find the name of stuff
+ -}
+
+class NameOf a where
+	nameOf :: a -> String
+
+instance NameOf (Some Symbol) where
+	nameOf = elim nameOf 
+
+instance NameOf (Symbol a) where
+	nameOf (NonTerminal name) = name
+	nameOf (Terminal name _) = name
+
+instance NameOf (Some Term) where
+	nameOf = elim nameOf
+
+instance NameOf (Term a) where
+	nameOf (Term (Just label) _ _) = label
+	nameOf (Term Nothing s m) 
+		| isVector m = nameOf s ++ "s"
+		| otherwise = nameOf s
+	nameOf (Marker (Just label) _) = label
+	nameOf (Marker Nothing name) = name
+
+instance NameOf Class where
+	nameOf = name
+
+instance NameOf Member where
+	nameOf (Attribute _ (_, name)) = name
+	nameOf (Method _ _ _ (_, name) _ _) = name
+	nameOf (PureVirtual _ (_, name) _) = name
