@@ -3,9 +3,9 @@
  * See doc/license/README.license for licensing information
  */
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class Count_function_calls : public Tree_visitor
+class Count_function_calls : public AST_visitor
 {
 private:
    int num_function_calls;

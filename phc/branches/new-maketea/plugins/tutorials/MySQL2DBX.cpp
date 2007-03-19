@@ -3,14 +3,14 @@
  * See doc/license/README.license for licensing information
  */
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class MySQL2DBX : public Tree_visitor
+class MySQL2DBX : public AST_visitor
 {
 public:
    void post_method_invocation(AST_method_invocation* in)
    {
-      AST_actual_parameter_list::iterator pos;
+      List<AST_actual_parameter*>::iterator pos;
       Token_constant_name* module_name;
       AST_constant* module_constant;
       AST_actual_parameter* param;

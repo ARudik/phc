@@ -10,9 +10,9 @@
 
 #include <algorithm>
 #include <set>
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class Collect_all_pointers : virtual public Tree_visitor 
+class Collect_all_pointers : virtual public AST_visitor 
 {
 public:
 	list<Object*> all_pointers;

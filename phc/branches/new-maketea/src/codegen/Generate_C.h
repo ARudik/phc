@@ -11,9 +11,9 @@
 #ifndef GENERATE_C
 #define GENERATE_C
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class Generate_C : public Tree_visitor
+class Generate_C : public AST_visitor
 {
 private:
 	String* extension_name;

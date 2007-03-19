@@ -8,7 +8,7 @@
 %{
 	#include <assert.h>
 	#include <typeinfo>
-	#include "ast.h"
+	#include "AST.h"
 	#include "cmdline.h"
 	#include "lib/Integer.h"
 	#include "lib/String.h"
@@ -37,7 +37,7 @@
 	 *
 	 * CAST_STATEMENT_VECTOR(dest, src) is a specialised version of 
 	 *   ARG_CAST that tries to convert "src" to "dest" of type 
-	 *   AST_statement_list*. If this fails, it asserts that "src" is
+	 *   List<AST_statement*>*. If this fails, it asserts that "src" is
 	 *   of type AST_statement*, and creates a new vector and adds "src"
 	 *   to this vector. If "src" is NULL, it returns an empty vector.
 	 */
@@ -69,18 +69,18 @@
 		type* dest = dynamic_cast<type*>(src);
 		
 	#define CAST_STATEMENT_VECTOR(dest, src) 							\
-		AST_statement_list* dest; 									\
+		List<AST_statement*>* dest; 									\
 		if(!src)																	\
-			dest = new AST_statement_list;							\
+			dest = new List<AST_statement*>;							\
 		else if(dynamic_cast<AST_statement*>(src)) 					\
 		{ 																			\
-			dest = new AST_statement_list; 							\
+			dest = new List<AST_statement*>; 							\
 			dest->push_back(dynamic_cast<AST_statement*>(src));	\
 		} 																			\
 		else 																		\
 		{ 																			\
-			assert(dynamic_cast<AST_statement_list*>(src));	\
-			dest = dynamic_cast<AST_statement_list*>(src); 	\
+			assert(dynamic_cast<List<AST_statement*>*>(src));	\
+			dest = dynamic_cast<List<AST_statement*>*>(src); 	\
 		}
 	
 	/*
@@ -103,7 +103,7 @@
 	static AST_node* copy_state(AST_node* node, PHP_context* context)
 	{
 		node->attrs->set("phc.line_number", new Integer(context->source_line));
-		node->attrs->set("phc.filename", context->filename->deep_clone());
+		node->attrs->set("phc.filename", context->filename->clone());
 
 		AST_commented_node* cnode;
 		cnode = dynamic_cast<AST_commented_node*>(node);
@@ -311,7 +311,7 @@
 start: 
 	  top_statement_list
 	  	{ 
-			CAST_AST(body, $1, AST_statement_list);
+			CAST_AST(body, $1, List<AST_statement*>);
 
 			// If there are any remaining comments, add them as a NOP
 			if(!context->last_comments.empty())
@@ -330,12 +330,12 @@ start:
 	;
 
 /*
- * Synthesises a AST_statement_list
+ * Synthesises a List<AST_statement*>
  */
 top_statement_list:
 	  top_statement_list top_statement
 	  	{ 
-			CAST_AST(statement_list, $1, AST_statement_list);
+			CAST_AST(statement_list, $1, List<AST_statement*>);
 
 			// Ignore null statements
 			if($2)
@@ -344,7 +344,7 @@ top_statement_list:
 			
 				if(statement == NULL)
 				{
-					CAST_AST(statements, $2, AST_statement_list);
+					CAST_AST(statements, $2, List<AST_statement*>);
 					statement_list->push_back_all(statements);
 				}
 				else
@@ -356,11 +356,11 @@ top_statement_list:
 			$$ = statement_list;
 		}
 	| /* empty */
-		{ $$ = new AST_statement_list; }
+		{ $$ = new List<AST_statement*>; }
 	;
 
 /*
- * Synthesises a AST_statement_list, an AST_statement or NULL
+ * Synthesises a List<AST_statement*>, an AST_statement or NULL
  *
  * Mimicks inner_statement
  */
@@ -381,14 +381,14 @@ top_statement:
 	;
 
 /*
- * Synthesises a AST_statement_list
+ * Synthesises a List<AST_statement*>
  *
  * Mimicks top_statement_list
  */
 inner_statement_list:
 	  inner_statement_list inner_statement
 	  	{ 
-			CAST_AST(statement_list, $1, AST_statement_list);
+			CAST_AST(statement_list, $1, List<AST_statement*>);
 
 			// Ignore null statements
 			if($2)
@@ -397,7 +397,7 @@ inner_statement_list:
 
 				if(statement == NULL)
 				{
-					CAST_AST(statements, $2, AST_statement_list);
+					CAST_AST(statements, $2, List<AST_statement*>);
 					statement_list->push_back_all(statements);
 				}
 				else
@@ -409,11 +409,11 @@ inner_statement_list:
 			$$ = statement_list;
 		}
 	| /* empty */ 
-		{ $$ = new AST_statement_list; }
+		{ $$ = new List<AST_statement*>; }
 	;
 
 /*
- * Synthesises a AST_statement_list, an AST_statement or NULL
+ * Synthesises a List<AST_statement*>, an AST_statement or NULL
  */
 inner_statement:
 	  statement
@@ -432,7 +432,7 @@ inner_statement:
 	;
 
 /*
- * Synthesises a AST_statement_list or an AST_statement
+ * Synthesises a List<AST_statement*> or an AST_statement
  */
 statement:
 	  unticked_statement
@@ -440,25 +440,77 @@ statement:
 	;
 
 /*
- * Synthesises an AST_if
+ * Temporary hack to improve line numbers
  */
 
 keyword_if: 
 	  K_IF
-		{ $$ = NEW(AST_if, ()); }
+		{ $$ = NEW(AST_if, (NULL, NULL, NULL)); }
 	;
 
-/*
- * Synthesises an AST_foreach
- */
+keyword_elseif: 
+	  K_ELSEIF
+		{ $$ = NEW(AST_if, (NULL, NULL, NULL)); }
+	;
 
 keyword_foreach:
 	  K_FOREACH
-	  	{ $$ = NEW(AST_foreach, ()); }
+	  	{ $$ = NEW(AST_foreach, (NULL, NULL, false, NULL, NULL)); }
 	;
 
+keyword_while:
+	  K_WHILE
+	  	{ $$ = NEW(AST_while, (NULL, NULL)); }
+	;
+
+keyword_do:
+	  K_DO
+	  	{ $$ = NEW(AST_do, (NULL, NULL)); }
+	;
+
+keyword_for:
+	  K_FOR
+	  	{ $$ = NEW(AST_for, (NULL, NULL, NULL, NULL)); }
+	;
+
+keyword_switch:
+	  K_SWITCH
+	  	{ $$ = NEW(AST_switch, (NULL, NULL)); }
+	;
+
+keyword_declare:
+	  K_DECLARE
+	  	{ $$ = NEW(AST_declare, (NULL, NULL)); }
+	;
+
+keyword_try:
+	  K_TRY
+	  	{ $$ = NEW(AST_try, (NULL, NULL)); }
+	;
+
+keyword_catch:
+	  K_CATCH
+	  	{ $$ = NEW(AST_catch, (NULL, NULL, NULL)); }
+	;
+
+keyword_function:
+	  K_FUNCTION
+	    { $$ = NEW(AST_method, (NULL, NULL)); }
+	;
+
+keyword_case:
+	  K_CASE
+	  	{ $$ = NEW(AST_switch_case, (NULL, NULL)); }
+	;
+
+keyword_default:
+	  K_DEFAULT
+	  	{ $$ = NEW(AST_switch_case, (NULL, NULL)); }
+	;
+
+
 /*
- * Synthesises a AST_statement_list or an AST_statement
+ * Synthesises a List<AST_statement*> or an AST_statement
  */
 unticked_statement:
 	  block
@@ -478,7 +530,7 @@ unticked_statement:
 			
 			if(elseif)
 			{
-				AST_statement_list* new_false = new AST_statement_list;
+				List<AST_statement*>* new_false = new List<AST_statement*>;
 				new_false->push_back(elseif);
 				
 				/* 
@@ -518,7 +570,7 @@ unticked_statement:
 		
 			if(elseif)
 			{
-				AST_statement_list* new_false = new AST_statement_list;
+				List<AST_statement*>* new_false = new List<AST_statement*>;
 				new_false->push_back(elseif);
 
 				while(!elseif->iffalse->empty())
@@ -534,35 +586,35 @@ unticked_statement:
 	
 			$$ = new_if;
 		}
-	| K_WHILE {$1 = NEW(AST_while, ());} '(' expr ')' while_statement
+	| keyword_while '(' expr ')' while_statement
 		{
 			CAST_AST(new_while, $1, AST_while);
-			CAST_AST(expr, $4, AST_expr);
-			CAST_AST(body, $6, AST_statement_list);
+			CAST_AST(expr, $3, AST_expr);
+			CAST_AST(body, $5, List<AST_statement*>);
 
 			new_while->expr = expr;
 			new_while->statements = body;
 
 			$$ = new_while;
 		}
-	| K_DO {$1 = NEW(AST_do, ());} statement K_WHILE '(' expr ')' ';'
+	| keyword_do statement K_WHILE '(' expr ')' ';'
 		{
 			CAST_AST(new_do, $1, AST_do);
-			CAST_STATEMENT_VECTOR(body, $3);
-			CAST_AST(expr, $6, AST_expr);
+			CAST_STATEMENT_VECTOR(body, $2);
+			CAST_AST(expr, $5, AST_expr);
 			
 			new_do->statements = body;
 			new_do->expr = expr;
 			
 			$$ = new_do;
 		}
-	| K_FOR {$1 = NEW(AST_for, ());} '(' for_expr ';' for_expr ';' for_expr ')' for_statement
+	| keyword_for '(' for_expr ';' for_expr ';' for_expr ')' for_statement
 		{
 			CAST_AST(new_for, $1, AST_for);
-			CAST_AST(init, $4, AST_expr);
-			CAST_AST(cond, $6, AST_expr);
-			CAST_AST(incr, $8, AST_expr);
-			CAST_STATEMENT_VECTOR(stmts, $10);
+			CAST_AST(init, $3, AST_expr);
+			CAST_AST(cond, $5, AST_expr);
+			CAST_AST(incr, $7, AST_expr);
+			CAST_STATEMENT_VECTOR(stmts, $9);
 			
 			new_for->init = init;
 			new_for->cond = cond;
@@ -571,11 +623,11 @@ unticked_statement:
 			
 			$$ = new_for;
 		}
-	| K_SWITCH {$1 = NEW(AST_switch, ());} '(' expr ')' switch_case_list
+	| keyword_switch '(' expr ')' switch_case_list
 		{
 			CAST_AST(new_switch, $1, AST_switch);
-			CAST_AST(expr, $4, AST_expr);
-			CAST_AST(cases, $6, AST_switch_case_list);
+			CAST_AST(expr, $3, AST_expr);
+			CAST_AST(cases, $5, List<AST_switch_case*>);
 			
 			new_switch->expr = expr;
 			new_switch->switch_cases = cases;
@@ -616,14 +668,14 @@ unticked_statement:
 		{
 			CAST_AST(list, $2, List<AST_variable_name*>);
 		
-			AST_statement_list* globals = new AST_statement_list;
+			List<AST_statement*>* globals = new List<AST_statement*>;
 			List<AST_variable_name*>::const_iterator i;
 			
 			for(i = list->begin(); i != list->end(); i++)
 			{
 				AST_variable* gv = NEW(AST_variable, (*i)); // global var
 				gv->target = NEW(Token_class_name, (new String("%MAIN%")));
-				AST_variable_name* iclone = (*i)->deep_clone();
+				AST_variable_name* iclone = (*i)->clone();
 				AST_variable* lv = NEW(AST_variable, (iclone)); // local var
 				AST_assignment* gd = NEW(AST_assignment, (lv, true, gv)); // global declaration
 				gd->attrs->set("phc.unparser.is_global_stmt", new Boolean(true));
@@ -660,7 +712,7 @@ unticked_statement:
 	| K_UNSET '(' unset_variables ')' ';'
 		{
 			CAST_AST(vars, $3, List<AST_variable*>);
-			AST_statement_list* statements = new AST_statement_list;
+			List<AST_statement*>* statements = new List<AST_statement*>;
 			List<AST_variable*>::const_iterator i;
 			
 			for(i = vars->begin(); i != vars->end(); i++)
@@ -731,11 +783,11 @@ unticked_statement:
 
 			$$ = new_foreach;
 		}
-	| K_DECLARE {$1 = NEW(AST_declare, ());} '(' declare_list ')' declare_statement	
+	| keyword_declare '(' declare_list ')' declare_statement	
 		{
 			CAST_AST(new_declare, $1, AST_declare);
-			CAST_AST(directives, $4, AST_directive_list);
-			CAST_STATEMENT_VECTOR(statements, $6);
+			CAST_AST(directives, $3, List<AST_directive*>);
+			CAST_STATEMENT_VECTOR(statements, $5);
 
 			new_declare->directives = directives;
 			new_declare->statements = statements;
@@ -744,21 +796,21 @@ unticked_statement:
 		}
 	| ';'
 		{ $$ = NULL; }
-	| K_TRY {$1 = NEW(AST_try, ());} block K_CATCH {$4 = NEW(AST_catch, ());} '(' fully_qualified_class_name VARIABLE ')' block additional_catches
+	| keyword_try block keyword_catch '(' fully_qualified_class_name VARIABLE ')' block additional_catches
 		{ 
 			CAST_AST(new_try, $1, AST_try);
-			CAST_STATEMENT_VECTOR(try_stat, $3);
-			CAST_AST(new_catch, $4, AST_catch);
-			CAST_AST(class_name, $7, Token_class_name);
-			CAST_STR(var, $8, Token_variable_name);
-			CAST_STATEMENT_VECTOR(catch_stat, $10);
-			CAST_AST(additional_catches, $11, AST_catch_list);
+			CAST_STATEMENT_VECTOR(try_stat, $2);
+			CAST_AST(new_catch, $3, AST_catch);
+			CAST_AST(class_name, $5, Token_class_name);
+			CAST_STR(var, $6, Token_variable_name);
+			CAST_STATEMENT_VECTOR(catch_stat, $8);
+			CAST_AST(additional_catches, $9, List<AST_catch*>);
 			
 			new_catch->class_name = class_name;
 			new_catch->variable_name = var;
 			new_catch->statements = catch_stat;
 
-			AST_catch_list* all_catches = new AST_catch_list;
+			List<AST_catch*>* all_catches = new List<AST_catch*>;
 			all_catches->push_back(new_catch);
 			all_catches->push_back_all(additional_catches);
 		
@@ -776,34 +828,34 @@ unticked_statement:
 	;
 
 /*
- * Synthesises a AST_catch_list
+ * Synthesises a List<AST_catch*>
  */
 additional_catches:
 	  non_empty_additional_catches
 		{ $$ = $1; }
 	| /* empty */
 		{
-			AST_catch_list* catches = new AST_catch_list;
+			List<AST_catch*>* catches = new List<AST_catch*>;
 			$$ = catches; 
 		}
 	;
 
 /*
- * Synthesises a AST_catch_list
+ * Synthesises a List<AST_catch*>
  */
 non_empty_additional_catches:
 	  additional_catch
 		{ 
 			CAST_AST(c, $1, AST_catch);
 			
-			AST_catch_list* catches = new AST_catch_list;
+			List<AST_catch*>* catches = new List<AST_catch*>;
 			catches->push_back(c);
 			
 			$$ = catches;
 		}
 	| non_empty_additional_catches additional_catch
 		{
-			CAST_AST(catches, $1, AST_catch_list);
+			CAST_AST(catches, $1, List<AST_catch*>);
 			CAST_AST(c, $2, AST_catch);
 			
 			catches->push_back(c);
@@ -816,12 +868,12 @@ non_empty_additional_catches:
  * Synthesises an AST_catch* 
  */
 additional_catch:
-	  K_CATCH {$1 = NEW(AST_catch, ());} '(' fully_qualified_class_name VARIABLE ')' block 
+	  keyword_catch '(' fully_qualified_class_name VARIABLE ')' block 
 		{
 			CAST_AST(new_catch, $1, AST_catch);
-			CAST_AST(class_name, $4, Token_class_name);
-			CAST_STR(var, $5, Token_variable_name);
-			CAST_STATEMENT_VECTOR(stat, $7);
+			CAST_AST(class_name, $3, Token_class_name);
+			CAST_STR(var, $4, Token_variable_name);
+			CAST_STATEMENT_VECTOR(stat, $6);
 			
 			new_catch->class_name = class_name;
 			new_catch->variable_name = var;
@@ -919,13 +971,13 @@ is_reference:
  * only) disagrees with the structure of the PHP grammar here.
  */
 unticked_function_declaration_statement:
-	  K_FUNCTION {$1 = NEW(AST_method, ());} is_reference IDENT {context->current_method = dynamic_cast<String*>($4);} '(' parameter_list ')' block
+	  keyword_function is_reference IDENT {context->current_method = dynamic_cast<String*>($3);} '(' parameter_list ')' block
 		{
 			CAST_AST(fn, $1, AST_method);
-			CAST_AST(is_ref, $3, Integer);
-			CAST_STR(name, $4, Token_method_name);
-			CAST_AST(params, $7, AST_formal_parameter_list); 
-			CAST_AST(body, $9, AST_statement_list);
+			CAST_AST(is_ref, $2, Integer);
+			CAST_STR(name, $3, Token_method_name);
+			CAST_AST(params, $6, List<AST_formal_parameter*>); 
+			CAST_AST(body, $8, List<AST_statement*>);
 		
 			AST_signature* signature = NEW(AST_signature, (AST_method_mod::new_STATIC(), is_ref->value(), name, params));
 			fn->signature = signature;
@@ -949,8 +1001,8 @@ unticked_class_declaration_statement:
 			CAST_AST(new_class, $1, AST_class_def);
 			CAST_STR(name, $2, Token_class_name);
 			CAST_AST(extends, $4, Token_class_name);
-			CAST_AST(implements, $5, Token_interface_name_list);
-			CAST_AST(members, $7, AST_member_list);
+			CAST_AST(implements, $5, List<Token_interface_name*>);
+			CAST_AST(members, $7, List<AST_member*>);
 
 			new_class->class_name = name;
 			new_class->extends = extends;
@@ -965,8 +1017,8 @@ unticked_class_declaration_statement:
 		{
 			CAST_AST(idef, $1, AST_interface_def);
 			CAST_STR(name, $2, Token_interface_name);
-			CAST_AST(extends, $3, Token_interface_name_list);
-			CAST_AST(members, $5, AST_member_list);
+			CAST_AST(extends, $3, List<Token_interface_name*>);
+			CAST_AST(members, $5, List<AST_member*>);
 
 			idef->interface_name = name;
 			idef->extends = extends;
@@ -1023,33 +1075,33 @@ extends_from:
  */
 interface_entry:
 	  K_INTERFACE
-		{ $$ = NEW(AST_interface_def, ()); }
+		{ $$ = NEW(AST_interface_def, (NULL, NULL, NULL)); }
 	;
 
 /*
- * Synthesises a Token_interface_name_list
+ * Synthesises a List<Token_interface_name*>
  */
 interface_extends_list:
 	  /* empty */
-		{ $$ = new Token_interface_name_list; }
+		{ $$ = new List<Token_interface_name*>; }
 	| K_EXTENDS interface_list
 		{ $$ = $2; }
 	;
 
 /* 
- * Syntesises a Token_interface_name_list
+ * Syntesises a List<Token_interface_name*>
  *
  * Vector contains no elements if the class implements no interfaces
  */
 implements_list:
 	  /* empty */
-		{ $$ = new Token_interface_name_list; }
+		{ $$ = new List<Token_interface_name*>; }
 	| K_IMPLEMENTS interface_list
 		{ $$ = $2; }
 	;
 
 /*
- * Synthesises a Token_interface_name_list
+ * Synthesises a List<Token_interface_name*>
  */
 interface_list:
 	  fully_qualified_class_name
@@ -1058,15 +1110,15 @@ interface_list:
 
 			Token_interface_name* ifn = NEW(Token_interface_name, (class_name->value));
 		
-			Token_interface_name_list* names;
-			names = new Token_interface_name_list;
+			List<Token_interface_name*>* names;
+			names = new List<Token_interface_name*>;
 			names->push_back(ifn);
 			
 			$$ = names;
 		}
 	| interface_list ',' fully_qualified_class_name
 		{
-			CAST_AST(names, $1, Token_interface_name_list);
+			CAST_AST(names, $1, List<Token_interface_name*>);
 			CAST_AST(class_name, $3, Token_class_name);
 			
 			Token_interface_name* ifn = NEW(Token_interface_name, (class_name->value));
@@ -1106,7 +1158,7 @@ foreach_variable:
 	;
 
 /*
- * Synthesises an AST_statement or AST_statement_list
+ * Synthesises an AST_statement or List<AST_statement*>
  */
 for_statement:
 	  statement
@@ -1116,7 +1168,7 @@ for_statement:
 	;
 
 /*
- * Synthesises an AST_statement* or AST_statement_list 
+ * Synthesises an AST_statement* or List<AST_statement*> 
  */
 foreach_statement:
 	  statement
@@ -1126,7 +1178,7 @@ foreach_statement:
 	;
 
 /*
- * Synthesises an AST_statement* or AST_statement_list
+ * Synthesises an AST_statement* or List<AST_statement*>
  */
 declare_statement:
 	  statement
@@ -1136,7 +1188,7 @@ declare_statement:
 	;
 
 /*
- * Synthesises a AST_directive_list
+ * Synthesises a List<AST_directive*>
  */
 declare_list:
 	  IDENT '=' static_scalar
@@ -1144,7 +1196,7 @@ declare_list:
 			CAST_STR(name, $1, Token_directive_name);
 			CAST_AST(value, $3, AST_expr);
 
-			AST_directive_list* dirs = new AST_directive_list;
+			List<AST_directive*>* dirs = new List<AST_directive*>;
 			AST_directive* dir = NEW(AST_directive, (name, value));
 			
 			dirs->push_back(dir);
@@ -1152,7 +1204,7 @@ declare_list:
 		}
 	| declare_list ',' IDENT '=' static_scalar
 		{
-			CAST_AST(dirs, $1, AST_directive_list);
+			CAST_AST(dirs, $1, List<AST_directive*>);
 			CAST_STR(name, $3, Token_directive_name);	
 			CAST_AST(value, $5, AST_expr);
 			
@@ -1163,7 +1215,7 @@ declare_list:
 	;	  
 
 /*
- * Synthesises a AST_switch_case_list
+ * Synthesises a List<AST_switch_case*>
  */
 switch_case_list:
 	  '{' case_list '}'
@@ -1177,17 +1229,17 @@ switch_case_list:
 	;
 
 /*
- * Synthesises a AST_switch_case_list
+ * Synthesises a List<AST_switch_case*>
  */
 case_list:
 	  /* empty */
-		{ $$ = new AST_switch_case_list; }
-	| case_list K_CASE expr case_separator {$2 = NEW(AST_switch_case, ());} inner_statement_list
+		{ $$ = new List<AST_switch_case*>; }
+	| case_list keyword_case expr case_separator inner_statement_list
 		{
+			CAST_AST(cases, $1, List<AST_switch_case*>);
 			CAST_AST(switch_case, $2, AST_switch_case);	
-			CAST_AST(cases, $1, AST_switch_case_list);
 			CAST_AST(expr, $3, AST_expr);
-			CAST_AST(body, $6, AST_statement_list);
+			CAST_AST(body, $5, List<AST_statement*>);
 			
 			switch_case->statements = body;
 			switch_case->expr = expr;
@@ -1196,11 +1248,11 @@ case_list:
 			
 			$$ = cases;
 		}
-	| case_list K_DEFAULT case_separator {$2 = NEW(AST_switch_case, ());} inner_statement_list
+	| case_list keyword_default case_separator inner_statement_list
 		{
+			CAST_AST(cases, $1, List<AST_switch_case*>);
 			CAST_AST(switch_case, $2, AST_switch_case);
-			CAST_AST(cases, $1, AST_switch_case_list);
-			CAST_AST(body, $5, AST_statement_list);
+			CAST_AST(body, $4, List<AST_statement*>);
 
 			switch_case->statements = body;
 			switch_case->expr = NULL;
@@ -1222,7 +1274,7 @@ case_separator:
 	;
 	
 /*
- * Synthesises a AST_statement_list
+ * Synthesises a List<AST_statement*>
  */
 while_statement:
 	  statement
@@ -1241,14 +1293,14 @@ while_statement:
 elseif_list:
 	  /* empty */
 		{ $$ = NULL; }
-	| elseif_list K_ELSEIF {$2 = NEW(AST_if, ());} '(' expr ')' statement
+	| elseif_list keyword_elseif '(' expr ')' statement
 		{
 			CAST_AST(elseif, $1, AST_if);
 			CAST_AST(nested_if, $2, AST_if);
-			CAST_AST(expr, $5, AST_expr);
-			CAST_STATEMENT_VECTOR(stat, $7);
+			CAST_AST(expr, $4, AST_expr);
+			CAST_STATEMENT_VECTOR(stat, $6);
 			
-			AST_statement_list* empty = new AST_statement_list;
+			List<AST_statement*>* empty = new List<AST_statement*>;
 			
 			nested_if->expr = expr;
 			nested_if->iftrue = stat;
@@ -1257,7 +1309,7 @@ elseif_list:
 
 			if(elseif)
 			{
-				AST_statement_list* iffalse = new AST_statement_list;
+				List<AST_statement*>* iffalse = new List<AST_statement*>;
 				iffalse->push_back(nested_if);
 				
 				/*
@@ -1286,14 +1338,14 @@ elseif_list:
 new_elseif_list:
 	  /* empty */
 		{ $$ = NULL; }
-	| new_elseif_list K_ELSEIF {$2 = NEW(AST_if, ());} '(' expr ')' ':' inner_statement_list
+	| new_elseif_list keyword_elseif '(' expr ')' ':' inner_statement_list
 		{
 			CAST_AST(elseif, $1, AST_if);
 			CAST_AST(nested_if, $2, AST_if);
-			CAST_AST(expr, $5, AST_expr);
-			CAST_STATEMENT_VECTOR(stat, $8);
+			CAST_AST(expr, $4, AST_expr);
+			CAST_STATEMENT_VECTOR(stat, $7);
 			
-			AST_statement_list* empty = new AST_statement_list;
+			List<AST_statement*>* empty = new List<AST_statement*>;
 			
 			nested_if->expr = expr;
 			nested_if->iftrue = stat;
@@ -1302,7 +1354,7 @@ new_elseif_list:
 
 			if(elseif)
 			{
-				AST_statement_list* iffalse = new AST_statement_list;
+				List<AST_statement*>* iffalse = new List<AST_statement*>;
 				iffalse->push_back(nested_if);
 				
 				AST_if* p = elseif;
@@ -1320,7 +1372,7 @@ new_elseif_list:
 	;
 
 /*
- * Synthesises a AST_statement_list or NULL
+ * Synthesises a List<AST_statement*> or NULL
  */
 else_single:
 	  /* empty */
@@ -1330,7 +1382,7 @@ else_single:
 	;
 
 /*
- * Synthesises a AST_statement_list or NULL
+ * Synthesises a List<AST_statement*> or NULL
  * 
  * Mimicks else_single
  */
@@ -1342,20 +1394,20 @@ new_else_single:
 	;
 
 /*
- * Synthesises a AST_formal_parameter_list
+ * Synthesises a List<AST_formal_parameter*>
  */
 parameter_list:
 	  non_empty_parameter_list
 		{ $$ = $1; }
 	| /* empty */
 		{ 
-			AST_formal_parameter_list* params = new AST_formal_parameter_list;
+			List<AST_formal_parameter*>* params = new List<AST_formal_parameter*>;
 			$$ = params;
 		}
 	;
 
 /*
- * Synthesises a AST_formal_parameter_list
+ * Synthesises a List<AST_formal_parameter*>
  *
  * Lots of duplication in these rules, but what can you do?
  */
@@ -1365,9 +1417,9 @@ non_empty_parameter_list:
 			CAST_AST(class_type, $1, AST_type);
 			CAST_STR(name, $2, Token_variable_name);
 			
-			AST_formal_parameter_list* params;
+			List<AST_formal_parameter*>* params;
 			
-			params = new AST_formal_parameter_list;
+			params = new List<AST_formal_parameter*>;
 			params->push_back(NEW(AST_formal_parameter, (class_type, name)));
 			
 			$$ = params; 
@@ -1377,9 +1429,9 @@ non_empty_parameter_list:
 			CAST_AST(class_type, $1, AST_type);
 			CAST_STR(name, $3, Token_variable_name);
 			
-			AST_formal_parameter_list* params;
+			List<AST_formal_parameter*>* params;
 			
-			params = new AST_formal_parameter_list;
+			params = new List<AST_formal_parameter*>;
 			params->push_back(NEW(AST_formal_parameter, (class_type, true, name)));
 			
 			$$ = params; 
@@ -1390,9 +1442,9 @@ non_empty_parameter_list:
 			CAST_STR(name, $3, Token_variable_name);
 			CAST_AST(default_val, $5, AST_expr);
 			
-			AST_formal_parameter_list* params;
+			List<AST_formal_parameter*>* params;
 			
-			params = new AST_formal_parameter_list;
+			params = new List<AST_formal_parameter*>;
 			params->push_back(NEW(AST_formal_parameter, (class_type, true, name, default_val)));
 			
 			$$ = params; 
@@ -1403,16 +1455,16 @@ non_empty_parameter_list:
 			CAST_STR(name, $2, Token_variable_name);
 			CAST_AST(default_val, $4, AST_expr);
 			
-			AST_formal_parameter_list* params;
+			List<AST_formal_parameter*>* params;
 			
-			params = new AST_formal_parameter_list;
+			params = new List<AST_formal_parameter*>;
 			params->push_back(NEW(AST_formal_parameter, (class_type, false, name, default_val)));
 			
 			$$ = params; 
 		}
 	| non_empty_parameter_list ',' optional_class_type VARIABLE
 		{ 
-			CAST_AST(params, $1, AST_formal_parameter_list);
+			CAST_AST(params, $1, List<AST_formal_parameter*>);
 			CAST_AST(class_type, $3, AST_type);
 			CAST_STR(name, $4, Token_variable_name);
 			
@@ -1422,7 +1474,7 @@ non_empty_parameter_list:
 		}
 	| non_empty_parameter_list ',' optional_class_type '&' VARIABLE
 		{ 
-			CAST_AST(params, $1, AST_formal_parameter_list);
+			CAST_AST(params, $1, List<AST_formal_parameter*>);
 			CAST_AST(class_type, $3, AST_type);
 			CAST_STR(name, $5, Token_variable_name);
 			
@@ -1432,7 +1484,7 @@ non_empty_parameter_list:
 		}
 	| non_empty_parameter_list ',' optional_class_type '&' VARIABLE '=' static_scalar
 		{ 
-			CAST_AST(params, $1, AST_formal_parameter_list);
+			CAST_AST(params, $1, List<AST_formal_parameter*>);
 			CAST_AST(class_type, $3, AST_type);
 			CAST_STR(name, $5, Token_variable_name);
 			CAST_AST(default_val, $7, AST_expr);
@@ -1443,7 +1495,7 @@ non_empty_parameter_list:
 		}
 	| non_empty_parameter_list ',' optional_class_type VARIABLE '=' static_scalar
 		{ 
-			CAST_AST(params, $1, AST_formal_parameter_list);
+			CAST_AST(params, $1, List<AST_formal_parameter*>);
 			CAST_AST(class_type, $3, AST_type);
 			CAST_STR(name, $4, Token_variable_name);
 			CAST_AST(default_val, $6, AST_expr);
@@ -1472,24 +1524,24 @@ optional_class_type:
 	;	
 
 /*
- * Synthesises a AST_actual_parameter_list
+ * Synthesises a List<AST_actual_parameter*>
  */
 function_call_parameter_list:
 	  non_empty_function_call_parameter_list
 		{ $$ = $1; }
 	| /* empty */
-		{ $$ = new AST_actual_parameter_list; }
+		{ $$ = new List<AST_actual_parameter*>; }
 	;
 
 /*
- * Synthesises a AST_actual_parameter_list
+ * Synthesises a List<AST_actual_parameter*>
  */
 non_empty_function_call_parameter_list:
 	  expr_without_variable
 		{
 			CAST_AST(arg, $1, AST_expr);
 			
-			AST_actual_parameter_list* list = new AST_actual_parameter_list;
+			List<AST_actual_parameter*>* list = new List<AST_actual_parameter*>;
 			list->push_back(NEW(AST_actual_parameter, (false, arg)));
 			$$ = list;
 		}
@@ -1497,7 +1549,7 @@ non_empty_function_call_parameter_list:
 		{
 			CAST_AST(arg, $1, AST_expr);
 			
-			AST_actual_parameter_list* list = new AST_actual_parameter_list;
+			List<AST_actual_parameter*>* list = new List<AST_actual_parameter*>;
 			list->push_back(NEW(AST_actual_parameter, (false, arg)));
 			$$ = list;
 		}
@@ -1505,13 +1557,13 @@ non_empty_function_call_parameter_list:
 		{
 			CAST_AST(expr, $2, AST_expr);
 			
-			AST_actual_parameter_list* list = new AST_actual_parameter_list;
+			List<AST_actual_parameter*>* list = new List<AST_actual_parameter*>;
 			list->push_back(NEW(AST_actual_parameter, (true, expr)));
 			$$ = list; 
 		}
 	| non_empty_function_call_parameter_list ',' expr_without_variable
 		{
-			CAST_AST(list, $1, AST_actual_parameter_list);
+			CAST_AST(list, $1, List<AST_actual_parameter*>);
 			CAST_AST(arg, $3, AST_expr);
 			
 			list->push_back(NEW(AST_actual_parameter, (false, arg)));
@@ -1519,7 +1571,7 @@ non_empty_function_call_parameter_list:
 		}
 	| non_empty_function_call_parameter_list ',' variable
 		{
-			CAST_AST(list, $1, AST_actual_parameter_list);
+			CAST_AST(list, $1, List<AST_actual_parameter*>);
 			CAST_AST(arg, $3, AST_expr);
 			
 			list->push_back(NEW(AST_actual_parameter, (false, arg)));
@@ -1527,7 +1579,7 @@ non_empty_function_call_parameter_list:
 		}
 	| non_empty_function_call_parameter_list ',' '&' w_variable
 		{ 
-			CAST_AST(list, $1, AST_actual_parameter_list);
+			CAST_AST(list, $1, List<AST_actual_parameter*>);
 			CAST_AST(arg, $4, AST_expr);
 			
 			list->push_back(NEW(AST_actual_parameter, (true, arg)));
@@ -1586,7 +1638,7 @@ global_var:
 static_var_list: 
 	  static_var_list ',' VARIABLE
 		{
-			CAST_AST(list, $1, AST_statement_list);
+			CAST_AST(list, $1, List<AST_statement*>);
 			CAST_STR(name, $3, Token_variable_name);
 			
 			AST_static_declaration* v = NEW(AST_static_declaration, (name, NULL));
@@ -1596,7 +1648,7 @@ static_var_list:
 		}
 	| static_var_list ',' VARIABLE '=' static_scalar
 		{
-			CAST_AST(list, $1, AST_statement_list);
+			CAST_AST(list, $1, List<AST_statement*>);
 			CAST_STR(name, $3, Token_variable_name);
 			CAST_AST(value, $5, AST_expr);
 
@@ -1609,7 +1661,7 @@ static_var_list:
 		{
 			CAST_STR(name, $1, Token_variable_name);
 			
-			AST_statement_list* list = new AST_statement_list;
+			List<AST_statement*>* list = new List<AST_statement*>;
 			AST_static_declaration* v = NEW(AST_static_declaration, (name, NULL));
 			list->push_back(v);
 			
@@ -1620,7 +1672,7 @@ static_var_list:
 			CAST_STR(name, $1, Token_variable_name);
 			CAST_AST(value, $3, AST_expr);
 			
-			AST_statement_list* list = new AST_statement_list;
+			List<AST_statement*>* list = new List<AST_statement*>;
 			AST_static_declaration* v = NEW(AST_static_declaration, (name, value));
 			list->push_back(v);
 
@@ -1629,13 +1681,13 @@ static_var_list:
 	;
 
 /*
- * Synthesises a AST_member_list
+ * Synthesises a List<AST_member*>
  */
 class_statement_list:
 	 	class_statement_list class_statement
 		{
-			CAST_AST(member_list, $1, AST_member_list);		
-			CAST_AST(members, $2, AST_member_list);
+			CAST_AST(member_list, $1, List<AST_member*>);		
+			CAST_AST(members, $2, List<AST_member*>);
 			
 			member_list->push_back_all(members);
 			
@@ -1643,42 +1695,42 @@ class_statement_list:
 		}
 	| /* empty */
 		{
-			$$ = new AST_member_list;
+			$$ = new List<AST_member*>;
 		}
 	;
 
 /* 
- * Synthesises a AST_member_list
+ * Synthesises a List<AST_member*>
  */
 class_statement:
 	  variable_modifiers class_variable_declaration ';'
 		{
 			CAST_AST(modifiers, $1, AST_attr_mod);
-			CAST_AST(members, $2, AST_member_list);	
+			CAST_AST(members, $2, List<AST_member*>);	
 
-			AST_member_list::iterator i;
+			List<AST_member*>::iterator i;
 			for(i = members->begin(); i != members->end(); i++)
 			{
 				CAST_AST(attribute, *i, AST_attribute);
-				attribute->attr_mod = modifiers->deep_clone();
+				attribute->attr_mod = modifiers->clone();
 			}
 
 			$$ = members;
 		}
 	| class_constant_declaration ';'
 		{ $$ = $1; }
-	| method_modifiers K_FUNCTION {$2 = NEW(AST_method, ());} is_reference IDENT {context->current_method = dynamic_cast<String*>($5);} '(' parameter_list ')' method_body
+	| method_modifiers keyword_function is_reference IDENT {context->current_method = dynamic_cast<String*>($4);} '(' parameter_list ')' method_body
 		{
 			CAST_AST(mod, $1, AST_method_mod);
 			CAST_AST(fn, $2, AST_method);
-			CAST_AST(is_ref, $4, Integer);
-			CAST_STR(name, $5, Token_method_name);
-			CAST_AST(params, $8, AST_formal_parameter_list);
-			CAST_AST(body, $10, AST_statement_list);
+			CAST_AST(is_ref, $3, Integer);
+			CAST_STR(name, $4, Token_method_name);
+			CAST_AST(params, $7, List<AST_formal_parameter*>);
+			CAST_AST(body, $9, List<AST_statement*>);
 		
 			AST_signature* signature = NEW(AST_signature, (mod, is_ref->value(), name, params));
 			
-			AST_member_list* members = new AST_member_list;
+			List<AST_member*>* members = new List<AST_member*>;
 			fn->signature = signature;
 			fn->statements = body;
 			members->push_back(fn);
@@ -1688,7 +1740,7 @@ class_statement:
 	;
 
 /*
- * Synthesises a AST_statement_list or NULL (for abstract methods)
+ * Synthesises a List<AST_statement*> or NULL (for abstract methods)
  */
 method_body:
 	  ';' 
@@ -1765,12 +1817,12 @@ member_modifier:
 	;
 
 /*
- * Synthesises a AST_member_list
+ * Synthesises a List<AST_member*>
  */
 class_variable_declaration:
 	  class_variable_declaration ',' VARIABLE
 		{
-			CAST_AST(members, $1, AST_member_list);
+			CAST_AST(members, $1, List<AST_member*>);
 			CAST_STR(name, $3, Token_variable_name);
 			
 			AST_attribute* attr = NEW(AST_attribute, (AST_attr_mod::new_PUBLIC(), name, NULL));
@@ -1780,7 +1832,7 @@ class_variable_declaration:
 		}
 	| class_variable_declaration ',' VARIABLE '=' static_scalar
 		{
-			CAST_AST(members, $1, AST_member_list);
+			CAST_AST(members, $1, List<AST_member*>);
 			CAST_STR(name, $3, Token_variable_name);
 			CAST_AST(value, $5, AST_expr);
 			
@@ -1792,7 +1844,7 @@ class_variable_declaration:
 	| VARIABLE
 		{
 			CAST_STR(name, $1, Token_variable_name);
-			AST_member_list* members = new AST_member_list;
+			List<AST_member*>* members = new List<AST_member*>;
 
 			AST_attribute* attr = NEW(AST_attribute, (AST_attr_mod::new_PUBLIC(), name, NULL));	
 			members->push_back(attr);
@@ -1803,7 +1855,7 @@ class_variable_declaration:
 		{ 
 			CAST_STR(name, $1, Token_variable_name);
 			CAST_AST(value, $3, AST_expr);
-			AST_member_list* members = new AST_member_list;
+			List<AST_member*>* members = new List<AST_member*>;
 
 			AST_attribute* attr = NEW(AST_attribute, (AST_attr_mod::new_PUBLIC(), name, value));
 			members->push_back(attr);
@@ -1813,12 +1865,12 @@ class_variable_declaration:
 	;
 
 /*
- * Synthesises a AST_member_list 
+ * Synthesises a List<AST_member*> 
  */
 class_constant_declaration:
 	  class_constant_declaration ',' IDENT '=' static_scalar
 		{
-			CAST_AST(members, $1, AST_member_list);
+			CAST_AST(members, $1, List<AST_member*>);
 			CAST_STR(name, $3, Token_variable_name);
 			CAST_AST(value, $5, AST_expr);
 
@@ -1831,7 +1883,7 @@ class_constant_declaration:
 		{
 			CAST_STR(name, $2, Token_variable_name);
 			CAST_AST(value, $4, AST_expr);
-			AST_member_list* members = new AST_member_list;
+			List<AST_member*>* members = new List<AST_member*>;
 
 			AST_attribute* attr = NEW(AST_attribute, (AST_attr_mod::new_CONST(), name, value));
 			members->push_back(attr);
@@ -1841,14 +1893,14 @@ class_constant_declaration:
 	;
 
 /*
- * Synthesises a AST_statement_list 
+ * Synthesises a List<AST_statement*> 
  *
  * "echo foo, bar;" is translated into "echo(foo); echo(bar);"
  */
 echo_expr_list:
 	  echo_expr_list ',' expr
 		{
-			CAST_AST(echo_list, $1, AST_statement_list);
+			CAST_AST(echo_list, $1, List<AST_statement*>);
 			CAST_AST(param, $3, AST_expr);
 			
 			AST_method_invocation* fn = NEW(AST_method_invocation, ("echo", param));
@@ -1859,7 +1911,7 @@ echo_expr_list:
 	| expr
 		{
 			CAST_AST(param, $1, AST_expr);
-			AST_statement_list* echo_list = new AST_statement_list;
+			List<AST_statement*>* echo_list = new List<AST_statement*>;
 			
 			AST_method_invocation* fn = NEW(AST_method_invocation, ("echo", param));
 			echo_list->push_back(NEW(AST_eval_expr, (fn)));
@@ -1926,14 +1978,14 @@ expr_without_variable:
 			CAST_UNSAFE(var, $1, AST_variable);
 			EXPECT_VARIABLE($1);
 			CAST_AST(name, $5, AST_class_name);
-			CAST_AST(args, $6, AST_actual_parameter_list);
+			CAST_AST(args, $6, List<AST_actual_parameter*>);
 
 			$$ = NEW(AST_assignment, (var, true, NEW(AST_new, (name, args))));
 		}
 	| K_NEW class_name_reference ctor_arguments
 		{
 			CAST_AST(name, $2, AST_class_name);	
-			CAST_AST(args, $3, AST_actual_parameter_list);
+			CAST_AST(args, $3, List<AST_actual_parameter*>);
 
 			$$ = NEW(AST_new, (name, args));
 		}
@@ -1950,7 +2002,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "+"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -1963,7 +2015,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "-"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -1976,7 +2028,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "*"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -1989,7 +2041,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "/"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -2002,7 +2054,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "."))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -2015,7 +2067,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "%"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -2028,7 +2080,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "&"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -2041,7 +2093,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "|"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -2054,7 +2106,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "^"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -2067,7 +2119,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, "<<"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -2080,7 +2132,7 @@ expr_without_variable:
 			CAST_AST(expr, $3, AST_expr);
 			
 			AST_expr* var_c;
-			var_c = var->deep_clone();
+			var_c = var->clone();
 			
 			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, expr, ">>"))));
 			agn->attrs->set("phc.unparser.is_opeq", new Boolean(true));
@@ -2390,7 +2442,7 @@ expr_without_variable:
 		{ $$ = $1; }
 	| K_ARRAY '(' array_pair_list ')'
 		{ 
-			CAST_AST(list, $3, AST_array_elem_list);
+			CAST_AST(list, $3, List<AST_array_elem*>);
 			
 			$$ = NEW(AST_array, (list)); 
 		}
@@ -2408,7 +2460,7 @@ expr_without_variable:
 function_call:
 	  IDENT '(' function_call_parameter_list ')'
 		{
-			CAST_AST(params, $3, AST_actual_parameter_list);
+			CAST_AST(params, $3, List<AST_actual_parameter*>);
 			CAST_STR(fn, $1, Token_method_name);
 		
 			$$ = NEW(AST_method_invocation, (NULL, fn, params));
@@ -2417,7 +2469,7 @@ function_call:
 		{
 			CAST_AST(class_name, $1, Token_class_name);
 			CAST_STR(fn, $3, Token_method_name);
-			CAST_AST(params, $5, AST_actual_parameter_list);
+			CAST_AST(params, $5, List<AST_actual_parameter*>);
 
 			$$ = NEW(AST_method_invocation, (class_name, fn, params));
 		}
@@ -2425,14 +2477,14 @@ function_call:
 		{
 			CAST_AST(class_name, $1, Token_class_name);
 			CAST_AST(expr, $3, AST_expr);
-			CAST_AST(params, $5, AST_actual_parameter_list);
+			CAST_AST(params, $5, List<AST_actual_parameter*>);
 			
 			$$ = NEW(AST_method_invocation, (class_name, NEW(AST_reflection, (expr)), params));
 		}
 	| variable_without_objects '(' function_call_parameter_list ')'
 		{
 			CAST_AST(expr, $1, AST_expr);
-			CAST_AST(params, $3, AST_actual_parameter_list);			
+			CAST_AST(params, $3, List<AST_actual_parameter*>);			
 			
 			$$ = NEW(AST_method_invocation, (NULL, NEW(AST_reflection, (expr)), params));
 		}
@@ -2536,12 +2588,12 @@ exit_expr:
 	;
 
 /*
- * Synthesises a AST_actual_parameter_list
+ * Synthesises a List<AST_actual_parameter*>
  */
 ctor_arguments:
 	  /* empty */
 		{ 
-			AST_actual_parameter_list* args = new AST_actual_parameter_list;
+			List<AST_actual_parameter*>* args = new List<AST_actual_parameter*>;
 			
 			$$ = args; 
 		}
@@ -2628,7 +2680,7 @@ static_scalar:
 		}
 	| K_ARRAY '(' static_array_pair_list ')'
 		{
-			CAST_AST(list, $3, AST_array_elem_list);
+			CAST_AST(list, $3, List<AST_array_elem*>);
 			$$ = NEW(AST_array, (list));
 		}
 	| static_class_constant
@@ -2665,11 +2717,11 @@ scalar:
 	;
 
 /*
- * Synthesises a AST_array_elem_list
+ * Synthesises a List<AST_array_elem*>
  */
 static_array_pair_list:
 	  /* empty */
-		{ $$ = new AST_array_elem_list; }
+		{ $$ = new List<AST_array_elem*>; }
 	| non_empty_static_array_pair_list possible_comma
 		{ $$ = $1; }
 	;
@@ -2685,12 +2737,12 @@ possible_comma:
 	;
 
 /*
- * Synthesises a AST_array_elem_list
+ * Synthesises a List<AST_array_elem*>
  */
 non_empty_static_array_pair_list:
 	  non_empty_static_array_pair_list ',' static_scalar O_DOUBLEARROW static_scalar
 		{
-			CAST_AST(list, $1, AST_array_elem_list);
+			CAST_AST(list, $1, List<AST_array_elem*>);
 			CAST_AST(key, $3, AST_expr);
 			CAST_AST(value, $5, AST_expr);
 
@@ -2701,7 +2753,7 @@ non_empty_static_array_pair_list:
 		}
 	| non_empty_static_array_pair_list ',' static_scalar
 		{
-			CAST_AST(list, $1, AST_array_elem_list);
+			CAST_AST(list, $1, List<AST_array_elem*>);
 			CAST_AST(value, $3, AST_expr);
 			
 			AST_array_elem* elem = NEW(AST_array_elem, (NULL, false, value));
@@ -2714,7 +2766,7 @@ non_empty_static_array_pair_list:
 			CAST_AST(key, $1, AST_expr);
 			CAST_AST(value, $3, AST_expr);
 			
-			AST_array_elem_list* list = new AST_array_elem_list;
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
 			AST_array_elem* elem = NEW(AST_array_elem, (key, false, value));
 			list->push_back(elem);
 
@@ -2724,7 +2776,7 @@ non_empty_static_array_pair_list:
 		{
 			CAST_AST(value, $1, AST_expr);
 			
-			AST_array_elem_list* list = new AST_array_elem_list;
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
 			AST_array_elem* elem = NEW(AST_array_elem, (NULL, false, value));
 			list->push_back(elem);
 
@@ -2789,9 +2841,9 @@ variable:
 	  base_variable_with_function_calls variable_properties
 		{
 			CAST_AST(object, $1, AST_expr);
-			CAST_AST(props, $2, AST_expr_list);
+			CAST_AST(props, $2, List<AST_expr*>);
 
-			AST_expr_list::iterator i;
+			List<AST_expr*>::iterator i;
 			for(i = props->begin(); i != props->end(); i++)
 			{
 				CAST_UNSAFE(var, *i, AST_variable);
@@ -2801,7 +2853,7 @@ variable:
 				{
 					var->target = object;
 					
-					AST_actual_parameter_list* function_params = dynamic_cast<AST_actual_parameter_list*>(var->attrs->get("phc.parser.function_params"));
+					List<AST_actual_parameter*>* function_params = dynamic_cast<List<AST_actual_parameter*>*>(var->attrs->get("phc.parser.function_params"));
 	
 					if(function_params)
 					{
@@ -2826,7 +2878,7 @@ variable:
 	;
 
 /*
- * Synthesises a AST_expr_list (AST_variable/AST_method_invocation)
+ * Synthesises a List<AST_expr*> (AST_variable/AST_method_invocation)
  *
  * NOTE: The second rule goes to empty in the original grammar; see the
  * comment for "variable ::=" why this is changed.
@@ -2834,7 +2886,7 @@ variable:
 variable_properties:
 	  variable_properties variable_property
 		{
-			CAST_AST(props, $1, AST_expr_list);
+			CAST_AST(props, $1, List<AST_expr*>);
 			CAST_AST(prop, $2, AST_expr);
 
 			props->push_back(prop);
@@ -2845,7 +2897,7 @@ variable_properties:
 		{ 
 			CAST_AST(prop, $1, AST_expr);
 			
-			AST_expr_list* props = new AST_expr_list;
+			List<AST_expr*>* props = new List<AST_expr*>;
 			props->push_back(prop);
 			
 			$$ = props;
@@ -2877,7 +2929,7 @@ variable_property:
 	  O_SINGLEARROW object_property method_or_not
 		{
 			CAST_AST(var, $2, AST_variable);
-			CAST_AST(params, $3, AST_actual_parameter_list);
+			CAST_AST(params, $3, List<AST_actual_parameter*>);
 			
 			if(params)
 			{
@@ -2915,7 +2967,7 @@ variable_property:
 	;
 
 /* 
- * Synthesises a AST_actual_parameter_list or NULL
+ * Synthesises a List<AST_actual_parameter*> or NULL
  */
 method_or_not:
 	  '(' function_call_parameter_list ')'
@@ -3155,7 +3207,7 @@ assignment_list:
 		{
 			CAST_AST(element, $1, AST_list_element);
 
-			AST_list_element_list* elements = new AST_list_element_list;
+			List<AST_list_element*>* elements = new List<AST_list_element*>;
 			elements->push_back(element);
 			
 			$$ = NEW(AST_list_elements, (elements)); 
@@ -3177,24 +3229,24 @@ assignment_list_element:
 	;
 
 /*
- * Synthesises a AST_array_elem_list
+ * Synthesises a List<AST_array_elem*>
  */
 array_pair_list:
 	  /* emtpy */
-		{ $$ = new AST_array_elem_list; }
+		{ $$ = new List<AST_array_elem*>; }
 	| non_empty_array_pair_list possible_comma
 		{ $$ = $1; }
 	;
 
 /*
- * Synthesises a AST_array_elem_list
+ * Synthesises a List<AST_array_elem*>
  *
  * Code duplicated in non_empty_static_array_pair_list
  */
 non_empty_array_pair_list:
 	  non_empty_array_pair_list ',' expr O_DOUBLEARROW expr
 		{
-			CAST_AST(list, $1, AST_array_elem_list);
+			CAST_AST(list, $1, List<AST_array_elem*>);
 			CAST_AST(key, $3, AST_expr);
 			CAST_AST(value, $5, AST_expr);
 
@@ -3205,7 +3257,7 @@ non_empty_array_pair_list:
 		}
 	| non_empty_array_pair_list ',' expr
 		{
-			CAST_AST(list, $1, AST_array_elem_list);
+			CAST_AST(list, $1, List<AST_array_elem*>);
 			CAST_AST(value, $3, AST_expr);
 			
 			AST_array_elem* elem = NEW(AST_array_elem, (NULL, false, value));
@@ -3218,7 +3270,7 @@ non_empty_array_pair_list:
 			CAST_AST(key, $1, AST_expr);
 			CAST_AST(value, $3, AST_expr);
 			
-			AST_array_elem_list* list = new AST_array_elem_list;
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
 			AST_array_elem* elem = NEW(AST_array_elem, (key, false, value));
 			list->push_back(elem);
 
@@ -3228,7 +3280,7 @@ non_empty_array_pair_list:
 		{
 			CAST_AST(value, $1, AST_expr);
 			
-			AST_array_elem_list* list = new AST_array_elem_list;
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
 			AST_array_elem* elem = NEW(AST_array_elem, (NULL, false, value));
 			list->push_back(elem);
 
@@ -3236,7 +3288,7 @@ non_empty_array_pair_list:
 		}
 	| non_empty_array_pair_list ',' expr O_DOUBLEARROW '&' w_variable
 		{
-			CAST_AST(list, $1, AST_array_elem_list);
+			CAST_AST(list, $1, List<AST_array_elem*>);
 			CAST_AST(key, $3, AST_expr);
 			CAST_AST(value, $6, AST_expr);
 
@@ -3248,7 +3300,7 @@ non_empty_array_pair_list:
 		}
 	| non_empty_array_pair_list ',' '&' w_variable 
 		{
-			CAST_AST(list, $1, AST_array_elem_list);
+			CAST_AST(list, $1, List<AST_array_elem*>);
 			CAST_AST(value, $4, AST_expr);
 			
 			AST_array_elem* elem = 
@@ -3262,7 +3314,7 @@ non_empty_array_pair_list:
 			CAST_AST(key, $1, AST_expr);
 			CAST_AST(value, $4, AST_expr);
 			
-			AST_array_elem_list* list = new AST_array_elem_list;
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
 			AST_array_elem* elem = 
 				NEW(AST_array_elem, (key, true, value));
 			list->push_back(elem);
@@ -3273,7 +3325,7 @@ non_empty_array_pair_list:
 		{
 			CAST_AST(value, $2, AST_expr);
 			
-			AST_array_elem_list* list = new AST_array_elem_list;
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
 			AST_array_elem* elem = 
 				NEW(AST_array_elem, (NULL, true, value));
 			list->push_back(elem);
@@ -3288,7 +3340,7 @@ non_empty_array_pair_list:
 internal_functions_in_yacc:
 	 K_ISSET '(' isset_variables ')' 
 		{
-			CAST_AST(params, $3, AST_actual_parameter_list);
+			CAST_AST(params, $3, List<AST_actual_parameter*>);
 		  
 			Token_method_name* fn = NEW(Token_method_name, (new String("isset")));
 			$$ = NEW(AST_method_invocation, (NULL, fn, params));
@@ -3326,20 +3378,20 @@ internal_functions_in_yacc:
 	;
 
 /*
- * Synthesises a AST_actual_parameter_list
+ * Synthesises a List<AST_actual_parameter*>
  */
 isset_variables:
 	  variable
 		{
 			CAST_AST(variable, $1, AST_expr);
-			AST_actual_parameter_list* params = new AST_actual_parameter_list;
+			List<AST_actual_parameter*>* params = new List<AST_actual_parameter*>;
 			
 			params->push_back(NEW(AST_actual_parameter, (false, variable)));
 			$$ = params;
 		}
 	| isset_variables ',' variable
 		{
-			CAST_AST(params, $1, AST_actual_parameter_list);
+			CAST_AST(params, $1, List<AST_actual_parameter*>);
 			CAST_AST(variable, $3, AST_expr);
 			
 			params->push_back(NEW(AST_actual_parameter, (false, variable)));

@@ -6,9 +6,9 @@
  * http://framework.zend.com/manual/en/coding-standard.coding-style.html
  */
 
-#include <ast.h>
+#include <AST.h>
 #include <iostream>
-#include <Tree_visitor.h>
+#include <AST_visitor.h>
 #include <lib/demangle.h>
 #include <process_ast/PHP_unparser.h>
 
@@ -41,10 +41,11 @@ class Zend_Style_Unparser: public PHP_unparser
 		void children_declare (AST_declare* in);
 		void children_try (AST_try* in);
 		void children_catch (AST_catch* in);
-		void children_statement_list (AST_statement_list* in);
 		void pre_array_elem (AST_array_elem* in);
 		void post_array_elem (AST_array_elem* in);
 		void children_actual_parameter (AST_actual_parameter* in);
-		void children_member_list (AST_member_list* in);
 		void children_bin_op (AST_bin_op* in);
+		
+		void visit_statement_list (List<AST_statement*>* in);
+		void visit_member_list (List<AST_member*>* in);
 };

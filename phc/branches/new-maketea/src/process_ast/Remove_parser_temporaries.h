@@ -10,9 +10,9 @@
 #ifndef PHC_REMOVE_PARSER_TEMPORARIES
 #define PHC_REMOVE_PARSER_TEMPORARIES
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class Remove_parser_temporaries : public Tree_visitor
+class Remove_parser_temporaries : public AST_visitor
 {
 public:
 	void pre_node(AST_node* in);

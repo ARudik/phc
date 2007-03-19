@@ -8,9 +8,9 @@
 #ifndef PHC_PROCESS_INCLUDES
 #define PHC_PROCESS_INCLUDES
 
-#include "Tree_transform.h"
+#include "AST_transform.h"
 
-class Process_includes : public Tree_transform
+class Process_includes : public AST_transform
 {
 public:
 	AST_php_script* current_script; // stores a record of the current script
@@ -18,8 +18,8 @@ public:
 
 public:
 	AST_php_script* pre_php_script(AST_php_script* in);
-	void pre_method(AST_method* in, AST_member_list* out);
-	void pre_eval_expr(AST_eval_expr* in, AST_statement_list* out);
+	void pre_method(AST_method* in, List<AST_member*>* out);
+	void pre_eval_expr(AST_eval_expr* in, List<AST_statement*>* out);
 
 };
 

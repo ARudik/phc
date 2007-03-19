@@ -6,9 +6,9 @@
  * done on an unmodified tree.
  */
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class Test_pre_vs_post_count : public Tree_visitor
+class Test_pre_vs_post_count : public AST_visitor
 {
 private:
 	int count;

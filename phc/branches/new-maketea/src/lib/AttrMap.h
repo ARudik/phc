@@ -2,7 +2,7 @@
  * phc -- the open source PHP compiler
  * See doc/license/README.license for licensing information
  * 
- * Like the STL list, but inherit from Object and support == (deep equality)
+ * Specialized version of std::map 
  */
 
 #ifndef PHC_MAP
@@ -33,10 +33,6 @@ public:
 
 public:
 	void set(string key, Object* value);
-	
-public:
-	bool deep_equals(Object* other);
-	AttrMap* deep_clone(Object* partial_result = NULL);
 };
 
 #endif // PHC_MAP

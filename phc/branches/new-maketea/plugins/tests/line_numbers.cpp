@@ -5,10 +5,10 @@
  * Printout all the tokens with their line numbers.
  */
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 #include "process_ast/PHP_unparser.h"
 
-class Print_line_numbers : public Tree_visitor
+class Print_line_numbers : public AST_visitor
 {
 	String delimiter;
 	bool read;

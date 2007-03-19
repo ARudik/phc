@@ -8,7 +8,7 @@
 #ifndef PHC_PROCESS_AST
 #define PHC_PROCESS_AST
 
-#include "ast.h"
+#include "AST.h"
 
 void process_ast(AST_php_script* php_script);
 

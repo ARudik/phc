@@ -26,7 +26,7 @@ AST_expr* Prep::post_assignment(AST_assignment* in)
 	return in;
 }
 
-void Prep::post_unset(AST_unset* in, AST_statement_list* out)
+void Prep::post_unset(AST_unset* in, List<AST_statement*>* out)
 {
 	out->push_back(in);
 	in->variable->attrs->set("phc.generate_c.is_addr", new Boolean(1));

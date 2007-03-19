@@ -19,16 +19,12 @@ private:
 	long _n;
 	
 public:
-	Integer() : _n(0) {}
-	Integer(long n) : _n(n) {}
-	long value() { return _n; }
+	Integer();
+	Integer(long n);
+	long value();
 
 public:
-	void operator++(POST_INCREMENT) { _n++; }
-
-public:
-	Integer* deep_clone(Object* partial_result = NULL);
-	bool deep_equals(Object* other);
+	void operator++(POST_INCREMENT); 
 };
 
 #endif

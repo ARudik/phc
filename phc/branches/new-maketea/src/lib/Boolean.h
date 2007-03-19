@@ -19,13 +19,9 @@ private:
 	bool _b;
 
 public:
-	Boolean() : _b(false) {}
-	Boolean(bool b) : _b(b) {}
-	bool value() { return _b; }
-
-public:
-	Boolean* deep_clone(Object* partial_result = NULL);
-	bool deep_equals(Object* other);
+	Boolean();
+	Boolean(bool b);
+	bool value(); 
 };
 
 #endif 

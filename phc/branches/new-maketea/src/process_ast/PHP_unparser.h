@@ -8,9 +8,9 @@
 #ifndef PHC_PHP_UNPARSER
 #define PHC_PHP_UNPARSER
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class PHP_unparser : public virtual Tree_visitor
+class PHP_unparser : public virtual AST_visitor
 {
 // Unparsing
 protected:
@@ -87,19 +87,6 @@ public:
 	void children_actual_parameter(AST_actual_parameter* in);
 	void children_new(AST_new* in);
 	void children_clone(AST_clone* in);
-	void children_interface_def_list(AST_interface_def_list* in);
-	void children_class_def_list(AST_class_def_list* in);
-	void children_interface_name_list(Token_interface_name_list* in);
-	void children_member_list(AST_member_list* in);
-	void children_statement_list(AST_statement_list* in);
-	void children_formal_parameter_list(AST_formal_parameter_list* in);
-	void children_switch_case_list(AST_switch_case_list* in);
-	void children_directive_list(AST_directive_list* in);
-	void children_catch_list(AST_catch_list* in);
-	void children_list_element_list(AST_list_element_list* in);
-	void children_expr_list(AST_expr_list* in);
-	void children_array_elem_list(AST_array_elem_list* in);
-	void children_actual_parameter_list(AST_actual_parameter_list* in);
 	void children_interface_name(Token_interface_name* in);
 	void children_class_name(Token_class_name* in);
 	void children_method_name(Token_method_name* in);
@@ -113,6 +100,21 @@ public:
 	void children_string(Token_string* in);
 	void children_bool(Token_bool* in);
 	void children_null(Token_null* in);
+	
+	void visit_interface_def_list(List<AST_interface_def*>* in);
+	void visit_class_def_list(List<AST_class_def*>* in);
+	void visit_interface_name_list(List<Token_interface_name*>* in);
+	void visit_member_list(List<AST_member*>* in);
+	void visit_statement_list(List<AST_statement*>* in);
+	void visit_formal_parameter_list(List<AST_formal_parameter*>* in);
+	void visit_switch_case_list(List<AST_switch_case*>* in);
+	void visit_directive_list(List<AST_directive*>* in);
+	void visit_catch_list(List<AST_catch*>* in);
+	void visit_list_element_list(List<AST_list_element*>* in);
+	void visit_expr_list(List<AST_expr*>* in);
+	void visit_array_elem_list(List<AST_array_elem*>* in);
+	void visit_actual_parameter_list(List<AST_actual_parameter*>* in);
+	
 	void pre_expr(AST_expr* in);
 	void post_expr(AST_expr* in);
 	void pre_commented_node(AST_commented_node* in);

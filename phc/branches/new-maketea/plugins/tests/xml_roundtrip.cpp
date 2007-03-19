@@ -6,7 +6,7 @@
  */
 
 #include <iostream>
-#include "ast.h"
+#include "AST.h"
 #include "config.h"
 #include "process_ast/XML_unparser.h"
 #include <parsing/XML_parser.h> 

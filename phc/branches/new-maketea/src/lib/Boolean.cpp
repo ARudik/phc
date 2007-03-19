@@ -5,21 +5,19 @@
  * Class to represent bools 
  */
 
-
 #include "lib/Boolean.h"
 
-Boolean* Boolean::deep_clone(Object* partial_result)
+Boolean::Boolean()
 {
-	assert(!partial_result);
-	return new Boolean(_b);
+	_b = false;
 }
 
-bool 
-Boolean::deep_equals(Object* other)
+Boolean::Boolean(bool b)
 {
-	Boolean* that = dynamic_cast<Boolean*>(other);
-	if(!that)
-		return false;
+	_b = b;
+}
 
-	return _b == that->_b;
+bool Boolean::value() 
+{
+	return _b;
 }

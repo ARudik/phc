@@ -21,7 +21,7 @@
 #include "process_ast/Zend_style_unparser.h"
 #include "process_ast/XML_unparser.h"
 #include "process_ast/DOT_unparser.h"
-#include "ast.h"
+#include "AST.h"
 #include "parsing/parse.h"
 
 using namespace std;

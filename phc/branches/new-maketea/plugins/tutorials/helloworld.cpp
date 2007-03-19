@@ -3,7 +3,7 @@
  * See doc/license/README.license for licensing information
  */
 
-#include "ast.h"
+#include "AST.h"
 #include <iostream>
 
 using namespace std;

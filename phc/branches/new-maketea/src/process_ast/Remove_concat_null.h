@@ -8,9 +8,9 @@
 #ifndef PHC_REMOVE_CONCAT_NULL
 #define PHC_REMOVE_CONCAT_NULL
 
-#include "Tree_transform.h"
+#include "AST_transform.h"
 
-class Remove_concat_null : public Tree_transform
+class Remove_concat_null : public AST_transform
 {
 public:
 	AST_expr* post_bin_op(AST_bin_op* in);

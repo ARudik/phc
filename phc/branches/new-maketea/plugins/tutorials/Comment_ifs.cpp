@@ -5,9 +5,9 @@
  * Add a TODO comment in empty if statement bodies.
  */
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class Comment_ifs : public Tree_visitor
+class Comment_ifs : public AST_visitor
 {
 private:
    bool comment;
@@ -20,11 +20,11 @@ public:
 
    void children_if(AST_if* in)
    {
-      in->expr->visit(this);
+      visit_expr(in->expr);
       comment = true;
-      in->iftrue->visit(this);
+      visit_statement_list(in->iftrue);
       comment = true;
-      in->iffalse->visit(this);
+      visit_statement_list(in->iffalse);
       comment = false;
    }
 

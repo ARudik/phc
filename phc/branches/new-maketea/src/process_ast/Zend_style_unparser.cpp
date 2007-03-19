@@ -6,9 +6,9 @@
  * http://framework.zend.com/manual/en/coding-standard.coding-style.html
  */
 
-#include <ast.h>
+#include <AST.h>
 #include <iostream>
-#include <Tree_visitor.h>
+#include <AST_visitor.h>
 #include <lib/demangle.h>
 #include <process_ast/PHP_unparser.h>
 #include <process_ast/Zend_style_unparser.h>

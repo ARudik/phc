@@ -5,9 +5,9 @@
  * Compare the semantic value of tokens against their source representation
  */
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class Get_source_and_semantic_values : public Tree_visitor
+class Get_source_and_semantic_values : public AST_visitor
 {
 public:
 	void pre_php_script(AST_php_script* in)

@@ -10,14 +10,15 @@
 AST_expr* Remove_concat_null::post_bin_op(AST_bin_op* in)
 {
 	Token_string* empty = new Token_string(new String(""), new String(""));
+	Wildcard<AST_expr>* wildcard = new Wildcard<AST_expr>;
 
 	// Replace with right operand if left operand is the empty string 
-	if(in->match(new AST_bin_op(empty, WILDCARD, ".")))
-		return in->right;
+	if(in->match(new AST_bin_op(empty, wildcard, ".")))
+		return wildcard->value;
 
 	// Replace with left operand if right operand is the empty string 
-	if(in->match(new AST_bin_op(WILDCARD, empty, ".")))
-		return in->left;
+	if(in->match(new AST_bin_op(wildcard, empty, ".")))
+		return wildcard->value;
 	
 	return in;
 }

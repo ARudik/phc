@@ -2,7 +2,7 @@
  * phc -- the open source PHP compiler
  * See doc/license/README.license for licensing information
  *
- * Visit_everything redefines the pre_children methods of Tree_visitor to
+ * Visit_everything redefines the pre_children methods of AST_visitor to
  * insert calls to "visit_marker" for each marker encountered, and to call
  * visit_null on NULLs. "visit_marker" takes two arguments, the name and the
  * value of the marker; "visit_null" takes a a single argument, which will be
@@ -14,9 +14,9 @@
 #ifndef PHC_VISIT_EVERYTHING
 #define PHC_VISIT_EVERYTHING
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class Visit_everything : public virtual Tree_visitor
+class Visit_everything : public virtual AST_visitor
 {
 public:
 	virtual void visit_marker(char* name, bool value) = 0;
@@ -43,8 +43,8 @@ public:
 	void children_variable(AST_variable* in);
 	void children_array_elem(AST_array_elem* in);
 	void children_actual_parameter(AST_actual_parameter* in);
-	void children_list_element_list(AST_list_element_list* in);
-	void children_expr_list(AST_expr_list* in);
+	void visit_list_element_list(List<AST_list_element*> in);
+	void visit_expr_list(List<AST_expr*> in);
 
 };
 

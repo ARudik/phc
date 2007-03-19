@@ -6,14 +6,13 @@
  */
 
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 #include "process_ast/XML_unparser.h"
 #include "process_ast/PHP_unparser.h"
 #include "lib/List.h"
 
-
-// searhc for scripts that are "pure"; ie have no side effects
-class Purity_test : public Tree_visitor
+// search for scripts that are "pure"; ie have no side effects
+class Purity_test : public AST_visitor
 {
 public:
 	bool pure;
@@ -772,10 +771,9 @@ public:
 
 		// if overwriting functions is allowed, have to watch for that
 
-
 		Token_class_name* stdlib_name = new Token_class_name(new String("%STDLIB%"));
-		Token_method_name* method_name = new Token_method_name(WILDCARD);
-		AST_method_invocation* method = new AST_method_invocation(stdlib_name, method_name, WILDCARD);
+		Token_method_name* method_name = new Token_method_name(NULL);
+		AST_method_invocation* method = new AST_method_invocation(stdlib_name, method_name, NULL);
 
 		bool found = false;
 		// check its in stdlib
@@ -808,8 +806,9 @@ public:
 	{
 		if (not pure)
 		{
+			PHP_unparser unparser;
 			cout << "Impure: ";
-			impurity->visit(new PHP_unparser());
+			unparser.visit_expr(impurity);
 			cout << endl;
 		}
 	}

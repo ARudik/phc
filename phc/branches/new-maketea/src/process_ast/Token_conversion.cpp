@@ -91,40 +91,33 @@ AST_expr* Token_conversion::pre_int(Token_int* in)
 // Convert unary_op(-,int(5)) to int(-5), and similarly for reals
 AST_expr* Token_conversion::pre_unary_op(AST_unary_op* in)
 {
-	if(in->match(new AST_unary_op(new AST_unary_op(WILDCARD, "-"), "-")))
+	Wildcard<AST_expr>* expr = new Wildcard<AST_expr>;
+	Wildcard<Token_int>* i = new Wildcard<Token_int>;
+	Wildcard<Token_real>* f = new Wildcard<Token_real>;
+
+	if(in->match(new AST_unary_op(new AST_unary_op(expr, "-"), "-")))
 	{
 		// Double negation; remove both
+		return pre_expr(expr->value);
 	}
 
-	if(*in->op->value == "-")
+	if(in->match(new AST_unary_op(i, "-")))
 	{
-		// if theres two negatives, remove them both
-		AST_unary_op* child = dynamic_cast<AST_unary_op*>(in->expr);
-		if(child && *child->op->value == "-")
-			return child->expr->pre_transform(this);
-
-		// if its an int, add a - to the source rep and remove the -
-		Token_int* ti = dynamic_cast<Token_int*>(in->expr);
-		if (ti)
-		{
-			String* source_rep = new String("-");
-			*source_rep += *ti->source_rep;
-			Token_int* i = new Token_int(strtol(source_rep->c_str(), 0, 0), source_rep);
-			i->attrs->set("phc.line_number", in->attrs->get("phc.line_number"));
-			return i->pre_transform(this);
-		}
-
-		// if its a float, do the same
-		Token_real* tr = dynamic_cast<Token_real*>(in->expr);
-		if (tr)
-		{
-			String* source_rep = new String("-");
-			*source_rep += *tr->source_rep;
-			Token_real* r = new Token_real(atof(source_rep->c_str()), source_rep);
-			r->attrs->set("phc.line_number", in->attrs->get("phc.line_number"));
-			return r->pre_transform(this);
-		}
+		String* source_rep = new String("-");
+		*source_rep += *i->value->source_rep;
+		i->value->source_rep = source_rep;
+		i->value->value = -(i->value->value);
+		return pre_expr(i->value);
 	}
 
+	if(in->match(new AST_unary_op(f, "-")))
+	{
+		String* source_rep = new String("-");
+		*source_rep += *f->value->source_rep;
+		f->value->source_rep = source_rep;
+		f->value->value = -(f->value->value);
+		return pre_expr(f->value);
+	}
+	
 	return in;
 }

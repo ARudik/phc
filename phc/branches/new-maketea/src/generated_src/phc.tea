@@ -1,11 +1,24 @@
-/*
- * phc -- the open source PHP compiler
- * See doc/license/README.license for licensing information
- *
- * The phc grammar in .tea format. 
- *
- * This is the authoritative grammar for phc. 
- */
+{-
+ - phc -- the open source PHP compiler
+ - See doc/license/README.license for licensing information
+ -
+ - The phc grammar in .tea format. 
+ -
+ - This is the authoritative grammar for phc. 
+ -}
+
+{-
+	Configuration
+-}
+
+prefix "AST";
+external class "Object";
+use list "List";
+use string "String";
+
+{-
+	Grammar definition
+-}
 
 php_script ::= interface_def* class_def+ ;
 
@@ -107,9 +120,9 @@ class_name ::= CLASS_NAME | reflection ;
 
 clone ::= expr ;
 
-/*
- * Additional structure 
- */
+{-
+ - Additional structure 
+ -}
 
 node ::= 
 	  php_script | class_mod | signature 
@@ -117,13 +130,10 @@ node ::=
 	| directive | list_element | variable_name | target
 	| array_elem | method_name | actual_parameter | class_name 
 	| commented_node | expr | identifier 
-	| formal_parameter* | directive* | array_elem* | actual_parameter* 
-	| INTERFACE_NAME* | list_element* | expr*
 	;
 
 commented_node ::= 
 	  member | statement | interface_def | class_def | switch_case | catch 
-	| interface_def* | class_def* | member* | statement* | switch_case* | catch*   
 	;
 
 identifier ::=
@@ -131,9 +141,9 @@ identifier ::=
 	| DIRECTIVE_NAME | CAST | OP | CONSTANT_NAME
 	;  
 
-/*
- * Extra attributes and methods
- */
+{-
+ - Extra attributes and methods (mixin code)
+ -}
 
 #include <iostream>
 #include <sstream>
@@ -148,6 +158,7 @@ identifier ::=
 
 class AST_node : Object 
 {
+public:
 	AttrMap* attrs;
 
 	// Return the line number of the node (or 0 if unknown)
@@ -177,6 +188,7 @@ class AST_node : Object
 
 class AST_commented_node 
 {
+public:
 	AST_commented_node()
 	{
 		attrs->set("phc.comments", new List<String*>);
@@ -193,17 +205,19 @@ class AST_commented_node
 
 class AST_signature 
 {
+public:
 	AST_signature(const char* name) 
 	{
 		this->method_mod = AST_method_mod::new_PUBLIC();
 		this->is_ref = false;
 		this->method_name = new Token_method_name(new String(name));
-		this->formal_parameters = new AST_formal_parameter_list;
+		this->formal_parameters = new List<AST_formal_parameter*>;
 	}
 };
 
 class AST_method_mod 
 {
+public:
 	AST_method_mod(AST_method_mod* a, AST_method_mod* b) 
 	{
 		this->is_public 		= a->is_public		|| b->is_public;
@@ -247,17 +261,18 @@ class AST_method_mod
 
 class AST_php_script
 {
-	void init()
+public:
+	AST_php_script()
 	{
-		interface_defs = new AST_interface_def_list;
-		class_defs = new AST_class_def_list;
+		interface_defs = new List<AST_interface_def*>;
+		class_defs = new List<AST_class_def*>;
 		class_defs->push_back(new AST_class_def("%MAIN%"));
 	}
 
 	// Returns NULL if the class could not be found
 	AST_class_def* get_class_def(const char* name)
 	{
-		AST_class_def_list::const_iterator i;
+		List<AST_class_def*>::const_iterator i;
 		for(i = class_defs->begin(); i != class_defs->end(); i++)
 		{
 			AST_class_def* class_def = dynamic_cast<AST_class_def*>(*i);
@@ -267,17 +282,29 @@ class AST_php_script
 	
 		return NULL;
 	}
+
+public:
+	void visit(AST_visitor* visitor)
+	{
+		visitor->children_php_script(this);
+	}
+
+	void transform(AST_transform* transform)
+	{
+		transform->children_php_script(this);
+	}
 };
 
 class AST_class_def
 {
+public:
 	AST_class_def(AST_class_mod* mod) 
 	{
 		this->class_mod = mod;
 		this->class_name = NULL;
 		this->extends = NULL;
-		this->implements = new Token_interface_name_list;
-		this->members = new AST_member_list;
+		this->implements = new List<Token_interface_name*>;
+		this->members = new List<AST_member*>;
 	}
 
 	AST_class_def(char* name)
@@ -285,8 +312,8 @@ class AST_class_def
 		this->class_mod = new AST_class_mod(false, false);
 		this->class_name = new Token_class_name(new String(name));
 		this->extends = NULL;
-		this->implements = new Token_interface_name_list;
-		this->members = new AST_member_list;
+		this->implements = new List<Token_interface_name*>;
+		this->members = new List<AST_member*>;
 	}
 
 	void add_member(AST_member* member) 
@@ -297,7 +324,7 @@ class AST_class_def
 	// Returns NULL if the method could not be found
 	AST_method* get_method(const char* name)
 	{
-		AST_member_list::const_iterator i;
+		List<AST_member*>::const_iterator i;
 		for(i = members->begin(); i != members->end(); i++)
 		{
 			AST_method* method = dynamic_cast<AST_method*>(*i);
@@ -311,11 +338,12 @@ class AST_class_def
 
 class AST_variable
 {
+public:
 	AST_variable(AST_variable_name* name) 
 	{
 		this->target = NULL;
 		this->variable_name = name;
-		this->array_indices = new AST_expr_list;
+		this->array_indices = new List<AST_expr*>;
 		this->string_index = NULL;
 	}
 	
@@ -328,6 +356,7 @@ class AST_variable
 
 class AST_assignment 
 {
+public:
 	void init()
 	{
 		attrs->set("phc.unparser.is_global_stmt", new Boolean(false));
@@ -336,13 +365,14 @@ class AST_assignment
 
 class AST_method_invocation
 {
+public:
 	// For internal use only!
 	AST_method_invocation(const char* name, AST_expr* arg) 
 	{ 
 		// This leaves the tree in an inconsistent state
 		this->target = NULL;
 		this->method_name = new Token_method_name(new String(name));
-		this->actual_parameters = new AST_actual_parameter_list;
+		this->actual_parameters = new List<AST_actual_parameter*>;
 		this->actual_parameters->push_back(new AST_actual_parameter(false, arg));
 	}
 
@@ -351,7 +381,7 @@ class AST_method_invocation
 	{ 
 		this->target = NULL;
 		this->method_name = name; 
-		this->actual_parameters = new AST_actual_parameter_list;
+		this->actual_parameters = new List<AST_actual_parameter*>;
 		this->actual_parameters->push_back(new AST_actual_parameter(false, arg));
 	}
 
@@ -360,13 +390,14 @@ class AST_method_invocation
 	{
 		this->target = new Token_class_name(new String(target));
 		this->method_name = new Token_method_name(new String(name));
-		this->actual_parameters = new AST_actual_parameter_list;
+		this->actual_parameters = new List<AST_actual_parameter*>;
 		this->actual_parameters->push_back(new AST_actual_parameter(false, arg));
 	}
 };
 
 class AST_formal_parameter
 {
+public:
 	AST_formal_parameter(AST_type* type, Token_variable_name* name) 
 	{
 		this->type = type;
@@ -386,6 +417,7 @@ class AST_formal_parameter
 
 class AST_attr_mod
 {
+public:
 	AST_attr_mod(AST_method_mod* mm) 
 	{
 		if(mm->is_final)
@@ -426,6 +458,7 @@ class AST_attr_mod
 
 class AST_bin_op
 {
+public:
 	AST_bin_op(AST_expr* left, AST_expr* right, char* op) 
 	{
 		this->left = left;
@@ -436,6 +469,7 @@ class AST_bin_op
 
 class AST_post_op
 {
+public:
 	AST_post_op(AST_variable* var, char* op) 
 	{
 		this->variable = var;
@@ -445,6 +479,7 @@ class AST_post_op
 
 class AST_pre_op
 {
+public:
 	AST_pre_op(AST_variable* var, char* op) 
 	{
 		this->variable = var;
@@ -454,6 +489,7 @@ class AST_pre_op
 
 class AST_unary_op
 {
+public:
 	AST_unary_op(AST_expr* expr, char* op) 
 	{
 		this->expr = expr;
@@ -463,6 +499,7 @@ class AST_unary_op
 
 class AST_expr
 {
+public:
 	AST_expr()
 	{
 		attrs->set("phc.unparser.needs_brackets", new Boolean(false));
@@ -471,6 +508,7 @@ class AST_expr
 
 class AST_cast
 {
+public:
 	AST_cast(char* cast, AST_expr* expr) 
 	{
 		this->cast = new Token_cast(new String(cast));
@@ -480,6 +518,7 @@ class AST_cast
 
 class AST_constant
 {
+public:
 	AST_constant(char* class_name, Token_constant_name* constant_name) 
 	{
 		this->class_name = new Token_class_name(new String(class_name));
@@ -489,17 +528,20 @@ class AST_constant
 
 class AST_identifier
 {
+public:
 	virtual String* get_value_as_string() = 0;
 };
 
 class AST_literal
 {
+public:
 	virtual String* get_value_as_string() = 0;
 	virtual String* get_source_rep() = 0;
 };
 
 class Token_int
 {
+public:
 	virtual String* get_value_as_string()
 	{
 		std::ostringstream os;
@@ -510,6 +552,7 @@ class Token_int
 
 class Token_real
 {
+public:
 	virtual String* get_value_as_string()
 	{
 		std::ostringstream os;
@@ -531,6 +574,7 @@ class Token_real
 
 class Token_bool
 {
+public:
 	virtual String* get_value_as_string()
 	{
 		if(value)
@@ -542,6 +586,7 @@ class Token_bool
 
 class Token_string
 {
+public:
 	virtual String* get_value_as_string()
 	{
 		return value;
@@ -550,6 +595,7 @@ class Token_string
 
 class Token_null
 {
+public:
 	virtual String* get_value_as_string()
 	{
 		return new String("NULL");
@@ -558,6 +604,7 @@ class Token_null
 
 class AST_if
 {
+public:
 	void init()
 	{
 		attrs->set("phc.unparser.is_elseif", new Boolean(false));

@@ -46,17 +46,17 @@ src_phc_SOURCES =												\
 	src/codegen/Generate_C.h								\
 	src/codegen/Prep.cpp										\
 	src/codegen/Prep.h										\
-	src/generated/ast.cpp									\
-	src/generated/ast.h										\
+	src/generated/AST.cpp									\
+	src/generated/AST.h										\
 	src/generated/cmdline.c									\
 	src/generated/cmdline.h									\
 	src/generated/keywords.c								\
 	src/generated/lex.yy.cc									\
 	src/generated/php_parser.tab.cpp						\
-	src/generated/Tree_transform.cpp						\
-	src/generated/Tree_transform.h						\
-	src/generated/Tree_visitor.cpp						\
-	src/generated/Tree_visitor.h							\
+	src/generated/AST_transform.cpp						\
+	src/generated/AST_transform.h							\
+	src/generated/AST_visitor.cpp							\
+	src/generated/AST_visitor.h							\
 	src/lib/AttrMap.cpp										\
 	src/lib/AttrMap.h											\
 	src/lib/base64.cpp										\
@@ -87,8 +87,6 @@ src_phc_SOURCES =												\
 	src/process_ast/Invocation_targets.h				\
 	src/process_ast/PHP_unparser.cpp						\
 	src/process_ast/PHP_unparser.h						\
-	src/process_ast/Zend_style_unparser.cpp			\
-	src/process_ast/Zend_style_unparser.h				\
 	src/process_ast/process_ast.cpp						\
 	src/process_ast/process_ast.h							\
 	src/process_ast/Process_includes.cpp				\
@@ -107,17 +105,17 @@ src_phc_SOURCES =												\
 	src/process_ast/XML_unparser.h
 
 BUILT_SOURCES = \
-	src/generated/ast.cpp									\
-	src/generated/ast.h										\
+	src/generated/AST.cpp									\
+	src/generated/AST.h										\
 	src/generated/cmdline.c									\
 	src/generated/cmdline.h									\
 	src/generated/keywords.c								\
 	src/generated/lex.yy.cc									\
 	src/generated/php_parser.tab.cpp						\
-	src/generated/Tree_transform.cpp						\
-	src/generated/Tree_transform.h						\
-	src/generated/Tree_visitor.cpp						\
-	src/generated/Tree_visitor.h							\
+	src/generated/AST_transform.cpp						\
+	src/generated/AST_transform.h						\
+	src/generated/AST_visitor.cpp						\
+	src/generated/AST_visitor.h							\
 	test/framework/lib/autovars.php
 
 # - The magic to accomplish this is described cryptically in the last few
@@ -126,14 +124,14 @@ BUILT_SOURCES = \
 #   and using 'phc' or 'lib' or 'processast' might end up with strange results.
 # - Stuff in lib/ is installed in /usr/include/phc/lib, stuff in process_ast/
 #   is installed in /usr/include/phc/process_ast, and some random stuff is
-#   installed in /usr/include/phc (ast.h, parse.h, Tree_transform.h and 
-#   Tree_visitor.h)
+#   installed in /usr/include/phc (ast.h, parse.h, AST_transform.h and 
+#   AST_visitor.h)
 strangephcdir = $(pkgincludedir)
 strangephc_HEADERS =						\
 	config.h									\
-	src/generated/ast.h					\
-	src/generated/Tree_transform.h	\
-	src/generated/Tree_visitor.h
+	src/generated/AST.h					\
+	src/generated/AST_transform.h		\
+	src/generated/AST_visitor.h
 
 strangeparsingdir = $(pkgincludedir)/parsing
 strangeparsing_HEADERS =				\
@@ -248,21 +246,21 @@ plugins_tutorials_show_traversal_order_la_LDFLAGS = ${PLUGIN_LDFLAGS}
 #   the correct way is so onerous, that this way seems much better.
 # - sed (also rm, mv and echo, below) are amongst the allowed programs to use
 #   in a Makefile. See GNU coding standards 7.2.2.
-src/generated/ast.cpp \
-src/generated/ast.h \
-src/generated/Tree_transform.cpp \
-src/generated/Tree_transform.h \
-src/generated/Tree_visitor.cpp \
-src/generated/Tree_visitor.h: src/generated_src/phc.tea
+src/generated/AST.cpp \
+src/generated/AST.h \
+src/generated/AST_transform.cpp \
+src/generated/AST_transform.h \
+src/generated/AST_visitor.cpp \
+src/generated/AST_visitor.h: src/generated_src/phc.tea
 	@maketea@ src/generated_src/phc.tea
-	mv ast.cpp src/generated/
-	mv ast.h src/generated/
-	mv Tree_transform.cpp src/generated/
-	mv Tree_transform.h src/generated/
-	mv Tree_visitor.cpp src/generated/
-	mv Tree_visitor.h src/generated/
-	mv README.TreeTransform src/generated/
-	mv schema.xsd src/generated/phc-1.0.xsd
+	mv AST.cpp src/generated/
+	mv AST.h src/generated/
+	mv AST_transform.cpp src/generated/
+	mv AST_transform.h src/generated/
+	mv AST_visitor.cpp src/generated/
+	mv AST_visitor.h src/generated/
+	mv AST-contexts src/generated/
+#	mv schema.xsd src/generated/phc-1.0.xsd
 
 src/generated/keywords.c: src/generated_src/php.gperf 
 	@gperf@ --language=ANSI-C --includes --readonly-tables --struct-type --ignore-case --output-file=src/generated/keywords.c src/generated_src/php.gperf

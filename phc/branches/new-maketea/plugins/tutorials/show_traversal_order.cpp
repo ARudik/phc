@@ -3,10 +3,10 @@
  * See doc/license/README.license for licensing information
  */
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 #include "lib/demangle.h"
 
-class Show_traversal_order : public Tree_visitor
+class Show_traversal_order : public AST_visitor
 {
 public:
 	void pre_node(AST_node* in)
@@ -32,7 +32,7 @@ public:
 	void children_if(AST_if* in)
 	{
 		cout << "children_if" << endl;
-		Tree_visitor::children_if(in);
+		AST_visitor::children_if(in);
 	}
 
 	void post_node(AST_node* in)

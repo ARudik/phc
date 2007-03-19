@@ -30,32 +30,3 @@ String::String(char const* s, size_t n) : string(s, n)
 String::~String() 
 {
 }
-
-String* String::deep_clone(Object* partial_result)
-{
-	String* clone;
-	assert(!partial_result);
-	clone = new String(*this);
-	clone->attrs = attrs->deep_clone();
-	return clone;
-}	
-
-bool String::try_match(Object* pattern)
-{
-	String* that = dynamic_cast<String*>(pattern);
-	if(!that) return false;
-	return (*this == *that);
-}
-
-void String::replace_wildcards(Object* pattern)
-{
-	String* that = dynamic_cast<String*>(pattern);
-	assert(that);
-}
-
-bool String::deep_equals(Object* other)
-{
-	String* that = dynamic_cast<String*>(other);
-	if(!that) return false;
-	return (*this == *that);
-}

@@ -9,10 +9,10 @@
 #ifndef PHC_VARIABLE_TARGETS
 #define PHC_VARIABLE_TARGETS
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 #include <set>
 
-class Variable_targets : public Tree_visitor
+class Variable_targets : public AST_visitor
 {
 private:
 	struct ltstr

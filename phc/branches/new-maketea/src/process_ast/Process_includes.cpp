@@ -10,8 +10,8 @@
 #include <iostream>
 #include <fstream>
 #include "Process_includes.h"
-#include "Tree_visitor.h"
-#include "ast.h"
+#include "AST_visitor.h"
+#include "AST.h"
 #include "lib/error.h"
 #include "parsing/parse.h"
 #include "process_ast/PHP_unparser.h"
@@ -99,7 +99,7 @@ extern struct gengetopt_args_info args_info;
 // We could update get_included_files(), (say, by appending it with the file nmae of the included file), but that's a bit difficult to get right.
 // Not done, a bit tricky
 
-class Return_check : public Tree_visitor
+class Return_check : public AST_visitor
 {
 public:
 	bool found;
@@ -120,7 +120,7 @@ public:
 	}
 };
 
-class Set_variable_targets_to_null : public Tree_visitor
+class Set_variable_targets_to_null : public AST_visitor
 {
 public:
 
@@ -144,30 +144,30 @@ AST_php_script* Process_includes::pre_php_script(AST_php_script* in)
 }
 
 // store the method currently being defined
-void Process_includes::pre_method(AST_method* in, AST_member_list* out)
+void Process_includes::pre_method(AST_method* in, List<AST_member*>* out)
 {
 	in_main_run = (in == current_script->get_class_def("%MAIN%")->get_method("%run%"));
 	out->push_back(in);
 }
 
 // look for include statements
-void Process_includes::pre_eval_expr(AST_eval_expr* in, AST_statement_list* out)
+void Process_includes::pre_eval_expr(AST_eval_expr* in, List<AST_statement*>* out)
 {
+	AST_method_invocation* pattern;
+	Token_string* token_filename = new Token_string(NULL, NULL);
+	Token_method_name* method_name = new Token_method_name(NULL);
+
 	// the filename is the only parameter of the include statement
-	Token_string* token_filename = new Token_string(WILDCARD, WILDCARD);
-	AST_actual_parameter* param = new AST_actual_parameter(false, token_filename);
-	AST_actual_parameter_list* params = new AST_actual_parameter_list();
-	params->push_back(param);
-
-	// use an empty function name so we get it back
-	Token_method_name* method_name = new Token_method_name(WILDCARD);
-
-	// this will match the any function call with 1 string literal parameter,
-	// and no lvalue
-	AST_method_invocation *method = new AST_method_invocation(new Token_class_name(new String("%STDLIB%")), method_name, params);
+	pattern = new AST_method_invocation(
+		new Token_class_name(new String("%STDLIB%")),
+		method_name,
+		new List<AST_actual_parameter*>(
+			new AST_actual_parameter(false, token_filename)
+		)
+	);
 
 	// check we have a matching function
-	if	((in->expr->match(method)) and
+	if	((in->expr->match(pattern)) and
 			(*method_name->value == "include" or *method_name->value == "require"))
 	{
 		String* filename = token_filename->value;
@@ -202,7 +202,7 @@ void Process_includes::pre_eval_expr(AST_eval_expr* in, AST_statement_list* out)
 		// We don't support returning values from included scripts; 
 		// issue a warning and leave the include as-is
 		Return_check rc;
-		run->statements->visit(&rc);
+		rc.visit_statement_list(run->statements);
 		if(rc.found)
 		{
 			phc_warning(WARNING_INCLUDE_RETURN, in->get_filename(), in->get_line_number(), filename->c_str());
@@ -214,14 +214,14 @@ void Process_includes::pre_eval_expr(AST_eval_expr* in, AST_statement_list* out)
 		if (not in_main_run) 
 		{
 			Set_variable_targets_to_null svttn;
-			run->statements->visit(&svttn);
+			svttn.visit_statement_list(run->statements);
 		}
 
 		// copy the statements from %MAIN%::%run%
 		out->push_back_all(run->statements);
 
 		// copy classes
-		AST_class_def_list::const_iterator ci;
+		List<AST_class_def*>::const_iterator ci;
 		for(ci = php_script->class_defs->begin(); ci != php_script->class_defs->end(); ci++)
 		{
 			if(*ci != main)
@@ -231,7 +231,7 @@ void Process_includes::pre_eval_expr(AST_eval_expr* in, AST_statement_list* out)
 		}
 
 		// copy attributes and methods from %MAIN%
-		AST_member_list::const_iterator mi;
+		List<AST_member*>::const_iterator mi;
 		for(mi = main->members->begin(); mi != main->members->end(); mi++)
 		{
 			if(*mi != run)
@@ -253,13 +253,13 @@ void Process_includes::pre_eval_expr(AST_eval_expr* in, AST_statement_list* out)
 
 
 		// check if its an unsupported version of include
-		AST_method_invocation *method = new AST_method_invocation(new Token_class_name(new String("%STDLIB%")), method_name, WILDCARD);
+		AST_method_invocation *method = new AST_method_invocation(new Token_class_name(new String("%STDLIB%")), method_name, NULL);
 		if	((in->expr->match(method)) and
 				(*method_name->value == "include" or *method_name->value == "require"))
 		{
 			ostringstream os;
 			PHP_unparser pup(os);
-			method->actual_parameters->visit(&pup);
+			pup.visit_actual_parameter_list(method->actual_parameters);
 			phc_warning(WARNING_INCLUDE_FAILED, in->get_filename(), in->get_line_number(), os.str().c_str());
 		}
 

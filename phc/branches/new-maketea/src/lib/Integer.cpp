@@ -8,19 +8,22 @@
 
 #include "lib/Integer.h"
 
-Integer* 
-Integer::deep_clone(Object* partial_result)
+Integer::Integer()
 {
-	assert(!partial_result);
-	return new Integer(_n);
+	_n = 0;
 }
 
-	bool 
-Integer::deep_equals(Object* other)
+Integer::Integer(long n)
 {
-	Integer* that = dynamic_cast<Integer*>(other);
-	if(!that)
-		return false;
+	_n = n;
+}
 
-	return _n == that->_n;
+long Integer::value()
+{
+	return _n; 
+}
+
+void Integer::operator++(POST_INCREMENT)
+{
+	_n++;
 }

@@ -8,9 +8,9 @@
 #ifndef PHC_INVOCATION_TARGETS
 #define PHC_INVOCATION_TARGETS
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class Collect_method_names : public Tree_visitor
+class Collect_method_names : public AST_visitor
 {
 public: 
 	bool in_main;
@@ -26,7 +26,7 @@ public:
 	void children_method_invocation(AST_method_invocation* in);
 };
 
-class Invocation_targets : public Tree_visitor
+class Invocation_targets : public AST_visitor
 { 
 private: 
 	Collect_method_names cmn;

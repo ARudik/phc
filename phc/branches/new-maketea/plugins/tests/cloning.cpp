@@ -17,12 +17,12 @@ extern "C" void process_ast(AST_php_script* orig_script)
 	orig_script->visit(&orig_cap);
 
 	// make a duplicate
-	AST_php_script* dup_script = orig_script->deep_clone();
+	AST_php_script* dup_script = orig_script->clone();
 	Collect_all_pointers dup_cap;
 	dup_script->visit(&dup_cap);
 
 	// Compare if the two scripts are the same
-	if(!orig_script->deep_equals(dup_script))
+	if(!orig_script->equals(dup_script))
 	{
 		ostringstream orig_unparsed, dup_unparsed;
 		PHP_unparser a(orig_unparsed), b(dup_unparsed);

@@ -3,13 +3,13 @@
  * See doc/license/README.license for licensing information
  */
 
-#include "ast.h"
+#include "AST.h"
 
 extern "C" void process_ast(AST_php_script* php_script)
 {
-	AST_class_def_list::const_iterator ci;
-	AST_member_list::const_iterator mi;
-	AST_statement_list::const_iterator si;
+	List<AST_class_def*>::const_iterator ci;
+	List<AST_member*>::const_iterator mi;
+	List<AST_statement*>::const_iterator si;
 	
 	AST_method* method;
 	AST_eval_expr* eval_expr;

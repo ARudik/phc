@@ -3,9 +3,9 @@
  * See doc/license/README.license for licensing information
  */
 
-#include "Tree_visitor.h"
+#include "AST_visitor.h"
 
-class InsertDB : public Tree_visitor
+class InsertDB : public AST_visitor
 {
 private:
    int uses_dbx;
@@ -24,7 +24,7 @@ public:
 
    void post_method_invocation(AST_method_invocation* in)
    {
-      Token_method_name* pattern = new Token_method_name(WILDCARD);
+      Token_method_name* pattern = new Token_method_name(NULL);
       
       // Check for dbx_
       if(in->method_name->match(pattern) && 

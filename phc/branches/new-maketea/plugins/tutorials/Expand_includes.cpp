@@ -4,25 +4,25 @@
  */
 
 #include <iostream>
-#include "Tree_transform.h"
+#include "AST_transform.h"
 #include "parsing/parse.h"
 
-class Expand_includes : public Tree_transform
+class Expand_includes : public AST_transform
 {
 public:
-	void pre_eval_expr(AST_eval_expr* in, AST_statement_list* out)
+	void pre_eval_expr(AST_eval_expr* in, List<AST_statement*>* out)
 	{
 		// Pattern to match include statements	
 		Token_string* filename; 
 		AST_actual_parameter* param;
-		AST_actual_parameter_list* params;
+		List<AST_actual_parameter*>* params;
 		Token_method_name* method_name;
 		Token_class_name* target; 
 		AST_method_invocation* pattern;
 		
-		filename = new Token_string(WILDCARD, WILDCARD);
+		filename = new Token_string(NULL, NULL);
 		param = new AST_actual_parameter(false, filename);
-		params = new AST_actual_parameter_list();
+		params = new List<AST_actual_parameter*>;
 		params->push_back(param);
 		method_name = new Token_method_name(new String("include"));
 		target = new Token_class_name(new String("%STDLIB%"));

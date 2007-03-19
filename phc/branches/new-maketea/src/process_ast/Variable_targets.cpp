@@ -47,7 +47,7 @@ void Variable_targets::pre_variable(AST_variable* in)
 		Token_variable_name* name = dynamic_cast<Token_variable_name*>(in->variable_name);
 		if(name)
 		{
-			var_names.insert(name->deep_clone());
+			var_names.insert(name->clone());
 		}
 	}
 }

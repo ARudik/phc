@@ -2,7 +2,8 @@
  * phc -- the open source PHP compiler
  * See doc/license/README.license for licensing information
  *
- * Superclass of all classes
+ * The sole purpose of Object is to guarantee a polymorpic base
+ * (i.e., a base that supports RTTI)
  */
 
 #ifndef PHC_OBJECT
@@ -24,8 +25,6 @@
 #endif
 #endif
 
-#define NOT_IMPLEMENTED false
-
 #ifdef USE_GC
 #include "gc/gc_cpp.h"
 class Object : public gc
@@ -34,16 +33,6 @@ class Object
 #endif
 {
 public:
-	// Deep cloning and deep equality
-	virtual Object* deep_clone(Object* partial_result = NULL);
-	virtual bool deep_equals(Object* other);
-
-	// Pattern matching
-	virtual bool match(Object* pattern);
-	
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-
 	// Make Object a virtual base (required for RTTI and dynamic casts)
 	virtual ~Object() {}
 };

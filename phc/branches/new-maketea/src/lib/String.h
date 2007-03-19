@@ -14,13 +14,12 @@
 
 using namespace std;
 
-class Wildcard;
-extern Wildcard* WILDCARD;
-
 class String : public string, virtual public Object
 {
+// This is a hack and will at some point be removed.
+// Do not depend on it.
 public:	
-	AttrMap* attrs;
+	AttrMap* attrs; // __attribute__ ((deprecated));
 
 public:
 	String(); 
@@ -29,11 +28,8 @@ public:
 	String(char const* s, size_t n);
 	virtual ~String();
 
-public: // Required by Object
-	virtual String* deep_clone(Object* partial_result = NULL);
-	virtual bool try_match(Object* pattern);
-	virtual void replace_wildcards(Object* pattern);
-	virtual bool deep_equals(Object* other);
+public:
+	String* clone();
 };
 
 #endif

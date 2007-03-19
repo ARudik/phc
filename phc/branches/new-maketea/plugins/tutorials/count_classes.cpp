@@ -3,7 +3,7 @@
  * See doc/license/README.license for licensing information
  */
 
-#include "ast.h"
+#include "AST.h"
 
 extern "C" void process_ast(AST_php_script* php_script)
 {

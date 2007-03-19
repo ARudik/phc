@@ -335,19 +335,16 @@ void Generate_C::post_method_invocation(AST_method_invocation* in)
 {
 	// Special case for eval
 	AST_method_invocation* pattern;
-	AST_actual_parameter* eval_arg;
-	{
-		AST_target* target;
-		AST_method_name* method_name;
-		AST_actual_parameter_list* actual_parameters;
-		
-		target = new Token_class_name(new String("%STDLIB%"));
-		method_name = new Token_method_name(new String("eval"));
-		eval_arg = new AST_actual_parameter(false, WILDCARD);
-		actual_parameters = new AST_actual_parameter_list;
-		actual_parameters->push_back(eval_arg);	
-		pattern = new AST_method_invocation(target, method_name, actual_parameters);
-	}
+	Wildcard<AST_expr>* eval_arg = new Wildcard<AST_expr>;
+
+	pattern = new AST_method_invocation(
+		new Token_class_name(new String("%STDLIB%")),
+		new Token_method_name(new String("eval")),
+		new List<AST_actual_parameter*>(
+			new AST_actual_parameter(false, eval_arg)
+			)
+		);
+
 	if(in->match(pattern))
 	{
 		String* eval_retval = fresh("eval_retval");
@@ -357,10 +354,10 @@ void Generate_C::post_method_invocation(AST_method_invocation* in)
 		cout << "zend_hash_next_index_insert(temps, &" << *eval_retval << ", sizeof(zval*), NULL);\n";
 		cout << "{\n";
 		cout << "zval eval_arg;\n";
-		cout << "eval_arg = *" << *eval_arg->expr->attrs->get_string(LOC) << ";\n";
+		cout << "eval_arg = *" << *eval_arg->value->attrs->get_string(LOC) << ";\n";
 		cout << "convert_to_string(&eval_arg);\n";
 		cout << "zend_eval_string(Z_STRVAL(eval_arg), " << *eval_retval << ", ";
-		cout << "\"" << *eval_arg->expr->get_filename() << " eval'd code\" TSRMLS_CC);\n" ;
+		cout << "\"" << *eval_arg->value->get_filename() << " eval'd code\" TSRMLS_CC);\n" ;
 		cout << "}\n";;
 
 		in->attrs->set(LOC, eval_retval);
@@ -394,7 +391,7 @@ void Generate_C::post_method_invocation(AST_method_invocation* in)
 	cout << "// Setup array of arguments\n";
 	cout << "zval* args[" << in->actual_parameters->size() << "];\n";
 
-	AST_actual_parameter_list::const_iterator i;
+	List<AST_actual_parameter*>::const_iterator i;
 	unsigned index = 0;
 	for(i = in->actual_parameters->begin(); i != in->actual_parameters->end(); i++)
 	{
@@ -455,7 +452,7 @@ void Generate_C::children_bin_op(AST_bin_op* in)
 
 	/**/
 	cout << "// Evaluate left operand of " << *in->op->value << "\n";
-	in->left->visit(this);
+	visit_expr(in->left);
 
 	if(*in->op->value == "&&" || *in->op->value == "and")
 	{
@@ -467,7 +464,7 @@ void Generate_C::children_bin_op(AST_bin_op* in)
 		
 		/**/
 		cout << "// Evaluate right operand of " << *in->op->value << "\n";
-		in->right->visit(this);
+		visit_expr(in->right);
 		cout << *binop_result << " = " << *in->right->attrs->get_string(LOC) << ";\n"; 
 
 		cout << *after_binop << ":;\n"; 
@@ -482,7 +479,7 @@ void Generate_C::children_bin_op(AST_bin_op* in)
 		
 		/**/
 		cout << "// Evaluate right operand of " << *in->op->value << "\n";
-		in->right->visit(this);
+		visit_expr(in->right);
 		cout << *binop_result << " = " << *in->right->attrs->get_string(LOC) << ";\n"; 
 
 		cout << *after_binop << ":;\n"; 
@@ -490,7 +487,7 @@ void Generate_C::children_bin_op(AST_bin_op* in)
 	else
 	{	
 		cout << "// Evaluate right operand of " << *in->op->value << "\n";
-		in->right->visit(this);
+		visit_expr(in->right);
 		
 		cout << "// Evaluate " << *in->op->value << "\n";	
 		cout << "MAKE_STD_ZVAL(" << *binop_result << ");\n";
@@ -676,31 +673,31 @@ void Generate_C::children_if(AST_if* in)
 	String* iftrue = fresh("iftrue");
 	String* afterif = fresh("afterif");
 
-	in->expr->visit(this);
+	visit_expr(in->expr);
 	cout << "if(zend_is_true(" << *in->expr->attrs->get_string(LOC) << ")) goto " << *iftrue << ";\n";
 
-	in->iffalse->visit(this);
+	visit_statement_list(in->iffalse);
 	cout << "goto " << *afterif << ";\n";
 	
 	cout << *iftrue << ":;\n";
-	in->iftrue->visit(this);
+	visit_statement_list(in->iftrue);
 
 	cout << *afterif << ":;\n";
 }
 
 void Generate_C::children_for(AST_for* in)
 {
-	in->init->visit(this);
+	visit_expr(in->init);
 
 	String* for_header = fresh("for_header");
 	String* after_for = fresh("after_for");
 
 	cout << *for_header << ":;\n";
-	in->cond->visit(this);
+	visit_expr(in->cond);
 	cout << "if(!zend_is_true(" << *in->cond->attrs->get_string(LOC) << ")) goto " << *after_for << ";\n";
 
-	in->statements->visit(this);
-	in->incr->visit(this);
+	visit_statement_list(in->statements);
+	visit_expr(in->incr);
 	cout << "goto " << *for_header << ";\n";
 
 	cout << *after_for << ":;\n";
@@ -730,7 +727,7 @@ void Generate_C::post_variable(AST_variable* in)
 	}
 
 	// Evaluate all array indices
-	AST_expr_list::const_iterator i, end_1;
+	List<AST_expr*>::const_iterator i, end_1;
 	end_1 = in->array_indices->end(); end_1--;
 	for(i = in->array_indices->begin(); i != in->array_indices->end(); i++)
 	{
@@ -811,7 +808,7 @@ void Generate_C::pre_method(AST_method* in)
 		stringstream zgp_args; 
 		cout << "{\n";
 		cout << "zval* params[" << in->signature->formal_parameters->size() << "];\n";
-		AST_formal_parameter_list::const_iterator i;
+		List<AST_formal_parameter*>::const_iterator i;
 		int index;	
 		for(i = in->signature->formal_parameters->begin(), index = 0;
 			i != in->signature->formal_parameters->end();
@@ -933,7 +930,7 @@ void Generate_C::children_eval_expr(AST_eval_expr* in)
 	}
 	else
 	{
-		in->expr->visit(this);
+		visit_expr(in->expr);
 	}
 }
 
