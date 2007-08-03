@@ -1,0 +1,2940 @@
+/*
+ * phc -- the open source PHP compiler
+ * See doc/license/README.license for licensing information
+ *
+ * Syntax definition (based on the PHP 5.1.0 grammar)
+ */
+
+%{
+	#include <assert.h>
+	#include <typeinfo>
+	#include "AST.h"
+	#include "cmdline.h"
+	#include "lib/Integer.h"
+	#include "lib/String.h"
+	#include "lib/error.h"
+	#include "parsing/PHP_context.h"
+
+	extern struct gengetopt_args_info args_info;
+
+	/*
+	 * Some semantic checks
+	 */
+
+	AST_variable* expect_variable(AST_expr* node)
+	{
+		AST_variable* var = dynamic_cast<AST_variable*>(node);
+		
+		if(var == NULL && node != NULL)
+			phc_error("Variable name expected", node->get_filename(), node->get_line_number()); \
+			
+		return var;
+	}
+
+	/*
+	 * Define macro to add line numbers and comments to nodes
+	 */
+	#define NEW(class, args)\
+		dynamic_cast<class*>(copy_state(new class args, context))
+	
+	AST_node* copy_state(AST_node* node, PHP_context* context)
+	{
+		node->attrs->set("phc.line_number", new Integer(context->source_line));
+		node->attrs->set("phc.filename", context->filename->clone());
+		if(context->starts_line)
+			node->attrs->set_true("phc.unparser.starts_line");
+
+		AST_commented_node* cnode;
+		cnode = dynamic_cast<AST_commented_node*>(node);
+		if(cnode)
+		{
+			List<String*>* cmnts = cnode->get_comments();
+			cmnts->push_back_all(&context->last_comments);
+			context->last_comments.clear();
+			context->last_commented_node = cnode;
+		}
+
+		return node;
+	}
+
+	void PHP_error(PHP_context* context, const char* s)
+	{
+		phc_error(s, context->filename, context->source_line);
+	}
+
+	/* Return a new list of statements, containing a single statement */
+	static List<AST_statement*>* wrap(AST_statement* statement)
+	{
+		List<AST_statement*>* result = new List<AST_statement*>;
+		result->push_back(statement);
+		return result;
+	}
+
+#define ERR_FOREACH_KEY_REF "Key element cannot be a reference"
+
+%}
+
+%union
+{
+	Object* object;
+	List<AST_statement*>* list_ast_statement;
+	List<AST_catch*>* list_ast_catch;
+	AST_catch* ast_catch;
+	List<AST_variable*>* list_ast_variable;
+	AST_variable* ast_variable;
+	Token_string* token_string;
+	AST_method* ast_method;
+	Integer* integer;
+	AST_class_def* ast_class_def;
+	Token_class_name* token_class_name;
+	AST_interface_def* ast_interface_def;
+	List<Token_interface_name*>* list_token_interface_name;
+	List<AST_directive*>* list_ast_directive;
+	List<AST_switch_case*>* switch_ast_case_list;
+	AST_if* ast_if;
+	List<AST_formal_parameter*>* list_ast_formal_parameter;
+	AST_type* ast_type;
+	List<AST_variable_name*>* list_ast_variable_name;
+	AST_variable_name* ast_variable_name;
+	List<AST_member*>* list_ast_member;
+	AST_attr_mod* ast_attr_mod;
+	AST_method_mod* ast_method_mod;
+	AST_expr* ast_expr;
+	AST_method_invocation* ast_method_invocation;
+	AST_class_name* class_name;
+	AST_constant* ast_constant;
+	List<AST_array_elem*>* list_ast_array_elem;
+	List<AST_expr*>* list_ast_expr;
+	AST_nested_list_elements* ast_nested_list_elements;
+	AST_list_element* ast_list_element;
+	String* string;
+	List<AST_actual_parameter*>* list_ast_actual_parameter;
+	AST_class_name* ast_class_name;
+	List<AST_switch_case*>* list_ast_switch_case;
+	AST_switch_case* ast_switch_case;
+	AST_try* ast_try;
+	AST_declare* ast_declare;
+	AST_foreach* ast_foreach;
+	AST_switch* ast_switch;
+	AST_for* ast_for;
+	AST_do* ast_do;
+	AST_while* ast_while;
+	AST_statement* ast_statement;
+	Token_int* token_int;
+	Token_op* token_op;
+	Token_real* token_real;
+	Token_bool* token_bool;
+	Token_null* token_null;
+}
+
+%{
+	int PHP_lex(YYSTYPE* yylval, void* scanner);
+	#define scanner context->scanner
+%}
+
+%pure_parser
+%name-prefix="PHP_"
+%parse-param {
+			PHP_context* context
+		}
+%lex-param {
+			void* scanner
+		}
+%error-verbose
+
+/*
+ * Define token types
+ */
+
+// Keywords
+
+%token <token_op> K_AND
+%token <token_op> K_OR
+%token <token_op> K_XOR
+%token <token_string> K___FILE__
+%token K_EXCEPTION
+%token <token_int> K___LINE__
+%token K_ARRAY
+%token K_AS
+%token K_BREAK
+%token K_CASE
+%token K_CLASS
+%token K_CONST
+%token K_CONTINUE
+%token K_DECLARE
+%token K_DEFAULT
+%token K_DIE
+%token K_DO
+%token K_ECHO
+%token K_ELSE
+%token K_ELSEIF
+%token K_EMPTY
+%token K_ENDDECLARE
+%token K_ENDFOR
+%token K_ENDFOREACH
+%token K_ENDIF
+%token K_ENDSWITCH
+%token K_ENDWHILE
+%token K_EVAL
+%token K_EXIT
+%token K_EXTENDS
+%token K_FOR
+%token K_FOREACH
+%token K_FUNCTION
+%token K_GLOBAL
+%token K_IF
+%token K_INCLUDE
+%token K_INCLUDE_ONCE
+%token K_INSTANCEOF
+%token K_ISSET
+%token K_LIST
+%token K_NEW
+%token K_PRINT
+%token K_REQUIRE
+%token K_REQUIRE_ONCE
+%token K_RETURN
+%token K_STATIC
+%token K_SWITCH
+%token K_UNSET
+%token K_USE
+%token K_VAR
+%token K_WHILE
+%token <token_string> K___FUNCTION__
+%token <token_string> K___CLASS__
+%token <token_string> K___METHOD__
+%token K_FINAL
+%token K_PHP_USER_FILTER
+%token K_INTERFACE
+%token K_IMPLEMENTS
+%token K_PUBLIC
+%token K_PRIVATE
+%token K_PROTECTED
+%token K_ABSTRACT
+%token K_CLONE
+%token K_TRY
+%token K_CATCH
+%token K_THROW
+%token K_CFUNCTION
+%token K_OLD_FUNCTION
+
+%token K_HALT_COMPILER
+
+// Constants
+
+%token <token_bool> C_TRUE
+%token <token_bool> C_FALSE
+%token <token_null> C_NULL
+
+// Operators
+
+%token <token_op> O_EQEQ
+%token <token_op> O_EQEQEQ
+%token <token_op> O_NOTEQ
+%token <token_op> O_NOTEQEQ
+%token <token_op> O_LE
+%token <token_op> O_GE
+%token O_INC
+%token O_DEC
+%token O_DOUBLEARROW
+%token O_SINGLEARROW
+%token <token_op> O_SL
+%token <token_op> O_SR
+%token <token_op> O_COLONCOLON
+
+%token <token_op> O_LOGICOR
+%token <token_op> O_LOGICAND
+
+%token O_PLUSEQ
+%token O_MINUSEQ
+%token O_MULEQ
+%token O_DIVEQ
+%token O_CONCATEQ
+%token O_MODEQ
+%token O_ANDEQ
+%token O_OREQ
+%token O_XOREQ
+%token O_SLEQ
+%token O_SREQ
+
+%token O_MAGIC_CONCAT
+
+// Casts
+
+%token CAST_INT
+%token CAST_REAL
+%token CAST_STRING
+%token CAST_ARRAY
+%token CAST_OBJECT
+%token CAST_BOOL
+%token CAST_UNSET
+
+// Other 
+
+%token <token_string> STRING
+%token <string> IDENT
+%token <string> VARIABLE
+%token <token_int> INT
+%token <token_real> REAL 
+%token <string> INLINE_HTML
+%token <string> INVALID_TOKEN
+
+// Types of simple operators
+%token <token_op> ',' '|' '&' '^' '.' '+' '-' '*' '/' '%' '!' '~' '<' '>'
+
+/*
+ * Resolve conflicts
+ */
+
+%expect 2
+
+%left K_INCLUDE K_INCLUDE_ONCE K_EVAL K_REQUIRE K_REQUIRE_ONCE
+%left ','
+%left K_OR 
+%left K_XOR 
+%left K_AND 
+%right K_PRINT
+%left '=' O_PLUSEQ O_MINUSEQ O_MULEQ O_DIVEQ O_CONCATEQ O_MODEQ O_ANDEQ O_OREQ O_XOREQ O_SLEQ O_SREQ
+%left '?' ':'
+%left O_LOGICOR 
+%left O_LOGICAND
+%left '|' 
+%left '^' 
+%left '&'
+%nonassoc O_EQEQ O_NOTEQ O_EQEQEQ O_NOTEQEQ
+%nonassoc '<' O_LE '>' O_GE 
+%left O_SL O_SR
+%left '+' '-' '.' O_MAGIC_CONCAT
+%left '*' '/' '%'
+%right '!'
+%nonassoc K_INSTANCEOF
+%right '~' O_INC O_DEC CAST_INT CAST_REAL CAST_STRING CAST_ARRAY CAST_OBJECT CAST_BOOL CAST_UNSET '@'
+%right '['
+%nonassoc K_NEW K_CLONE
+%left K_ELSEIF
+%left K_ELSE
+%left K_ENDIF
+%right K_STATIC K_ABSTRACT K_FINAL K_PRIVATE K_PROTECTED K_PUBLIC
+
+%type <list_ast_statement> top_statement_list
+%type <list_ast_statement> top_statement
+%type <list_ast_statement> inner_statement_list
+%type <list_ast_statement> inner_statement
+%type <list_ast_statement> statement
+%type <list_ast_statement> unticked_statement
+%type <list_ast_catch> additional_catches
+%type <list_ast_catch> non_empty_additional_catches
+%type <ast_catch> additional_catch
+%type <list_ast_variable> unset_variables 
+%type <ast_variable> unset_variable
+%type <token_string> use_filename
+%type <ast_method> function_declaration_statement
+%type <ast_statement> class_declaration_statement
+%type <integer> is_reference
+%type <ast_method> unticked_function_declaration_statement
+%type <ast_statement> unticked_class_declaration_statement
+%type <ast_class_def> class_entry_type
+%type <token_class_name> extends_from
+%type <ast_interface_def> interface_entry
+%type <list_token_interface_name> interface_extends_list
+%type <list_token_interface_name> implements_list
+%type <list_token_interface_name> interface_list
+%type <ast_variable> foreach_optional_arg
+%type <ast_variable> foreach_variable
+%type <list_ast_statement> for_statement
+%type <list_ast_statement> foreach_statement
+%type <list_ast_statement> declare_statement
+%type <list_ast_directive> declare_list
+%type <list_ast_switch_case> switch_case_list
+%type <list_ast_switch_case> case_list
+%type <list_ast_statement> while_statement
+%type <ast_if> elseif_list
+%type <ast_if> new_elseif_list
+%type <list_ast_statement> else_single
+%type <list_ast_statement> new_else_single
+%type <list_ast_formal_parameter> parameter_list
+%type <list_ast_formal_parameter> non_empty_parameter_list
+%type <ast_type> optional_class_type
+%type <list_ast_actual_parameter> function_call_parameter_list
+%type <list_ast_actual_parameter> non_empty_function_call_parameter_list
+%type <list_ast_variable_name> global_var_list
+%type <ast_variable_name> global_var
+%type <list_ast_statement> static_var_list
+%type <list_ast_member> class_statement_list
+%type <list_ast_member> class_statement
+%type <list_ast_statement> method_body  
+%type <ast_attr_mod> variable_modifiers
+%type <ast_method_mod> method_modifiers
+%type <ast_method_mod> non_empty_member_modifiers
+%type <ast_method_mod> member_modifier
+%type <list_ast_member> class_variable_declaration
+%type <list_ast_member> class_constant_declaration
+%type <ast_statement> echo_expr_list
+%type <ast_expr> for_expr
+%type <ast_expr> non_empty_for_expr
+%type <ast_expr> expr_without_variable
+%type <ast_method_invocation> function_call
+%type <token_class_name> fully_qualified_class_name
+%type <ast_class_name> class_name_reference
+%type <ast_variable> dynamic_class_name_reference
+%type <list_ast_variable> dynamic_class_name_variable_properties
+%type <ast_variable> dynamic_class_name_variable_property
+%type <ast_expr> exit_expr
+%type <list_ast_actual_parameter> ctor_arguments
+%type <ast_expr> common_scalar
+%type <ast_expr> static_scalar
+%type <ast_constant> static_class_constant
+%type <ast_expr> scalar
+%type <list_ast_array_elem> static_array_pair_list
+%type <list_ast_array_elem> non_empty_static_array_pair_list
+%type <ast_expr> expr
+%type <ast_expr> r_variable
+%type <ast_expr> w_variable
+%type <ast_expr> rw_variable
+%type <ast_expr> variable
+%type <list_ast_expr> variable_properties
+%type <ast_expr> variable_property
+%type <list_ast_actual_parameter> method_or_not
+%type <ast_variable> variable_without_objects
+%type <ast_variable> static_member
+%type <ast_expr> base_variable_with_function_calls
+%type <ast_variable> base_variable
+%type <ast_variable> reference_variable
+%type <ast_variable_name> compound_variable
+%type <ast_expr> dim_offset
+%type <ast_variable> object_property
+%type <ast_variable> object_dim_list
+%type <ast_variable_name> variable_name
+%type <integer> simple_indirect_reference
+%type <ast_nested_list_elements> assignment_list
+%type <ast_list_element> assignment_list_element
+%type <list_ast_array_elem> array_pair_list
+%type <list_ast_array_elem> non_empty_array_pair_list
+%type <ast_method_invocation> internal_functions_in_yacc
+%type <list_ast_actual_parameter> isset_variables
+%type <ast_constant> class_constant
+%type <ast_if> keyword_if
+%type <ast_if> keyword_elseif
+%type <ast_foreach> keyword_foreach
+%type <ast_while> keyword_while
+%type <ast_do> keyword_do
+%type <ast_for> keyword_for
+%type <ast_switch> keyword_switch
+%type <ast_declare> keyword_declare
+%type <ast_try> keyword_try
+%type <ast_catch> keyword_catch
+%type <ast_method> keyword_function
+%type <ast_switch_case> keyword_case
+%type <ast_switch_case> keyword_default
+%type <list_ast_statement> block
+
+%%
+
+start: 
+	  top_statement_list
+	  	{
+			// If there are any remaining comments, add them as a NOP
+			if(!context->last_comments.empty())
+				$1->push_back(NEW(AST_nop, ()));
+	
+			context->php_script = new AST_php_script($1);	
+		}
+	;
+
+top_statement_list:
+	  top_statement_list top_statement
+	  	{
+			$1->push_back_all($2);
+			$$ = $1;
+		}
+	| /* empty */
+		{
+			$$ = new List<AST_statement*>;
+		}
+	;
+
+top_statement:
+	  statement
+	  	{
+			$$ = $1; 
+		}
+	| function_declaration_statement
+		{
+			$$ = wrap($1);
+		}
+	| class_declaration_statement
+		{
+			$$ = wrap($1);
+		}
+	| K_HALT_COMPILER '(' ')' ';'
+		{
+			assert(0);
+		}
+	;
+
+/*
+ * Mimicks top_statement_list
+ */
+inner_statement_list:
+	  inner_statement_list inner_statement
+	  	{
+			$1->push_back_all($2);
+			$$ = $1;
+		}
+	| /* empty */ 
+		{
+			$$ = new List<AST_statement*>;
+		}
+	;
+
+inner_statement:
+	  statement
+	  	{
+			$$ = $1;
+		}
+	| function_declaration_statement
+		{
+			$$ = wrap($1);
+		}
+	| class_declaration_statement
+		{
+			$$ = wrap($1);
+		}
+	| K_HALT_COMPILER '(' ')' ';'
+		{
+			assert(0);
+		}
+	;
+
+statement:
+	  unticked_statement
+	  	{
+			$$ = $1;
+		}
+	;
+
+/*
+ * Temporary hack to improve line numbers
+ */
+
+keyword_if: 
+	  K_IF
+		{
+			$$ = NEW(AST_if, (NULL, NULL, NULL));
+		}
+	;
+
+keyword_elseif: 
+	  K_ELSEIF
+		{
+			$$ = NEW(AST_if, (NULL, NULL, NULL));
+		}
+	;
+
+keyword_foreach:
+	  K_FOREACH
+	  	{
+			$$ = NEW(AST_foreach, (NULL, NULL, false, NULL, NULL));
+		}
+	;
+
+keyword_while:
+	  K_WHILE
+	  	{
+			$$ = NEW(AST_while, (NULL, NULL));
+		}
+	;
+
+keyword_do:
+	  K_DO
+	  	{
+			$$ = NEW(AST_do, (NULL, NULL));
+		}
+	;
+
+keyword_for:
+	  K_FOR
+	  	{
+			$$ = NEW(AST_for, (NULL, NULL, NULL, NULL));
+		}
+	;
+
+keyword_switch:
+	  K_SWITCH
+	  	{
+			$$ = NEW(AST_switch, (NULL, NULL));
+		}
+	;
+
+keyword_declare:
+	  K_DECLARE
+	  	{
+			$$ = NEW(AST_declare, (NULL, NULL));
+		}
+	;
+
+keyword_try:
+	  K_TRY
+	  	{
+			$$ = NEW(AST_try, (NULL, NULL));
+		}
+	;
+
+keyword_catch:
+	  K_CATCH
+	  	{
+			$$ = NEW(AST_catch, (NULL, NULL, NULL));
+		}
+	;
+
+keyword_function:
+	  K_FUNCTION
+	    {
+			$$ = NEW(AST_method, (NULL, NULL));
+		}
+	;
+
+keyword_case:
+	  K_CASE
+	  	{
+			$$ = NEW(AST_switch_case, (NULL, NULL));
+		}
+	;
+
+keyword_default:
+	  K_DEFAULT
+	  	{
+			$$ = NEW(AST_switch_case, (NULL, NULL));
+		}
+	;
+
+
+unticked_statement:
+	  block
+	  	{ 
+			$$ = $1;
+		}
+	| keyword_if '(' expr ')' statement elseif_list else_single
+		{
+			$1->expr = $3;
+			$1->iftrue = $5;
+			
+			if($6)
+			{
+				List<AST_statement*>* new_false = new List<AST_statement*>;
+				new_false->push_back($6);
+				
+				/* 
+				 * Nest the $6 part
+				 *
+				 * We must add it to the most deeply nested if we can find
+				 * Note that _if_ any of the nested ifs (elseifs) has a false
+				 * branch, then this consists of a single instruction, an AST_if*.
+				 * So, the dynamic_cast is guaranteed to succeed.
+				 *
+				 * This is similar to the code in elseif_list. 
+				 */ 
+				while(!$6->iffalse->empty())
+					$6 = dynamic_cast<AST_if*>($6->iffalse->front());
+				$6->iffalse = $7;
+				
+				$1->iffalse = new_false;
+			}
+			else
+			{
+				$1->iffalse = $7;
+			}
+
+			$$ = wrap($1);
+		}
+	| keyword_if '(' expr ')' ':' inner_statement_list new_elseif_list new_else_single K_ENDIF ';'
+		{
+			// Duplication of logic above for K_IF.
+			
+			$1->expr = $3;
+			$1->iftrue = $6;
+		
+			if($7)
+			{
+				List<AST_statement*>* new_false = new List<AST_statement*>;
+				new_false->push_back($7);
+
+				while(!$7->iffalse->empty())
+					$7 = dynamic_cast<AST_if*>($7->iffalse->front());
+				$7->iffalse = $8;
+				
+				$1->iffalse = new_false;	
+			}
+			else
+			{
+				$1->iffalse = $8;
+			}
+	
+			$$ = wrap($1);
+		}
+	| keyword_while '(' expr ')' while_statement
+		{
+			$1->expr = $3;
+			$1->statements = $5;
+
+			$$ = wrap($1);
+		}
+	| keyword_do statement K_WHILE '(' expr ')' ';'
+		{
+			$1->statements = $2;
+			$1->expr = $5;
+			
+			$$ = wrap($1);
+		}
+	| keyword_for '(' for_expr ';' for_expr ';' for_expr ')' for_statement
+		{
+			$1->init = $3;
+			$1->cond = $5;
+			$1->incr = $7;
+			$1->statements = $9;
+			
+			$$ = wrap($1);
+		}
+	| keyword_switch '(' expr ')' switch_case_list
+		{
+			$1->expr = $3;
+			$1->switch_cases = $5;
+			
+			$$ = wrap($1);
+		}
+	| K_BREAK ';'
+		{
+			$$ = wrap(NEW(AST_break, (NULL)));
+		}
+	| K_BREAK expr ';'
+		{
+			$$ = wrap(NEW(AST_break, ($2)));
+		}
+	| K_CONTINUE ';'
+		{
+			$$ = wrap(NEW(AST_continue, (NULL)));
+		}
+	| K_CONTINUE expr ';'
+		{
+			$$ = wrap(NEW(AST_continue, ($2)));
+		}
+	| K_RETURN ';'
+		{
+			$$ = wrap(NEW(AST_return, (NULL)));
+		}
+	| K_RETURN expr_without_variable ';'
+		{
+			$$ = wrap(NEW(AST_return, ($2)));
+		}
+	| K_RETURN variable ';'
+		{
+			$$ = wrap(NEW(AST_return, ($2)));
+		}
+	| K_GLOBAL global_var_list ';'
+		{
+			List<AST_statement*>* globals = new List<AST_statement*>;
+			List<AST_variable_name*>::const_iterator i;
+			
+			for(i = $2->begin(); i != $2->end(); i++)
+			{
+				globals->push_back(NEW(AST_global, (*i)));
+			}
+		
+			$$ = globals;
+		}
+	| K_STATIC static_var_list ';'
+		{
+			$$ = $2;
+		}
+	| K_ECHO echo_expr_list ';'
+		{
+			$$ = wrap ($2);
+		}
+	| INLINE_HTML
+		{
+			Token_string* scalar = NEW(Token_string, ($1, $1));
+			AST_expr* fn = NEW(AST_method_invocation, ("echo", scalar));
+	
+			$$ = wrap(NEW(AST_eval_expr, (fn)));
+		}
+	| expr ';'
+		{
+			$$ = wrap(NEW(AST_eval_expr, ($1)));
+		}
+	| K_USE use_filename ';'
+		{
+			AST_method_invocation* fn = NEW(AST_method_invocation, ("use", $2));
+			
+			$$ = wrap(NEW(AST_eval_expr, (fn)));
+		}
+	| K_UNSET '(' unset_variables ')' ';'
+		{
+			List<AST_statement*>* statements = new List<AST_statement*>;
+			List<AST_variable*>::const_iterator i;
+			
+			for(i = $3->begin(); i != $3->end(); i++)
+				statements->push_back(NEW(AST_unset, (*i)));
+
+			$$ = statements;
+		}
+	| keyword_foreach '(' variable K_AS foreach_variable foreach_optional_arg ')' foreach_statement
+		{
+			$1->expr = $3;
+			$1->statements = $8;
+	
+			if($6)
+			{
+				if($5->attrs->is_true("phc.parser.is_ref"))
+				{
+					phc_error(ERR_FOREACH_KEY_REF, $5->get_filename(), $5->get_line_number());
+				}
+			
+				$1->key = $5;
+				$1->is_ref = $6->attrs->is_true("phc.parser.is_ref");
+				$1->val = $6;
+			}
+			else
+			{
+				$1->key = NULL;
+				$1->is_ref = $5->attrs->is_true("phc.parser.is_ref");
+				$1->val = $5;
+			}
+
+			$$ = wrap($1);
+		}
+	| keyword_foreach '(' expr_without_variable K_AS w_variable foreach_optional_arg ')' foreach_statement
+		{ 
+			// Duplication of the logic in the previous rule
+			$1->expr = $3;
+			$1->statements = $8;
+	
+			if($6)
+			{
+				if($5->attrs->is_true("phc.parser.is_ref"))
+				{
+					phc_error(ERR_FOREACH_KEY_REF, $5->get_filename(), $5->get_line_number());
+				}
+			
+				$1->key = expect_variable($5);
+				$1->is_ref = $6->attrs->is_true("phc.parser.is_ref");
+				$1->val = $6;
+			}
+			else
+			{
+				$1->key = NULL;
+				$1->is_ref = $5->attrs->is_true("phc.parser.is_ref");
+				$1->val = expect_variable($5);
+			}
+
+			$$ = wrap($1);
+		}
+	| keyword_declare '(' declare_list ')' declare_statement	
+		{
+			$1->directives = $3;
+			$1->statements = $5;
+
+			$$ = wrap($1);
+		}
+	| ';'
+		{
+			$$ = new List<AST_statement*>;
+		}
+	| keyword_try block keyword_catch '(' fully_qualified_class_name VARIABLE ')' block additional_catches
+		{ 
+			Token_variable_name* var = new Token_variable_name($6);
+			
+			$3->class_name = $5;
+			$3->variable_name = var;
+			$3->statements = $8;
+
+			List<AST_catch*>* all_catches = new List<AST_catch*>;
+			all_catches->push_back($3);
+			all_catches->push_back_all($9);
+		
+			$1->statements = $2;
+			$1->catches = all_catches;
+		
+			$$ = wrap($1);
+		}
+	| K_THROW expr ';'
+		{
+			$$ = wrap(NEW(AST_throw, ($2))); 
+		}
+	;
+
+additional_catches:
+	  non_empty_additional_catches
+		{
+			$$ = $1;
+		}
+	| /* empty */
+		{
+			List<AST_catch*>* catches = new List<AST_catch*>;
+			$$ = catches; 
+		}
+	;
+
+non_empty_additional_catches:
+	  additional_catch
+		{
+			List<AST_catch*>* catches = new List<AST_catch*>;
+			catches->push_back($1);
+			
+			$$ = catches;
+		}
+	| non_empty_additional_catches additional_catch
+		{
+			$1->push_back($2);
+			
+			$$ = $1; 
+		}
+	;
+
+additional_catch:
+	  keyword_catch '(' fully_qualified_class_name VARIABLE ')' block 
+		{
+			Token_variable_name* var = new Token_variable_name($4);
+			
+			$1->class_name = $3;
+			$1->variable_name = var;
+			$1->statements = $6;
+			
+			$$ = $1; 
+		}
+	;
+
+unset_variables:
+	  unset_variable
+		{
+			List<AST_variable*>* vars = new List<AST_variable*>;
+			vars->push_back($1);
+			$$ = vars;
+		}
+	| unset_variables ',' unset_variable
+		{
+			$1->push_back($3);
+			$$ = $1; 
+		}
+	;
+
+unset_variable:
+	  variable
+		{
+			$$ = expect_variable($1);
+		}
+	;
+
+use_filename:
+	  STRING
+	  	{
+			$$ = $1;	
+		}
+	| '(' STRING ')'
+	  	{
+			$$ = $2;	
+		}
+	;
+
+function_declaration_statement:
+	  unticked_function_declaration_statement
+		{
+			$$ = $1;
+		}
+	;
+
+class_declaration_statement:
+	  unticked_class_declaration_statement
+		{
+			$$ = $1;
+		}
+	;
+
+is_reference:
+	  /* empty */
+		{
+			$$ = new Integer(0);
+		}
+	| '&'
+		{
+			$$ = new Integer(1);
+		}
+	;
+
+unticked_function_declaration_statement:
+	  keyword_function is_reference IDENT {context->current_method = dynamic_cast<String*>($3);} '(' parameter_list ')' block
+		{
+			Token_method_name* name = new Token_method_name($3);
+		
+			AST_signature* signature = NEW(AST_signature, (new AST_method_mod(), $2->value(), name, $6));
+			$1->signature = signature;
+			$1->statements = $8;
+
+			$$ = $1;
+		}
+	;
+
+unticked_class_declaration_statement:
+	  class_entry_type IDENT {context->current_class = dynamic_cast<String*>($2);} extends_from implements_list '{' class_statement_list '}'
+		{ 
+			Token_class_name* name = new Token_class_name($2);
+
+			$1->class_name = name;
+			$1->extends = $4;
+			$1->implements = $5;
+			$1->members = $7;
+
+			$$ = $1;
+		}
+	| interface_entry IDENT interface_extends_list '{' class_statement_list '}'
+		{
+			Token_interface_name* name = new Token_interface_name($2);
+
+			$1->interface_name = name;
+			$1->extends = $3;
+			$1->members = $5;
+			
+			$$ = $1;
+		}
+	;
+
+/*
+ * We generate the AST_class_def here to that it gets generated immediately
+ * after having seen the "class" keyword, rather than after having seen the
+ * closing curly brace. 
+ *
+ * This means that the line number for the AST_class_def object will be 
+ * recorded as the _starting_ line number of the class, rather than the
+ * final line number; moreover, any class comments will also be recorded
+ * correctly.
+ */
+class_entry_type:
+	  K_CLASS
+		{ 
+			AST_class_mod* mod = NEW(AST_class_mod, (false, false));
+			$$ = NEW(AST_class_def, (mod));
+		}
+	| K_ABSTRACT K_CLASS
+		{ 
+			AST_class_mod* mod = NEW(AST_class_mod, (true, false)); 
+			$$ = NEW(AST_class_def, (mod));
+		}
+	| K_FINAL K_CLASS
+		{ 
+			AST_class_mod* mod = NEW(AST_class_mod, (false, true)); 
+			$$ = NEW(AST_class_def, (mod));
+		}
+	;
+
+extends_from:
+	  /* empty */
+		{
+			$$ = NULL;
+		}
+	| K_EXTENDS fully_qualified_class_name 
+		{
+			$$ = $2;
+		}
+	;
+
+interface_entry:
+	  K_INTERFACE
+		{
+			$$ = NEW(AST_interface_def, (NULL, NULL, NULL));
+		}
+	;
+
+interface_extends_list:
+	  /* empty */
+		{
+			$$ = new List<Token_interface_name*>;
+		}
+	| K_EXTENDS interface_list
+		{
+			$$ = $2;
+		}
+	;
+
+/* 
+ * Vector contains no elements if the class implements no interfaces
+ */
+implements_list:
+	  /* empty */
+		{
+			$$ = new List<Token_interface_name*>;
+		}
+	| K_IMPLEMENTS interface_list
+		{
+			$$ = $2;
+		}
+	;
+
+interface_list:
+	  fully_qualified_class_name
+		{
+			Token_interface_name* ifn = NEW(Token_interface_name, ($1->value));
+		
+			List<Token_interface_name*>* names;
+			names = new List<Token_interface_name*>;
+			names->push_back(ifn);
+			
+			$$ = names;
+		}
+	| interface_list ',' fully_qualified_class_name
+		{
+			Token_interface_name* ifn = NEW(Token_interface_name, ($3->value));
+			$1->push_back(ifn);
+			
+			$$ = $1;
+		}
+	;
+
+foreach_optional_arg:
+	  /* empty */
+		{
+			$$ = NULL;
+		}
+	| O_DOUBLEARROW foreach_variable
+		{
+			$$ = $2;
+		}
+	;
+
+foreach_variable:
+	  w_variable
+		{
+			$$ = expect_variable($1);
+		}
+	| '&' w_variable
+		{ 
+			$2->attrs->set_true("phc.parser.is_ref");
+			$$ = expect_variable($2); 
+		}
+	;
+
+for_statement:
+	  statement
+		{
+			$$ = $1;
+		}
+	| ':' inner_statement_list K_ENDFOR ';'
+		{
+			$$ = $2;
+		}
+	;
+
+foreach_statement:
+	  statement
+		{
+			$$ = $1;
+		}
+	| ':' inner_statement_list K_ENDFOREACH ';'
+		{
+			$$ = $2;
+		}
+	;
+
+declare_statement:
+	  statement
+	  	{
+			$$ = $1;
+		}
+	| ':' inner_statement_list K_ENDDECLARE ';'
+		{
+			$$ = $2;
+		}
+	;
+
+declare_list:
+	  IDENT '=' static_scalar
+	  	{
+			Token_directive_name* name = new Token_directive_name($1);
+
+			List<AST_directive*>* dirs = new List<AST_directive*>;
+			AST_directive* dir = NEW(AST_directive, (name, $3));
+			
+			dirs->push_back(dir);
+			$$ = dirs;
+		}
+	| declare_list ',' IDENT '=' static_scalar
+		{
+			Token_directive_name* name = new Token_directive_name($3);	
+			
+			AST_directive* dir = NEW(AST_directive, (name, $5));
+			$1->push_back(dir);
+			$$ = $1;
+		}
+	;	  
+
+switch_case_list:
+	  '{' case_list '}'
+		{
+			$$ = $2;
+		}
+	| '{' ';' case_list '}'
+		{
+			$$ = $3;
+		}
+	| ':' case_list K_ENDSWITCH ';'
+		{
+			$$ = $2;
+		}
+	| ':' ';' case_list K_ENDSWITCH ';'
+		{
+			$$ = $3;
+		}
+	;
+
+case_list:
+	  /* empty */
+		{
+			$$ = new List<AST_switch_case*>;
+		}
+	| case_list keyword_case expr case_separator inner_statement_list
+		{
+			$2->statements = $5;
+			$2->expr = $3;
+			
+			$1->push_back($2);
+			
+			$$ = $1;
+		}
+	| case_list keyword_default case_separator inner_statement_list
+		{
+			$2->statements = $4;
+			$2->expr = NULL;
+			
+			$1->push_back($2);
+			
+			$$ = $1;
+		}
+	;
+
+/*
+ * No semantic value
+ */
+case_separator:
+	  ':'
+	| ';'
+	;
+	
+while_statement:
+	  statement
+		{
+			$$ = $1;
+		}
+	| ':' inner_statement_list K_ENDWHILE ';'
+		{
+			$$ = $2;
+		}
+	;
+
+elseif_list:
+	  /* empty */
+		{
+			$$ = NULL;
+		}
+	| elseif_list keyword_elseif '(' expr ')' statement
+		{
+			List<AST_statement*>* empty = new List<AST_statement*>;
+			
+			$2->expr = $4;
+			$2->iftrue = $6;
+			$2->iffalse = empty;
+			$2->attrs->set_true("phc.unparser.is_elseif");
+
+			if($1)
+			{
+				List<AST_statement*>* iffalse = new List<AST_statement*>;
+				iffalse->push_back($2);
+				
+				/*
+				 * Nest the $1.
+				 * This is similar to the code in unticked_statement for K_IF.
+				 */
+				AST_if* p = $1;
+				while(!p->iffalse->empty())
+					p = dynamic_cast<AST_if*>(p->iffalse->front());
+				p->iffalse = iffalse;		
+						
+				$$ = $1;
+			}
+			else
+			{
+				$$ = $2;
+			}
+		}
+	;
+
+/*
+ * Duplication of elseif_list functionality
+ */
+new_elseif_list:
+	  /* empty */
+		{
+			$$ = NULL;
+		}
+	| new_elseif_list keyword_elseif '(' expr ')' ':' inner_statement_list
+		{
+			List<AST_statement*>* empty = new List<AST_statement*>;
+			
+			$2->expr = $4;
+			$2->iftrue = $7;
+			$2->iffalse = empty;
+			$2->attrs->set_true("phc.unparser.is_elseif");
+
+			if($1)
+			{
+				List<AST_statement*>* iffalse = new List<AST_statement*>;
+				iffalse->push_back($2);
+				
+				AST_if* p = $1;
+				while(!p->iffalse->empty())
+					p = dynamic_cast<AST_if*>(p->iffalse->front());
+				p->iffalse = iffalse;		
+						
+				$$ = $1;
+			}
+			else
+			{
+				$$ = $2;
+			}
+		}
+	;
+
+else_single:
+	  /* empty */
+		{
+			$$ = new List<AST_statement*>;
+		}
+	| K_ELSE statement
+		{
+			$$ = $2;
+		}
+	;
+
+/*
+ * Mimicks else_single
+ */
+new_else_single:
+	  /* empty */
+		{
+			$$ = new List<AST_statement*>;
+		}
+	| K_ELSE ':' inner_statement_list
+		{
+			$$ = $3;
+		}
+	;
+
+parameter_list:
+	  non_empty_parameter_list
+		{
+			$$ = $1;
+		}
+	| /* empty */
+		{ 
+			List<AST_formal_parameter*>* params = new List<AST_formal_parameter*>;
+			$$ = params;
+		}
+	;
+
+/*
+ * Lots of duplication in these rules, but what can you do?
+ */
+non_empty_parameter_list:
+	  optional_class_type VARIABLE
+		{ 
+			Token_variable_name* name = new Token_variable_name($2);
+			
+			List<AST_formal_parameter*>* params;
+			
+			params = new List<AST_formal_parameter*>;
+			params->push_back(NEW(AST_formal_parameter, ($1, name)));
+			
+			$$ = params; 
+		}
+	| optional_class_type '&' VARIABLE
+		{ 
+			Token_variable_name* name = new Token_variable_name($3);
+			
+			List<AST_formal_parameter*>* params;
+			
+			params = new List<AST_formal_parameter*>;
+			params->push_back(NEW(AST_formal_parameter, ($1, true, name)));
+			
+			$$ = params; 
+		}
+	| optional_class_type '&' VARIABLE '=' static_scalar
+		{ 
+			Token_variable_name* name = new Token_variable_name($3);
+			
+			List<AST_formal_parameter*>* params;
+			
+			params = new List<AST_formal_parameter*>;
+			params->push_back(NEW(AST_formal_parameter, ($1, true, name, $5)));
+			
+			$$ = params; 
+		}
+	| optional_class_type VARIABLE '=' static_scalar
+		{ 
+			Token_variable_name* name = new Token_variable_name($2);
+			
+			List<AST_formal_parameter*>* params;
+			
+			params = new List<AST_formal_parameter*>;
+			params->push_back(NEW(AST_formal_parameter, ($1, false, name, $4)));
+			
+			$$ = params; 
+		}
+	| non_empty_parameter_list ',' optional_class_type VARIABLE
+		{ 
+			Token_variable_name* name = new Token_variable_name($4);
+			
+			$1->push_back(NEW(AST_formal_parameter, ($3, name)));
+			
+			$$ = $1; 
+		}
+	| non_empty_parameter_list ',' optional_class_type '&' VARIABLE
+		{ 
+			Token_variable_name* name = new Token_variable_name($5);
+			
+			$1->push_back(NEW(AST_formal_parameter, ($3, true, name)));
+			
+			$$ = $1; 
+		}
+	| non_empty_parameter_list ',' optional_class_type '&' VARIABLE '=' static_scalar
+		{ 
+			Token_variable_name* name = new Token_variable_name($5);
+			
+			$1->push_back(NEW(AST_formal_parameter, ($3, true, name, $7)));
+			
+			$$ = $1; 
+		}
+	| non_empty_parameter_list ',' optional_class_type VARIABLE '=' static_scalar
+		{ 
+			Token_variable_name* name = new Token_variable_name($4);
+			
+			$1->push_back(NEW(AST_formal_parameter, ($3, false, name, $6)));
+			
+			$$ = $1; 
+		}
+	;
+
+optional_class_type:
+	  /* empty */
+		{
+			$$ = NEW(AST_type, (false, NULL));
+		}
+	| IDENT
+		{ 
+			Token_class_name* class_name = new Token_class_name($1);
+			$$ = NEW(AST_type, (false, class_name)); 
+		}
+	| K_ARRAY
+		{
+			$$ = NEW(AST_type, (true, NULL));
+		}
+	;	
+
+function_call_parameter_list:
+	  non_empty_function_call_parameter_list
+		{
+			$$ = $1;
+		}
+	| /* empty */
+		{
+			$$ = new List<AST_actual_parameter*>;
+		}
+	;
+
+non_empty_function_call_parameter_list:
+	  expr_without_variable
+		{
+			List<AST_actual_parameter*>* list = new List<AST_actual_parameter*>;
+			list->push_back(NEW(AST_actual_parameter, (false, $1)));
+			$$ = list;
+		}
+	| variable
+		{
+			List<AST_actual_parameter*>* list = new List<AST_actual_parameter*>;
+			list->push_back(NEW(AST_actual_parameter, (false, $1)));
+			$$ = list;
+		}
+	| '&' w_variable
+		{
+			List<AST_actual_parameter*>* list = new List<AST_actual_parameter*>;
+			list->push_back(NEW(AST_actual_parameter, (true, $2)));
+			$$ = list; 
+		}
+	| non_empty_function_call_parameter_list ',' expr_without_variable
+		{
+			$1->push_back(NEW(AST_actual_parameter, (false, $3)));
+			$$ = $1;
+		}
+	| non_empty_function_call_parameter_list ',' variable
+		{
+			$1->push_back(NEW(AST_actual_parameter, (false, $3)));
+			$$ = $1;
+		}
+	| non_empty_function_call_parameter_list ',' '&' w_variable
+		{
+			$1->push_back(NEW(AST_actual_parameter, (true, $4)));
+			$$ = $1; 
+		}
+	;
+
+global_var_list:
+	  global_var_list ',' global_var
+		{
+			$1->push_back($3);
+			$$ = $1;
+		}
+	| global_var
+		{
+			List<AST_variable_name*>* list = new List<AST_variable_name*>;
+			list->push_back($1);
+			
+			$$ = list;
+		}
+	;
+
+global_var:
+	  VARIABLE
+		{
+			$$ = NEW(Token_variable_name, ($1));
+		}
+	| '$' r_variable
+		{
+			$$ = NEW(AST_reflection, ($2));
+		}
+	| '$' '{' expr '}'
+		{ 
+			$3->attrs->set_true("phc.unparser.needs_user_curlies");
+			$$ = NEW(AST_reflection, ($3));
+		}
+	; 
+
+static_var_list: 
+	  static_var_list ',' VARIABLE
+		{
+			Token_variable_name* name = new Token_variable_name($3);
+			
+			AST_static_declaration* v = NEW(AST_static_declaration, (name, NULL));
+			$1->push_back(v);
+			
+			$$ = $1;
+		}
+	| static_var_list ',' VARIABLE '=' static_scalar
+		{
+			Token_variable_name* name = new Token_variable_name($3);
+
+			AST_static_declaration* v = NEW(AST_static_declaration, (name, $5));
+			$1->push_back(v);
+			
+			$$ = $1;
+		}
+	| VARIABLE
+		{
+			Token_variable_name* name = new Token_variable_name($1);
+			
+			List<AST_statement*>* list = new List<AST_statement*>;
+			AST_static_declaration* v = NEW(AST_static_declaration, (name, NULL));
+			list->push_back(v);
+			
+			$$ = list;
+		}
+	| VARIABLE '=' static_scalar
+		{
+			Token_variable_name* name = new Token_variable_name($1);
+			
+			List<AST_statement*>* list = new List<AST_statement*>;
+			AST_static_declaration* v = NEW(AST_static_declaration, (name, $3));
+			list->push_back(v);
+
+			$$ = list;
+		}
+	;
+
+class_statement_list:
+	 	class_statement_list class_statement
+		{
+			$1->push_back_all($2);
+			
+			$$ = $1;			
+		}
+	| /* empty */
+		{
+			$$ = new List<AST_member*>;
+		}
+	;
+
+class_statement:
+	  variable_modifiers class_variable_declaration ';'
+		{
+			List<AST_member*>::iterator i;
+			for(i = $2->begin(); i != $2->end(); i++)
+			{
+				AST_attribute* attribute = dynamic_cast<AST_attribute*>(*i);
+				assert(attribute != NULL);
+				attribute->attr_mod = $1->clone();
+			}
+
+			$$ = $2;
+		}
+	| class_constant_declaration ';'
+		{
+			$$ = $1;
+		}
+	| method_modifiers keyword_function is_reference IDENT {context->current_method = dynamic_cast<String*>($4);} '(' parameter_list ')' method_body
+		{
+			Token_method_name* name = new Token_method_name($4);
+		
+			AST_signature* signature = NEW(AST_signature, ($1, $3->value(), name, $7));
+			
+			List<AST_member*>* members = new List<AST_member*>;
+			$2->signature = signature;
+			$2->statements = $9;
+			members->push_back($2);
+			
+			$$ = members;
+		}
+	;
+
+method_body:
+	  ';' 
+		{
+			// Abstract method
+			$$ = NULL; 
+		}
+	| block 
+		{
+			$$ = $1;
+		}
+	;
+
+variable_modifiers:
+	  non_empty_member_modifiers
+		{
+			if($1->is_abstract)
+			{
+				phc_error("Cannot declare variables to be abstract", $1->get_filename(), $1->get_line_number());
+			}
+
+			$$ = NEW(AST_attr_mod, ($1)); 
+		}
+	| K_VAR
+		{
+			$$ = NEW(AST_attr_mod, (false, false, false, false, false));
+		}
+	;
+
+method_modifiers:
+	  /* empty */
+		{
+			$$ = new AST_method_mod();
+		}
+	| non_empty_member_modifiers
+		{
+			$$ = $1;
+		}
+	;
+
+non_empty_member_modifiers:
+	  member_modifier
+		{
+			$$ = $1;
+		}
+	| non_empty_member_modifiers member_modifier
+		{
+			$$ = NEW(AST_method_mod, ($1, $2)); 
+		}
+	;
+
+member_modifier:
+	  K_PUBLIC
+		{
+			$$ = AST_method_mod::new_PUBLIC();
+		}
+	| K_PROTECTED
+		{
+			$$ = AST_method_mod::new_PROTECTED();
+		}
+	| K_PRIVATE
+		{
+			$$ = AST_method_mod::new_PRIVATE();
+		}
+	| K_STATIC
+		{
+			$$ = AST_method_mod::new_STATIC();
+		}
+	| K_ABSTRACT
+		{
+			$$ = AST_method_mod::new_ABSTRACT();
+		}
+	| K_FINAL
+		{
+			$$ = AST_method_mod::new_FINAL();
+		}
+	;
+
+class_variable_declaration:
+	  class_variable_declaration ',' VARIABLE
+		{
+			Token_variable_name* name = new Token_variable_name($3);
+			
+			AST_attribute* attr = NEW(AST_attribute, (new AST_attr_mod(), name, NULL));
+			$1->push_back(attr);
+			
+			$$ = $1;
+		}
+	| class_variable_declaration ',' VARIABLE '=' static_scalar
+		{
+			Token_variable_name* name = new Token_variable_name($3);
+			
+			AST_attribute* attr = NEW(AST_attribute, (new AST_attr_mod(), name, $5));
+			$1->push_back(attr);
+
+			$$ = $1;			
+		}
+	| VARIABLE
+		{
+			Token_variable_name* name = new Token_variable_name($1);
+			List<AST_member*>* members = new List<AST_member*>;
+
+			AST_attribute* attr = NEW(AST_attribute, (new AST_attr_mod(), name, NULL));	
+			members->push_back(attr);
+
+			$$ = members;
+		}
+	| VARIABLE '=' static_scalar
+		{ 
+			Token_variable_name* name = new Token_variable_name($1);
+			List<AST_member*>* members = new List<AST_member*>;
+
+			AST_attribute* attr = NEW(AST_attribute, (new AST_attr_mod(), name, $3));
+			members->push_back(attr);
+
+			$$ = members;
+		}
+	;
+
+class_constant_declaration:
+	  class_constant_declaration ',' IDENT '=' static_scalar
+		{
+			Token_variable_name* name = new Token_variable_name($3);
+
+			AST_attribute* attr = NEW(AST_attribute, (AST_attr_mod::new_CONST(), name, $5));
+			$1->push_back(attr);
+			
+			$$ = $1;
+		}
+	| K_CONST IDENT '=' static_scalar
+		{
+			Token_variable_name* name = new Token_variable_name($2);
+			List<AST_member*>* members = new List<AST_member*>;
+
+			AST_attribute* attr = NEW(AST_attribute, (AST_attr_mod::new_CONST(), name, $4));
+			members->push_back(attr);
+
+			$$ = members;
+		}
+	;
+
+/*
+ * "echo foo, bar;" is translated into "echo(foo); echo(bar);"
+ * Note that an echo isnt a function, and behaves slightly differently from
+ * functions, in that the result of the evaluation of an argument is printed
+ * before the next argument is evaluated.
+ */
+echo_expr_list:
+	  echo_expr_list ',' expr
+		{
+			AST_method_invocation* fn = dynamic_cast <AST_method_invocation*> (dynamic_cast<AST_eval_expr*>($1)->expr);
+			fn->actual_parameters->push_back (NEW (AST_actual_parameter, (false, $3)));
+			
+			$$ = $1;
+		}
+	| expr
+		{
+			AST_method_invocation* fn = NEW(AST_method_invocation, ("echo", $1));
+			$$ = (NEW(AST_eval_expr, (fn)));
+		}
+	;
+
+for_expr:
+	  /* empty */
+		{
+			$$ = NULL;
+		}
+	| non_empty_for_expr
+		{
+			$$ = $1
+		}
+	;
+
+/*
+ * Commas are treated as binops
+ */
+non_empty_for_expr:
+	  non_empty_for_expr ',' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr
+		{
+			$$ = $1;
+		}
+	;
+
+expr_without_variable:
+	  K_LIST '(' assignment_list ')' '=' expr
+		{
+			$$ = NEW(AST_list_assignment, ($3->list_elements, $6));
+		}
+	| variable '=' expr
+		{
+			$$ = NEW(AST_assignment, (expect_variable($1), false, $3));
+		}
+	| variable '=' '&' variable
+		{
+			$$ = NEW(AST_assignment, (expect_variable($1), true, $4));
+		}
+	| variable '=' '&' K_NEW class_name_reference ctor_arguments 
+		{
+			$$ = NEW(AST_assignment, (expect_variable($1), true, NEW(AST_new, ($5, $6))));
+		}
+	| K_NEW class_name_reference ctor_arguments
+		{
+			$$ = NEW(AST_new, ($2, $3));
+		}
+	| K_CLONE expr
+		{
+			$$ = NEW(AST_clone, ($2)); 
+		}
+	| variable O_PLUSEQ expr
+		{
+			AST_variable* var = expect_variable($1);
+
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "+"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_MINUSEQ expr
+		{
+			AST_variable* var = expect_variable($1);
+
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "-"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_MULEQ expr
+		{
+			AST_variable* var = expect_variable($1);
+
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "*"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_DIVEQ expr
+		{
+			AST_variable* var = expect_variable($1);
+			
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "/"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_CONCATEQ expr
+		{
+			AST_variable* var = expect_variable($1);
+			
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "."))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_MODEQ expr
+		{
+			AST_variable* var = expect_variable($1);
+			
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "%"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_ANDEQ expr
+		{
+			AST_variable* var = expect_variable($1);
+			
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "&"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_OREQ expr
+		{
+			AST_variable* var = expect_variable($1);
+			
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "|"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_XOREQ expr
+		{
+			AST_variable* var = expect_variable($1);
+			
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "^"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_SLEQ expr
+		{
+			AST_variable* var = expect_variable($1);
+			
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, "<<"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| variable O_SREQ expr
+		{
+			AST_variable* var = expect_variable($1);
+			
+			AST_expr* var_c;
+			var_c = var->clone();
+			
+			AST_assignment* agn = NEW(AST_assignment, (var, false, NEW(AST_bin_op, (var_c, $3, ">>"))));
+			agn->attrs->set_true("phc.unparser.is_opeq");
+			$$ = agn;
+		}
+	| rw_variable O_INC
+		{ 
+			$$ = NEW(AST_post_op, (expect_variable($1), "++"));
+		}
+	| O_INC rw_variable
+		{ 
+			$$ = NEW(AST_pre_op, (expect_variable($2), "++"));
+		}
+	| rw_variable O_DEC
+		{ 
+			$$ = NEW(AST_post_op, (expect_variable($1), "--"));
+		}
+	| O_DEC rw_variable
+		{ 
+			$$ = NEW(AST_pre_op, (expect_variable($2), "--"));
+		}
+	| expr O_LOGICOR expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr O_LOGICAND expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr K_OR expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr K_AND expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr K_XOR expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+   | expr '|' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+   | expr '&' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+   | expr '^' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+   | expr '.' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr O_MAGIC_CONCAT expr '}'
+		{
+			$$ = NEW(AST_bin_op, ($1, $3, "."));
+
+			/*
+			 * Interface with the lexer: return to in-string state 
+			 */
+			 
+			context->return_to_complex_syntax();
+		}
+   | expr '+' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+   | expr '-' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+   | expr '*' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+   | expr '/' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+   | expr '%' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr O_SL expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr O_SR expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+   | '+' expr
+		{
+			// We ignore unary plus
+			$$ = $2; 
+		}
+   | '-' expr
+		{
+			$$ = NEW(AST_unary_op, ($1, $2)); 
+		}
+   | '!' expr
+		{
+			$$ = NEW(AST_unary_op, ($1, $2)); 
+		}
+   | '~' expr
+		{
+			$$ = NEW(AST_unary_op, ($1, $2)); 
+		}
+	| expr O_EQEQEQ expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr O_NOTEQEQ expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr O_EQEQ expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr O_NOTEQ expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr '<' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr O_LE expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr '>' expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr O_GE expr
+		{
+			$$ = NEW(AST_bin_op, ($1, $2, $3));
+		}
+	| expr K_INSTANCEOF class_name_reference
+		{
+			$$ = NEW(AST_instanceof, ($1, $3));
+		}
+	| '(' expr ')'
+		{
+			$2->attrs->set_true("phc.unparser.needs_user_brackets");
+			
+			$$ = $2;
+		}
+	| expr '?' expr ':' expr
+		{
+			$$ = NEW(AST_conditional_expr, ($1, $3, $5)); 
+		}
+	| internal_functions_in_yacc
+		{
+			$$ = $1;
+		}
+	| CAST_INT expr
+		{
+			$$ = NEW(AST_cast, ("int", $2));
+		}
+	| CAST_REAL expr
+		{
+			$$ = NEW(AST_cast, ("real", $2));
+		}
+	| CAST_STRING expr
+		{
+			$$ = NEW(AST_cast, ("string", $2));
+		}
+	| CAST_ARRAY expr
+		{
+			$$ = NEW(AST_cast, ("array", $2));
+		}
+	| CAST_OBJECT expr
+		{
+			$$ = NEW(AST_cast, ("object", $2));
+		}
+	| CAST_BOOL expr
+		{
+			$$ = NEW(AST_cast, ("bool", $2));
+		}
+	| CAST_UNSET expr
+		{ 
+			$$ = NEW(AST_cast, ("unset", $2));
+		}
+	| K_EXIT exit_expr
+		{
+			$$ = NEW(AST_method_invocation, ("exit", $2));
+		}
+	| '@' expr
+		{
+			$$ = NEW(AST_ignore_errors, ($2)); 
+		}
+	| scalar
+		{
+			$$ = $1;
+		}
+	| K_ARRAY '(' array_pair_list ')'
+		{
+			$$ = NEW(AST_array, ($3)); 
+		}
+	| K_PRINT expr
+		{
+			$$ = NEW(AST_method_invocation, ("print", $2));	
+		}
+	;
+
+function_call:
+	  IDENT '(' function_call_parameter_list ')'
+		{
+			Token_method_name* fn = new Token_method_name($1);
+		
+			$$ = NEW(AST_method_invocation, (NULL, fn, $3));
+		}
+	| fully_qualified_class_name O_COLONCOLON IDENT '(' function_call_parameter_list ')'
+		{
+			Token_method_name* fn = new Token_method_name($3);
+
+			$$ = NEW(AST_method_invocation, ($1, fn, $5));
+		}
+	| fully_qualified_class_name O_COLONCOLON variable_without_objects '(' function_call_parameter_list ')'
+		{
+			$$ = NEW(AST_method_invocation, ($1, NEW(AST_reflection, ($3)), $5));
+		}
+	| variable_without_objects '(' function_call_parameter_list ')'
+		{
+			$$ = NEW(AST_method_invocation, (NULL, NEW(AST_reflection, ($1)), $3));
+		}
+	;
+
+fully_qualified_class_name:
+	  IDENT
+		{
+			Token_class_name* name = new Token_class_name($1);
+			$$ = name; 
+		}
+	;
+
+class_name_reference:
+	  IDENT
+		{
+			Token_class_name* name = new Token_class_name($1);
+
+			$$ = name; 
+		}
+	| dynamic_class_name_reference
+		{ 
+			$$ = NEW(AST_reflection, ($1)); 
+		}
+	;
+
+/*
+ * Note: the grammar is right recursive, whereas invocation is left recursive
+ * "$a->b->c" is "($a->b)->c"; must be careful to generate the correct tree.
+ */
+dynamic_class_name_reference:
+	  base_variable O_SINGLEARROW object_property dynamic_class_name_variable_properties
+		{
+			$3->target = $1;
+
+			List<AST_variable*>::const_iterator i;
+			for(i = $4->begin(); i != $4->end(); i++)
+			{
+				(*i)->target = $3;
+				$3 = *i;
+			}
+			
+			$$ = $3; 
+		}
+	| base_variable
+		{
+			$$ = $1;
+		}
+	;
+
+dynamic_class_name_variable_properties:
+	  dynamic_class_name_variable_properties dynamic_class_name_variable_property
+		{
+			$1->push_back($2);
+			$$ = $1;
+		}
+	| /* empty */
+		{ 
+			List<AST_variable*>* vars = new List<AST_variable*>;
+			$$ = vars;
+		}
+	;
+
+dynamic_class_name_variable_property:
+	  O_SINGLEARROW object_property
+		{
+			$$ = $2;
+		}
+	;
+
+/*
+ * If no argument is specified (exit; or exit();), assume 0.
+ */
+exit_expr:
+	  /* empty */
+		{
+			$$ = NEW(Token_int, (0L));
+		}
+	| '(' ')'
+		{
+			$$ = NEW(Token_int, (0L));
+		}
+	| '(' expr ')'
+		{
+			$$ = $2;
+		}
+	;
+
+ctor_arguments:
+	  /* empty */
+		{ 
+			List<AST_actual_parameter*>* args = new List<AST_actual_parameter*>;
+			
+			$$ = args; 
+		}
+	| '(' function_call_parameter_list ')'
+		{
+			$$ = $2;
+		}
+	;
+
+common_scalar:
+	  INT
+		{
+			$$ = $1; 
+		}
+	| REAL 
+		{
+			$$ = $1;	
+		}
+	| STRING
+		{
+			$$ = $1;	
+		}
+	| C_FALSE
+		{ 
+			$$ = $1; 
+		}
+	| C_TRUE
+		{ 
+			$$ = $1; 
+		}
+	| C_NULL
+		{ 
+			$$ = $1; 
+		}
+	| K___LINE__
+		{
+			$$ = $1; 
+		}
+	| K___FILE__
+		{
+			$$ = $1; 
+		}
+	| K___CLASS__
+		{
+			$$ = $1; 
+		}
+	| K___METHOD__
+		{
+			$$ = $1; 
+		}
+	| K___FUNCTION__
+		{
+			$$ = $1; 
+		}
+	;
+	
+static_scalar:
+	  common_scalar
+		{
+			$$ = $1;
+		}
+	| IDENT
+		{
+			Token_constant_name* name = new Token_constant_name($1);
+			$$ = NEW(AST_constant, (NULL, name)); 
+		}
+	| '+' static_scalar
+		{
+			// We simply ignore the +
+			$$ = $2;
+		}
+	| '-' static_scalar
+		{
+			$$ = NEW(AST_unary_op, ($2, "-"));
+		}
+	| K_ARRAY '(' static_array_pair_list ')'
+		{
+			$$ = NEW(AST_array, ($3));
+		}
+	| static_class_constant
+		{
+			$$ = $1;
+		}
+	;
+
+static_class_constant:
+	  IDENT O_COLONCOLON IDENT
+		{
+			Token_class_name* class_name = new Token_class_name($1);
+			Token_constant_name* constant = new Token_constant_name($3);
+			
+			$$ = NEW(AST_constant, (class_name, constant));
+		}
+	;
+
+scalar:
+	  IDENT
+		{
+			Token_constant_name* name = new Token_constant_name($1);
+
+			$$ = NEW(AST_constant, (NULL, name));
+		}
+	| class_constant
+		{
+			$$ = $1;
+		}
+	| common_scalar
+		{
+			$$ = $1;
+		}
+	;
+
+static_array_pair_list:
+	  /* empty */
+		{
+			$$ = new List<AST_array_elem*>;
+		}
+	| non_empty_static_array_pair_list possible_comma
+		{
+			$$ = $1;
+		}
+	;
+
+/*
+ * No semantic value
+ */
+possible_comma:
+	  /* empty */
+	| ','
+	;
+
+non_empty_static_array_pair_list:
+	  non_empty_static_array_pair_list ',' static_scalar O_DOUBLEARROW static_scalar
+		{
+			AST_array_elem* elem = NEW(AST_array_elem, ($3, false, $5));
+			$1->push_back(elem);
+
+			$$ = $1;
+		}
+	| non_empty_static_array_pair_list ',' static_scalar
+		{
+			AST_array_elem* elem = NEW(AST_array_elem, (NULL, false, $3));
+			$1->push_back(elem);
+			
+			$$ = $1;
+		}
+	| static_scalar O_DOUBLEARROW static_scalar
+		{
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
+			AST_array_elem* elem = NEW(AST_array_elem, ($1, false, $3));
+			list->push_back(elem);
+
+			$$ = list;
+		}
+	| static_scalar
+		{
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
+			AST_array_elem* elem = NEW(AST_array_elem, (NULL, false, $1));
+			list->push_back(elem);
+
+			$$ = list;
+		}
+	;
+
+expr:
+	  r_variable
+		{
+			$$ = $1;
+		}
+	| expr_without_variable
+		{
+			$$ = $1;
+		}
+	;
+
+r_variable:
+	  variable
+		{
+			$$ = $1;
+		}
+	;
+
+w_variable:
+	  variable
+		{
+			$$ = $1;
+		}
+	;
+
+rw_variable:
+	  variable
+		{
+			$$ = $1;
+		}
+	;
+
+/*
+ * The original rule read
+ *
+ * variable ::= base_variable_with_function_calls O_SINGLEARROW object_property
+ *     method_or_not variable_properties
+ *
+ * However, this duplicates work done in variable_properties, because 
+ * variable_properties is a list of variable_property's, and
+ *
+ * variable_property ::= O_SINGLEARROW object_property method_or_not
+ *
+ * Now, in the original grammar, variable_properties allows for an empty list;
+ * that's now changed, so that it requires at least one variable_property.
+ *
+ * We don't normally change the grammar, but this rule is difficult enough
+ * as it is, so that we don't want to be duplicating code.
+ */
+variable:
+	  base_variable_with_function_calls variable_properties
+		{
+			List<AST_expr*>::iterator i;
+			for(i = $2->begin(); i != $2->end(); i++)
+			{
+				AST_variable* var = dynamic_cast<AST_variable*>(*i);
+				AST_method_invocation* fn = dynamic_cast<AST_method_invocation*>(*i);
+
+				if(var)
+				{
+					var->target = $1;
+					
+					List<AST_actual_parameter*>* function_params = dynamic_cast<List<AST_actual_parameter*>*>(var->attrs->get("phc.parser.function_params"));
+	
+					if(function_params)
+					{
+						$1 = NEW(AST_method_invocation, (NULL, NEW(AST_reflection,(var)), function_params));
+					}
+					else
+					{
+						$1 = var;
+					}
+				}
+				else
+				{
+					fn->target = $1;
+					$1 = fn;
+				}
+			}
+
+			$$ = $1;
+		}
+	| base_variable_with_function_calls
+		{
+			$$ = $1;
+		}
+	;
+
+/*
+ * The second rule goes to empty in the original grammar; see the
+ * comment for "variable ::=" why this is changed.
+ */
+variable_properties:
+	  variable_properties variable_property
+		{
+			$1->push_back($2);
+			
+			$$ = $1;
+		}
+	| variable_property 
+		{
+			List<AST_expr*>* props = new List<AST_expr*>;
+			props->push_back($1);
+			
+			$$ = props;
+		}
+	;
+
+/* 
+ * We decide to synthesise an AST_variable or an AST_method_invocation
+ * based on the absence or presence of a parameter list (method_or_not).
+ * If there is a parameter list, we _try_ to generate a method invocation.
+ *
+ * To do this, we take the name of the variable synthesised by
+ * object_property, and use it for the name of the method invocation. That is,
+ * if the name of the variable is VarName[x], we convert it to FnName[x];
+ * otherwise, it must be an expression and we use the name as-is.
+ *
+ * However, this fails to work if the variable has array indices. This is
+ * the case, for example, in "$x->f[]()" (i.e., "f[]()" as far as 
+ * variable_property is concerned). In this case, the name of the method 
+ * is "$x->f[]"; however, we cannot generate this here because we don't
+ * know the "$x" part. Instead, we synthesise up "f[]" (AST_variable), and
+ * we set a private attribute in AST_variable, called "function_params", to
+ * the parameters of the method. The rule "variable ::= " must check for
+ * this attribute, and generate the correct method invocation if set.
+ */ 
+variable_property:
+	  O_SINGLEARROW object_property method_or_not
+		{
+			if($3)
+			{
+				if($2->array_indices->empty())
+				{
+					Token_variable_name* vn = dynamic_cast<Token_variable_name*>($2->variable_name);
+				
+					if(vn)
+					{
+						Token_method_name* fn;
+						
+						fn = NEW(Token_method_name, (vn->value));
+						$$ = NEW(AST_method_invocation, (NULL, fn, $3));
+					}
+					else
+					{
+						AST_reflection* fn;
+
+						fn = dynamic_cast<AST_reflection*>($2->variable_name);
+						assert(fn);
+						$$ = NEW(AST_method_invocation, (NULL, fn, $3));
+					}
+				}
+				else
+				{
+					$2->attrs->set("phc.parser.function_params", $3);
+					$$ = $2;
+				}
+			}
+			else
+			{
+				$$ = $2;
+			}
+		}
+	;
+
+method_or_not:
+	  '(' function_call_parameter_list ')'
+		{
+			$$ = $2;
+		}
+	| /* empty */
+		{
+			$$ = NULL;
+		}
+	;
+
+variable_without_objects:
+	  reference_variable
+		{
+			$$ = $1;
+		}
+	| simple_indirect_reference reference_variable
+		{
+			for(long i = 0; i < $1->value(); i++)
+			{
+				$2 = NEW(AST_variable, (NEW(AST_reflection, ($2))));
+			}
+			
+			$$ = $2;
+		}
+	;
+
+static_member:
+	  fully_qualified_class_name O_COLONCOLON variable_without_objects
+		{
+			$3->target = $1;
+			$$ = $3; 
+		}
+	;
+
+base_variable_with_function_calls:
+	  base_variable
+		{
+			$$ = $1;
+		}
+	| function_call
+		{
+			$$ = $1;
+		}
+	;
+
+base_variable:
+	  reference_variable
+		{
+			$$ = $1;
+		}
+	| simple_indirect_reference reference_variable
+		{
+			for(long i = 0; i < $1->value(); i++)
+			{
+				$2 = NEW(AST_variable, (NEW(AST_reflection, ($2))));
+			}
+
+			$$ = $2;
+		}
+	| static_member
+		{
+			$$ = $1;
+		}
+	;
+
+reference_variable:
+	  reference_variable '[' dim_offset ']'
+		{
+			$1->array_indices->push_back($3);
+			$$ = $1;
+		}
+	| reference_variable '{' expr '}'
+		{
+			if($3 != NULL)
+				$3->attrs->set_true("phc.unparser.index_curlies");
+
+			$1->array_indices->push_back($3);
+			$$ = $1;
+		}
+	| compound_variable
+		{
+			$$ = NEW(AST_variable, ($1));
+		}
+	;
+
+compound_variable:
+	  VARIABLE
+		{ 
+			Token_variable_name* var = new Token_variable_name($1);
+			$$ = var; 
+		}
+	| '$' '{' expr '}'
+		{ 
+			$3->attrs->set_true("phc.unparser.needs_user_curlies");
+			$$ = NEW(AST_reflection, ($3)); 
+		}
+	;
+
+dim_offset:
+	  /* empty */
+		{
+			$$ = NULL;
+		}
+	| expr
+		{
+			$$ = $1;
+		}
+	;
+
+object_property:
+	  object_dim_list
+		{
+			$$ = $1;
+		}
+	| variable_without_objects 
+		{
+			// This is a "normal" variable (which includes a $), i.e. $x->$y
+			// So, we need to add a level of indirection
+			$$ = NEW(AST_variable, (NEW(AST_reflection, ($1)))); 
+		}
+	;
+
+/*
+ * Mimics reference_variable
+ */
+object_dim_list:
+	  object_dim_list '[' dim_offset ']'
+		{
+			$1->array_indices->push_back($3);
+			$$ = $1;
+		}
+	| object_dim_list '{' expr '}'
+		{
+			if($3 != NULL)
+				$3->attrs->set_true("phc.unparser.index_curlies");
+
+			$1->array_indices->push_back($3);
+			$$ = $1;
+		}
+	| variable_name
+		{
+			$$ = NEW(AST_variable, ($1)); 
+		}
+	;
+
+/* 
+ * Mimics compound_variable
+ */ 
+variable_name:
+	  IDENT
+		{ 
+			Token_variable_name* var = new Token_variable_name($1);
+			$$ = var; 
+		}
+	| '{' expr '}'
+		{ 
+			$2->attrs->set_true("phc.unparser.needs_user_curlies");
+			$$ = NEW(AST_reflection, ($2)); 
+		}
+	;
+
+/*
+ * Counts the number of dollar signs (indirections)
+ */
+simple_indirect_reference:
+	  '$'
+		{
+			$$ = new Integer(1);
+		} 
+	| simple_indirect_reference '$'
+		{
+			(*$1)++;
+			$$ = $1; 
+		}
+	;
+
+assignment_list:
+	  assignment_list ',' assignment_list_element
+		{
+			$1->list_elements->push_back($3);
+			
+			$$ = $1; 
+		}
+	| assignment_list_element
+		{
+			List<AST_list_element*>* elements = new List<AST_list_element*>;
+			elements->push_back($1);
+			
+			$$ = NEW(AST_nested_list_elements, (elements)); 
+		}
+	;
+
+/*
+ * Can be NULL for an empty list element, list($x, , $y)
+ */
+assignment_list_element:
+	  variable
+		{
+			$$ = expect_variable($1); 
+		}
+	| K_LIST '(' assignment_list ')'
+		{
+			$$ = $3;
+		}
+	| /* empty */
+		{
+			$$ = NULL;
+		}
+	;
+
+array_pair_list:
+	  /* emtpy */
+		{
+			$$ = new List<AST_array_elem*>;
+		}
+	| non_empty_array_pair_list possible_comma
+		{
+			$$ = $1;
+		}
+	;
+
+/*
+ * Code duplicated in non_empty_static_array_pair_list
+ */
+non_empty_array_pair_list:
+	  non_empty_array_pair_list ',' expr O_DOUBLEARROW expr
+		{
+			AST_array_elem* elem = NEW(AST_array_elem, ($3, false, $5));
+			$1->push_back(elem);
+
+			$$ = $1;
+		}
+	| non_empty_array_pair_list ',' expr
+		{
+			AST_array_elem* elem = NEW(AST_array_elem, (NULL, false, $3));
+			$1->push_back(elem);
+			
+			$$ = $1;
+		}
+	| expr O_DOUBLEARROW expr
+		{
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
+			AST_array_elem* elem = NEW(AST_array_elem, ($1, false, $3));
+			list->push_back(elem);
+
+			$$ = list;
+		}
+	| expr
+		{
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
+			AST_array_elem* elem = NEW(AST_array_elem, (NULL, false, $1));
+			list->push_back(elem);
+
+			$$ = list;
+		}
+	| non_empty_array_pair_list ',' expr O_DOUBLEARROW '&' w_variable
+		{
+			AST_array_elem* elem = 
+				NEW(AST_array_elem, ($3, true, $6));
+			$1->push_back(elem);
+
+			$$ = $1;
+		}
+	| non_empty_array_pair_list ',' '&' w_variable 
+		{
+			AST_array_elem* elem = 
+				NEW(AST_array_elem, (NULL, true, $4));
+			$1->push_back(elem);
+			
+			$$ = $1;
+		}
+	| expr O_DOUBLEARROW '&' w_variable 
+		{
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
+			AST_array_elem* elem = 
+				NEW(AST_array_elem, ($1, true, $4));
+			list->push_back(elem);
+
+			$$ = list;
+		}
+	| '&' w_variable
+		{
+			List<AST_array_elem*>* list = new List<AST_array_elem*>;
+			AST_array_elem* elem = 
+				NEW(AST_array_elem, (NULL, true, $2));
+			list->push_back(elem);
+
+			$$ = list;
+		}
+	;
+
+internal_functions_in_yacc:
+	 K_ISSET '(' isset_variables ')' 
+		{
+			Token_method_name* fn = NEW(Token_method_name, (new String("isset")));
+			$$ = NEW(AST_method_invocation, (NULL, fn, $3));
+		}
+	| K_EMPTY '(' variable ')'
+		{
+			$$ = NEW(AST_method_invocation, ("empty", $3));
+		}
+	| K_INCLUDE expr 
+		{
+			$$ = NEW(AST_method_invocation, ("include", $2));
+		}
+	| K_INCLUDE_ONCE expr
+		{
+			$$ = NEW(AST_method_invocation, ("include_once", $2));
+		}
+	| K_EVAL '(' expr ')'
+		{
+			$$ = NEW(AST_method_invocation, ("eval", $3));
+		}
+	| K_REQUIRE expr 
+		{
+			$$ = NEW(AST_method_invocation, ("require", $2));
+		}
+	| K_REQUIRE_ONCE expr
+		{
+			$$ = NEW(AST_method_invocation, ("require_once", $2));
+		}
+	;
+
+isset_variables:
+	  variable
+		{
+			List<AST_actual_parameter*>* params = new List<AST_actual_parameter*>;
+			
+			params->push_back(NEW(AST_actual_parameter, (false, $1)));
+			$$ = params;
+		}
+	| isset_variables ',' variable
+		{
+			$1->push_back(NEW(AST_actual_parameter, (false, $3)));
+			$$ = $1;
+		}
+	;
+
+class_constant:
+	  fully_qualified_class_name O_COLONCOLON IDENT
+		{
+			Token_constant_name* constant = new Token_constant_name($3);
+
+			$$ = NEW(AST_constant, ($1, constant));
+		}
+	;
+
+/*
+ * Specific to phc; in the original grammar, this always appeared inlined
+ * We factor it out since we need to generate the NOP if necessary
+ */
+block:
+	  '{' inner_statement_list '}'
+		{
+			// If there are any remaining comments, add them as a NOP
+			if(!context->last_comments.empty())
+				$2->push_back(NEW(AST_nop, ()));
+
+			$$ = $2;
+		}
