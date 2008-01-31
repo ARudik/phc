@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# A script to test the compilation of a particular PHP script. In particular, this copies originals to the local directory, and generates readable C which can be used to debug the assembly. Pass -g as the second argument to run the debugger.
+
+# parse command line parms
+
+PHC_ARGS=""
+DEBUG_PHC=0
+OPTIMIZE=0
+for var in $@
+do
+	if [ "-$var" = "--g" ]
+	then
+		EXEC_NAME="gdb "
+		DEBUG_PHC=1
+	elif [ "-$var" = "--V" ]
+	then
+		EXEC_NAME="valgrind "
+	elif [ "-$var" = "--O" ]
+	then
+		PHC_ARGS="$PHC_ARGS -O3"
+		OPTIMIZE=1
+	elif [ "-$var" = "--r" ]
+	then
+		PHC_ARGS="$PHC_ARGS --run plugins/tools/debug_zval.la"
+	elif [ "-$var" = "--d" ]
+	then
+		PHC_ARGS="$PHC_ARGS --run plugins/tools/demi_eval.la --r-option=true"
+	elif [ "-$var" = "--D" ]
+	then
+		PHC_ARGS="$PHC_ARGS --run plugins/tools/demi_eval.la --r-option=false"
+	elif [ "-$var" = "--v" ]
+	then
+		set -x
+	else
+		PHP_NAME=$var
+	fi
+done
+
+NAME=`basename $PHP_NAME` # remove the filename suffix
+NAME=${NAME%.php}
+OUT_NAME=$NAME.out
+EXEC_NAME="$EXEC_NAME./$OUT_NAME"
+
+
+cp $PHP_NAME $NAME.orig.php || exit 1;
+
+# generate HIR
+src/phc $PHP_NAME $PHC_ARGS --dump=hir > $NAME.hir.php
+if [[ $? != 0 ]]; then
+	if [[ $DEBUG_PHC != 0 ]]; then 
+		exec gdb --args src/phc $PHP_NAME $PHC_ARGS --dump=hir
+	fi
+	exit 1
+fi
+
+# generate uppered HIR
+src/phc $PHP_NAME $PHC_ARGS --udump=hir_as_ast > $NAME.uhir.php
+if [[ $? != 0 ]]; then
+	if [[ $DEBUG_PHC != 0 ]]; then 
+		exec gdb --args src/phc $PHP_NAME $PHC_ARGS --udump=hir_as_ast
+	fi
+	exit 1
+fi
+
+# generate C
+src/phc --generate-c $PHC_ARGS $PHP_NAME > $NAME.c
+if [[ $? != 0 ]]; then 
+	if [[ $DEBUG_PHC  != 0 ]]; then 
+		exec gdb --args src/phc --generate-c $PHC_ARGS $PHP_NAME
+	fi
+	exit 1
+fi
+indent $NAME.c
+
+# compile it, using phc's verbose output as the command. Pass an empty program so it doesnt compile twice, and if optimizing, 
+GCC_COMMAND=`echo '<?php ?>' | src/phc -v -c $PHC_ARGS -o $OUT_NAME | sed "s# - # $NAME.c #"` || exit 1
+if [[ $OPTIMIZE != 0 ]]
+then
+	GCC_COMMAND=`echo $GCC_COMMAND | sed 's#/usr/local/#/usr/local/php-opt/#g'` || exit 1
+fi
+
+$GCC_COMMAND
+if [[ $? != 0 ]]; then 
+	if [[ $DEBUG_PHC != 0 ]]; then 
+		exec gdb --args src/phc --generate-c $PHC_ARGS $PHP_NAME
+	fi
+	exit 1
+fi
+
+
+exec $EXEC_NAME
