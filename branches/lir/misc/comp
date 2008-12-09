@@ -1,0 +1,115 @@
+#!/bin/bash
+
+# A script to test the compilation of a particular PHP script. In particular, this copies originals to the local directory, and generates readable C which can be used to debug the assembly. Pass -g as the second argument to run the debugger.
+
+# parse command line parms
+
+PHC_ARGS=""
+DEBUG_PHC=0
+OPTIMIZE=0
+GDB="libtool --mode=execute gdb --args"
+VALGRIND="libtool --mode=execute valgrind"
+for var in $@
+do
+	if [ "-$var" = "--g" ]
+	then
+		EXEC_NAME="$GDB "
+		DEBUG_PHC=1
+	elif [ "-$var" = "--V" ]
+	then
+		EXEC_NAME="$VALGRIND "
+	elif [ "-$var" = "--M" ]
+	then
+		EXEC_NAME="$VALGRIND --tool=massif "
+	elif [ "-$var" = "--B" ]
+	then
+		EXEC_NAME="$VALGRIND --tool=cachegrind --branch-sim=yes "
+	elif [ "-$var" = "--O" ]
+	then
+		PHC_ARGS="$PHC_ARGS -O3"
+		OPTIMIZE=1
+	elif [ "-$var" = "--r" ]
+	then
+		PHC_ARGS="$PHC_ARGS --run plugins/tools/debug_zval.la"
+	elif [ "-$var" = "--d" ]
+	then
+		PHC_ARGS="$PHC_ARGS --run plugins/tools/demi_eval.la --r-option=true"
+	elif [ "-$var" = "--D" ]
+	then
+		PHC_ARGS="$PHC_ARGS --run plugins/tools/demi_eval.la --r-option=false"
+	elif [ "-$var" = "--v" ]
+	then
+		set -x
+	else
+		PHP_NAME=$var
+	fi
+done
+
+NAME=`basename $PHP_NAME` # remove the filename suffix
+NAME=${NAME%.php}
+OUT_NAME=$NAME.out
+EXEC_NAME="$EXEC_NAME./$OUT_NAME"
+DIRNAME=`dirname $PHP_NAME`
+PHC_ARGS="$PHC_ARGS -d include_path=.:test/subjects:$DIRNAME"
+
+cp $PHP_NAME $NAME.orig.php || exit 1;
+
+# generate HIR
+src/phc $PHP_NAME $PHC_ARGS --dump=hir > $NAME.hir.php
+if [[ $? != 0 ]]; then
+	if [[ $DEBUG_PHC != 0 ]]; then 
+		exec $GDB src/phc $PHP_NAME $PHC_ARGS --dump=hir
+	fi
+	exit 1
+fi
+
+# generate MIR
+src/phc $PHP_NAME $PHC_ARGS --dump=mir > $NAME.mir.php
+if [[ $? != 0 ]]; then
+	if [[ $DEBUG_PHC != 0 ]]; then 
+		exec $GDB src/phc $PHP_NAME $PHC_ARGS --dump=generate-c
+	fi
+	exit 1
+fi
+
+# generate uppered HIR
+#src/phc $PHP_NAME $PHC_ARGS --udump=AST-to-HIR > $NAME.uhir.php
+#if [[ $? != 0 ]]; then
+#	if [[ $DEBUG_PHC != 0 ]]; then 
+#		exec gdb --args src/phc $PHP_NAME $PHC_ARGS --udump=AST-to-HIR
+#	fi
+#	exit 1
+#fi
+
+# generate C
+src/phc --generate-c $PHC_ARGS $PHP_NAME > $NAME.c
+if [[ $? != 0 ]]; then 
+	if [[ $DEBUG_PHC  != 0 ]]; then 
+		exec $GDB src/phc --generate-c $PHC_ARGS $PHP_NAME
+	fi
+	exit 1
+fi
+indent $NAME.c
+
+# compile it, using phc's verbose output as the command. Pass an empty program so it doesnt compile twice, and if optimizing, 
+GCC_COMMAND=`echo '<?php ?>' | src/phc -v -c $PHC_ARGS -o $OUT_NAME | grep ^gcc | sed "s# - # $NAME.c #"` || exit 1
+if [[ $OPTIMIZE != 0 ]]
+then
+	if [[ -d '/usr/local/php-opt' ]]; then
+		GCC_COMMAND=`echo $GCC_COMMAND | sed 's#/usr/local/#/usr/local/php-opt/#g'` || exit 1
+	else
+		echo '-O relies on presence of /usr/local/php-opt/'
+		exit 1
+	fi
+fi
+
+$GCC_COMMAND
+if [[ $? != 0 ]]; then 
+	if [[ $DEBUG_PHC != 0 ]]; then 
+		exec $GDB src/phc --generate-c $PHC_ARGS $PHP_NAME
+	fi
+	exit 1
+fi
+
+
+exec $EXEC_NAME
