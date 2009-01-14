@@ -50,14 +50,13 @@ public:
 
 
 
-
 	void run (IR::PHP_script* in, Pass_manager* pm)
 	{
 		if (ast_visitor)
 			in->visit (ast_visitor);
 		else if (hir_visitor)
 			in->visit (hir_visitor);
-		else
+		else 
 			in->visit (mir_visitor);
 	}
 };

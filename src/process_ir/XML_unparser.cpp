@@ -40,10 +40,10 @@ protected:
 	XML_unparser_state* state;
 
 public:
-	XML_unparser(string xmlns, std::ostream& os = std::cout, bool print_attrs = true, bool convert_base_64 = true)
+	XML_unparser(string xmlns, std::ostream& os = std::cout, bool print_attrs = true)
 	: xmlns(xmlns)
 	{
-		state = new XML_unparser_state (os, print_attrs, convert_base_64);
+		state = new XML_unparser_state (os, print_attrs);
 	}
 
 	XML_unparser(string xmlns, XML_unparser_state* state)
@@ -60,9 +60,6 @@ public:
 
 	bool needs_encoding(String* str)
 	{
-		if (!state->convert_base_64)
-			return false;
-
 		String::const_iterator i;
 
 		for(i = str->begin(); i != str->end(); i++)
@@ -329,19 +326,35 @@ class AST_XML_unparser : public XML_unparser
 	AST::FOREIGN
 >
 {
-	typedef XML_unparser <	AST::PHP_script, AST::Node, AST::Visitor,
-									AST::Identifier, AST::Literal,
-									AST::NIL, AST::CAST, AST::FOREIGN> parent;
 public:
-	AST_XML_unparser(ostream& os = std::cout, bool print_attrs = true, bool convert_base_64 = true)
-	: parent ("AST", os, print_attrs, convert_base_64)
+	AST_XML_unparser(ostream& os = std::cout, bool print_attrs = true)
+	: XML_unparser<
+			AST::PHP_script,
+			AST::Node,
+			AST::Visitor,
+			AST::Identifier,
+			AST::Literal,
+			AST::NIL,
+			AST::CAST,
+			AST::FOREIGN
+		> ("AST", os, print_attrs)
 	{
 	}
 
 	AST_XML_unparser(XML_unparser_state* state)
-	: parent ("AST", state)
+	: XML_unparser<
+			AST::PHP_script,
+			AST::Node,
+			AST::Visitor,
+			AST::Identifier,
+			AST::Literal,
+			AST::NIL,
+			AST::CAST,
+			AST::FOREIGN
+		> ("AST", state)
 	{
 	}
+	
 };
 
 #include "HIR_visitor.h"
@@ -357,17 +370,32 @@ class HIR_XML_unparser : public XML_unparser
 	HIR::FOREIGN
 >
 {
-	typedef XML_unparser <	HIR::PHP_script, HIR::Node, HIR::Visitor,
-									HIR::Identifier, HIR::Literal,
-									HIR::NIL, HIR::CAST, HIR::FOREIGN> parent;
 public:
-	HIR_XML_unparser(ostream& os = std::cout, bool print_attrs = true, bool convert_base_64 = true)
-	: parent ("HIR", os, print_attrs, convert_base_64)
+	HIR_XML_unparser(ostream& os = std::cout, bool print_attrs = true)
+	: XML_unparser<
+			HIR::PHP_script,
+			HIR::Node,
+			HIR::Visitor,
+			HIR::Identifier,
+			HIR::Literal,
+			HIR::NIL,
+			HIR::CAST,
+			HIR::FOREIGN
+		> ("HIR", os, print_attrs)
 	{
 	}
 
 	HIR_XML_unparser(XML_unparser_state* state)
-	: parent ("HIR", state)
+	: XML_unparser<
+			HIR::PHP_script,
+			HIR::Node,
+			HIR::Visitor,
+			HIR::Identifier,
+			HIR::Literal,
+			HIR::NIL,
+			HIR::CAST,
+			HIR::FOREIGN
+		> ("HIR", state)
 	{
 	}
 };
@@ -385,17 +413,32 @@ class MIR_XML_unparser : public XML_unparser
 	MIR::FOREIGN
 > 
 {
-	typedef XML_unparser <	MIR::PHP_script, MIR::Node, MIR::Visitor,
-									MIR::Identifier, MIR::Literal,
-									MIR::NIL, MIR::CAST, MIR::FOREIGN> parent;
 public:
-	MIR_XML_unparser(ostream& os = std::cout, bool print_attrs = true, bool convert_base_64 = true)
-	: parent ("MIR", os, print_attrs, convert_base_64)
+	MIR_XML_unparser(ostream& os = std::cout, bool print_attrs = true)
+	: XML_unparser<
+			MIR::PHP_script,
+			MIR::Node,
+			MIR::Visitor,
+			MIR::Identifier,
+			MIR::Literal,
+			MIR::NIL,
+			MIR::CAST,
+			MIR::FOREIGN
+		> ("MIR", os, print_attrs)
 	{
 	}
 
 	MIR_XML_unparser(XML_unparser_state* state)
-	: parent ("MIR", state)
+	: XML_unparser<
+			MIR::PHP_script,
+			MIR::Node,
+			MIR::Visitor,
+			MIR::Identifier,
+			MIR::Literal,
+			MIR::NIL,
+			MIR::CAST,
+			MIR::FOREIGN
+		> ("MIR", state)
 	{
 	}
 
@@ -407,47 +450,15 @@ public:
 		maybe_encode ("value", value);
 		state->os << endl;
 	}
-};
 
-
-#include "MICG_visitor.h"
-class MICG_XML_unparser : public XML_unparser
-<
-	MICG::All, 
-	MICG::Node, 
-	MICG::Visitor,
-	// The MICG doesnt have these node, so just use the MIR versions to satisfy
-	// the type-checker. They'll be ignored at run-time, since the MICG wont
-	// have any MIR nodes.
-	MICG::Identifier,
-	MIR::Literal,
-	MIR::NIL,
-	MIR::CAST,
-	MIR::FOREIGN
-> 
-{
-	typedef XML_unparser <	MICG::All, MICG::Node, MICG::Visitor,
-									MICG::Identifier, MIR::Literal,
-									MIR::NIL, MIR::CAST, MIR::FOREIGN> parent;
-public:
-	MICG_XML_unparser(ostream& os = std::cout, bool print_attrs = true, bool convert_base_64 = true)
-	: parent ("MICG", os, print_attrs, convert_base_64)
-	{
-	}
-
-	MICG_XML_unparser(XML_unparser_state* state)
-	: parent ("MICG", state)
-	{
-	}
 };
 
 
 
 
-XML_unparser_state::XML_unparser_state (ostream& os, bool print_attrs, bool convert_base_64)
+XML_unparser_state::XML_unparser_state (ostream& os, bool print_attrs)
 : os (os)
 , print_attrs (print_attrs)
-, convert_base_64 (convert_base_64)
 , indent (0)
 {
 }
@@ -475,11 +486,6 @@ void xml_unparse (MIR::Node* in, XML_unparser_state* state)
 	in->visit (new MIR_XML_unparser (state));
 }
 
-void xml_unparse (MICG::Node* in, XML_unparser_state* state)
-{
-	in->visit (new MICG_XML_unparser (state));
-}
-
 void xml_unparse (IR::Node* in, XML_unparser_state* state)
 {
 	if (isa<AST::Node> (in))
@@ -490,35 +496,28 @@ void xml_unparse (IR::Node* in, XML_unparser_state* state)
 		xml_unparse (dyc<MIR::Node> (in), state);
 }
 
-void xml_unparse (AST::Node* in, std::ostream& os, bool print_attrs, bool convert_base_64)
+
+void xml_unparse (AST::Node* in, std::ostream& os, bool print_attrs)
 {
-  in->visit (new AST_XML_unparser (os, print_attrs, convert_base_64));
+	in->visit (new AST_XML_unparser (os, print_attrs));
 }
 
-void xml_unparse (HIR::Node* in, std::ostream& os, bool print_attrs, bool convert_base_64)
+void xml_unparse (HIR::Node* in, std::ostream& os, bool print_attrs)
 {
-  in->visit (new HIR_XML_unparser (os, print_attrs, convert_base_64));
+	in->visit (new HIR_XML_unparser (os, print_attrs));
 }
 
-void xml_unparse (MIR::Node* in, std::ostream& os, bool print_attrs, bool convert_base_64)
+void xml_unparse (MIR::Node* in, std::ostream& os, bool print_attrs)
 {
-  in->visit (new MIR_XML_unparser (os, print_attrs, convert_base_64));
+	in->visit (new MIR_XML_unparser (os, print_attrs));
 }
 
-void xml_unparse (MICG::Node* in, std::ostream& os, bool print_attrs, bool convert_base_64)
-{
-  in->visit (new MICG_XML_unparser (os, print_attrs, convert_base_64));
-}
-
-
-
-
-void xml_unparse (IR::PHP_script* in, std::ostream& os, bool print_attrs, bool convert_base_64)
+void xml_unparse (IR::PHP_script* in, std::ostream& os, bool print_attrs)
 {
 	if (isa<AST::PHP_script> (in))
-		xml_unparse (dyc<AST::Node> (in), os, print_attrs, convert_base_64);
+		xml_unparse (dyc<AST::Node> (in), os, print_attrs);
 	else if (isa<HIR::PHP_script> (in))
-		xml_unparse (dyc<HIR::Node> (in), os, print_attrs, convert_base_64);
+		xml_unparse (dyc<HIR::Node> (in), os, print_attrs);
 	else
-		xml_unparse (dyc<MIR::Node> (in), os, print_attrs, convert_base_64);
+		xml_unparse (dyc<MIR::Node> (in), os, print_attrs);
 }

@@ -10,7 +10,6 @@
 #include "AST.h"
 #include "HIR.h"
 #include "MIR.h"
-#include "MICG.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,7 +25,7 @@ struct gengetopt_args_info error_args_info;
 enum Error_type { WARNING=0, ERROR=1, INTERNAL_ERROR=2 };
 static const char* error_messages[] = { "Warning", "Error", "Internal error" };
 
-void phc_message (Error_type type, const char* message_template, String* filename, int line, int column, va_list argp)
+void phc_message (Error_type type, const char* message_template, String* filename, int line, va_list argp)
 {
 	if(filename)
 		fprintf(stderr, "%s:", filename->c_str());
@@ -34,10 +33,7 @@ void phc_message (Error_type type, const char* message_template, String* filenam
 	if(line > 0)
 		fprintf(stderr, "%d:", line);
 
-	if(column > 0)
-		fprintf(stderr, "%d:", column);
-
-	if (filename or line > 0 or column > 0)
+	if (filename or line > 0)
 		fprintf(stderr, " ");
 	
 	fprintf(stderr, "%s: ", error_messages[type]);
@@ -46,8 +42,8 @@ void phc_message (Error_type type, const char* message_template, String* filenam
 
 	// A quick note to avoid complaints
 	if(line > 0)
-		fprintf(stderr, "Note that line numbers are inaccurate, "
-			"and will be fixed in a later release\n");
+		fprintf(stderr, "Note that line numbers are inaccurate, and will be fixed"
+		" in a later release\n");
 
 	if (type != WARNING && not error_args_info.dont_fail_flag)
 		exit(-1);
@@ -57,11 +53,11 @@ void phc_message (Error_type type, const char* message_template, String* filenam
 // Explicit names and line numbers.
 #define define_explicit_message_func(NAME, TYPE)				\
 void phc_##NAME (const char* message,								\
-						String* filename, int line, int column, ...)\
+						String* filename, int line, ...)				\
 {																				\
 	va_list argp;															\
-	va_start(argp, column);												\
-	phc_message(TYPE, message, filename, line, column, argp);\
+	va_start(argp, line);												\
+	phc_message(TYPE, message, filename, line, argp);			\
 	va_end(argp);															\
 }
 
@@ -71,9 +67,9 @@ define_explicit_message_func (warning, WARNING);
 
 #define define_va_list_message_func(NAME, TYPE)					\
 void phc_##NAME (const char* message, va_list argp,			\
-						String* filename, int line, int column)	\
+						String* filename, int line)					\
 {																				\
-	phc_message(TYPE, message, filename, line, column, argp);\
+	phc_message(TYPE, message, filename, line, argp);			\
 	va_end(argp);															\
 }
 
@@ -88,7 +84,7 @@ void phc_##NAME (const char* message, ... )						\
 {																				\
 	va_list argp;															\
 	va_start(argp, message);											\
-	phc_message(TYPE, message, NULL, 0, 0, argp);				\
+	phc_message(TYPE, message, NULL, 0, argp);					\
 	va_end(argp);															\
 }
 
@@ -107,7 +103,6 @@ void phc_##NAME (const char* message, NODE* node, ...)		\
 	phc_message(TYPE, message,											\
 		node->get_filename (),											\
 		node->get_line_number (),										\
-		node->get_column_number (),									\
 		argp);																\
 	va_end(argp);															\
 }
@@ -118,14 +113,11 @@ void phc_##NAME (const char* message, NODE* node, ...)		\
 define_node_message_func (warning, WARNING, AST::Node);
 define_node_message_func (warning, WARNING, HIR::Node);
 define_node_message_func (warning, WARNING, MIR::Node);
-define_node_message_func (warning, WARNING, MICG::Node);
 
 define_node_message_func (error, ERROR, AST::Node);
 define_node_message_func (error, ERROR, HIR::Node);
 define_node_message_func (error, ERROR, MIR::Node);
-define_node_message_func (error, ERROR, MICG::Node);
 
 define_node_message_func (internal_error, INTERNAL_ERROR, AST::Node);
 define_node_message_func (internal_error, INTERNAL_ERROR, HIR::Node);
 define_node_message_func (internal_error, INTERNAL_ERROR, MIR::Node);
-define_node_message_func (internal_error, INTERNAL_ERROR, MICG::Node);
