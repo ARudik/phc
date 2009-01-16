@@ -51,12 +51,7 @@
 
 	function date_from_timestamp ($timestamp)
 	{
-		return date ("d M Y H:i:s ", $timestamp);
-	}
-
-	function minutes_from_seconds ($seconds)
-	{
-		return round ($seconds/60.0, 1))."m";
+		return date ("D, d M Y H:i:s ", $timestamp);
 	}
 
 	function get_good_color () { return " style=\"color:green; font-weight: bold\""; }
@@ -88,34 +83,23 @@
 		$branch = get_branch ($rev);
 
 		if ($has_benchmark_results)
-		{
-			// To avoid an edge case here, the results have artificial data for
-			// revision 0.
-			$data = $DB->query ("
-					SELECT	complete.revision as rev
-					FROM		complete, components
-					WHERE		rev < $rev
-								AND branch == '$branch'
-								AND components.component == 'benchmark'
-								AND components.revision == rev
-					")->fetchAll(PDO::FETCH_ASSOC);
-		}
+			$bench_sql = "AND		benchmark != -1";
 		else
-		{
-			$data = $DB->query ("
-					SELECT	revision as rev
-					FROM		complete
-					WHERE		rev < $rev
-					AND		branch == '$branch'
-					")->fetchAll(PDO::FETCH_ASSOC);
-		}
+			$bench_sql = "";
+
+		$data = $DB->query ("
+				SELECT	revision
+				FROM		complete
+				WHERE		revision < $rev
+				AND		branch == '$branch'
+				$bench_sql")->fetchAll(PDO::FETCH_ASSOC);
 
 		rsort ($data);
 
 		if ($data === false)
 			return 0;
 
-		return $data[0]["rev"];
+		return $data[0]["revision"];
 
 
 	}
@@ -130,7 +114,7 @@
 				")->fetchAll(PDO::FETCH_ASSOC);
 
 		if (empty ($data[0]["branch"]))
-			die ("Unknown branch");
+			die ("bad old data");
 
 		return $data[0]["branch"];
 	}

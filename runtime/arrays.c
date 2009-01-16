@@ -22,7 +22,7 @@ extract_ht_ex (zval * arr TSRMLS_DC)
 static HashTable *
 extract_ht (zval ** p_var TSRMLS_DC)
 {
-  sep_copy_on_write (p_var);
+  sep_copy_on_write_ex (p_var);
 
   return extract_ht_ex (*p_var TSRMLS_CC);
 }
@@ -244,69 +244,6 @@ get_ht_entry (zval ** p_var, zval * ind TSRMLS_DC)
 }
 
 
-// Like extract_ht_ex, but for objects 
-static HashTable *
-extract_field_ex (zval * obj TSRMLS_DC)
-{
-  // TODO: this likely should be inlined somewhere.
-  assert (!in_copy_on_write (obj));
-  if (Z_TYPE_P (obj) == IS_NULL)
-    {
-      assert (0);
-      // TODO: implement initialization
-    }
-  else if (Z_TYPE_P (obj) != IS_OBJECT)
-    {
-      // TODO: test if this is the right error message
-      php_error_docref (NULL TSRMLS_CC, E_WARNING,
-			"Cannot use a scalar value as an object");
-      // TODO: implement initialization
-      assert (0);
-    }
-  return Z_OBJPROP_P (obj);
-}
-
-// Like extract_ht, but for objects
-static HashTable *
-extract_field (zval ** p_var TSRMLS_DC)
-{
-  sep_copy_on_write (p_var);
-
-  return extract_field_ex (*p_var TSRMLS_CC);
-}
-
-// Like get_ht_entry, but for objects
-static zval **
-get_field (zval ** p_var, char *ind TSRMLS_DC)
-{
-  if (Z_TYPE_P (*p_var) != IS_OBJECT)
-    {
-      // TODO: implement initialization
-      assert (0);
-    }
-
-  HashTable *ht = extract_field (p_var TSRMLS_CC);
-
-  zval **data;
-  if (zend_symtable_find (ht, ind, strlen (ind) + 1, (void **) &data) ==
-      SUCCESS)
-    {
-      assert (data != NULL);
-      return data;
-    }
-
-  // If we dont find it, put EG (uninitialized_zval_ptr) into the
-  // hashtable, and return a pointer to its container.
-  EG (uninitialized_zval_ptr)->refcount++;
-  zend_symtable_update (ht, ind, strlen (ind) + 1,
-			&EG (uninitialized_zval_ptr), sizeof (zval *),
-			(void **) &data);
-
-  assert (data != NULL);
-
-  return data;
-}
-
 void
 read_array (zval ** result, zval * array, zval * ind TSRMLS_DC)
 {
@@ -344,8 +281,7 @@ check_array_type (zval ** p_var TSRMLS_DC)
       if (!PZVAL_IS_REF (*p_var))
 	{
 	  zval_ptr_dtor (p_var);
-	  ALLOC_INIT_ZVAL (*p_var);
-	}
+	ALLOC_INIT_ZVAL (*p_var)}
       else
 	// Refs are just replaced
 	zval_dtor (*p_var);
@@ -360,12 +296,6 @@ check_array_type (zval ** p_var TSRMLS_DC)
     }
 }
 
-/* If its not an array, convert it into an object. */
-static void
-check_object_type (zval ** p_var TSRMLS_DC)
-{
-  // TODO: implement
-}
 
 /* Push EG (uninitialized_zval_ptr) and return a pointer into the ht
  * for it */

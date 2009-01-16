@@ -15,16 +15,16 @@ void shutdown_xml ();
 
 #ifdef HAVE_XERCES
 
-#include <boost/lexical_cast.hpp>
+#include <xercesc/sax/InputSource.hpp>
+#include <xercesc/sax2/SAX2XMLReader.hpp>
+#include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <xercesc/sax2/DefaultHandler.hpp>
+#include <xercesc/sax2/Attributes.hpp>
+#include <xercesc/util/XMLString.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/framework/StdInInputSource.hpp>
-#include <xercesc/sax2/Attributes.hpp>
-#include <xercesc/sax2/DefaultHandler.hpp>
-#include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
-#include <xercesc/sax/InputSource.hpp>
-#include <xercesc/util/XMLString.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "lib/base64.h"
 #include "lib/error.h"
@@ -387,7 +387,7 @@ public:
 		}
 		else if(!strcmp(name, "integer"))
 		{
-			node = new ::Integer(strtol(buffer.c_str(), 0, 0));
+			node = new Integer(strtol(buffer.c_str(), 0, 0));
 		}
 		else if(!strcmp(name, "string_list"))
 		{
@@ -483,7 +483,7 @@ public:
 	void error(const SAXParseException& exception)
 	{
 		char* message = XMLString::transcode(exception.getMessage());
-		::phc_warning("XML error: %s", NULL, exception.getLineNumber(), exception.getColumnNumber(), message);
+		::phc_warning("XML error: %s", NULL, exception.getLineNumber(), message);
 		XMLString::release(&message);
 		no_errors = false;
 	}
@@ -491,7 +491,7 @@ public:
 	void fatalError(const SAXParseException& exception)
 	{	
 		char* message = XMLString::transcode(exception.getMessage());
-		::phc_warning("XML error: %s", NULL, exception.getLineNumber(), exception.getColumnNumber(), message);
+		::phc_warning("XML error: %s", NULL, exception.getLineNumber(), message);
 		XMLString::release(&message);
 		no_errors = false;
 	}

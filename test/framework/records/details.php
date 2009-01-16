@@ -18,9 +18,9 @@
 		print "	</td></tr>\n";
 		print "	<tr><td>\n";
 		print "		<table class=layout>";
-		print "		<tr><td valign=top>\n";
+		print "		<tr><td>\n";
 		print_test_details ($rev, $old_rev);
-		print "		</td><td valign=top>\n";
+		print "		</td><td>\n";
 		print_benchmark_details ($rev, $old_bench_rev);
 		print "		</td></tr>\n";
 		print "		</table>";
@@ -47,12 +47,10 @@
 		print "		<th>Revision:					</th><td>"	.$complete_data["revision"].	"</td>";
 		print "		<th>Branch:						</th><td>"	.$complete_data["branch"].		"</td>";
 		print "	</tr><tr>\n";
-		// TODO
-		print "		<th>Test duration:			</th><td>"	.minutes_from_seconds ($complete_data["time"])."</td>";
+		print "		<th>Test duration:			</th><td>"	.(round ($complete_data["time"]/60.0, 1))."m	</td>";
 		print "		<th>Author:						</th><td>"	.$complete_data["author"].		"</td>";
 		print "	</tr><tr>\n";
-		// TODO
-		print "		<th><a href=\"graphs.php?rev=$rev\">Benchmark</a>:</th><td>"	.$benchmark_data["result"]."</td>";
+		print "		<th>" . maybe_link ($rev, $old_bench_rev, "benchmark.log", "Benchmark").":</th><td>"	.$complete_data["benchmark"]."</td>";
 		print "		<th>Commit date:				</th><td>"	.$complete_data["commit_date"].	"	</td>";
 		print "	</tr>\n";
 		print "</table>\n";
@@ -65,9 +63,9 @@
 		print "		<th>". maybe_link ($rev, $old_rev, "configure.log", "Configure Log") ."</th>";
 		print "	</tr><tr>\n";
 		print "		<th>". maybe_link ($rev, $old_rev, "make.log", "Build Log") ."</th>";
-		print "		<th>". maybe_link ($rev, $old_rev, "test.log", "Test Log") ."</th>";
+		print "		<th>". maybe_link ($rev, $old_rev, "install.log", "Install Log") ."</th>";
 		print "	</tr><tr>\n";
-		print "		<th>" . maybe_link ($rev, $old_bench_rev, "benchmark.log", "Benchmark log")."</th>";
+		print "		<th>". maybe_link ($rev, $old_rev, "test.log", "Test Log") ."</th>";
 		print "		<th colspan=2><a href=\"http://code.google.com/p/phc/source/detail?r=$rev\">Commit log</a></th>";
 		print "	</tr></table>";
 
@@ -165,22 +163,20 @@
 
 		# fetch the current revisions data
 		$test_data = $DB->query ("
-				SELECT	revision, name, metric, result
+				SELECT	revision, metric, result
 				FROM		benchmarks
 				WHERE		revision == $rev
 				")->fetchAll(PDO::FETCH_ASSOC);
 
 		print "<table class=info>";
-		print "<tr>"
-			. "<th>Benchmark</th>"
-			. "<th>Metric</th>"
-			. "<th>Result (+/- vs "
+		print "<tr><th>Metric</th><th>"
+			. "Result (+/- vs "
 			. "<a href='details.php?rev=$old_rev'>$old_rev</a>"
-			. ")</th>";
+			. ")</th><th>";
 
 		# fetch the previous revisions data, for comparison
 		$old_test_data = $DB->query ("
-				SELECT	revision, name, metric, result
+				SELECT	revision, metric, result
 				FROM		benchmarks
 				WHERE		revision == $old_rev
 				")->fetchAll(PDO::FETCH_ASSOC);

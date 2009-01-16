@@ -59,9 +59,6 @@ struct algorithm_selector<true>
 	template<typename T> 
 	static T clone (T object)
 	{ 
-		if (object == NULL)
-			return NULL;
-
 		return object->clone (); 
 	} 
 };
@@ -102,15 +99,6 @@ public:
 		push_back(elem3);
 	}
 
-	// We're probably pushing it at 4...
-	List(_Tp elem1, _Tp elem2, _Tp elem3, _Tp elem4) : std::list<_Tp, _Alloc>()
-	{
-		push_back(elem1);
-		push_back(elem2);
-		push_back(elem3);
-		push_back(elem4);
-	}
-
 public:
 	using std::list<_Tp, _Alloc>::begin;
 	using std::list<_Tp, _Alloc>::end;
@@ -118,11 +106,6 @@ public:
 	void push_back_all(List* other) 
 	{
 		insert(end(), other->begin(), other->end());
-	}
-	
-	void push_front_all(List* other) 
-	{
-		insert(begin(), other->begin(), other->end());
 	}
 
 public:
@@ -163,7 +146,7 @@ public:
 	}
 };
 
-template <class Result_type, class List_type>
+template <class List_type, class Result_type>
 List<Result_type*>* rewrap_list (List<List_type*>* nodes)
 {
 	List<Result_type*>* result = new List<Result_type*>;
@@ -173,14 +156,5 @@ List<Result_type*>* rewrap_list (List<List_type*>* nodes)
 	}
 	return result;
 }
-
-typedef List<Object*> Object_list;
-class Boolean;
-typedef List<Boolean*> Boolean_list;
-class Integer;
-typedef List<Integer*> Integer_list;
-class String;
-typedef List<String*> String_list;
-
 
 #endif // PHC_LIST_H

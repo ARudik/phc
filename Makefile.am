@@ -40,7 +40,7 @@ src_phc_LDADD = @gc_lib@ $(LIBLTDL) libphc.la
 bin_SCRIPTS = src/phc_compile_plugin
 libexec_SCRIPTS = libtool
 # pkgdata_DATA = phc-1.0.xsd
-pkgdata_DATA =
+pkgdata_DATA =									\
 	runtime/arrays.c							\
 	runtime/builtin_functions.c			\
 	runtime/debug.c							\
@@ -94,14 +94,8 @@ libphc_la_SOURCES= 											\
 	src/codegen/Generate_C_annotations.h				\
 	src/codegen/Generate_C.cpp								\
 	src/codegen/Generate_C.h								\
-	src/codegen/Generate_C_pass.cpp						\
-	src/codegen/Generate_C_pass.h							\
 	src/codegen/Lift_functions_and_classes.cpp		\
 	src/codegen/Lift_functions_and_classes.h			\
-	src/codegen/MICG_checker.cpp							\
-	src/codegen/MICG_checker.h								\
-	src/codegen/MICG_gen.cpp								\
-	src/codegen/MICG_gen.h									\
 	src/embed/embed.cpp										\
 	src/embed/embed.h											\
 	src/embed/util.cpp										\
@@ -130,16 +124,6 @@ libphc_la_SOURCES= 											\
 	src/generated/HIR_visitor.h							\
 	src/generated/keywords.h								\
 	src/generated/lex.yy.cc									\
-	src/generated/MICG.cpp									\
-	src/generated/MICG_factory.cpp						\
-	src/generated/MICG_factory.h							\
-	src/generated/MICG_fold.h								\
-	src/generated/MICG.h										\
-	src/generated/MICG_transform.cpp						\
-	src/generated/MICG_transform.h						\
-	src/generated/MICG_user_defined.h					\
-	src/generated/MICG_visitor.cpp						\
-	src/generated/MICG_visitor.h							\
 	src/generated/MIR.cpp									\
 	src/generated/MIR_factory.cpp							\
 	src/generated/MIR_factory.h							\
@@ -194,8 +178,6 @@ libphc_la_SOURCES= 											\
 	src/optimize/Prune_symbol_table.h					\
 	src/optimize/Use_def_counter.cpp 					\
 	src/optimize/Use_def_counter.h						\
-	src/parsing/MICG_parser.cpp							\
-	src/parsing/MICG_parser.h								\
 	src/parsing/Parse_buffer.cpp							\
 	src/parsing/Parse_buffer.h								\
 	src/parsing/parse.cpp									\
@@ -248,8 +230,6 @@ libphc_la_SOURCES= 											\
 	src/process_ir/IR.h										\
 	src/process_ir/PHP_unparser.cpp						\
 	src/process_ir/PHP_unparser.h							\
-	src/process_ir/stats.cpp								\
-	src/process_ir/stats.h									\
 	src/process_ir/XML_unparser.cpp						\
 	src/process_ir/XML_unparser.h							\
 	src/process_mir/Alias_uppering.cpp					\
@@ -291,16 +271,6 @@ BUILT_SOURCES = 												\
 	src/generated/HIR_visitor.h							\
 	src/generated/keywords.h								\
 	src/generated/lex.yy.cc									\
-	src/generated/MICG.cpp									\
-	src/generated/MICG_factory.cpp						\
-	src/generated/MICG_factory.h							\
-	src/generated/MICG_fold.h								\
-	src/generated/MICG.h										\
-	src/generated/MICG_transform.cpp						\
-	src/generated/MICG_transform.h						\
-	src/generated/MICG_user_defined.h					\
-	src/generated/MICG_visitor.cpp						\
-	src/generated/MICG_visitor.h							\
 	src/generated/MIR.cpp									\
 	src/generated/MIR_factory.cpp							\
 	src/generated/MIR_factory.h							\
@@ -548,21 +518,6 @@ src/generated/MIR_visitor.h:			src/generated/MIR.h
 
 src/generated/MIR.h: src/generated_src/mir.tea @maketea@
 	@maketea@ src/generated_src/mir.tea
-
-src/generated/MICG.cpp: 				src/generated/MICG.h
-src/generated/MICG_factory.cpp:		src/generated/MICG.h
-src/generated/MICG_factory.h:			src/generated/MICG.h
-src/generated/MICG_fold.h:				src/generated/MICG.h
-src/generated/MICG_transform.cpp:	src/generated/MICG.h
-src/generated/MICG_transform.h:		src/generated/MICG.h
-src/generated/MICG_user_defined.h:	src/generated/MICG.h
-src/generated/MICG_visitor.cpp:		src/generated/MICG.h
-src/generated/MICG_visitor.h:			src/generated/MICG.h
-#src/generated/schema.xsd:				src/generated/MICG.h
-
-src/generated/MICG.h: src/generated_src/micg.tea @maketea@
-	@maketea@ src/generated_src/micg.tea
-
 
 src/generated/keywords.h: src/generated_src/php.gperf 
 	@gperf@ --language=ANSI-C --includes --readonly-tables --struct-type --ignore-case --output-file=src/generated/keywords.h src/generated_src/php.gperf

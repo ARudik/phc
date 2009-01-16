@@ -97,11 +97,10 @@ void Copy_propagation::pre_assign_var (Assign_var* in, Statement_list* out)
 	}
 
 	// consider for immediate removal
-	if (replaceable.has (srhs)
+	if (replaceable.find (srhs) != replaceable.end ()
 			&&	rhs->attrs->get_integer ("phc.use_defs.use_count")->value () == 1
 			&&	rhs->attrs->get_integer ("phc.use_defs.def_count")->value () == 1)
 	{
-		CTS ("copy propagated");
 		DEBUG ("rhs is replacable");
 		replaceable [srhs]->lhs = lhs->clone ();
 

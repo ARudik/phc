@@ -1,18 +1,18 @@
 #include "MIR_factory.h"
 
 namespace MIR{
-/* If type_id corresponds to an AST node, the elements in args must */
-/* correspond to the children of the node. */
-/*  */
-/* If type_id corresponds to a list (of the form "..._list"), */
-/* the elements of arg must be of the same type as the elements */
-/* in the list, and all elements in args are added to the list. */
-/*  */
-/* If type_id corresponds to a token (terminal symbol), args must */
-/* contain a single node of type String. Terminal symbols */
-/* with non-default values are not supported. */
-/*  */
-/* If the node type is not recognized, NULL is returned. */
+// If type_id corresponds to an AST node, the elements in args must
+// correspond to the children of the node.
+// 
+// If type_id corresponds to a list (of the form "..._list"),
+// the elements of arg must be of the same type as the elements
+// in the list, and all elements in args are added to the list.
+// 
+// If type_id corresponds to a token (terminal symbol), args must
+// contain a single node of type String. Terminal symbols
+// with non-default values are not supported.
+// 
+// If the node type is not recognized, NULL is returned.
 Object* Node_factory::create(char const* type_id, List<Object*>* args)
 {
     List<Object*>::const_iterator i = args->begin();
@@ -183,11 +183,11 @@ Object* Node_factory::create(char const* type_id, List<Object*>* args)
     if(!strcmp(type_id, "Assign_field"))
     {
     	Target* target = dynamic_cast<Target*>(*i++);
-    	Field_name* field_name = dynamic_cast<Field_name*>(*i++);
+    	Field_name* lhs = dynamic_cast<Field_name*>(*i++);
     	bool is_ref = dynamic_cast<Boolean*>(*i++)->value();
     	Rvalue* rhs = dynamic_cast<Rvalue*>(*i++);
     	assert(i == args->end());
-    	return new Assign_field(target, field_name, is_ref, rhs);
+    	return new Assign_field(target, lhs, is_ref, rhs);
     }
     if(!strcmp(type_id, "Assign_array"))
     {

@@ -27,15 +27,6 @@ public:
 		mir_transform = NULL;
 	}
 
-	Transform_pass (HIR::Transform* t, String* name, String* description)
-	{
-		this->name = name;
-		this->description = description;
-		ast_transform = NULL;
-		hir_transform = t;
-		mir_transform = NULL;
-	}
-
 	Transform_pass (MIR::Transform* t, String* name, String* description)
 	{
 		this->name = name;
@@ -45,6 +36,14 @@ public:
 		mir_transform = t;
 	}
 
+	Transform_pass (HIR::Transform* t, String* name, String* description)
+	{
+		this->name = name;
+		this->description = description;
+		ast_transform = NULL;
+		hir_transform = t;
+		mir_transform = NULL;
+	}
 
 	void run (IR::PHP_script* in, Pass_manager* pm)
 	{

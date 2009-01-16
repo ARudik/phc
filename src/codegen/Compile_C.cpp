@@ -18,7 +18,7 @@
 #include <lib/error.h>
 #include <lib/Vector.h>
 
-#include "Compile_C.h"
+#include "codegen/Compile_C.h"
 #include "pass_manager/Pass_manager.h"
 
 using namespace std;

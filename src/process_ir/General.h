@@ -12,7 +12,6 @@
 
 
 #include "debug.h"
-#include "stats.h"
 #include "Foreach.h"
 #include "fresh.h"
 #include "parsing/Parse_buffer.h"

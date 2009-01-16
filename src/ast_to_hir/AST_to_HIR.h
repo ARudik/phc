@@ -463,6 +463,8 @@ public:
 		}
 
 		// all cases should be handled
+		debug (orig);
+		xadebug (orig);
 		assert (0);
 	}
 
