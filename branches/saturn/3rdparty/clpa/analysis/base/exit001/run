@@ -1,2 +1,0 @@
-cilcc test.c
-clpa --quiet run.clp $*

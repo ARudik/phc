@@ -1,3 +1,0 @@
-rm *.dot *.db *.dot 2> /dev/null
-cilcc test.c
-clpa --quiet run.clp

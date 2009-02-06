@@ -1,2 +1,0 @@
-rm *.db 2> /dev/null
-clpa --quiet --debug parse_warnings run.clp $*
