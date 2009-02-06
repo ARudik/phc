@@ -1,9 +1,5 @@
 <?php
 
-//	error_reporting (E_ALL);
-	$ABBREVIATIONS = array ("branches/dataflow" => "df", "paul.biggar" => "pb", "edskodevries" => "edv");
-
-
 	include ("common.php");
 
 	function run_main ()
@@ -19,10 +15,8 @@
 			"skip",
 			"timeout",
 			"benchmark",
-			"time_taken",
 			"test_date",
-			"revision_used",
-			"failed",
+			"test_revision",
 			"redo");
 
 		foreach ($order as $header)
@@ -30,10 +24,11 @@
 			$headers[$header] = ucfirst (str_replace ("_", " ", $header));
 		}
 		$headers["revision"] = "Rev";
-		$headers["revision_used"] = "Test rev";
-		$headers["time_taken"] = "Time";
+		$headers["test_revision"] = "Test rev";
 		$headers["benchmark"] = "Bench";
 		$headers["timeout"] = "T/O";
+
+		$abbreviations = array ("branches/dataflow" => "df", "paul.biggar" => "pb", "edskodevries" => "edv");
 
 
 		print "<table class=info>\n";
@@ -43,10 +38,25 @@
 
 		// Completed tests
 		$query = $DB->query ("
-				SELECT	revision, branch, author
+				SELECT	revision, author, test_date, test_revision, benchmark, branch, failed, redo
 				FROM		complete
 				");
 		$completes = $query->fetchAll(PDO::FETCH_ASSOC);
+
+		foreach ($completes as $complete)
+		{
+			$rev = (int)$complete["revision"];
+			foreach ($complete as $key => $column)
+			{
+				// abbreviate long words
+				if (isset ($abbreviations[$column]))
+					$column = $abbreviations[$column];
+
+
+				$revisions[$rev][$key] = $column;
+			}
+		}
+
 
 		// Test results
 		$query = $DB->query ("
@@ -56,48 +66,12 @@
 				");
 		$tests = $query->fetchAll(PDO::FETCH_ASSOC);
 
-		// Benchmark results
-		$query = $DB->query ("
-				SELECT	revision, result as benchmark
-				FROM		benchmarks
-				WHERE		metric = 'All'
-				");
-		$benchmarks = $query->fetchAll(PDO::FETCH_ASSOC);
-
-		// Compile meta-results
-		$query = $DB->query ("
-				SELECT	revision, component, time_taken, test_date, revision_used, failed, redo
-				FROM		components
-				WHERE		component == 'compile'
-				");
-
-		$compile_meta = $query->fetchAll(PDO::FETCH_ASSOC);
-
-		// Test meta-results
-		$query = $DB->query ("
-				SELECT	revision, component, time_taken, test_date, revision_used, failed, redo
-				FROM		components
-				WHERE		component == 'test'
-				");
-		$test_meta = $query->fetchAll(PDO::FETCH_ASSOC);
-
-		// Bench meta-results
-		$query = $DB->query ("
-				SELECT	revision, component, time_taken, test_date, revision_used, failed, redo
-				FROM		components
-				WHERE		component == 'benchmark'
-				");
-		$bench_meta = $query->fetchAll(PDO::FETCH_ASSOC);
-
-		$query = $DB->query ("SELECT revision FROM running");
-		$running = $query->fetchAll(PDO::FETCH_ASSOC);
-		$running = $running[0]["revision"];
-
-
-
-
-		$revisions = array_reduce (array ($completes, $tests, $benchmarks, $compile_meta, $test_meta, $bench_meta), "merge_results");
-
+		foreach ($tests as $test)
+		{
+			$rev = (int)$test["revision"];
+			foreach ($test as $key => $column)
+				$revisions[$rev][$key] = $column;
+		}
 
 
 		ksort ($revisions);
@@ -110,8 +84,12 @@
 
 			$data["difference"] = add_difference ("pass", $data, $revisions[$prev[$branch]]);
 			add_difference ("fail", $data, $revisions[$prev[$branch]]);
+//			add_difference ("skip", $data, $revisions[$prev[$branch]]);
+//			add_difference ("timeout", $data, $revisions[$prev[$branch]]);
 
 			$prev[$branch] = $rev;
+			$data["test_date"] = date_from_timestamp ($data["test_date"]);
+			unset ($data["failed"]);
 		}
 
 		$revisions = array_reverse ($revisions, true);
@@ -130,79 +108,17 @@
 				$color = get_bad_color ();
 			unset ($data["difference"]);
 
-			if ($rev == $running)
-				$color = get_running_color ();
-
-
 			# add a link to revision
 			$data["revision"] = "<a href=\"details.php?rev=$rev\">$rev</a>";
-			if (isset ($data["test_date"]))
-				$data["test_date"] = date_from_timestamp ($data["test_date"]);
-			if (isset ($data["time_taken"]))
-				$data["time_taken"] = minutes_from_seconds($data["time_taken"]);
 
 			foreach ($order as $header)
 			{
 				$value = $data[$header];
-				print "<td $color>$value</td>\n";
+				print "<td$color>$value</td>\n";
 			}
 			print "<a/></tr>\n";
 		}
+
 	}
-
-	function merge_results ($results, $new_results)
-	{
-		global $ABBREVIATIONS;
-
-		foreach ($new_results as $new_result)
-		{
-			$rev = (int)$new_result["revision"];
-			foreach ($new_result as $key => $value)
-			{
-				// abbreviate long words
-				if (isset ($ABBREVIATIONS[$value]))
-					$value = $ABBREVIATIONS[$value];
-
-				// Result processing (hard to do this one elsewhere)
-				if ($key == "failed" || $key == "redo")
-				{
-					if ($value  == 1)
-						$value = strtoupper ($new_result["component"][0]);
-					else
-						$value = "";
-				}
-
-
-
-				// Use the larger of the two, if set.
-				if (isset ($results[$rev][$key]))
-				{
-					$old_value =& $results[$rev][$key];
-
-					if ($key == "revision")
-						; // do nothing
-					else if ($key == "time_taken")
-						$value = $old_value + $value;
-					else if ($key == "revision_used")
-						$value = "$old_value, $value";
-					else if ($key == "failed")
-						$value = "$old_value$value";
-					else if ($key == "test_date")
-						$value = max ($old_value, $value);
-					else if ($key == "redo")
-						$value = "$old_value$value";
-					else if ($key == "component")
-						; // dont care
-					else
-						die ("Overwriting $rev, $key ($old_value) with $value");
-				}
-
-				$results[$rev][$key] = $value;
-			}
-		}
-		return $results;
-	}
-
-
 ?>
 

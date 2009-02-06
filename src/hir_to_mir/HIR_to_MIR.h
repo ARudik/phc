@@ -201,9 +201,6 @@ public:
 		MIR::Attribute* result;
 		result = new MIR::Attribute(attr_mod, var);
 		copy_attrs (result, orig);
-		// Attributes *must* have default values
-		if(result->var->default_value == NULL)
-			result->var->default_value = new MIR::NIL();
 		return result;
 	}
 
@@ -570,7 +567,7 @@ public:
 		MIR::New* result;
 		result = new MIR::New(
 			class_name, 
-			rewrap_list<MIR::Actual_parameter> (actual_parameters));
+			rewrap_list<MIR::Node, MIR::Actual_parameter> (actual_parameters));
 		copy_attrs (result, orig);
 		return result;
 	}

@@ -10,7 +10,6 @@
 #define PHC_AST_LOWER_EXPR_H
 
 #include "AST_transform.h"
-#include "lib/Stack.h"
 
 namespace AST
 {
@@ -32,8 +31,9 @@ public:
 	// Switch is already lowered
 	// Do is already lowered
 	// For is already lowered
-	// Try blocks don't have expressions so don't need special treatment
-	// Static declarations cannot be lowered
+
+	// TODO: We handle most Statement types here. What about try, throw and
+	// static_declaration?
 
 	void post_eval_expr (Eval_expr* in, Statement_list* out);
 	void post_return (Return* in, Statement_list* out);
@@ -42,21 +42,11 @@ public:
 	void post_break (Break* in, Statement_list* out);
 	void post_throw (Throw* in, Statement_list* out);
 
-// Common code generation patterns
 protected:
 	Expr* eval(Expr* in);
 	void eval(Expr* in, Variable* temp);
-
-// Define a number of hooks that can be redefined by inheriting classes
-// to tweak the behaviour of the transformation
-protected:
-	virtual void push_back_pieces(Statement* in, Statement_list* out);
-	virtual void backup_pieces();
-	virtual void restore_pieces();
-
-protected:
+	void push_back_pieces(Statement* in, Statement_list* out);
 	Statement_list* pieces;
-	Stack<Statement_list*> pieces_backup;
 };
 }
 

@@ -31,6 +31,31 @@ void Node::assert_mixin_valid()
 	}
 }
 
+bool Node::is_mixin_equal(Node* in)
+{
+    {
+		// Compare line number and filename
+		// (We can't compare the entire attrs map because Object cannot
+		// necessarily be compared for equality)
+
+		if(get_line_number() != in->get_line_number())
+			return false;
+
+		if(get_filename() == NULL)
+		{
+			if(in->get_filename() != NULL)
+				return false;
+		}
+		else
+		{
+			if(*get_filename() != *in->get_filename())
+				return false;
+		}
+
+		return true;
+	}
+}
+
 PHP_script::PHP_script(Statement_list* statements)
 {
     this->statements = statements;
@@ -51,7 +76,6 @@ void PHP_script::transform_children(Transform* transform)
     transform->children_php_script(this);
 }
 
-const int PHP_script::ID;
 int PHP_script::classid()
 {
     return ID;
@@ -120,6 +144,7 @@ bool PHP_script::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -224,7 +249,6 @@ void Class_mod::transform_children(Transform* transform)
     transform->children_class_mod(this);
 }
 
-const int Class_mod::ID;
 int Class_mod::classid()
 {
     return ID;
@@ -256,6 +280,7 @@ bool Class_mod::equals(Node* in)
     if(this->is_final != that->is_final)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -318,7 +343,6 @@ void Signature::transform_children(Transform* transform)
     transform->children_signature(this);
 }
 
-const int Signature::ID;
 int Signature::classid()
 {
     return ID;
@@ -423,6 +447,7 @@ bool Signature::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -556,7 +581,6 @@ void Method_mod::transform_children(Transform* transform)
     transform->children_method_mod(this);
 }
 
-const int Method_mod::ID;
 int Method_mod::classid()
 {
     return ID;
@@ -604,6 +628,7 @@ bool Method_mod::equals(Node* in)
     if(this->is_final != that->is_final)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -730,7 +755,6 @@ void Formal_parameter::transform_children(Transform* transform)
     transform->children_formal_parameter(this);
 }
 
-const int Formal_parameter::ID;
 int Formal_parameter::classid()
 {
     return ID;
@@ -790,6 +814,7 @@ bool Formal_parameter::equals(Node* in)
     else if(!this->var->equals(that->var))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -883,7 +908,6 @@ void Type::transform_children(Transform* transform)
     transform->children_type(this);
 }
 
-const int Type::ID;
 int Type::classid()
 {
     return ID;
@@ -923,6 +947,7 @@ bool Type::equals(Node* in)
     else if(!this->class_name->equals(that->class_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -983,7 +1008,6 @@ void Attr_mod::transform_children(Transform* transform)
     transform->children_attr_mod(this);
 }
 
-const int Attr_mod::ID;
 int Attr_mod::classid()
 {
     return ID;
@@ -1027,6 +1051,7 @@ bool Attr_mod::equals(Node* in)
     if(this->is_const != that->is_const)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -1077,7 +1102,7 @@ Attr_mod::Attr_mod(Method_mod* mm)
 {
     {
 		if(mm->is_final)
-			phc_error("The final modifier is only allowed for methods", mm);
+			phc_error("The final modifier is only allowed for methods", mm->get_filename(), mm->get_line_number());
 
 		this->is_public = mm->is_public;
 		this->is_protected = mm->is_protected;
@@ -1144,7 +1169,6 @@ void Name_with_default::transform_children(Transform* transform)
     transform->children_name_with_default(this);
 }
 
-const int Name_with_default::ID;
 int Name_with_default::classid()
 {
     return ID;
@@ -1200,6 +1224,7 @@ bool Name_with_default::equals(Node* in)
     else if(!this->default_value->equals(that->default_value))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -1277,7 +1302,6 @@ void Catch::transform_children(Transform* transform)
     transform->children_catch(this);
 }
 
-const int Catch::ID;
 int Catch::classid()
 {
     return ID;
@@ -1378,6 +1402,7 @@ bool Catch::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -1514,7 +1539,6 @@ void Actual_parameter::transform_children(Transform* transform)
     transform->children_actual_parameter(this);
 }
 
-const int Actual_parameter::ID;
 int Actual_parameter::classid()
 {
     return ID;
@@ -1558,6 +1582,7 @@ bool Actual_parameter::equals(Node* in)
     else if(!this->rvalue->equals(that->rvalue))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -1641,7 +1666,6 @@ void Static_array_elem::transform_children(Transform* transform)
     transform->children_static_array_elem(this);
 }
 
-const int Static_array_elem::ID;
 int Static_array_elem::classid()
 {
     return ID;
@@ -1701,6 +1725,7 @@ bool Static_array_elem::equals(Node* in)
     else if(!this->val->equals(that->val))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -1783,7 +1808,6 @@ void PARAM_INDEX::transform_children(Transform* transform)
     transform->children_param_index(this);
 }
 
-const int PARAM_INDEX::ID;
 int PARAM_INDEX::classid()
 {
     return ID;
@@ -1818,6 +1842,7 @@ bool PARAM_INDEX::equals(Node* in)
     if(!equals_value(that))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -1899,7 +1924,6 @@ void Class_def::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Class_def::ID;
 int Class_def::classid()
 {
     return ID;
@@ -2061,6 +2085,7 @@ bool Class_def::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -2251,7 +2276,7 @@ void Class_def::add_member(Member* member)
 	}
 }
 
-/*  Returns NULL if the method could not be found */
+//  Returns NULL if the method could not be found
 Method* Class_def::get_method(const char* name)
 {
     {
@@ -2291,7 +2316,6 @@ void Interface_def::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Interface_def::ID;
 int Interface_def::classid()
 {
     return ID;
@@ -2421,6 +2445,7 @@ bool Interface_def::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -2581,7 +2606,6 @@ void Method::transform_children(Transform* transform)
     transform->children_member(this);
 }
 
-const int Method::ID;
 int Method::classid()
 {
     return ID;
@@ -2666,6 +2690,7 @@ bool Method::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -2778,7 +2803,6 @@ void Attribute::transform_children(Transform* transform)
     transform->children_member(this);
 }
 
-const int Attribute::ID;
 int Attribute::classid()
 {
     return ID;
@@ -2834,6 +2858,7 @@ bool Attribute::equals(Node* in)
     else if(!this->var->equals(that->var))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -2910,7 +2935,6 @@ void Class_alias::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Class_alias::ID;
 int Class_alias::classid()
 {
     return ID;
@@ -2966,6 +2990,7 @@ bool Class_alias::equals(Node* in)
     else if(!this->class_name->equals(that->class_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -3042,7 +3067,6 @@ void Interface_alias::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Interface_alias::ID;
 int Interface_alias::classid()
 {
     return ID;
@@ -3098,6 +3122,7 @@ bool Interface_alias::equals(Node* in)
     else if(!this->interface_name->equals(that->interface_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -3174,7 +3199,6 @@ void Method_alias::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Method_alias::ID;
 int Method_alias::classid()
 {
     return ID;
@@ -3230,6 +3254,7 @@ bool Method_alias::equals(Node* in)
     else if(!this->method_name->equals(that->method_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -3304,7 +3329,6 @@ void Return::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Return::ID;
 int Return::classid()
 {
     return ID;
@@ -3344,6 +3368,7 @@ bool Return::equals(Node* in)
     else if(!this->rvalue->equals(that->rvalue))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -3406,7 +3431,6 @@ void Static_declaration::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Static_declaration::ID;
 int Static_declaration::classid()
 {
     return ID;
@@ -3446,6 +3470,7 @@ bool Static_declaration::equals(Node* in)
     else if(!this->var->equals(that->var))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -3508,7 +3533,6 @@ void Global::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Global::ID;
 int Global::classid()
 {
     return ID;
@@ -3548,6 +3572,7 @@ bool Global::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -3612,7 +3637,6 @@ void Try::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Try::ID;
 int Try::classid()
 {
     return ID;
@@ -3726,6 +3750,7 @@ bool Try::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -3872,7 +3897,6 @@ void Throw::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Throw::ID;
 int Throw::classid()
 {
     return ID;
@@ -3912,6 +3936,7 @@ bool Throw::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -3971,7 +3996,6 @@ void Assign_var::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Assign_var::ID;
 int Assign_var::classid()
 {
     return ID;
@@ -4031,6 +4055,7 @@ bool Assign_var::equals(Node* in)
     else if(!this->rhs->equals(that->rhs))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -4104,10 +4129,10 @@ Assign_var::Assign_var(VARIABLE_NAME* lhs, bool is_ref, Expr* rhs)
 	}
 }
 
-Assign_field::Assign_field(Target* target, Field_name* field_name, bool is_ref, Rvalue* rhs)
+Assign_field::Assign_field(Target* target, Field_name* lhs, bool is_ref, Rvalue* rhs)
 {
     this->target = target;
-    this->field_name = field_name;
+    this->lhs = lhs;
     this->is_ref = is_ref;
     this->rhs = rhs;
 }
@@ -4115,7 +4140,7 @@ Assign_field::Assign_field(Target* target, Field_name* field_name, bool is_ref, 
 Assign_field::Assign_field()
 {
     this->target = 0;
-    this->field_name = 0;
+    this->lhs = 0;
     this->is_ref = 0;
     this->rhs = 0;
 }
@@ -4130,7 +4155,6 @@ void Assign_field::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Assign_field::ID;
 int Assign_field::classid()
 {
     return ID;
@@ -4154,12 +4178,12 @@ bool Assign_field::match(Node* in)
     else if(!this->target->match(that->target))
     	return false;
     
-    if(this->field_name == NULL)
+    if(this->lhs == NULL)
     {
-    	if(that->field_name != NULL && !that->field_name->match(this->field_name))
+    	if(that->lhs != NULL && !that->lhs->match(this->lhs))
     		return false;
     }
-    else if(!this->field_name->match(that->field_name))
+    else if(!this->lhs->match(that->lhs))
     	return false;
     
     that->is_ref = this->is_ref;
@@ -4187,12 +4211,12 @@ bool Assign_field::equals(Node* in)
     else if(!this->target->equals(that->target))
     	return false;
     
-    if(this->field_name == NULL || that->field_name == NULL)
+    if(this->lhs == NULL || that->lhs == NULL)
     {
-    	if(this->field_name != NULL || that->field_name != NULL)
+    	if(this->lhs != NULL || that->lhs != NULL)
     		return false;
     }
-    else if(!this->field_name->equals(that->field_name))
+    else if(!this->lhs->equals(that->lhs))
     	return false;
     
     if(this->is_ref != that->is_ref)
@@ -4206,16 +4230,17 @@ bool Assign_field::equals(Node* in)
     else if(!this->rhs->equals(that->rhs))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
 Assign_field* Assign_field::clone()
 {
     Target* target = this->target ? this->target->clone() : NULL;
-    Field_name* field_name = this->field_name ? this->field_name->clone() : NULL;
+    Field_name* lhs = this->lhs ? this->lhs->clone() : NULL;
     bool is_ref = this->is_ref;
     Rvalue* rhs = this->rhs ? this->rhs->clone() : NULL;
-    Assign_field* clone = new Assign_field(target, field_name, is_ref, rhs);
+    Assign_field* clone = new Assign_field(target, lhs, is_ref, rhs);
     clone->Node::clone_mixin_from(this);
     return clone;
 }
@@ -4231,10 +4256,10 @@ Node* Assign_field::find(Node* in)
     	if (target_res) return target_res;
     }
     
-    if (this->field_name != NULL)
+    if (this->lhs != NULL)
     {
-    	Node* field_name_res = this->field_name->find(in);
-    	if (field_name_res) return field_name_res;
+    	Node* lhs_res = this->lhs->find(in);
+    	if (lhs_res) return lhs_res;
     }
     
     if (this->rhs != NULL)
@@ -4254,8 +4279,8 @@ void Assign_field::find_all(Node* in, Node_list* out)
     if (this->target != NULL)
     	this->target->find_all(in, out);
     
-    if (this->field_name != NULL)
-    	this->field_name->find_all(in, out);
+    if (this->lhs != NULL)
+    	this->lhs->find_all(in, out);
     
     if (this->rhs != NULL)
     	this->rhs->find_all(in, out);
@@ -4266,8 +4291,8 @@ void Assign_field::assert_valid()
 {
     assert(target != NULL);
     target->assert_valid();
-    assert(field_name != NULL);
-    field_name->assert_valid();
+    assert(lhs != NULL);
+    lhs->assert_valid();
     assert(rhs != NULL);
     rhs->assert_valid();
     Node::assert_mixin_valid();
@@ -4299,7 +4324,6 @@ void Assign_array::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Assign_array::ID;
 int Assign_array::classid()
 {
     return ID;
@@ -4375,6 +4399,7 @@ bool Assign_array::equals(Node* in)
     else if(!this->rhs->equals(that->rhs))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -4466,7 +4491,6 @@ void Assign_var_var::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Assign_var_var::ID;
 int Assign_var_var::classid()
 {
     return ID;
@@ -4526,6 +4550,7 @@ bool Assign_var_var::equals(Node* in)
     else if(!this->rhs->equals(that->rhs))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -4605,7 +4630,6 @@ void Assign_next::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Assign_next::ID;
 int Assign_next::classid()
 {
     return ID;
@@ -4665,6 +4689,7 @@ bool Assign_next::equals(Node* in)
     else if(!this->rhs->equals(that->rhs))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -4742,7 +4767,6 @@ void Pre_op::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Pre_op::ID;
 int Pre_op::classid()
 {
     return ID;
@@ -4798,6 +4822,7 @@ bool Pre_op::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -4852,10 +4877,10 @@ void Pre_op::assert_valid()
     Node::assert_mixin_valid();
 }
 
-Pre_op::Pre_op(VARIABLE_NAME* variable_name, const char* op)
+Pre_op::Pre_op(VARIABLE_NAME* var_name, const char* op)
 {
     {
-		this->variable_name = variable_name;
+		this->variable_name = var_name;
 		this->op = new OP(new String(op));
 	}
 }
@@ -4880,7 +4905,6 @@ void Eval_expr::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Eval_expr::ID;
 int Eval_expr::classid()
 {
     return ID;
@@ -4920,6 +4944,7 @@ bool Eval_expr::equals(Node* in)
     else if(!this->expr->equals(that->expr))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -4986,7 +5011,6 @@ void Unset::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Unset::ID;
 int Unset::classid()
 {
     return ID;
@@ -5087,6 +5111,7 @@ bool Unset::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -5212,7 +5237,6 @@ void Isset::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Isset::ID;
 int Isset::classid()
 {
     return ID;
@@ -5313,6 +5337,7 @@ bool Isset::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -5418,7 +5443,7 @@ Literal::Literal()
 {
 }
 
-/*  We wish to match on this, so it cannot be pure virtual */
+//  We wish to match on this, so it cannot be pure virtual
 String* Literal::get_value_as_string()
 {
     { assert (0); }
@@ -5446,7 +5471,6 @@ void Field_access::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Field_access::ID;
 int Field_access::classid()
 {
     return ID;
@@ -5502,6 +5526,7 @@ bool Field_access::equals(Node* in)
     else if(!this->field_name->equals(that->field_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -5586,7 +5611,6 @@ void Array_access::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Array_access::ID;
 int Array_access::classid()
 {
     return ID;
@@ -5642,6 +5666,7 @@ bool Array_access::equals(Node* in)
     else if(!this->index->equals(that->index))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -5716,7 +5741,6 @@ void Array_next::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Array_next::ID;
 int Array_next::classid()
 {
     return ID;
@@ -5756,6 +5780,7 @@ bool Array_next::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -5820,7 +5845,6 @@ void Cast::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Cast::ID;
 int Cast::classid()
 {
     return ID;
@@ -5876,6 +5900,7 @@ bool Cast::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -5960,7 +5985,6 @@ void Unary_op::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Unary_op::ID;
 int Unary_op::classid()
 {
     return ID;
@@ -6016,6 +6040,7 @@ bool Unary_op::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -6102,7 +6127,6 @@ void Bin_op::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Bin_op::ID;
 int Bin_op::classid()
 {
     return ID;
@@ -6174,6 +6198,7 @@ bool Bin_op::equals(Node* in)
     else if(!this->right->equals(that->right))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -6271,7 +6296,6 @@ void Constant::transform_children(Transform* transform)
     transform->children_static_array_key(this);
 }
 
-const int Constant::ID;
 int Constant::classid()
 {
     return ID;
@@ -6327,6 +6351,7 @@ bool Constant::equals(Node* in)
     else if(!this->constant_name->equals(that->constant_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -6402,7 +6427,6 @@ void Instanceof::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Instanceof::ID;
 int Instanceof::classid()
 {
     return ID;
@@ -6458,6 +6482,7 @@ bool Instanceof::equals(Node* in)
     else if(!this->class_name->equals(that->class_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -6536,7 +6561,6 @@ void Method_invocation::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Method_invocation::ID;
 int Method_invocation::classid()
 {
     return ID;
@@ -6637,6 +6661,7 @@ bool Method_invocation::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -6778,7 +6803,6 @@ void New::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int New::ID;
 int New::classid()
 {
     return ID;
@@ -6863,6 +6887,7 @@ bool New::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -6977,7 +7002,6 @@ void Variable_method::transform_children(Transform* transform)
     transform->children_method_name(this);
 }
 
-const int Variable_method::ID;
 int Variable_method::classid()
 {
     return ID;
@@ -7017,6 +7041,7 @@ bool Variable_method::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -7079,7 +7104,6 @@ void Variable_class::transform_children(Transform* transform)
     transform->children_class_name(this);
 }
 
-const int Variable_class::ID;
 int Variable_class::classid()
 {
     return ID;
@@ -7119,6 +7143,7 @@ bool Variable_class::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -7181,7 +7206,6 @@ void Variable_field::transform_children(Transform* transform)
     transform->children_field_name(this);
 }
 
-const int Variable_field::ID;
 int Variable_field::classid()
 {
     return ID;
@@ -7221,6 +7245,7 @@ bool Variable_field::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -7283,7 +7308,6 @@ void Static_array::transform_children(Transform* transform)
     transform->children_static_value(this);
 }
 
-const int Static_array::ID;
 int Static_array::classid()
 {
     return ID;
@@ -7352,6 +7376,7 @@ bool Static_array::equals(Node* in)
     		return false;
     }
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -7454,7 +7479,6 @@ void Branch::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Branch::ID;
 int Branch::classid()
 {
     return ID;
@@ -7526,6 +7550,7 @@ bool Branch::equals(Node* in)
     else if(!this->iffalse->equals(that->iffalse))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -7612,7 +7637,6 @@ void Goto::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Goto::ID;
 int Goto::classid()
 {
     return ID;
@@ -7652,6 +7676,7 @@ bool Goto::equals(Node* in)
     else if(!this->label_name->equals(that->label_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -7714,7 +7739,6 @@ void Label::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Label::ID;
 int Label::classid()
 {
     return ID;
@@ -7754,6 +7778,7 @@ bool Label::equals(Node* in)
     else if(!this->label_name->equals(that->label_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -7818,7 +7843,6 @@ void Foreach_reset::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Foreach_reset::ID;
 int Foreach_reset::classid()
 {
     return ID;
@@ -7874,6 +7898,7 @@ bool Foreach_reset::equals(Node* in)
     else if(!this->iter->equals(that->iter))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -7950,7 +7975,6 @@ void Foreach_next::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Foreach_next::ID;
 int Foreach_next::classid()
 {
     return ID;
@@ -8006,6 +8030,7 @@ bool Foreach_next::equals(Node* in)
     else if(!this->iter->equals(that->iter))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -8082,7 +8107,6 @@ void Foreach_end::transform_children(Transform* transform)
     transform->children_statement(this);
 }
 
-const int Foreach_end::ID;
 int Foreach_end::classid()
 {
     return ID;
@@ -8138,6 +8162,7 @@ bool Foreach_end::equals(Node* in)
     else if(!this->iter->equals(that->iter))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -8214,7 +8239,6 @@ void Foreach_has_key::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Foreach_has_key::ID;
 int Foreach_has_key::classid()
 {
     return ID;
@@ -8270,6 +8294,7 @@ bool Foreach_has_key::equals(Node* in)
     else if(!this->iter->equals(that->iter))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -8346,7 +8371,6 @@ void Foreach_get_key::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Foreach_get_key::ID;
 int Foreach_get_key::classid()
 {
     return ID;
@@ -8402,6 +8426,7 @@ bool Foreach_get_key::equals(Node* in)
     else if(!this->iter->equals(that->iter))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -8478,7 +8503,6 @@ void Foreach_get_val::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Foreach_get_val::ID;
 int Foreach_get_val::classid()
 {
     return ID;
@@ -8534,6 +8558,7 @@ bool Foreach_get_val::equals(Node* in)
     else if(!this->iter->equals(that->iter))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -8612,7 +8637,6 @@ void Param_is_ref::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int Param_is_ref::ID;
 int Param_is_ref::classid()
 {
     return ID;
@@ -8684,6 +8708,7 @@ bool Param_is_ref::equals(Node* in)
     else if(!this->param_index->equals(that->param_index))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -8769,7 +8794,6 @@ void FOREIGN::transform_children(Transform* transform)
     transform->children_expr(this);
 }
 
-const int FOREIGN::ID;
 int FOREIGN::classid()
 {
     return ID;
@@ -8804,6 +8828,7 @@ bool FOREIGN::equals(Node* in)
     if(!equals_value(that))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -8884,7 +8909,6 @@ String* CLASS_NAME::get_value_as_string()
     return value;
 }
 
-const int CLASS_NAME::ID;
 int CLASS_NAME::classid()
 {
     return ID;
@@ -8919,6 +8943,7 @@ bool CLASS_NAME::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -8982,7 +9007,6 @@ String* INTERFACE_NAME::get_value_as_string()
     return value;
 }
 
-const int INTERFACE_NAME::ID;
 int INTERFACE_NAME::classid()
 {
     return ID;
@@ -9017,6 +9041,7 @@ bool INTERFACE_NAME::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9073,7 +9098,6 @@ String* METHOD_NAME::get_value_as_string()
     return value;
 }
 
-const int METHOD_NAME::ID;
 int METHOD_NAME::classid()
 {
     return ID;
@@ -9108,6 +9132,7 @@ bool METHOD_NAME::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9171,7 +9196,6 @@ String* OP::get_value_as_string()
     return value;
 }
 
-const int OP::ID;
 int OP::classid()
 {
     return ID;
@@ -9206,6 +9230,7 @@ bool OP::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9262,7 +9287,6 @@ String* CAST::get_value_as_string()
     return value;
 }
 
-const int CAST::ID;
 int CAST::classid()
 {
     return ID;
@@ -9297,6 +9321,7 @@ bool CAST::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9353,7 +9378,6 @@ String* CONSTANT_NAME::get_value_as_string()
     return value;
 }
 
-const int CONSTANT_NAME::ID;
 int CONSTANT_NAME::classid()
 {
     return ID;
@@ -9388,6 +9412,7 @@ bool CONSTANT_NAME::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9444,7 +9469,6 @@ String* FIELD_NAME::get_value_as_string()
     return value;
 }
 
-const int FIELD_NAME::ID;
 int FIELD_NAME::classid()
 {
     return ID;
@@ -9479,6 +9503,7 @@ bool FIELD_NAME::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9542,7 +9567,6 @@ String* LABEL_NAME::get_value_as_string()
     return value;
 }
 
-const int LABEL_NAME::ID;
 int LABEL_NAME::classid()
 {
     return ID;
@@ -9577,6 +9601,7 @@ bool LABEL_NAME::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9633,7 +9658,6 @@ String* HT_ITERATOR::get_value_as_string()
     return value;
 }
 
-const int HT_ITERATOR::ID;
 int HT_ITERATOR::classid()
 {
     return ID;
@@ -9668,6 +9692,7 @@ bool HT_ITERATOR::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9719,7 +9744,6 @@ void Variable_variable::transform_children(Transform* transform)
     transform->children_variable_name(this);
 }
 
-const int Variable_variable::ID;
 int Variable_variable::classid()
 {
     return ID;
@@ -9759,6 +9783,7 @@ bool Variable_variable::equals(Node* in)
     else if(!this->variable_name->equals(that->variable_name))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9826,7 +9851,6 @@ String* VARIABLE_NAME::get_value_as_string()
     return value;
 }
 
-const int VARIABLE_NAME::ID;
 int VARIABLE_NAME::classid()
 {
     return ID;
@@ -9861,6 +9885,7 @@ bool VARIABLE_NAME::equals(Node* in)
     else if(*this->value != *that->value)
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9919,7 +9944,6 @@ void INT::transform_children(Transform* transform)
     transform->children_static_array_key(this);
 }
 
-const int INT::ID;
 int INT::classid()
 {
     return ID;
@@ -9949,6 +9973,7 @@ bool INT::equals(Node* in)
     if(!equals_value(that))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -9995,9 +10020,9 @@ void INT::assert_value_valid()
     // Assume value is valid
 }
 
-/*  Constructors can't call virtual functions, so we create a non-virtual to */
-/*  do the work. This is then called by the virtual function, and is also */
-/*  safely called from the constructor. */
+//  Constructors can't call virtual functions, so we create a non-virtual to
+//  do the work. This is then called by the virtual function, and is also
+//  safely called from the constructor.
 String* INT::_get_value_as_string()
 {
     {
@@ -10041,7 +10066,6 @@ void REAL::transform_children(Transform* transform)
     transform->children_static_array_key(this);
 }
 
-const int REAL::ID;
 int REAL::classid()
 {
     return ID;
@@ -10071,6 +10095,7 @@ bool REAL::equals(Node* in)
     if(!equals_value(that))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -10117,7 +10142,7 @@ void REAL::assert_value_valid()
     // Assume value is valid
 }
 
-/*  See comment in INT::_get_value_as_string () */
+//  See comment in INT::_get_value_as_string ()
 String* REAL::_get_value_as_string()
 {
     {
@@ -10172,7 +10197,6 @@ void STRING::transform_children(Transform* transform)
     transform->children_static_array_key(this);
 }
 
-const int STRING::ID;
 int STRING::classid()
 {
     return ID;
@@ -10202,6 +10226,7 @@ bool STRING::equals(Node* in)
     if(!equals_value(that))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -10291,7 +10316,6 @@ void BOOL::transform_children(Transform* transform)
     transform->children_static_array_key(this);
 }
 
-const int BOOL::ID;
 int BOOL::classid()
 {
     return ID;
@@ -10321,6 +10345,7 @@ bool BOOL::equals(Node* in)
     if(!equals_value(that))
     	return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 
@@ -10367,7 +10392,7 @@ void BOOL::assert_value_valid()
     // Assume value is valid
 }
 
-/*  See comment in INT::_get_value_as_string () */
+//  See comment in INT::_get_value_as_string ()
 String* BOOL::_get_value_as_string()
 {
     {
@@ -10406,7 +10431,6 @@ void NIL::transform_children(Transform* transform)
     transform->children_static_array_key(this);
 }
 
-const int NIL::ID;
 int NIL::classid()
 {
     return ID;
@@ -10430,6 +10454,7 @@ bool NIL::equals(Node* in)
     NIL* that = dynamic_cast<NIL*>(in);
     if(that == NULL) return false;
     
+    if(!Node::is_mixin_equal(that)) return false;
     return true;
 }
 

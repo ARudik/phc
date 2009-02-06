@@ -320,10 +320,6 @@ function diff ($string1, $string2)
 			return "Note: xdiff not available for diffing. Outputting both strings:\nString1:\n$string1\nString2:\n$string2";
 		}
 	}
-
-	if (strlen ($string1) > 5000000 || strlen ($string2) > 5000000)
-		return "Too big to xdiff. Outputting both strings:\nString1:\n$string1\nString2:\n$string2";
-
 	return xdiff_string_diff ("$string1\n", "$string2\n");
 }
 
@@ -758,15 +754,5 @@ function copy_to_working_dir ($file)
 	chmod ($new_file, fileperms ($file));
 	return $new_file;
 }
-
-function strip_console_codes ($string)
-{
-	// strip console codes
-	$string = preg_replace("/\[1;\d\dm/", "", $string);
-	$string = preg_replace("/\[0m/", "", $string); 
-	return $string;
-}
-
-
 
 ?>

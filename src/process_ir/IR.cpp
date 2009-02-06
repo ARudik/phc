@@ -6,8 +6,10 @@
  */
 
 #include "IR.h"
-#include "ast_to_hir/AST_to_HIR.h"
+#include "AST.h"
+#include "MIR.h"
 #include "hir_to_mir/HIR_to_MIR.h"
+#include "ast_to_hir/AST_to_HIR.h"
 
 using namespace IR;
 
@@ -15,16 +17,6 @@ int
 Node::get_line_number ()
 {
 	Integer* i = dynamic_cast<Integer*>(attrs->get("phc.line_number"));
-	if(i != NULL)
-		return i->value();
-	else
-		return 0;
-}
-
-int
-Node::get_column_number ()
-{
-	Integer* i = dynamic_cast<Integer*>(attrs->get("phc.column_number"));
 	if(i != NULL)
 		return i->value();
 	else
@@ -153,44 +145,49 @@ void PHP_script::transform_children(AST::Transform* ast_transform, HIR::Transfor
 
 bool PHP_script::is_AST()
 {
-	return isa<AST::PHP_script>(this);
+	return dynamic_cast<AST::PHP_script*>(this) != NULL;
 }
 
 bool PHP_script::is_HIR()
 {
-	return isa<HIR::PHP_script>(this);
+	return dynamic_cast<HIR::PHP_script*>(this) != NULL;
 }
 
 bool PHP_script::is_MIR()
 {
-	return isa<MIR::PHP_script>(this);
+	return dynamic_cast<MIR::PHP_script*>(this) != NULL;
 }
 
 
 AST::PHP_script* PHP_script::as_AST()
 {
-	return dyc<AST::PHP_script> (this);
+	AST::PHP_script* ast = dynamic_cast<AST::PHP_script*>(this);
+	assert(ast != NULL);
+	return ast;
 }
 
 HIR::PHP_script* PHP_script::as_HIR()
 {
-	return dyc<HIR::PHP_script> (this);
+	HIR::PHP_script* hir = dynamic_cast<HIR::PHP_script*>(this);
+	assert(hir != NULL);
+	return hir;
 }
+
 
 MIR::PHP_script* PHP_script::as_MIR()
 {
-	return dyc<MIR::PHP_script> (this);
+	MIR::PHP_script* mir = dynamic_cast<MIR::PHP_script*>(this);
+	assert(mir != NULL);
+	return mir;
 }
 
 
-
-PHP_script*
-PHP_script::fold_lower ()
+PHP_script* PHP_script::fold_lower ()
 {
 	if (is_AST ())
 		return (new AST_to_HIR ())->fold_php_script (as_AST ());
 	else if (is_HIR ())
 		return (new HIR_to_MIR ())->fold_php_script (as_HIR ());
-	else
-		phc_unreachable ();
+	else 
+		return NULL;
 }

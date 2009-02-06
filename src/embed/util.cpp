@@ -129,8 +129,7 @@ void handle_php_error_cb(
 				format, 
 				argp, 
 				current_anchor->get_filename(), 
-				current_anchor->get_line_number (),
-				0);
+				current_anchor->get_line_number ());
 	else
 	{
 		if (debugging_enabled)

@@ -24,7 +24,7 @@
 #include "cmdline.h"
 #include "codegen/Clarify.h"
 #include "codegen/Compile_C.h"
-#include "codegen/Generate_C_pass.h"
+#include "codegen/Generate_C.h"
 #include "codegen/Generate_C_annotations.h"
 #include "codegen/Lift_functions_and_classes.h"
 #include "embed/embed.h"
@@ -122,7 +122,7 @@ int main(int argc, char** argv)
 	// process_ast passes
 	pm->add_ast_pass (new Invalid_check ());
 	pm->add_ast_pass (new Fake_pass (s("ast"), s("Abstract Syntax Tree - a representation of the PHP program, as written")));
-	pm->add_ast_pass (new Process_includes (false, s("incl1"), pm, s("incl1")));
+	pm->add_ast_pass (new Process_includes (false, s("ast"), pm, s("incl1")));
 	pm->add_ast_pass (new Pretty_print ());
 
 	// Begin lowering to hir
@@ -144,9 +144,9 @@ int main(int argc, char** argv)
 	pm->add_ast_transform (new Early_lower_control_flow (), s("elcf"), s("Early Lower Control Flow - lower for, while, do and switch statements")); // AST
 	pm->add_ast_transform (new Lower_expr_flow (), s("lef"), s("Lower Expression Flow - Lower ||, && and ?: expressions"));
 	pm->add_ast_transform (new Desugar (), s("desug"), s("Desugar"));
+	pm->add_ast_transform (new Pre_post_op_shredder (), s("pps"), s("Shred pre- and post-ops, removing post-ops"));
 	pm->add_ast_transform (new List_shredder (), s("lish"), s("List shredder - simplify to array assignments"));
 	pm->add_ast_transform (new Shredder (), s("ashred"), s("Shredder - turn the AST into three-address-code, replacing complex expressions with a temporary variable"));
-	pm->add_ast_transform (new Pre_post_op_shredder (), s("pps"), s("Shred pre- and post-ops, removing post-ops"));
 	pm->add_ast_transform (new Remove_solo_exprs (), s("rse"), s("Remove expressions which are not stored"));
 	pm->add_ast_pass (new Fake_pass (s("AST-to-HIR"), s("The HIR in AST form")));
 
@@ -157,23 +157,24 @@ int main(int argc, char** argv)
 	pm->add_hir_transform (new Lower_dynamic_definitions (), s("ldd"), s("Lower Dynamic Defintions - Lower dynamic class, interface and method definitions using aliases"));
 	pm->add_hir_transform (new Lower_method_invocations (), s("lmi"), s("Lower Method Invocations - Lower parameters using run-time reference checks"));
 	pm->add_hir_transform (new Lower_control_flow (), s("lcf"), s("Lower Control Flow - Use gotos in place of loops, ifs, breaks and continues"));
+
+
+	// process_hir passes
 	pm->add_hir_pass (new Fake_pass (s("HIR-to-MIR"), s("The MIR in HIR form")));
 
 
-	pm->add_mir_pass (new Fake_pass (s("mir"), s("Medium-level Internal Representation - simple code with high-level constructs lowered to straight-line code")));
+	// codegen passes
+	// Use ss to pass generated code between Generate_C and Compile_C
+	pm->add_mir_pass (new Fake_pass (s("mir"), s("Medium-level Internal Representation - simple code with high-level constructs lowered to straight-line code.")));
 	pm->add_mir_pass (new Obfuscate ());
 //	pm->add_mir_pass (new Process_includes (true, new String ("mir"), pm, "incl2"));
 	pm->add_mir_transform (new Lift_functions_and_classes (), s("lfc"), s("Move statements from global scope into __MAIN__ method"));
 	pm->add_mir_visitor (new Clarify (), s("clar"), s("Clarify - Make implicit defintions explicit"));
-
 	pm->add_mir_visitor (new Prune_symbol_table (), s("pst"), s("Prune Symbol Table - Note whether a symbol table is required in generated code"));
-
-
-	// codegen passes
 	stringstream ss;
-	pm->add_codegen_visitor (new Generate_C_annotations, s("cgann"), s("Codegen annotation"));
-	pm->add_codegen_pass (new Generate_C_pass (ss));
-	pm->add_codegen_pass (new Compile_C (ss));
+	pm->add_mir_visitor (new Generate_C_annotations, s("cgann"), s("Codegen annotation"));
+	pm->add_mir_pass (new Generate_C (ss));
+	pm->add_mir_pass (new Compile_C (ss));
 
 
 	// Plugins add their passes to the pass manager
@@ -183,11 +184,11 @@ int main(int argc, char** argv)
 #define check_passes(FLAG)																		\
 	for (unsigned int i = 0; i < args_info.FLAG##_given; i++)						\
 	{																									\
-		if (!pm->has_pass_named (new String (args_info.FLAG##_arg [i])))			\
+		if (! pm->has_pass_named (new String (args_info.FLAG##_arg [i])))			\
 			phc_error ("Pass %s, specified with flag --" #FLAG ", is not valid", args_info.FLAG##_arg [i]);	\
 	}
-	check_passes (stats);
 	check_passes (dump);
+	check_passes (dump_uppered);
 	check_passes (dump_xml);
 	check_passes (dump_dot);
 	check_passes (debug);
@@ -277,7 +278,7 @@ int main(int argc, char** argv)
 			if (ir == NULL)
 			{
 				if (args_info.inputs_num != 0)
-					phc_error("File not found", filename, 0, 0);
+					phc_error("File not found", filename, 0);
 				else
 					return -1;
 			}
@@ -362,7 +363,7 @@ void init_plugins (Pass_manager* pm)
 			datadir_err = strdup (lt_dlerror ());
 			phc_error (
 				"Could not find %s plugin with errors \"%s\", \"%s\" and \"%s\"",
-				name, default_err, cwd_err, datadir_err);
+				NULL, 0, name, default_err, cwd_err, datadir_err);
 		}
 
 		// Save for later

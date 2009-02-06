@@ -3,14 +3,9 @@ dnl See doc/license/README.license for licensing information
 dnl
 dnl Process this file using autoconf to produce configure
 
-# Running aclocal, automake and autoconf can produce errors. These are avoided by running aclocal:
-#	$ aclocal -I /usr/share/autoconf-archive -I libltdl
-# which adds the macros needed for libtool, boost, etc.
-
 dnl Autoconf requirements
-AC_INIT([phc],[0.2.0],[phc-general@phpcompiler.org])
+AC_INIT([phc], [0.2.0.2], [phc-general@phpcompiler.org])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([config])
 
 dnl configure automake
@@ -22,11 +17,13 @@ dnl checks for programs
 AC_PROG_CC
 AC_PROG_CXX
 
-dnl Configure libtool and libltdl
-LT_INIT([dlopen])
-LT_CONFIG_LTDL_DIR([libltdl])
-LTDL_INIT([convenience])
-
+dnl Configure libtool
+AC_LIBLTDL_CONVENIENCE dnl build convenience library, and set LIBLTDL
+AC_LIBTOOL_DLOPEN dnl check for dlopen support
+AC_PROG_LIBTOOL dnl Configure libtool
+AC_CONFIG_SUBDIRS([libltdl])
+AC_SUBST([LTDLINCL])
+AC_SUBST([LIBLTDL])
 
 dnl check for other programs
 AC_PATH_PROG([gengetopt], [gengetopt])
@@ -38,7 +35,7 @@ AC_PATH_PROG([diff], [diff])
 AC_PATH_PROG([valgrind], [valgrind])
 AC_PATH_PROG([dot], [dot])
 AC_PATH_PROG([graphviz_gc], [gc])
-AX_BOOST_BASE([1.35.0])
+AX_BOOST_BASE([1.34.0])
 
 AC_ARG_WITH([maketea], 
    AS_HELP_STRING([--with-maketea], [path to maketea (if installed)]),
