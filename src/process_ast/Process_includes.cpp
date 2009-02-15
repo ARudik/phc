@@ -224,8 +224,8 @@ void Process_includes::do_not_include (const char* warning, Eval_expr* in, State
 
 /* If it matches, return the filename, else return NULL. If warn is passed,
  * warn if an include statement is found, but using an expression, not a
- * string. Set INCLUDE_ONCE if the function is a *_once function. */
-Actual_parameter* matching_param (Eval_expr* in, Statement_list* out, bool* include_once) 
+ * string. */
+Actual_parameter* matching_param (Eval_expr* in, Statement_list* out) 
 { 
 
 	// the filename is the only parameter of the include statement
@@ -249,12 +249,6 @@ Actual_parameter* matching_param (Eval_expr* in, Statement_list* out, bool* incl
 			or *(method_name->value->value) == "require"
 			or *(method_name->value->value) == "require_once"))
 	{
-		if (*(method_name->value->value) == "include_once"
-				or *(method_name->value->value) == "require_once")
-		{
-			*include_once = true;
-		}
-
 		return param->value;
 	}
 
@@ -269,50 +263,26 @@ String* get_filename_from_param (Actual_parameter* param)
 	return NULL;
 }
 
-String*
-get_dirname (String* filename)
-{
-	char* data = new (GC) char[filename->size()+1];
-	strncpy (data, filename->c_str(), filename->size());
-	return new String (dirname (data));
-}
-
 String_list*
 get_search_directories (String* filename, Node* in)
 {
-	DEBUG ("Looking for search directories. Filename is \"" << *filename << "\", node: " << *in->get_filename());
-
-
-	// If the filename starts with "../" or "./", only check the current
-	// directory)
-	if (filename->substr(0, 3) == "../"
-		or filename->substr (0, 2) == "./")
-	{
-		// TODO: take into account relative includes
-	}
-
-	String_list* result = PHP::get_include_paths ();
-	if (*in->get_filename () != "unknown")
-		result->push_back (get_dirname (in->get_filename ()));
-
-	return result;
+	return PHP::get_include_paths ();
 }
 
 // look for include statements
 void Process_includes::pre_eval_expr(Eval_expr* in, Statement_list* out)
 {
-	if (not pm->args_info->include_given)
+	// check if its an include function
+	Actual_parameter* param = matching_param (in, out);
+	if (param == NULL)
 	{
 		out->push_back (in);
 		return;
 	}
 
-	// check if its an include function
-	bool include_once = false;
-	Actual_parameter* param = matching_param (in, out, &include_once);
-	if (param == NULL)
+	if (not pm->args_info->include_given)
 	{
-		out->push_back (in);
+		do_not_include (NULL, in, out, param);
 		return;
 	}
 
@@ -324,32 +294,16 @@ void Process_includes::pre_eval_expr(Eval_expr* in, Statement_list* out)
 		return;
 	}
 
-	String* full_path = search_file (filename, get_search_directories (filename, in));
-
+	// Try to parse the file
+	PHP_script* ast = parse(filename, get_search_directories (filename, in));
 
 	// Script could not be found or not be parsed; leave the include in
-	if (full_path == NULL)
+	if (ast == NULL)
 	{
 		// warn even if this isnt the hir, since the file wont magically appear later.
 		do_not_include (filename->c_str (), in, out, param);
 		return;
 	}
-
-	// Avoid recusrion with include_once
-	if (include_once && PHP::is_included (full_path))
-	{
-		DEBUG ("Already included: " << *full_path);
-		// Just remove the statement
-		return;
-	}
-
-	// Mark it as included (even if not include_once).
-	PHP::add_include (full_path);
-
-
-	PHP_script* ast = parse (full_path, new String_list);
-	assert (ast); // will have been checked in full_path
-
 
 	// We don't support returning values from included scripts; 
 	// issue a warning and leave the include as-is

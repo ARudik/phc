@@ -36,13 +36,9 @@ Pass_manager::Pass_manager (gengetopt_args_info* args_info)
 	ast_queue = new Pass_queue;
 	hir_queue = new Pass_queue;
 	mir_queue = new Pass_queue;
-	codegen_queue = new Pass_queue;
-
 	queues = new List <Pass_queue* > (ast_queue, hir_queue, mir_queue);
-	queues->push_back (codegen_queue);
 }
 
-// AST
 void Pass_manager::add_ast_visitor (AST::Visitor* visitor, String* name, String* description)
 {
 	Pass* pass = new Visitor_pass (visitor, name, description);
@@ -60,13 +56,6 @@ void Pass_manager::add_ast_pass (Pass* pass)
 	add_pass (pass, ast_queue);
 }
 
-void Pass_manager::add_after_each_ast_pass (Pass* pass)
-{
-	add_after_each_pass (pass, ast_queue);
-}
-
-
-// HIR
 void Pass_manager::add_hir_visitor (HIR::Visitor* visitor, String* name, String* description)
 {
 	Pass* pass = new Visitor_pass (visitor, name, description);
@@ -84,15 +73,8 @@ void Pass_manager::add_hir_pass (Pass* pass)
 	add_pass (pass, hir_queue);
 }
 
-void Pass_manager::add_after_each_hir_pass (Pass* pass)
-{
-	add_after_each_pass (pass, hir_queue);
-}
 
 
-
-
-// MIR
 void Pass_manager::add_mir_visitor (MIR::Visitor* visitor, String* name, String* description)
 {
 	Pass* pass = new Visitor_pass (visitor, name, description);
@@ -110,35 +92,8 @@ void Pass_manager::add_mir_pass (Pass* pass)
 	add_pass (pass, mir_queue);
 }
 
-void Pass_manager::add_after_each_mir_pass (Pass* pass)
-{
-	add_after_each_pass (pass, mir_queue);
-}
 
 
-
-// Codegen
-void Pass_manager::add_codegen_visitor (MIR::Visitor* visitor, String* name, String* description)
-{
-	Pass* pass = new Visitor_pass (visitor, name, description);
-	add_pass (pass, codegen_queue);
-}
-
-void Pass_manager::add_codegen_transform (MIR::Transform* transform, String* name, String* description)
-{
-	Pass* pass = new Transform_pass (transform, name, description);
-	add_pass (pass, codegen_queue);
-}
-
-void Pass_manager::add_codegen_pass (Pass* pass)
-{
-	add_pass (pass, codegen_queue);
-}
-
-
-
-
-// Generic
 void Pass_manager::add_pass (Pass* pass, Pass_queue* queue)
 {
 	assert (pass->name);
@@ -159,6 +114,21 @@ void Pass_manager::add_plugin (lt_dlhandle handle, String* name, String* option)
 
 	(*func)(this, pp);
 	
+}
+
+void Pass_manager::add_after_each_ast_pass (Pass* pass)
+{
+	add_after_each_pass (pass, ast_queue);
+}
+
+void Pass_manager::add_after_each_hir_pass (Pass* pass)
+{
+	add_after_each_pass (pass, hir_queue);
+}
+
+void Pass_manager::add_after_each_mir_pass (Pass* pass)
+{
+	add_after_each_pass (pass, mir_queue);
 }
 
 void Pass_manager::add_after_each_pass (Pass* pass, Pass_queue* queue)
@@ -310,12 +280,9 @@ void Pass_manager::list_passes ()
 	foreach (Pass_queue* q, *queues)
 		foreach (Pass* p, *q) 
 		{
-			const char* name;
-			if (q == ast_queue) name = "AST";
-			else if (q == hir_queue) name = "HIR";
-			else if (q == mir_queue) name = "MIR";
-			else if (q == codegen_queue) name = "GEN";
-			else phc_unreachable ();
+			const char* name = "AST";
+			if (q == hir_queue) name = "HIR";
+			if (q == mir_queue) name = "MIR";
 			String* desc = p->description;
 
 			printf ("%-15s    (%-8s - %3s)    %s\n", 
@@ -347,35 +314,36 @@ void Pass_manager::dump (IR::PHP_script* in, Pass* pass)
 	{
 		if (*name == args_info->dump_arg [i])
 		{
-			if (in->is_AST ())
-			{
-				AST_unparser ().unparse (in->as_AST ());
-			}
-			else if (in->is_HIR ())
-			{
-				if (args_info->convert_uppered_flag)
-				{
-					// this needs to be fixed. It probably used to work when the HIR
-					// was lowered to AST then uppered. However, since the uppering is
-					// now in the MIR, we've nothing to upper this. I think
-					// templatizing the Foreach_uppering should work. However, we want
-					// to replace nodes which need uppering with foreign nodes.
-					
-					// I think not supporting this is fine - but dont error as it may be used for MIR.
-					//phc_error ("Uppered dump is not supported during HIR pass: %s", name->c_str ());
-				}
+			if (in->is_AST ()) AST_unparser ().unparse (in->as_AST ());
+			else if (in->is_HIR ()) HIR_unparser ().unparse (in->as_HIR ());
+			else if (in->is_MIR ()) MIR_unparser ().unparse (in->as_MIR ());
+			else assert (0);
+		}
+	}
 
-				HIR_unparser ().unparse (in->as_HIR ());
-			}
-			else if (in->is_MIR ())
+	for (unsigned int i = 0; i < args_info->dump_uppered_given; i++)
+	{
+		if (*name == args_info->dump_uppered_arg [i])
+		{
+			if (in->is_MIR ())
+				MIR_unparser().unparse_uppered (in->as_MIR ());
+
+			// As pure HIR, this should be fine. As HIR with Foreign MIR nodes (during HIR-to-MIR lowering), ?
+			if (in->is_HIR ())
 			{
-				if (args_info->convert_uppered_flag)
-					MIR_unparser().unparse_uppered (in->as_MIR ());
-				else
-					MIR_unparser ().unparse (in->as_MIR ());
+				// this needs to be fixed. It probably used to work when the HIR
+				// was lowered to AST then uppered. However, since the uppering is
+				// now in the MIR, we've nothing to upper this. I think
+				// templatizing the Foreach_uppering should work. However, we want
+				// to replace nodes which need uppering with foreign nodes.
+				
+				// I think not supporting this is fine
+				phc_error ("Uppered dump is not supported during HIR pass: %s", name->c_str ());
 			}
-			else
-				phc_unreachable ();
+
+			if (in->is_AST())
+				AST_unparser().unparse (in->as_AST()->clone ()); // TODO do we still need to clone?
+
 		}
 	}
 
@@ -392,20 +360,9 @@ void Pass_manager::dump (IR::PHP_script* in, Pass* pass)
 	{
 		if (*name == args_info->dump_xml_arg [i])
 		{
-			xml_unparse (in, std::cout, !args_info->no_xml_attrs_flag, !args_info->no_xml_base_64_flag);
+			xml_unparse (in, std::cout, !args_info->no_xml_attrs_flag);
 		}
 	}
-
-	for (unsigned int i = 0; i < args_info->stats_given; i++)
-	{
-		if (*name == args_info->stats_arg [i])
-		{
-			dump_stats ();
-			reset_stats ();
-		}
-	}
-
-
 }
 
 void Pass_manager::run (IR::PHP_script* in, bool main)
@@ -456,87 +413,37 @@ IR::PHP_script* Pass_manager::run_from_until (String* from, String* to, IR::PHP_
 	if (to) assert (has_pass_named (to));
 
 	bool exec = false;
-	// AST
-	foreach (Pass* p, *ast_queue)
+	foreach (Pass_queue* q, *queues)
 	{
-		// check for starting pass
-		if (!exec && 
-				((from == NULL) || *(p->name) == *from))
-			exec = true;
+		foreach (Pass* p, *q)
+		{
+			// check for starting pass
+			if (!exec && 
+					((from == NULL) || *(p->name) == *from))
+				exec = true;
 
-		if (exec)
-			run_pass (p, in, main);
+			if (exec)
+				run_pass (p, in, main);
 
-		// check for last pass
-		if (exec && (to != NULL) && *(p->name) == *to)
+			// check for last pass
+			if (exec && (to != NULL) && *(p->name) == *to)
+				return in;
+		}
+
+		// TODO dirty hack
+		if (q == ast_queue && in->is_AST () 
+			&& hir_queue->size () == 0 
+			&& mir_queue->size () == 0)
 			return in;
-	}
 
-	// Sometimes folding can crash. If you went out of your way to remove the
-	// passes in the later queues, dont fold.
-	if (hir_queue->size() == 0
-		&& mir_queue->size () == 0 
-		&& codegen_queue->size() == 0)
-		return in;
+		if (q == hir_queue && in->is_HIR () 
+			&& mir_queue->size () == 0)
+			return in;
 
-	// HIR
-	if (exec)
+		if ((in->is_AST () && q == ast_queue)
+			|| (in->is_HIR () && q == hir_queue))
 		in = in->fold_lower ();
-
-	foreach (Pass* p, *hir_queue)
-	{
-		// check for starting pass
-		if (!exec && 
-				((from == NULL) || *(p->name) == *from))
-			exec = true;
-
-		if (exec)
-			run_pass (p, in, main);
-
-		// check for last pass
-		if (exec && (to != NULL) && *(p->name) == *to)
-			return in;
 	}
-
-	if (mir_queue->size () == 0 
-		&& codegen_queue->size() == 0)
-		return in;
-
-	// MIR
-	if (exec)
-		in = in->fold_lower ();
-
-	foreach (Pass* p, *mir_queue)
-	{
-		// check for starting pass
-		if (!exec && 
-				((from == NULL) || *(p->name) == *from))
-			exec = true;
-
-		if (exec)
-			run_pass (p, in, main);
-
-		// check for last pass
-		if (exec && (to != NULL) && *(p->name) == *to)
-			return in;
-	}
-
-	// Codegen
-	foreach (Pass* p, *codegen_queue)
-	{
-		// check for starting pass
-		if (!exec && 
-				((from == NULL) || *(p->name) == *from))
-			exec = true;
-
-		if (exec)
-			run_pass (p, in, main);
-
-		// check for last pass
-		if (exec && (to != NULL) && *(p->name) == *to)
-			return in;
-	}
-
 	return in;
 }
 
@@ -566,3 +473,27 @@ Pass* Pass_manager::get_pass_named (String* name)
 	return NULL;
 }
 
+bool is_queue_pass (String* name, Pass_queue* queue)
+{
+	foreach (Pass* p, *queue)
+	{
+		if (*name == *p->name)
+			return true;
+	}
+	return false;
+}
+
+bool Pass_manager::is_ast_pass (String* name)
+{
+	return is_queue_pass (name, ast_queue);
+}
+
+bool Pass_manager::is_hir_pass (String* name)
+{
+	return is_queue_pass (name, hir_queue);
+}
+
+bool Pass_manager::is_mir_pass (String* name)
+{
+	return is_queue_pass (name, mir_queue);
+}

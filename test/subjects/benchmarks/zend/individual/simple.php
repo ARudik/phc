@@ -381,5 +381,5 @@ function total()
 }
 
 $t0 = $t = start_test();
-simple();
+for ($i = 0; $i < 10; $i++) simple();
 $t = end_test($t, "simple");

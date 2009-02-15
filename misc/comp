@@ -11,42 +11,35 @@ GDB="libtool --mode=execute gdb --args"
 VALGRIND="libtool --mode=execute valgrind"
 for var in $@
 do
-	if [ "-$var" = "--g" ] # debug
+	if [ "-$var" = "--g" ]
 	then
 		EXEC_NAME="$GDB "
 		DEBUG_PHC=1
-	elif [ "-$var" = "--V" ] # valgrind
+	elif [ "-$var" = "--V" ]
 	then
 		EXEC_NAME="$VALGRIND "
-	elif [ "-$var" = "--M" ] # Massif
+	elif [ "-$var" = "--M" ]
 	then
 		EXEC_NAME="$VALGRIND --tool=massif "
-	elif [ "-$var" = "--B" ] # Benchmark
+	elif [ "-$var" = "--B" ]
 	then
 		EXEC_NAME="$VALGRIND --tool=cachegrind --branch-sim=yes "
-	elif [ "-$var" = "--O" ] # Optimize
+	elif [ "-$var" = "--O" ]
 	then
 		PHC_ARGS="$PHC_ARGS -O3"
 		OPTIMIZE=1
-	elif [ "-$var" = "--S" ] # Statistics
-	then
-		PHC_ARGS="$PHC_ARGS --rt-stats"
-		STATS=1
-	elif [ "-$var" = "--r" ] # references
+	elif [ "-$var" = "--r" ]
 	then
 		PHC_ARGS="$PHC_ARGS --run plugins/tools/debug_zval.la"
-	elif [ "-$var" = "--d" ] # demi-eval
+	elif [ "-$var" = "--d" ]
 	then
 		PHC_ARGS="$PHC_ARGS --run plugins/tools/demi_eval.la --r-option=true"
-	elif [ "-$var" = "--D" ] # also demi-eval
+	elif [ "-$var" = "--D" ]
 	then
 		PHC_ARGS="$PHC_ARGS --run plugins/tools/demi_eval.la --r-option=false"
-	elif [ "-$var" = "--v" ] # verbose
+	elif [ "-$var" = "--v" ]
 	then
 		set -x
-	elif [ "-$var" = "--i" ] # include
-	then
-		PHC_ARGS="$PHC_ARGS --include"
 	else
 		PHP_NAME=$var
 	fi
@@ -62,22 +55,22 @@ PHC_ARGS="$PHC_ARGS -d include_path=.:test/subjects:$DIRNAME"
 cp $PHP_NAME $NAME.orig.php || exit 1;
 
 # generate HIR
-#src/phc $PHP_NAME $PHC_ARGS --dump=hir > $NAME.hir.php
-#if [[ $? != 0 ]]; then
-#	if [[ $DEBUG_PHC != 0 ]]; then 
-#		exec $GDB src/phc $PHP_NAME $PHC_ARGS --dump=hir
-#	fi
-#	exit 1
-#fi
+src/phc $PHP_NAME $PHC_ARGS --dump=hir > $NAME.hir.php
+if [[ $? != 0 ]]; then
+	if [[ $DEBUG_PHC != 0 ]]; then 
+		exec $GDB src/phc $PHP_NAME $PHC_ARGS --dump=hir
+	fi
+	exit 1
+fi
 
 # generate MIR
-#src/phc $PHP_NAME $PHC_ARGS --dump=generate-c > $NAME.mir.php
-#if [[ $? != 0 ]]; then
-#	if [[ $DEBUG_PHC != 0 ]]; then 
-#		exec $GDB src/phc $PHP_NAME $PHC_ARGS --dump=generate-c
-#	fi
-#	exit 1
-#fi
+src/phc $PHP_NAME $PHC_ARGS --dump=mir > $NAME.mir.php
+if [[ $? != 0 ]]; then
+	if [[ $DEBUG_PHC != 0 ]]; then 
+		exec $GDB src/phc $PHP_NAME $PHC_ARGS --dump=generate-c
+	fi
+	exit 1
+fi
 
 # generate uppered HIR
 #src/phc $PHP_NAME $PHC_ARGS --udump=AST-to-HIR > $NAME.uhir.php
@@ -97,8 +90,6 @@ if [[ $? != 0 ]]; then
 	exit 1
 fi
 indent $NAME.c
-# indent assumes 8-space tabs; make sure vim agrees
-echo "// vi:set ts=8:" >> $NAME.c
 
 # compile it, using phc's verbose output as the command. Pass an empty program so it doesnt compile twice, and if optimizing, 
 GCC_COMMAND=`echo '<?php ?>' | src/phc -v -c $PHC_ARGS -o $OUT_NAME | grep ^gcc | sed "s# - # $NAME.c #"` || exit 1
@@ -120,10 +111,5 @@ if [[ $? != 0 ]]; then
 	exit 1
 fi
 
-
-#if [[ $STATS == 1 ]]; then
-#   exec $EXEC_NAME 2>$NAME.stats
-#   exec misc/counter_stats $NAME.stats
-#fi
 
 exec $EXEC_NAME

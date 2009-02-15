@@ -13,13 +13,13 @@
 #ifndef PHC_DEBUG
 #define PHC_DEBUG
 
+#include "AST.h"
+#include "HIR.h"
+#include "MIR.h"
 #include <ostream>
-namespace AST { class Node; }
-namespace HIR { class Node; }
-namespace MIR { class Node; }
 
 #define CHECK_DEBUG() if (!debugging_enabled) return;
-#define DEBUG(A) do { if (debugging_enabled) { cdebug << A << std::endl; } } while (0)
+#define DEBUG(A) if (debugging_enabled) { cdebug << A << std::endl; }
 
 extern bool debugging_enabled;
 

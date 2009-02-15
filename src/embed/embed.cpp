@@ -300,28 +300,3 @@ PHP::get_ini_entry (String*)
 }
 
 #endif
-
-
-/*
- * These dont actually use embed
- */
-
-//TODO: inform PHP at run-time that these have been included
-// We dont actually need to involve the PHP run-time here
-static Set<string> included;
-
-bool
-PHP::is_included (String* filename)
-{
-	// TODO: assert absolute filename
-	return included.has (*filename);
-}
-
-void
-PHP::add_include (String* filename)
-{
-	// TODO: assert absolute filename
-	included.insert (*filename);
-}
-
-

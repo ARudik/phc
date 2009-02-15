@@ -8,8 +8,8 @@
 #ifndef PHC_DEMANGLE_H
 #define PHC_DEMANGLE_H
 
-class GC_obj;
+class Object;
 
-const char* demangle(GC_obj* obj, bool include_namespace = true);
+const char* demangle(Object* obj, bool include_namespace);
 
 #endif // PHC_DEMANGLE_H
